@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Feedem - meal planning for the rest of us..</title>
+    <meta name="description" content="quick and easy meal planning and shopping list creation" />
+	%= include 'site/head'
+	%= include 'mixpanel'
+  
+    <!-- record subscription -->
+	% if (!$error){
+	  	<script type="text/javascript">mixpanel.track('sign-up')</script>
+  		<script type="text/javascript">mixpanel.alias('<%= $email %>');</script>
+  	% }
+</head>
+<body>
+	<div class="container">
+		%= include 'site/header'
+		<div id="content">
+			<div class="hero-unit">
+				% if ($error){
+					<p class="lead"><%= $error %></p>
+					%= include 'site/sign_up_form'
+				% } else {
+					<p class="lead">Hey, 
+					% if ($name){
+						<%= $name %>, 
+					% }
+					thanks for signing up with Feedem. I've sent you an email with a link to set your password. The link will be valid for 7 days so please set your password soon.
+					</p>
+					<p>
+						<a href="" class="btn btn-primary pull-right">Start Planning</a>
+						start planning your meals...
+					</p>
+					<p class="lead">If you have any thoughts about Feedem you'd like to share, please email me at <a href="mailto:jason@feedem.com.au">jason@feedem.com.au</a>, I'd love to hear from you.</p>
+				% }
+			</div>
+		</div>
+	</div>
+</body>
+</html>

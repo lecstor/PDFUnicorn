@@ -1,0 +1,17 @@
+<form action="/log-in" method="post" class="form-horizontal">
+	<div class="control-group">
+		<label class="email control-label">Your email address:</label>
+		<div class="controls">
+			<input type="email" name="username">
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="email control-label">Your password:</label>
+		<div class="controls">
+			<input type="password" name="password">
+			<button type="submit" class="btn btn-primary">Let Me In</button>
+		</div>
+		<p></p>
+		<p>Leave your password blank if you don't remember it and I'll send you an account key via email.</p>
+	</div>
+</form>

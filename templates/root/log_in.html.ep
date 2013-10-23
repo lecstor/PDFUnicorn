@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Feedem - meal planning for the rest of us..</title>
+    <meta name="description" content="quick and easy meal planning and shopping list creation" />
+	%= include 'site/head'
+	%= include 'mixpanel'
+  
+    <!-- record subscription -->
+	% if (!$error){
+	  	<script type="text/javascript">mixpanel.track('log-in-form')</script>
+  	% }
+</head>
+<body>
+	<div class="container">
+		%= include 'site/header'
+		<div id="content">
+			<div class="hero-unit">
+				% if ($error){
+					<p class="lead"><%= $error %></p>
+				% }
+				%= include 'site/login_form'
+			</div>
+		</div>
+	</div>
+</body>
+</html>
