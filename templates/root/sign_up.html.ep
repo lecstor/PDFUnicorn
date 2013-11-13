@@ -13,25 +13,32 @@
   	% }
 </head>
 <body>
+	%= include 'site/header'
 	<div class="container">
-		%= include 'site/header'
 		<div id="content">
-			<div class="hero-unit">
-				% if ($error){
-					<p class="lead"><%= $error %></p>
+			<div class="jumbotron">
+				% if ($error eq 'not_email'){
+					<p class="lead">Sorry, that doesn't look like an email address to me..</p>
+					%= include 'site/sign_up_form'
+				% } elsif ($error eq 'missing_email'){
+					<p class="lead">Sorry, you'll need to enter an email address at least..</p>
 					%= include 'site/sign_up_form'
 				% } else {
 					<p class="lead">Hey, 
 					% if ($name){
 						<%= $name %>, 
 					% }
-					thanks for signing up with Feedem. I've sent you an email with a link to set your password. The link will be valid for 7 days so please set your password soon.
+					thanks for signing up with PDF Unicorn. I've sent you an email with a link to set
+					your password. The link will be valid for 7 days so please set your password soon.
 					</p>
 					<p>
-						<a href="" class="btn btn-primary pull-right">Start Planning</a>
-						start planning your meals...
+						<a href="" class="btn btn-primary pull-right">Start making PDFs!</a>
 					</p>
-					<p class="lead">If you have any thoughts about Feedem you'd like to share, please email me at <a href="mailto:jason@feedem.com.au">jason@feedem.com.au</a>, I'd love to hear from you.</p>
+					<p class="lead">
+						If you have any thoughts/wants/hopes about PDF Unicorn you feel like sharing,
+						please email me at <a href="mailto:jason@pdfunicorn.com">jason@pdfunicorn.com</a>,
+						I'd love to hear from you.
+					</p>
 				% }
 			</div>
 		</div>

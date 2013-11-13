@@ -64,17 +64,17 @@ sub sign_up {
 	}
 	catch {
 	    when (/not_email/){
-	        $error = "Sorry, that doesn't look like an email address to me..";
+	        $error = 'not_email';
 	    }
 	    when (/missing_email/){
-	        $error = "Sorry, you need to enter an email address..";
+	        $error = 'missing_email';
 	    }
 	    default { die $_; }
 	};
 
     if ($user){
         $self->db_users->send_password_key($user);
-        $self->session->{user} = $user->{_id};
+        $self->session->{user} = $user;
     }
 
     $self->render(
@@ -101,8 +101,8 @@ sub log_in{
     my $user = $self->db_users->find_one({ 'username' => lc($username) });
     if ($user){
         if ($self->db_users->check_password($user, $password)){
-            $self->session->{user} = $user; #->{_id};
-            $self->redirect_to('app');
+            $self->session->{user} = $user;
+            $self->redirect_to('/');
             return;
         }
     }
@@ -131,7 +131,7 @@ sub set_password_form{
     if ($user){
         my $user_email_hash = md5_sum($user->{email});
         if ($user_email_hash eq $email_hash){
-            $self->session->{user} = $user->{_id};
+            $self->session->{user} = $user;
             return $self->render(error => undef, user => $user);
         }
         return $self->render(
@@ -153,7 +153,7 @@ sub set_password{
 	my $password = $self->param('password');
 	my $user = $self->auth_user;
 	$self->db_users->set_password($user, $password, $self->random_string(length => 2));
-    $self->redirect_to('app');
+    $self->redirect_to('/');
 }
 
 

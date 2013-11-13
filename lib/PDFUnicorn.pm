@@ -5,6 +5,7 @@ use Mango;
 use Mango::BSON ':bson';
 
 use PDFUnicorn::Users;
+use PDFUnicorn::Documents;
 use PDFUnicorn::Valid;
 
 # This method will run once at server start
@@ -15,6 +16,9 @@ sub startup {
 
     # Documentation browser under "/perldoc"
     $self->plugin('PODRenderer');
+    $self->plugin('RenderFile');
+    $self->plugin('Util::RandomString');
+
 
     if ($self->mode eq 'development'){
     	$self->attr(mango => sub { 
@@ -38,6 +42,7 @@ sub startup {
 
     my $helpers = [
         { name => 'db_users', class => 'PDFUnicorn::Users', collection => 'users' },
+        { name => 'db_documents', class => 'PDFUnicorn::Documents', collection => 'documents' },
     ];
     
     for my $helper (@$helpers){
@@ -105,7 +110,13 @@ sub startup {
         }
     );
 
-    $self->plugin('RenderFile');
+    $self->helper(
+        'api_key' => sub {
+            my $auth = shift->req->headers->authorization;
+            my ($token) = $auth =~ /"(.*)"/;
+            return $token;
+        }
+    );
 
     # Router
     my $r = $self->routes;
@@ -115,6 +126,9 @@ sub startup {
     my $api = $r->bridge('/api')->to(cb => sub {
         my $self = shift;
 
+        my $auth = $self->req->headers->authorization;
+        return 1 if $self->api_key eq '1e551787-903e-11e2-b2b6-0bbccb145af3';
+        
         # Authenticated
         return 1 if $self->auth_user && $self->auth_user->{_id};
 
@@ -144,6 +158,16 @@ sub startup {
 	
 	$r->get('set-password/:code/:email')->to('root#set_password_form');
 	$r->post('set-password')->to('root#set_password');
+	
+	$api->post('/v1/documents')->to('api-documents#create');
+	$api->get('/v1/documents')->to('api-documents#find');
+	$api->get('/v1/documents/:id')->to('api-documents#find_one');
+	$api->delete('/v1/documents/:id')->to('api-documents#delete');
+	
+	$api->post('/v1/images')->to('api-images#create');
+	$api->get('/v1/images')->to('api-images#list');
+	$api->get('/v1/images/:id')->to('api-images#fetch');
+	$api->delete('/v1/images/:id')->to('api-images#delete');
 	
 }
 

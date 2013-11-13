@@ -13,15 +13,22 @@ has collection => (
 sub schemas{}
 
 sub create{
-    my ($self, $data) = @_;
+    my ($self, $data, $callback) = @_;
+    die 'Need a callback!' unless $callback;
  
     $data->{created} = time; # note Time::HiRes 'time'
     $data->{modified} = $data->{created};
         
     my $oid = $self->collection->insert($data);
-    return $self->find_one({ _id => $oid });
+    
+    $self->collection->save($data, sub{
+        my ($coll, $err, $oid) = @_;
+        $self->find_one({ _id => $oid }, $callback);
+    });
+    
 }
 
+# no non-blocking find?
 sub find{
     my ($self, $query) = @_;
     unless (exists $query->{archived}){
@@ -31,14 +38,25 @@ sub find{
 }
 
 sub find_one{
-    my ($self, $query) = @_;
+    my ($self, $query, $callback) = @_;
+    die 'Need a callback!' unless $callback;
     #warn Dumper $query;
-    return $self->collection->find_one($query);
+    #return $self->collection->find_one($query);
+    warn Data::Dumper->Dumper($query);
+    warn Data::Dumper->Dumper($self->collection->find_one($query));
+    $self->collection->find_one($query => sub{
+        my ($coll, $err, $doc) = @_;
+        warn Data::Dumper->Dumper([$err, $doc]);
+        $callback->($err, $doc)
+    });
+    Mojo::IOLoop->start unless Mojo::IOLoop->is_running;
 }
 
 sub update{
-    my ($self, $query, $data) = @_;
-    return $self->collection->update($query, $data);
+    my ($self, $query, $data, $callback) = @_;
+    die 'Need a callback!' unless $callback;
+    #return $self->collection->update($query, $data);
+    $self->collection->update(($query, $data) => $callback);
 }
 
 

@@ -35,7 +35,7 @@ sub create {
         $response->{data} = $user;
         $response->{ok} = 1;
         $self->db_users->send_password_key($user);
-        $self->session->{user} = $user->{_id};
+        $self->session->{user} = $user;
     }
     
     $self->render(json => $response);

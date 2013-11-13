@@ -10,41 +10,7 @@
 </head>
 
 <body>
-    <!-- Fixed navbar -->
-    <div class="navbar navbar-default navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">PDF Unicorn</a>
-        </div>
-        <div class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="#">Action</a></li>
-                <li><a href="#">Another action</a></li>
-                <li><a href="#">Something else here</a></li>
-                <li class="divider"></li>
-                <li class="dropdown-header">Nav header</li>
-                <li><a href="#">Separated link</a></li>
-                <li><a href="#">One more separated link</a></li>
-              </ul>
-            </li>
-          </ul>
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="/log-in">Log In</a></li>
-            <li><a href="/sign-up">Sign Up</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-    </div>
+	%= include 'site/header'
 
     <div class="container">
 
@@ -56,40 +22,8 @@
         	<div class="col-sm-6">
 <textarea name="data" style="width: 100%; height: 400px; font-size: 14px; line-height: 16px">
 data:
-  customer:
-	firstname: Blaze
-	surname: Saddle
-	email: blaze@pdfunicorn.com
-	address:
-	  street: 123 Unicorn St
-	  region: Skittleville
-	  code: 5432
-  order:
-    number: 765432
-    date: 23/10/2013
-    tax_invoice_date: 23/10/2013
-    reprinted_date: 23/10/2013
-  products:
-	name: Horn Shine
-	items:
-	- id: dcba4321
-	  name: Starter Kit
-	  price: $43.20
-	  quantity: 2
-	- id: dcba4322
-	  name: Refill
-	  price: $21.00
-	  quantity: 3
-	charge:
-	  subtotal: $107.20
-	  shipping: $15.00
-	  total: $122.20
-  store:
-  	name: The Unicorn Shop
-	address:
-	  street: 321 Unicorn St
-	  region: Skittleville
-	  code: 5432
+  visitor:
+    name: You
 </textarea>
         	</div>
         	<div class="col-sm-6">
@@ -99,15 +33,18 @@ data:
       page:
         margin: 5
         padding: 5
-        border: 1
+        border: 0
+        border-radius: 10
       row:
         margin: 5
         padding: 5
-        border: 1
+        border: 0
+        border-radius: 8
       cell:
         margin: 5
         padding: 5
         border: 1
+        border-radius: 5
       class:
         red:
           background-color: #FFEEEE
@@ -119,11 +56,34 @@ data:
           padding: 0
         no-marg:
           margin: 0
-        no-border:
-          border: 0
+        section:
+          padding: 15
     </style>
-    <page class="blue">
-        <row class="green">
+    <page>
+        <row>
+	        <cell class="section" span="12">
+		        <row class="no-marg">
+		            <cell class="section" span="12">
+		            	First up, thank you for your interest in PDF Unicorn. You action has pinged a server that will change a graph that will make me smile. 8)
+		            	
+		            	Generating PDFs on the fly is not a simple thing, so I'm having a go at making it at least a little easier.
+		            	
+		            	PDF Unicorn allows you to build templates and add data to generate PDF documents.  
+		            </cell>
+		        </row>
+		        <row class="no-marg">
+		            <cell class="section" span="12">
+		            	First up, thank you for your interest in PDF Unicorn. You action has pinged a server that will change a graph that will make me smile. 8)
+		            	
+		            	Generating PDFs on the fly is not a simple thing, so I'm having a go at making it at least a little easier.
+		            	
+		            	PDF Unicorn allows you to build templates and add data to generate PDF documents.  
+		            </cell>
+		        </row>
+            </cell>
+        </row>
+        
+        <row>
             <cell class="red" span="12">
             	A page is made up of rows, cells, text, and images.
             	The page, row, and cell containing this text all have 5px margins and padding.
@@ -146,7 +106,7 @@ data:
             </cell>
         </row>
         <row class="green no-marg">
-            <cell class="red no-marg no-border" span="12">
+            <cell class="red no-marg" span="12">
             	Turn off the cell border
             </cell>
         </row>
@@ -166,13 +126,13 @@ data:
             <cell class="red" span="2">twelve</cell>
             <cell class="red" span="2">columns</cell>
         </row>
-        <row class="green">
-            <cell class="red" span="3">
+        <row>
+            <cell span="3">
             	A cell may span more than 1 column.
             	When the text in a cell is too wide to fit, the text is wrapped and the cell is made taller to fit the wrapped text.
             </cell>
-            <cell class="red" span="3">span 3</cell>
-            <cell class="red" span="6">
+            <cell span="3">Did I mention we have rounded corners too?!</cell>
+            <cell span="6">
             	Other cells' height will be increased to the tallest cell's height.
             </cell>
         </row>
@@ -180,8 +140,8 @@ data:
 </doc>
 </textarea>
         	</div>
-        	<div>
-        		<input type="submit" value="Get PDF">
+        	<div style="text-align: center; margin-top: 20px">
+        		<input style="margin-top: 20px" type="submit" value="Get PDF Here">
         	</div>
         </form>
 

@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Feedem - meal planning for the rest of us..</title>
-    <meta name="description" content="quick and easy meal planning and shopping list creation" />
+    <title>PDF Unicorn Sign Up</title>
+    <meta name="description" content="convert your data to pdf" />
 	%= include 'site/head'
 	%= include 'mixpanel'
   
@@ -11,10 +11,10 @@
   	<!-- script type="text/javascript">mixpanel.alias('<%= $email %>');</script -->
 </head>
 <body>
+	%= include 'site/header'
 	<div class="container">
-		%= include 'site/header'
 		<div id="content">
-			<div class="hero-unit">
+			<div class="jumbotron">
 				%= include 'site/sign_up_form'
 			</div>
 		</div>
