@@ -4,8 +4,9 @@ use Mojo::Base 'Mojolicious';
 use Mango;
 use Mango::BSON ':bson';
 
-use PDFUnicorn::Users;
-use PDFUnicorn::Documents;
+use PDFUnicorn::Collection::Users;
+use PDFUnicorn::Collection::Documents;
+use PDFUnicorn::Collection::Images;
 use PDFUnicorn::Valid;
 
 # This method will run once at server start
@@ -30,19 +31,24 @@ sub startup {
             Mango->new('mongodb://<user>:<pass>@<server>/pdfunicorn');
         });
     }
-
+    
     $self->helper('mango' => sub { shift->app->mango });
+    $self->helper('gridfs' => sub { shift->app->gridfs });
+
+    my $db = $self->mango->db;
+    
+    $self->attr(gridfs => sub { $self->mango->db->gridfs });
 
     # ensure indexes
-    my $db = $self->mango->db;
     $db->collection('users')->ensure_index({ username => 1});
     $db->collection('users')->ensure_index({ 'password_key.key' => 1});
 
     my $validator = PDFUnicorn::Valid->new();
 
     my $helpers = [
-        { name => 'db_users', class => 'PDFUnicorn::Users', collection => 'users' },
-        { name => 'db_documents', class => 'PDFUnicorn::Documents', collection => 'documents' },
+        { name => 'db_users', class => 'PDFUnicorn::Collection::Users', collection => 'users' },
+        { name => 'db_documents', class => 'PDFUnicorn::Collection::Documents', collection => 'documents' },
+        { name => 'db_images', class => 'PDFUnicorn::Collection::Images', collection => 'images' },
     ];
     
     for my $helper (@$helpers){
@@ -114,6 +120,15 @@ sub startup {
         'api_key' => sub {
             my $auth = shift->req->headers->authorization;
             my ($token) = $auth =~ /"(.*)"/;
+            return $token;
+        }
+    );
+
+    $self->helper(
+        'api_key_owner' => sub {
+            my $self = shift;
+            my $token = $self->api_key;
+            # lookup owner and return id
             return $token;
         }
     );

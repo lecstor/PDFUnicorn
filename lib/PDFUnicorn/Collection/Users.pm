@@ -1,4 +1,4 @@
-package PDFUnicorn::Users;
+package PDFUnicorn::Collection::Users;
 use base 'PDFUnicorn::Collection';
 use Mango::BSON ':bson';
 use Mojo::Util qw(md5_sum);

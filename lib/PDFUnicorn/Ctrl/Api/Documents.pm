@@ -24,19 +24,35 @@ sub create {
      
     $self->render_later;
 
-    my $delay = Mojo::IOLoop::Delay->new;
-    $delay->steps(
-        sub{
-            my $delay = shift;
-            $self->collection->create($data, $delay->begin);
-        },
-        sub{
-            my ($delay, $doc) = @_;
-            warn Data::Dumper->Dumper($doc);
-            $self->render(json => $doc);
-        },
-    );
-    $delay->wait unless Mojo::IOLoop->is_running;
+    $self->on(finish => sub{
+        warn "ON FINISH";
+        my $self = shift;
+        my $delay = Mojo::IOLoop::Delay->new;
+        $delay->steps(
+            sub{
+                my $delay = shift;
+#                $self->collection->create($data, $delay->begin);
+                #my $end = $delay->begin;
+                $self->collection->find_one(
+                    { id => $data->{id} },
+                    $delay->begin
+                );
+            },
+#            sub{
+#                my ($delay, $doc) = @_;
+#                warn "sub 2";
+#                warn Data::Dumper->Dumper(\@_);
+#                $delay->begin->(@_);
+#                #$self->render(json => $doc);
+#            },
+        );
+        $delay->wait unless Mojo::IOLoop->is_running;
+    });
+
+    $self->collection->create($data, sub{
+        my ($err, $doc) = @_;
+        $self->render(json => $doc);
+    });
 
 #    my @stuff;
 #    my $delay = Mojo::IOLoop->delay(

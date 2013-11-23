@@ -5,6 +5,10 @@ use Mango::BSON ':bson';
 use Mojo::JSON;
 use Try;
 
+use lib '../PDF-Grid/lib';
+use PDF::Grid;
+
+use Data::Dumper ('Dumper');
 
 sub auth_filters {
 	my ($self, $query) = @_;
@@ -34,25 +38,30 @@ sub create {
 
     $data->{owner} = $self->api_key;
     $data->{id} = "$data->{id}";
-
+    $data->{uri} = "/v1/".$self->uri."/$data->{id}";
+    
     $self->render_later;
     $self->collection->create($data, sub{
         my ($err, $doc) = @_;
         $self->render(json => $doc);
     });
+    
 }
 
 sub find {
 	my $self = shift;
     my $query = $self->req->query_params->to_hash;
-    $query = $self->auth_filters($query);
     try{
         $self->validate($self->query_schema, $query);
     } catch {
         return $self->render_exception($_);
     };
-    my $rs = $self->collection->find($query);
-    $self->render(json => $rs->all);
+    $query->{owner} = $self->api_key_owner;
+    $self->render_later;
+    $self->collection->find_all($query, sub{
+        my ($cursor, $err, $docs) = @_;
+        $self->render(json => $docs);
+    });
 }
 
 sub find_one {
@@ -60,47 +69,40 @@ sub find_one {
 	my $id = $self->stash('id');
     #return $self->render_not_found unless $id = $self->validate_type('oid', $id);
     
-    warn "ID: $id";
-    
     $self->render_later;
     $self->collection->find_one({ id => $id }, sub{
-        warn Data::Dumper->Dumper(\@_);
+        #warn Data::Dumper->Dumper(\@_);
         my ($err, $doc) = @_;
         if ($doc){
-            if ($doc->{owner} eq $self->api_key){
+            if ($doc->{owner} eq $self->api_key_owner){
                 return $self->render(json => $doc) ;
-            }
-            if ($doc->{user} eq $self->auth_user->{_id}){
-                return $self->render(json => $doc) ;
-            }
-            if ($doc->{public} && !$doc->{archived}){
-                return $self->render(json => $doc);
             }
         }
         $self->render_not_found;
     });
+    Mojo::IOLoop->start unless Mojo::IOLoop->is_running;  
 }
 
 sub update{
 	my $self = shift;
 	my $id = $self->stash('id');
     my $data = $self->req->json();
+    $self->validate($self->item_schema, $data);
     delete $data->{_id};
-    
+    $data->{owner} = $self->api_key_owner;
     $self->render_later;
-    $self->collection->find_one(bson_oid $id, sub{
-        my ($err, $doc) = @_;
-        if ($doc){
-            if ($doc->{user} eq $self->auth_user->{_id}){
-                $data->{user} = $doc->{user};
-                $self->validate($self->item_schema, $data);
-                my $reply = $self->collection->update( { _id => bson_oid $id }, $data );
-                return $self->render(json => { 'ok' => 1, data => $data, status => $reply });
+    $self->collection->update(
+        ( { _id => $id, owner => $self->api_key_owner }, $data ) => sub {
+            my ($collection, $err, $doc) = @_;
+            if ($err){
+                warn $err;
+                $self->render_not_found;
+            } else {
+                return $self->render(json => { 'ok' => 1, data => $doc });
             }
-            
         }
-        $self->render_not_found;
-    });
+    );
+    Mojo::IOLoop->start unless Mojo::IOLoop->is_running;
 }
 
 sub archive{
@@ -109,8 +111,9 @@ sub archive{
 	$self->collection->find_one(bson_oid $id, sub{
         my ($err, $doc) = @_;
         if ($doc){
-            if ($doc->{user} eq $self->auth_user->{_id}){
+            if ($doc->{owner} eq $self->api_key_owner){
                 $doc->{archived} = bson_true;
+                # TODO: needs to be non-blocking..
                 $self->collection->update({ _id => bson_oid $id }, $doc);
                 return $self->render(json => { 'ok' => 1 });
             }
