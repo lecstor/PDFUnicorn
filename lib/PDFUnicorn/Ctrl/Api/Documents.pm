@@ -5,6 +5,7 @@ use Mojo::JSON;
 use Mango::BSON ':bson';
 use Mojo::IOLoop::Delay;
 
+  
 sub collection{ shift->db_documents }
 
 sub uri{ 'documents' }
@@ -13,7 +14,6 @@ sub query_schema{ 'DocumentQuery' }
 
 sub create {
 	my $self = shift;
-    #warn Mojo::JSON->new->encode($self->req->json());
     my $data = $self->req->json();
     $self->validate($self->item_schema, $data);
 
@@ -25,195 +25,71 @@ sub create {
     $self->render_later;
 
     $self->on(finish => sub{
-        warn "ON FINISH";
-        my $self = shift;
-        my $delay = Mojo::IOLoop::Delay->new;
-        $delay->steps(
-            sub{
-                my $delay = shift;
-#                $self->collection->create($data, $delay->begin);
-                #my $end = $delay->begin;
-                $self->collection->find_one(
-                    { id => $data->{id} },
-                    $delay->begin
-                );
-            },
-#            sub{
-#                my ($delay, $doc) = @_;
-#                warn "sub 2";
-#                warn Data::Dumper->Dumper(\@_);
-#                $delay->begin->(@_);
-#                #$self->render(json => $doc);
-#            },
-        );
-        $delay->wait unless Mojo::IOLoop->is_running;
+        my $c = shift;
+        
+        my $doc = $self->stash->{'pdfunicorn.doc'};
+        
+        if (!$doc){ die "a flaming death.."; }
+        
+        my $grid = PDF::Grid->new({
+            media_directory => $c->app->media_directory.'/'.$c->api_key_owner().'/',
+            source => $doc->{source},
+        });
+        
+        $grid->render_template;
+        my $pdf_doc = $grid->producer->stringify();    
+        $grid->producer->end;
+        my $gfs = $self->gridfs->prefix($self->api_key_owner());
+        my $oid = $gfs->writer->filename($doc->{name})->write($pdf_doc)->close;
+        
+        my $opts = {
+            query => { id => $doc->{id} },
+            update => { '$set' => { file => $oid }},
+        };
+        $self->collection->find_and_modify($opts => sub {
+            my ($collection, $err, $doc) = @_;
+            # anything to do here?
+            # call a webhook?
+        });
+ 
     });
 
     $self->collection->create($data, sub{
         my ($err, $doc) = @_;
+        $self->stash->{'pdfunicorn.doc'} = $doc;
         $self->render(json => $doc);
     });
 
-#    my @stuff;
-#    my $delay = Mojo::IOLoop->delay(
-#        sub{
-#            warn "111";
-#            $self->collection->create($data, sub{
-#                my ($err, $doc) = @_;
-#                #$self->render(json => $doc);
-#            });
-#        },
-#        sub{
-#            warn "222";
-#            $self->collection->find_one(
-#                { id => $data->{id} },
-#                sub{
-#                    #warn Data::Dumper->Dumper(\@_);
-#                    my ($err, $doc) = @_;
-#                    $self->render(json => $doc);
-#                    return \@_;
-#                    #die $err if $err;
-#                }
-#            );
-#        },
-#        sub {
-#            warn "333";
-#            my ($delay, $err, $docs) = @_;
-#            @stuff = @_;
-#            
-#        },
-#    );
-#    $delay->wait unless Mojo::IOLoop->is_running;
-    
-    #warn 'stuff'.Data::Dumper->Dumper(\@stuff);
-
-#    $self->on(finish => sub{
-#        warn "ON FINISH";
-#        my $self = shift;
-#        $self->app->log->debug('Generate a PDF at '.bson_time);
-
-#        my $collection = $self->collection;
-#
-#        my $delay = Mojo::IOLoop->delay(sub{
-#            my $delay = shift;
-#            warn "delay FINISH";
-#            warn Data::Dumper->Dumper(\@_);
-#        });
-#        $delay->steps(sub{
-#            my $delay = shift;
-#            warn "STEP $data->{id}";
-#            my $end = $delay->begin;
-#            $collection->find_one(
-#                { id => $data->{id} },
-#                sub{ warn Data::Dumper->Dumper(\@_); $end->(@_) }
-#            );
-#        });
-        #$delay->wait unless Mojo::IOLoop->is_running;
-                
-#        my @stuff;
-#        my $delay = Mojo::IOLoop->delay(
-#            sub{
-#                $self->collection->find_one(
-#                    { id => $data->{id} },
-#                    sub{
-#                        warn Data::Dumper->Dumper(\@_);
-#                        my ($err, $doc) = @_;
-#                        return \@_;
-#                        #die $err if $err;
-#                    }
-#                );
-#            },
-#            sub {
-#                my ($delay, $err, $docs) = @_;
-#                @stuff = @_;
-#            }
-#        );
-#        #$delay->wait; # unless Mojo::IOLoop->is_running;
-#        
-#        warn 'stuff'.Data::Dumper->Dumper(\@stuff);
-        
-#        my $end = $delay->begin;
-#        $self->collection->find_one({ id => $data->{id} }, sub{
-#            my ($err, $doc) = @_;
-#            die $err if $err;
-#            
-#            if ($doc->{source}){
-#                
-#                my $parser = PDF::Grid::SpecParser->new;
-#                $parser->parse($doc->{source});
-#                my $ext_images = $parser->images;
-#
-#                warn Data::Dumper->Dumper($ext_images);
-#                
-##                my $grid = PDF::Grid->new({
-##                    source => $doc->{source},
-##                });
-##                warn Data::Dumper->Dumper($grid->parsed_source);
-##                
-##                $grid->element_manager->prepare;
-##                
-##                my $ext_images = $grid->element_manager->external_images;
-##                warn Data::Dumper->Dumper($ext_images);
-#                
-#                if (@$ext_images){
-#                    $delay->on( finish => sub {
-#                        my ($delay, @docs) = @_;
-#                        warn Data::Dumper->Dumper(['finish docs', \@docs]);
-##                        foreach my $image_name (@$ext_images){
-##                            
-##                            $images{$image_name} = undef;
-##                        }
-##                        
-##                        while (%images < @$ext_images){
-##                            
-##                        }
-#                    } );
-#                    $delay->wait;
-#                    
-#                    foreach my $image_name (@$ext_images){
-#                        warn $image_name;
-#                        my $end = $delay->begin;
-#                        $self->db_images->find_one(
-#                            { name => $image_name, owner => $self->api_key_owner },
-#                            sub{
-#                                my ($coll, $err, $doc) = @_;
-#                                warn Data::Dumper->Dumper([$coll, $err, $doc]);
-#                                $end->($image_name, $doc);
-#                            }
-#                        );
-#                    }
-#                    $delay->wait unless Mojo::IOLoop->is_running;
-#                    
-#                }
-#                
-##                $grid->render_template;
-##                #$pdf->producer->saveas('pdf_unicorn_demo1.pdf');    
-##                my $pdf_doc = $grid->producer->stringify();    
-##                $grid->producer->end;
-##                my $gfs = $self->gridfs->prefix($self->api_key());
-##                my $oid = $gfs->writer->filename($doc->{name})->write($pdf_doc)->close;
-##                
-##                my $opts = {
-##                    query => { id => $doc->{id} },
-##                    update => { '$set' => { file => $oid }},
-##                };
-##                $self->collection->find_and_modify($opts => sub {
-##                    my ($collection, $err, $doc) = @_;
-##                    # anything to do here?
-##                });
-#            }
-#            $end->();
-#            
-#        });
-#    });
-    
-    
-#    $self->collection->create($data, sub{
-#        my ($err, $doc) = @_;
-#        $self->render(json => $doc);
-#    });
-    
-
 }
+
+
+sub find_one {
+	my $self = shift;
+	my $id = $self->stash('id');
+    #return $self->render_not_found unless $id = $self->validate_type('oid', $id);
+    
+    $self->render_later;
+    $self->collection->find_one({ id => $id }, sub{
+        #warn Data::Dumper->Dumper(\@_);
+        my ($err, $doc) = @_;
+        if ($doc){
+            if ($doc->{owner} eq $self->api_key_owner){
+                my $accept_headers = $self->req->headers->accept;
+                warn Data::Dumper->Dumper($accept_headers);
+                if ($accept_headers && $accept_headers eq 'application/pdf'){
+                    my $gfs = $self->gridfs->prefix($self->api_key_owner());
+                    my $reader = $gfs->reader->open($doc->{file});
+                    return $self->render(data => $reader->slurp);
+                } else {
+                    return $self->render(json => $doc);
+                }
+            }
+        }
+        $self->render_not_found;
+    });
+    Mojo::IOLoop->start unless Mojo::IOLoop->is_running;  
+}
+
+    
 
 1;

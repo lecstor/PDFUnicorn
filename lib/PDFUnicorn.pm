@@ -26,10 +26,12 @@ sub startup {
             #Mango->new('mongodb://<user>:<pass>@<server>/<database>');
             Mango->new('mongodb://127.0.0.1/pdfunicorn');
         });
+        $self->attr(media_directory => 'pdf_unicorn/images/');
     } else {
     	$self->attr(mango => sub { 
             Mango->new('mongodb://<user>:<pass>@<server>/pdfunicorn');
         });
+        $self->attr(media_directory => '/pdf_unicorn/images/');
     }
     
     $self->helper('mango' => sub { shift->app->mango });
