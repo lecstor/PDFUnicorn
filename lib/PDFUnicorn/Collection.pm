@@ -45,7 +45,6 @@ sub find_one{
     die 'Need a callback!' unless $callback;
     $self->collection->find_one($query => sub{
         my ($coll, $err, $doc) = @_;
-        warn Data::Dumper->Dumper([$err, $doc]);
         $callback->($err, $doc);
     });
     Mojo::IOLoop->start unless Mojo::IOLoop->is_running;

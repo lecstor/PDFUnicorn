@@ -75,8 +75,7 @@ sub find_one {
         if ($doc){
             if ($doc->{owner} eq $self->api_key_owner){
                 my $accept_headers = $self->req->headers->accept;
-                warn Data::Dumper->Dumper($accept_headers);
-                if ($accept_headers && $accept_headers eq 'application/pdf'){
+                if ($accept_headers && $accept_headers =~ m!application/pdf!){
                     my $gfs = $self->gridfs->prefix($self->api_key_owner());
                     my $reader = $gfs->reader->open($doc->{file});
                     return $self->render(data => $reader->slurp);
