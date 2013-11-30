@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>PDFUnicorn - convert your data to PDF</title>
+    <title>PDFUnicorn - online PDF generator - use your templating system to generate PDFs from your data</title>
 	%= include 'site/head'
 	%= include 'mixpanel'
   
