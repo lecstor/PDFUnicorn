@@ -1,7 +1,6 @@
 package PDFUnicorn::Collection;
 use Moo;
 use Mango::BSON ':bson';
-use Data::Dumper::Perltidy;
 use DateTime;
 use Try;
 use Time::HiRes 'time';

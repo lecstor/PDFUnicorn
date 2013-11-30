@@ -8,7 +8,7 @@ use Try;
 use lib '../PDF-Grid/lib';
 use PDF::Grid;
 
-use Data::Dumper ('Dumper');
+#use Data::Dumper ('Dumper');
 
 sub auth_filters {
 	my ($self, $query) = @_;

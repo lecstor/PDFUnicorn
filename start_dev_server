@@ -1,1 +1,1 @@
-morbo script/pdfunicorn
+carton exec morbo script/pdfunicorn

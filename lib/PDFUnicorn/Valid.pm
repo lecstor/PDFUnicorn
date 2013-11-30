@@ -2,7 +2,6 @@ package PDFUnicorn::Valid;
 use Moo;
 
 use DateTime;
-use Data::Dumper::Perltidy;
 use Mango::BSON ':bson';
 
 my $SCHEMAS = {};
