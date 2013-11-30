@@ -66,6 +66,13 @@ DISTRIBUTIONS
       Class::Singleton 1.4
     requirements:
       ExtUtils::MakeMaker 0
+  Clone-0.35
+    pathname: G/GA/GARU/Clone-0.35.tar.gz
+    provides:
+      Clone 0.35
+    requirements:
+      ExtUtils::MakeMaker 0
+      Test::More 0
   Data-Dumper-Perltidy-0.03
     pathname: J/JM/JMCNAMARA/Data-Dumper-Perltidy-0.03.tar.gz
     provides:
@@ -1255,6 +1262,16 @@ DISTRIBUTIONS
       ExtUtils::MakeMaker 6.30
       strict 0
       warnings 0
+  Encode-Locale-1.03
+    pathname: G/GA/GAAS/Encode-Locale-1.03.tar.gz
+    provides:
+      Encode::Locale 1.03
+    requirements:
+      Encode 2
+      Encode::Alias 0
+      ExtUtils::MakeMaker 0
+      Test 0
+      perl 5.008
   ExtUtils-Config-0.007
     pathname: L/LE/LEONT/ExtUtils-Config-0.007.tar.gz
     provides:
@@ -1296,6 +1313,249 @@ DISTRIBUTIONS
       ExtUtils::Config 0.002
       ExtUtils::MakeMaker 6.30
       File::Spec 0
+      strict 0
+      warnings 0
+  File-Listing-6.04
+    pathname: G/GA/GAAS/File-Listing-6.04.tar.gz
+    provides:
+      File::Listing 6.04
+      File::Listing::apache 6.04
+      File::Listing::dosftp 6.04
+      File::Listing::netware 6.04
+      File::Listing::unix 6.04
+      File::Listing::vms 6.04
+    requirements:
+      ExtUtils::MakeMaker 0
+      HTTP::Date 6
+      perl 5.006002
+  Font-TTF-1.03
+    pathname: M/MH/MHOSKEN/Font-TTF-1.03.tar.gz
+    provides:
+      Font::TTF 1.03
+      Font::TTF::AATKern undef
+      Font::TTF::AATutils undef
+      Font::TTF::Anchor undef
+      Font::TTF::Bsln undef
+      Font::TTF::Cmap undef
+      Font::TTF::Coverage undef
+      Font::TTF::Cvt_ 0.0001
+      Font::TTF::DSIG undef
+      Font::TTF::Delta undef
+      Font::TTF::Dumper undef
+      Font::TTF::EBDT undef
+      Font::TTF::EBLC undef
+      Font::TTF::Fdsc undef
+      Font::TTF::Feat undef
+      Font::TTF::Features::Cvar undef
+      Font::TTF::Features::Size undef
+      Font::TTF::Features::Sset undef
+      Font::TTF::Fmtx undef
+      Font::TTF::Font 0.39
+      Font::TTF::Fpgm 0.0001
+      Font::TTF::GDEF undef
+      Font::TTF::GPOS undef
+      Font::TTF::GSUB undef
+      Font::TTF::Glat undef
+      Font::TTF::Gloc undef
+      Font::TTF::Glyf undef
+      Font::TTF::Glyph undef
+      Font::TTF::GrFeat undef
+      Font::TTF::Hdmx undef
+      Font::TTF::Head undef
+      Font::TTF::Hhea undef
+      Font::TTF::Hmtx undef
+      Font::TTF::Kern undef
+      Font::TTF::Kern::ClassArray undef
+      Font::TTF::Kern::CompactClassArray undef
+      Font::TTF::Kern::OrderedList undef
+      Font::TTF::Kern::StateTable undef
+      Font::TTF::Kern::Subtable undef
+      Font::TTF::LTSH undef
+      Font::TTF::Loca undef
+      Font::TTF::Maxp undef
+      Font::TTF::Mort undef
+      Font::TTF::Mort::Chain undef
+      Font::TTF::Mort::Contextual undef
+      Font::TTF::Mort::Insertion undef
+      Font::TTF::Mort::Ligature undef
+      Font::TTF::Mort::Noncontextual undef
+      Font::TTF::Mort::Rearrangement undef
+      Font::TTF::Mort::Subtable undef
+      Font::TTF::Name 1.1
+      Font::TTF::OS_2 undef
+      Font::TTF::OTTags undef
+      Font::TTF::OldCmap undef
+      Font::TTF::OldMort undef
+      Font::TTF::PCLT undef
+      Font::TTF::PSNames undef
+      Font::TTF::Post 0.01
+      Font::TTF::Prep 0.0001
+      Font::TTF::Prop undef
+      Font::TTF::Segarr 0.0001
+      Font::TTF::Silf undef
+      Font::TTF::Sill undef
+      Font::TTF::Table 0.0001
+      Font::TTF::Ttc 0.0001
+      Font::TTF::Ttopen undef
+      Font::TTF::Utils 0.0001
+      Font::TTF::Vhea undef
+      Font::TTF::Vmtx undef
+      Font::TTF::Win32 undef
+      Font::TTF::Woff undef
+      Font::TTF::Woff::MetaData undef
+      Font::TTF::Woff::PrivateData undef
+      Font::TTF::XMLparse undef
+    requirements:
+      ExtUtils::MakeMaker 0
+      IO::String 0
+  HTML-Parser-3.71
+    pathname: G/GA/GAAS/HTML-Parser-3.71.tar.gz
+    provides:
+      HTML::Entities 3.69
+      HTML::Filter 3.57
+      HTML::HeadParser 3.71
+      HTML::LinkExtor 3.69
+      HTML::Parser 3.71
+      HTML::PullParser 3.57
+      HTML::TokeParser 3.69
+    requirements:
+      ExtUtils::MakeMaker 0
+      HTML::Tagset 3
+      XSLoader 0
+      perl 5.008
+  HTML-Tagset-3.20
+    pathname: P/PE/PETDANCE/HTML-Tagset-3.20.tar.gz
+    provides:
+      HTML::Tagset 3.20
+    requirements:
+      ExtUtils::MakeMaker 0
+  HTTP-Cookies-6.01
+    pathname: G/GA/GAAS/HTTP-Cookies-6.01.tar.gz
+    provides:
+      HTTP::Cookies 6.01
+      HTTP::Cookies::Microsoft 6.00
+      HTTP::Cookies::Netscape 6.00
+    requirements:
+      ExtUtils::MakeMaker 0
+      HTTP::Date 6
+      HTTP::Headers::Util 6
+      Time::Local 0
+      perl 5.008001
+  HTTP-Daemon-6.01
+    pathname: G/GA/GAAS/HTTP-Daemon-6.01.tar.gz
+    provides:
+      HTTP::Daemon 6.01
+      HTTP::Daemon::ClientConn 6.01
+    requirements:
+      ExtUtils::MakeMaker 0
+      HTTP::Date 6
+      HTTP::Request 6
+      HTTP::Response 6
+      HTTP::Status 6
+      IO::Socket 0
+      LWP::MediaTypes 6
+      Sys::Hostname 0
+      perl 5.008001
+  HTTP-Date-6.02
+    pathname: G/GA/GAAS/HTTP-Date-6.02.tar.gz
+    provides:
+      HTTP::Date 6.02
+    requirements:
+      ExtUtils::MakeMaker 0
+      Time::Local 0
+      perl 5.006002
+  HTTP-Message-6.06
+    pathname: G/GA/GAAS/HTTP-Message-6.06.tar.gz
+    provides:
+      HTTP::Config 6.00
+      HTTP::Headers 6.05
+      HTTP::Headers::Auth 6.00
+      HTTP::Headers::ETag 6.00
+      HTTP::Headers::Util 6.03
+      HTTP::Message 6.06
+      HTTP::Request 6.00
+      HTTP::Request::Common 6.04
+      HTTP::Response 6.04
+      HTTP::Status 6.03
+    requirements:
+      Compress::Raw::Zlib 0
+      Encode 2.21
+      Encode::Locale 1
+      ExtUtils::MakeMaker 0
+      HTTP::Date 6
+      IO::Compress::Bzip2 2.021
+      IO::Compress::Deflate 0
+      IO::Compress::Gzip 0
+      IO::HTML 0
+      IO::Uncompress::Bunzip2 2.021
+      IO::Uncompress::Gunzip 0
+      IO::Uncompress::Inflate 0
+      IO::Uncompress::RawInflate 0
+      LWP::MediaTypes 6
+      MIME::Base64 2.1
+      MIME::QuotedPrint 0
+      URI 1.10
+      perl 5.008001
+  HTTP-Negotiate-6.01
+    pathname: G/GA/GAAS/HTTP-Negotiate-6.01.tar.gz
+    provides:
+      HTTP::Negotiate 6.01
+    requirements:
+      ExtUtils::MakeMaker 0
+      HTTP::Headers 6
+      perl 5.008001
+  Hash-Merge-0.200
+    pathname: R/RE/REHSACK/Hash-Merge-0.200.tar.gz
+    provides:
+      Hash::Merge 0.200
+    requirements:
+      Clone 0
+      ExtUtils::MakeMaker 0
+      perl 5.008001
+  IO-HTML-1.00
+    pathname: C/CJ/CJM/IO-HTML-1.00.tar.gz
+    provides:
+      IO::HTML 1.00
+    requirements:
+      Carp 0
+      Encode 2.10
+      Exporter 5.57
+      ExtUtils::MakeMaker 6.30
+      File::Temp 0
+      Scalar::Util 0
+      Test::More 0.88
+  IO-String-1.08
+    pathname: G/GA/GAAS/IO-String-1.08.tar.gz
+    provides:
+      IO::String 1.08
+    requirements:
+      ExtUtils::MakeMaker 0
+  JSON-2.90
+    pathname: M/MA/MAKAMAKA/JSON-2.90.tar.gz
+    provides:
+      JSON 2.90
+      JSON::Backend::PP 2.90
+      JSON::Boolean 2.90
+    requirements:
+      ExtUtils::MakeMaker 0
+      Test::More 0
+  LWP-MediaTypes-6.02
+    pathname: G/GA/GAAS/LWP-MediaTypes-6.02.tar.gz
+    provides:
+      LWP::MediaTypes 6.02
+    requirements:
+      ExtUtils::MakeMaker 0
+      perl 5.006002
+  List-AllUtils-0.07
+    pathname: D/DR/DROLSKY/List-AllUtils-0.07.tar.gz
+    provides:
+      List::AllUtils 0.07
+    requirements:
+      Exporter 0
+      ExtUtils::MakeMaker 6.30
+      List::MoreUtils 0.28
+      List::Util 1.31
+      base 0
       strict 0
       warnings 0
   List-MoreUtils-0.33
@@ -1650,6 +1910,130 @@ DISTRIBUTIONS
       Moo 0.09101
       Test::Fatal 0.003
       Test::More 0.96
+  Net-HTTP-6.06
+    pathname: G/GA/GAAS/Net-HTTP-6.06.tar.gz
+    provides:
+      Net::HTTP 6.06
+      Net::HTTP::Methods 6.06
+      Net::HTTP::NB 6.04
+      Net::HTTPS 6.04
+    requirements:
+      Compress::Raw::Zlib 0
+      ExtUtils::MakeMaker 0
+      IO::Compress::Gzip 0
+      IO::Select 0
+      IO::Socket::INET 0
+      perl 5.006002
+  PDF-API2-2.020
+    pathname: S/SS/SSIMMS/PDF-API2-2.020.tar.gz
+    provides:
+      PDF::API2 2.020
+      PDF::API2::Annotation 2.020
+      PDF::API2::Basic::PDF::Array 2.020
+      PDF::API2::Basic::PDF::Bool 2.020
+      PDF::API2::Basic::PDF::Dict 2.020
+      PDF::API2::Basic::PDF::File 2.020
+      PDF::API2::Basic::PDF::Filter 2.020
+      PDF::API2::Basic::PDF::Filter::ASCII85Decode 2.020
+      PDF::API2::Basic::PDF::Filter::ASCIIHexDecode 2.020
+      PDF::API2::Basic::PDF::Filter::FlateDecode 2.020
+      PDF::API2::Basic::PDF::Filter::LZWDecode 2.020
+      PDF::API2::Basic::PDF::Filter::RunLengthDecode 2.020
+      PDF::API2::Basic::PDF::Literal 2.020
+      PDF::API2::Basic::PDF::Name 2.020
+      PDF::API2::Basic::PDF::Null 2.020
+      PDF::API2::Basic::PDF::Number 2.020
+      PDF::API2::Basic::PDF::Objind 2.020
+      PDF::API2::Basic::PDF::Page 2.020
+      PDF::API2::Basic::PDF::Pages 2.020
+      PDF::API2::Basic::PDF::String 2.020
+      PDF::API2::Basic::PDF::Utils 2.020
+      PDF::API2::Content 2.020
+      PDF::API2::Content::Text 2.020
+      PDF::API2::Lite 2.020
+      PDF::API2::Matrix 2.020
+      PDF::API2::NamedDestination 2.020
+      PDF::API2::Outline 2.020
+      PDF::API2::Outlines 2.020
+      PDF::API2::Page 2.020
+      PDF::API2::Resource 2.020
+      PDF::API2::Resource::BaseFont 2.020
+      PDF::API2::Resource::CIDFont 2.020
+      PDF::API2::Resource::CIDFont::CJKFont 2.020
+      PDF::API2::Resource::CIDFont::TrueType 2.020
+      PDF::API2::Resource::CIDFont::TrueType::FontFile 2.020
+      PDF::API2::Resource::ColorSpace 2.020
+      PDF::API2::Resource::ColorSpace::DeviceN 2.020
+      PDF::API2::Resource::ColorSpace::Indexed 2.020
+      PDF::API2::Resource::ColorSpace::Indexed::ACTFile 2.020
+      PDF::API2::Resource::ColorSpace::Indexed::Hue 2.020
+      PDF::API2::Resource::ColorSpace::Indexed::WebColor 2.020
+      PDF::API2::Resource::ColorSpace::Separation 2.020
+      PDF::API2::Resource::Colors 2.020
+      PDF::API2::Resource::ExtGState 2.020
+      PDF::API2::Resource::Font 2.020
+      PDF::API2::Resource::Font::BdFont 2.020
+      PDF::API2::Resource::Font::CoreFont 2.020
+      PDF::API2::Resource::Font::CoreFont::bankgothic 2.020
+      PDF::API2::Resource::Font::CoreFont::courier 2.020
+      PDF::API2::Resource::Font::CoreFont::courierbold 2.020
+      PDF::API2::Resource::Font::CoreFont::courierboldoblique 2.020
+      PDF::API2::Resource::Font::CoreFont::courieroblique 2.020
+      PDF::API2::Resource::Font::CoreFont::georgia 2.020
+      PDF::API2::Resource::Font::CoreFont::georgiabold 2.020
+      PDF::API2::Resource::Font::CoreFont::georgiabolditalic 2.020
+      PDF::API2::Resource::Font::CoreFont::georgiaitalic 2.020
+      PDF::API2::Resource::Font::CoreFont::helvetica 2.020
+      PDF::API2::Resource::Font::CoreFont::helveticabold 2.020
+      PDF::API2::Resource::Font::CoreFont::helveticaboldoblique 2.020
+      PDF::API2::Resource::Font::CoreFont::helveticaoblique 2.020
+      PDF::API2::Resource::Font::CoreFont::symbol 2.020
+      PDF::API2::Resource::Font::CoreFont::timesbold 2.020
+      PDF::API2::Resource::Font::CoreFont::timesbolditalic 2.020
+      PDF::API2::Resource::Font::CoreFont::timesitalic 2.020
+      PDF::API2::Resource::Font::CoreFont::timesroman 2.020
+      PDF::API2::Resource::Font::CoreFont::trebuchet 2.020
+      PDF::API2::Resource::Font::CoreFont::trebuchetbold 2.020
+      PDF::API2::Resource::Font::CoreFont::trebuchetbolditalic 2.020
+      PDF::API2::Resource::Font::CoreFont::trebuchetitalic 2.020
+      PDF::API2::Resource::Font::CoreFont::verdana 2.020
+      PDF::API2::Resource::Font::CoreFont::verdanabold 2.020
+      PDF::API2::Resource::Font::CoreFont::verdanabolditalic 2.020
+      PDF::API2::Resource::Font::CoreFont::verdanaitalic 2.020
+      PDF::API2::Resource::Font::CoreFont::webdings 2.020
+      PDF::API2::Resource::Font::CoreFont::wingdings 2.020
+      PDF::API2::Resource::Font::CoreFont::zapfdingbats 2.020
+      PDF::API2::Resource::Font::Postscript 2.020
+      PDF::API2::Resource::Font::SynFont 2.020
+      PDF::API2::Resource::Glyphs 2.020
+      PDF::API2::Resource::PaperSizes 2.020
+      PDF::API2::Resource::Pattern 2.020
+      PDF::API2::Resource::Shading 2.020
+      PDF::API2::Resource::UniFont 2.020
+      PDF::API2::Resource::XObject 2.020
+      PDF::API2::Resource::XObject::Form 2.020
+      PDF::API2::Resource::XObject::Form::BarCode 2.020
+      PDF::API2::Resource::XObject::Form::BarCode::codabar 2.020
+      PDF::API2::Resource::XObject::Form::BarCode::code128 2.020
+      PDF::API2::Resource::XObject::Form::BarCode::code3of9 2.020
+      PDF::API2::Resource::XObject::Form::BarCode::ean13 2.020
+      PDF::API2::Resource::XObject::Form::BarCode::int2of5 2.020
+      PDF::API2::Resource::XObject::Form::Hybrid 2.020
+      PDF::API2::Resource::XObject::Image 2.020
+      PDF::API2::Resource::XObject::Image::GD 2.020
+      PDF::API2::Resource::XObject::Image::GIF 2.020
+      PDF::API2::Resource::XObject::Image::JPEG 2.020
+      PDF::API2::Resource::XObject::Image::PNG 2.020
+      PDF::API2::Resource::XObject::Image::PNM 2.020
+      PDF::API2::Resource::XObject::Image::TIFF 2.020
+      PDF::API2::Resource::XObject::Image::Tiff::File 2.020
+      PDF::API2::UniWrap 2.020
+      PDF::API2::Util 2.020
+      PDF::API2::Win32 2.020
+    requirements:
+      Compress::Zlib 1.0
+      ExtUtils::MakeMaker 6.30
+      Font::TTF 0
   Package-Stash-0.36
     pathname: D/DO/DOY/Package-Stash-0.36.tar.gz
     provides:
@@ -1757,6 +2141,15 @@ DISTRIBUTIONS
       Exporter 5.57
       Test::Fatal 0.003
       Test::More 0.96
+  Scalar-List-Utils-1.35
+    pathname: P/PE/PEVANS/Scalar-List-Utils-1.35.tar.gz
+    provides:
+      List::Util 1.35
+      List::Util::XS 1.35
+      Scalar::Util 1.35
+    requirements:
+      ExtUtils::MakeMaker 0
+      Test::More 0
   Session-Token-1.007
     pathname: F/FR/FRACTAL/Session-Token-1.007.tar.gz
     provides:
@@ -2049,6 +2442,178 @@ DISTRIBUTIONS
       constant 0
       strict 0
       warnings 0
+  URI-1.60
+    pathname: G/GA/GAAS/URI-1.60.tar.gz
+    provides:
+      URI 1.60
+      URI::Escape 3.31
+      URI::Heuristic 4.20
+      URI::IRI undef
+      URI::QueryParam undef
+      URI::Split undef
+      URI::URL 5.04
+      URI::WithBase 2.20
+      URI::_foreign undef
+      URI::_generic undef
+      URI::_idna undef
+      URI::_ldap 1.12
+      URI::_login undef
+      URI::_punycode 0.04
+      URI::_query undef
+      URI::_segment undef
+      URI::_server undef
+      URI::_userpass undef
+      URI::data undef
+      URI::file 4.21
+      URI::file::Base undef
+      URI::file::FAT undef
+      URI::file::Mac undef
+      URI::file::OS2 undef
+      URI::file::QNX undef
+      URI::file::Unix undef
+      URI::file::Win32 undef
+      URI::ftp undef
+      URI::gopher undef
+      URI::http undef
+      URI::https undef
+      URI::ldap 1.12
+      URI::ldapi undef
+      URI::ldaps undef
+      URI::mailto undef
+      URI::mms undef
+      URI::news undef
+      URI::nntp undef
+      URI::pop undef
+      URI::rlogin undef
+      URI::rsync undef
+      URI::rtsp undef
+      URI::rtspu undef
+      URI::sip 0.11
+      URI::sips undef
+      URI::snews undef
+      URI::ssh undef
+      URI::telnet undef
+      URI::tn3270 undef
+      URI::urn undef
+      URI::urn::isbn undef
+      URI::urn::oid undef
+    requirements:
+      ExtUtils::MakeMaker 0
+      MIME::Base64 2
+      Test 0
+      Test::More 0
+      perl 5.008001
+  WWW-RobotRules-6.02
+    pathname: G/GA/GAAS/WWW-RobotRules-6.02.tar.gz
+    provides:
+      WWW::RobotRules 6.02
+      WWW::RobotRules::AnyDBM_File 6.00
+      WWW::RobotRules::InCore 6.02
+    requirements:
+      AnyDBM_File 0
+      ExtUtils::MakeMaker 0
+      Fcntl 0
+      URI 1.10
+      perl 5.008001
+  XML-Parser-2.41
+    pathname: T/TO/TODDR/XML-Parser-2.41.tar.gz
+    provides:
+      XML::Parser 2.41
+      XML::Parser::Expat 2.41
+      XML::Parser::Style::Debug undef
+      XML::Parser::Style::Objects undef
+      XML::Parser::Style::Stream undef
+      XML::Parser::Style::Subs undef
+      XML::Parser::Style::Tree undef
+    requirements:
+      ExtUtils::MakeMaker 0
+      LWP 0
+      perl 5.00405
+  YAML-0.86
+    pathname: I/IN/INGY/YAML-0.86.tar.gz
+    provides:
+      Test::YAML 0.86
+      Test::YAML::Filter 0.86
+      YAML 0.86
+      YAML::Any 0.86
+      YAML::Dumper 0.86
+      YAML::Dumper::Base 0.86
+      YAML::Error 0.86
+      YAML::Loader 0.86
+      YAML::Loader::Base 0.86
+      YAML::Marshall 0.86
+      YAML::Mo 0.86
+      YAML::Node 0.86
+      YAML::Tag 0.86
+      YAML::Type::blessed 0.86
+      YAML::Type::code 0.86
+      YAML::Type::glob 0.86
+      YAML::Type::ref 0.86
+      YAML::Type::regexp 0.86
+      YAML::Type::undef 0.86
+      YAML::Types 0.86
+      YAML::Warning 0.86
+      yaml_mapping 0.86
+      yaml_scalar 0.86
+      yaml_sequence 0.86
+    requirements:
+      ExtUtils::MakeMaker 6.59
+      perl 5.008001
+  libwww-perl-6.05
+    pathname: G/GA/GAAS/libwww-perl-6.05.tar.gz
+    provides:
+      LWP 6.05
+      LWP::Authen::Basic undef
+      LWP::Authen::Digest undef
+      LWP::Authen::Ntlm 6.00
+      LWP::ConnCache 6.02
+      LWP::Debug undef
+      LWP::DebugFile undef
+      LWP::MemberMixin undef
+      LWP::Protocol 6.00
+      LWP::Protocol::GHTTP undef
+      LWP::Protocol::MyFTP undef
+      LWP::Protocol::cpan undef
+      LWP::Protocol::data undef
+      LWP::Protocol::file undef
+      LWP::Protocol::ftp undef
+      LWP::Protocol::gopher undef
+      LWP::Protocol::http undef
+      LWP::Protocol::http::Socket undef
+      LWP::Protocol::http::SocketMethods undef
+      LWP::Protocol::loopback undef
+      LWP::Protocol::mailto undef
+      LWP::Protocol::nntp undef
+      LWP::Protocol::nogo undef
+      LWP::RobotUA 6.03
+      LWP::Simple 6.00
+      LWP::UserAgent 6.05
+    requirements:
+      Digest::MD5 0
+      Encode 2.12
+      Encode::Locale 0
+      ExtUtils::MakeMaker 0
+      File::Listing 6
+      HTML::Entities 0
+      HTML::HeadParser 0
+      HTTP::Cookies 6
+      HTTP::Daemon 6
+      HTTP::Date 6
+      HTTP::Negotiate 6
+      HTTP::Request 6
+      HTTP::Request::Common 6
+      HTTP::Response 6
+      HTTP::Status 6
+      IO::Select 0
+      IO::Socket 0
+      LWP::MediaTypes 6
+      MIME::Base64 2.1
+      Net::FTP 2.58
+      Net::HTTP 6.04
+      URI 1.10
+      URI::Escape 0
+      WWW::RobotRules 6
+      perl 5.008001
   strictures-1.005001
     pathname: H/HA/HAARG/strictures-1.005001.tar.gz
     provides:
