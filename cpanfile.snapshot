@@ -1524,6 +1524,19 @@ DISTRIBUTIONS
       File::Temp 0
       Scalar::Util 0
       Test::More 0.88
+  IO-Socket-SSL-1.962
+    pathname: S/SU/SULLR/IO-Socket-SSL-1.962.tar.gz
+    provides:
+      IO::Socket::SSL 1.962
+      IO::Socket::SSL::Intercept 1.93
+      IO::Socket::SSL::SSL_Context 1.962
+      IO::Socket::SSL::SSL_HANDLE 1.962
+      IO::Socket::SSL::Session_Cache 1.962
+      IO::Socket::SSL::Utils 0.02
+    requirements:
+      ExtUtils::MakeMaker 0
+      Net::SSLeay 1.46
+      Scalar::Util 0
   IO-String-1.08
     pathname: G/GA/GAAS/IO-String-1.08.tar.gz
     provides:
@@ -1924,6 +1937,16 @@ DISTRIBUTIONS
       IO::Select 0
       IO::Socket::INET 0
       perl 5.006002
+  Net-SSLeay-1.55
+    pathname: M/MI/MIKEM/Net-SSLeay-1.55.tar.gz
+    provides:
+      Net::SSLeay 1.55
+      Net::SSLeay::Handle 0.61
+    requirements:
+      ExtUtils::MakeMaker 6.36
+      MIME::Base64 0
+      Test::More 0.60_01
+      perl 5.005
   PDF-API2-2.020
     pathname: S/SS/SSIMMS/PDF-API2-2.020.tar.gz
     provides:
@@ -2559,6 +2582,16 @@ DISTRIBUTIONS
     requirements:
       ExtUtils::MakeMaker 6.59
       perl 5.008001
+  YAML-Syck-1.27
+    pathname: T/TO/TODDR/YAML-Syck-1.27.tar.gz
+    provides:
+      JSON::Syck 1.27
+      YAML::Dumper::Syck undef
+      YAML::Loader::Syck undef
+      YAML::Syck 1.27
+    requirements:
+      ExtUtils::MakeMaker 6.59
+      perl 5.006
   libwww-perl-6.05
     pathname: G/GA/GAAS/libwww-perl-6.05.tar.gz
     provides:

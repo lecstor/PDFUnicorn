@@ -8,6 +8,7 @@ requires 'Mojolicious::Plugin::Util::RandomString';
 requires 'Moo';
 requires 'Time::HiRes';
 requires 'Try';
+requires 'IO::Socket::SSL', '>= 1.75';
 
 on 'test' => sub {
     requires 'Data::Dumper::Perltidy';
@@ -24,3 +25,4 @@ requires 'PDF::API2';
 requires 'Try';
 requires 'XML::Parser';
 requires 'YAML';
+requires 'YAML::Syck';

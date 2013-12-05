@@ -173,6 +173,8 @@ sub startup {
 	
 	$r->get('log-out')->to('root#log_out');
 	
+	#$r->get('/stripe/connect')->to('stripe#connect');
+	
 	$r->get('set-password/:code/:email')->to('root#set_password_form');
 	$r->post('set-password')->to('root#set_password');
 	
