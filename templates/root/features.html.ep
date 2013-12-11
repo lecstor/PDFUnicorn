@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>PDFUnicorn - pricing plans</title>
+	%= include 'site/head'
+	%= include 'mixpanel'
+  
+    <!-- record main page view -->
+  	<script type="text/javascript">mixpanel.track('view-pricing-page')</script>
+</head>
+
+<body>
+	%= include 'site/header'
+	
+	<style>
+	.signup {
+		margin: 50px 0 0 0;
+	}
+	</style>
+
+    <div class="container">
+
+	    <div class="jumbotron clearfix">
+        <h2>Features</h2>
+	        <div>
+	        	<ul>
+	        		<li>REST based JSON API for loading images and generating PDF documents</li>
+	        		<li>Easily created custom documents using an html like markup language.</li>
+	        		<li>Repeatable headers and footers</li>
+	        		<li>Automatic text wrapping and paging</li>
+	        	</ul>
+	       	</div>
+        </div>
+
+	    <div class="signup">
+	        <h2 style="text-align: center">Generate up to 500 PDF documents free for 14 days</h2>
+	        <h3 style="text-align: center">No credit card required</h3>
+	        <h3 style="text-align: center">Choose a plan to suit your needs any time</h3>
+	        <div style="text-align: center">
+	        	<button class="btn btn-primary">Click here to start your free trial now</button>
+	       	</div>
+	    </div>
+    
+	    <script src="/lib/jquery/jquery.js"></script>
+	    <script src="/lib/bootstrap/js/bootstrap.min.js"></script>
+
+</body>
+</html>

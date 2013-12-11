@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>PDFUnicorn - About Generating PDFs</title>
+	%= include 'site/head'
+	%= include 'mixpanel'
+  
+    <!-- record main page view -->
+  	<script type="text/javascript">mixpanel.track('view-pricing-page')</script>
+</head>
+
+<body>
+	%= include 'site/header'
+
+	<style>
+	.signup {
+		margin: 50px 0 0 0;
+	}
+	</style>
+
+    <div class="container">
+
+	  	<div class="jumbotron clearfix">
+        	<div>
+        		<p>Over the years I have been presented with the challenge of generating
+        		PDF documents from data on a server for invoices and packing slips.</p>
+        		<p>It's not a fun thing to do.</p>
+        		<p>I have googled the topic on more than one occasion and the solutions
+        		mostly boil down to creating a custom script which uses a PDF library or
+        		using <a href="http://latex-project.org/">Latex</a> or HTML and a PDF
+        		converter.</p>
+        		<p>Latex is possibly one way to go if you have the expertise.</p>
+        		<p>Converting HTML to PDF is hard to get right, especially when it comes
+        		to documents which span multiple pages. Having repeated headers and footers
+        		and spliting your content correctly is complex if possible at all.</p> 
+        		<p>PDFUnicorn is my attempt to simplify the process of generating PDF
+        		documents to enable businesses to better serve their customers and
+        		add a bit of class to the documents they create.</p>
+        		<p>Ultimately I'd like to see SAAS and PAAS companies enable their clients
+        		to quickly and easily fully customise the invoices and other documents sent
+        		to their customers. Customisations could range from adding a logo or leagally
+        		required information, to complex item descriptions in invoices or customised
+        		item documentation or conditions.</p>
+	    	</div>
+		</div>
+		
+        <div class="signup">
+	        <h2 style="text-align: center">Generate up to 500 PDF documents free for 14 days</h2>
+	        <h3 style="text-align: center">No credit card required</h3>
+	        <h3 style="text-align: center">Choose a plan to suit your needs any time</h3>
+	        <div style="text-align: center">
+	        	<button class="btn btn-primary">Click here to start your free trial now</button>
+	       	</div>
+	    </div>
+
+    </div>
+
+    <script src="/lib/jquery/jquery.js"></script>
+    <script src="/lib/bootstrap/js/bootstrap.min.js"></script>
+
+</body>
+</html>

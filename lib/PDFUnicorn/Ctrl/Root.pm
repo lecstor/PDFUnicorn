@@ -39,6 +39,21 @@ sub get_pdf{
     );
 }
 
+sub features {
+	my $self = shift;
+    $self->render();
+}
+
+sub pricing {
+	my $self = shift;
+    $self->render();
+}
+
+sub about {
+	my $self = shift;
+    $self->render();
+}
+
 sub sign_up_form {
 	my $self = shift;
     $self->render(name => '', email => '');

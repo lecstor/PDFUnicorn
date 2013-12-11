@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>PDFUnicorn - pricing plans</title>
+	%= include 'site/head'
+	%= include 'mixpanel'
+  
+    <!-- record main page view -->
+  	<script type="text/javascript">mixpanel.track('view-pricing-page')</script>
+</head>
+
+<body>
+	%= include 'site/header'
+	
+	<style>
+	.pdfu-plan {
+		margin: 20px;
+		
+		margin-left: 0;
+		margin-right: 0;
+		background-color: #fff;
+		border-width: 1px;
+		border-color: #ddd;
+		border-radius: 10px;
+		box-shadow: none;
+		
+		padding: 2px 0 16px 0;
+	}
+	</style>
+
+    <div class="container">
+
+	  <div class="jumbotron clearfix">
+        <h2 style="text-align: center">Generate PDF documents free for 14 days on the Small plan</h2>
+        <h3 style="text-align: center">No credit card required</h3>
+        <h3 style="text-align: center">Choose a plan to suit your needs any time</h3>
+        <div style="text-align: center">
+        	<button class="btn btn-primary">Click here to start your free trial now</button>
+       	</div>
+        <div class="col-sm-3">
+        <div class="pdfu-plan">
+        	<h3 style="text-align: center">Small</h3>
+        	<h2 style="text-align: center">$19/month</h2>
+        	<div style="text-align: center">500 units/month</div>
+      	</div>
+      	</div>
+        <div class="col-sm-3">
+        <div class="pdfu-plan">
+        	<h3 style="text-align: center">Medium</h3>
+        	<h2 style="text-align: center">$49/month</h2>
+        	<div style="text-align: center">1,500 units/month</div>
+      	</div>
+      	</div>
+        <div class="col-sm-3">
+        <div class="pdfu-plan">
+        	<h3 style="text-align: center">Large</h3>
+        	<h2 style="text-align: center">$99/month</h2>
+        	<div style="text-align: center">5,000 units/month</div>
+      	</div>
+      	</div>
+        <div class="col-sm-3">
+        <div class="pdfu-plan">
+        	<h3 style="text-align: center">X-Large</h3>
+        	<h2 style="text-align: center">$199/month</h2>
+        	<div style="text-align: center">20,000 units/month</div>
+      	</div>
+      	</div>
+	    <h4 class="text-success" style="text-align: center; margin: 40px 0 0 0">a unit in this context is a page of a pdf or an image in a page</h4>
+      </div>
+        <div class="text-muted col-sm-offset-3 col-sm-6">
+      ok, so the plan names aren't great but they're so relative to what you
+      want to do I couldn't come up with any better. If you're creating lower
+      value invoices then Small could be "Small Business" but if your invoices
+      are enterprise level then Small could be "Enterprise".. you could want to
+      create packing slips for DVDs or personalised "how to care for your Ferrari"
+      user manuals.  
+      	</div>
+    </div>
+
+    <script src="/lib/jquery/jquery.js"></script>
+    <script src="/lib/bootstrap/js/bootstrap.min.js"></script>
+
+</body>
+</html>

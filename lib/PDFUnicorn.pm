@@ -164,6 +164,10 @@ sub startup {
     # Normal route to controller
 	$r->get('/')->to('root#home');
 	$r->post('/')->to('root#get_pdf');
+	
+	$r->get('features')->name('features')->to('root#features');
+	$r->get('pricing')->name('pricing')->to('root#pricing');
+	$r->get('about')->name('about')->to('root#about');
 
 	$r->get('sign-up')->to('root#sign_up_form');
 	$r->post('sign-up')->to('root#sign_up');
