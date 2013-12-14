@@ -75,11 +75,9 @@ sub startup {
     }    
     
     $self->helper(
-        'validate' => sub {
+        'invalidate' => sub {
             my ($ctrl, $schema, $data) = @_;
-            my $errors = $validator->validate($schema, $data);
-            die join("\n", @$errors) if $errors; # && @$errors;
-            return 1;
+            return $validator->validate($schema, $data);
         }
     );
         
@@ -120,8 +118,9 @@ sub startup {
 
     $self->helper(
         'api_key' => sub {
-            my $auth = shift->req->headers->authorization;
-            my ($token) = $auth =~ /"(.*)"/;
+            #my $auth = shift->req->headers->authorization;
+            my $auth = shift->req->url->to_abs->userinfo;
+            my ($token) = $auth =~ /^(.*):/;
             return $token;
         }
     );
@@ -143,7 +142,9 @@ sub startup {
     my $api = $r->bridge('/api')->to(cb => sub {
         my $self = shift;
 
-        my $auth = $self->req->headers->authorization;
+        warn Data::Dumper->Dumper($self->req->headers);
+
+        #my $auth = $self->req->headers->authorization;
         return 1 if $self->api_key eq '1e551787-903e-11e2-b2b6-0bbccb145af3';
         
         # Authenticated
