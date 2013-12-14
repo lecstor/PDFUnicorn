@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>PDFUnicorn - online PDF generator - use your templating system to generate PDFs from your data</title>
+    <title>PDFUnicorn - online PDF generator</title>
 	%= include 'site/head'
 	%= include 'mixpanel'
   
@@ -13,146 +13,20 @@
 	%= include 'site/header'
 
     <div class="container">
-
-      <!-- Main component for a primary marketing message or call to action -->
-      <div class="jumbotron">
-        <h2>Convert your data to PDF</h2>
-        
-        <form action="" method="post">
-        	<div class="col-sm-6">
-<textarea name="data" style="width: 100%; height: 400px; font-size: 14px; line-height: 16px">
-data:
-  visitor:
-    name: You
-</textarea>
-        	</div>
-        	<div class="col-sm-6">
-<textarea name="template" style="width: 100%; height: 400px; font-size: 14px; line-height: 16px">
-<doc>
-    <style>
-      page:
-        margin: 5
-        padding: 5
-        border: 0
-        border-radius: 10
-      row:
-        margin: 5
-        padding: 5
-        border: 0
-        border-radius: 8
-      cell:
-        margin: 5
-        padding: 5
-        border: 1
-        border-radius: 5
-      class:
-        red:
-          background-color: #FFEEEE
-        green:
-          background-color: #EEFFEE
-        blue:
-          background-color: #EEEEFF
-        no-pad:
-          padding: 0
-        no-marg:
-          margin: 0
-        section:
-          padding: 15
-    </style>
-    <page>
-        <row>
-	        <cell class="section" span="12">
-		        <row class="no-marg">
-		            <cell class="section" span="12">
-		            	First up, thank you for your interest in PDF Unicorn. You action has pinged a server that will change a graph that will make me smile. 8)
-		            	
-		            	Generating PDFs on the fly is not a simple thing, so I'm having a go at making it at least a little easier.
-		            	
-		            	PDF Unicorn allows you to build templates and add data to generate PDF documents.  
-		            </cell>
-		        </row>
-		        <row class="no-marg">
-		            <cell class="section" span="12">
-		            	First up, thank you for your interest in PDF Unicorn. You action has pinged a server that will change a graph that will make me smile. 8)
-		            	
-		            	Generating PDFs on the fly is not a simple thing, so I'm having a go at making it at least a little easier.
-		            	
-		            	PDF Unicorn allows you to build templates and add data to generate PDF documents.  
-		            </cell>
-		        </row>
-            </cell>
-        </row>
-        
-        <row>
-            <cell class="red" span="12">
-            	A page is made up of rows, cells, text, and images.
-            	The page, row, and cell containing this text all have 5px margins and padding.
-            	Margins go outside the element's border and padding is inside.
-            </cell>
-        </row>
-        <row class="green no-pad">
-            <cell class="red no-pad" span="12">
-            	Row and cell padding have been removed here.
-            </cell>
-        </row>
-        <row class="green no-pad no-marg">
-            <cell class="red no-pad no-marg" span="12">
-            	Row and cell padding and margin have been removed here.
-            </cell>
-        </row>
-        <row class="green no-marg">
-            <cell class="red" span="12">
-            	The borders of adjascent elements overlap if those elements have no margin.
-            </cell>
-        </row>
-        <row class="green no-marg">
-            <cell class="red no-marg" span="12">
-            	Turn off the cell border
-            </cell>
-        </row>
-        <row class="green no-pad">
-            <cell class="red no-marg" span="12">
-            	Put the cell padding and row margin back..
-            </cell>
-        </row>
-        <row class="green">
-            <cell class="red">By</cell>
-            <cell class="red">default</cell>
-            <cell class="red">each</cell>
-            <cell class="red">row</cell>
-            <cell class="red">is</cell>
-            <cell class="red" span="2">comprised</cell>
-            <cell class="red">of</cell>
-            <cell class="red" span="2">twelve</cell>
-            <cell class="red" span="2">columns</cell>
-        </row>
-        <row>
-            <cell span="3">
-            	A cell may span more than 1 column.
-            	When the text in a cell is too wide to fit, the text is wrapped and the cell is made taller to fit the wrapped text.
-            </cell>
-            <cell span="3">Did I mention we have rounded corners too?!</cell>
-            <cell span="6">
-            	Other cells' height will be increased to the tallest cell's height.
-            </cell>
-        </row>
-    </page>
-</doc>
-</textarea>
-        	</div>
-        	<div style="text-align: center; margin-top: 20px">
-        		<input style="margin-top: 20px" type="submit" value="Get PDF Here">
-        	</div>
-        </form>
-
-      </div>
-
-    </div> <!-- /container -->
-
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
+        <div class="jumbotron">
+        	<div class="row">
+        		<div class="col-md-3"><img src="/img/unicorn_200.png"></div>
+        		<div class="col-md-7">
+		      		<p>PDFUnicorn is an online PDF generator for businesses who need to generate custom
+		      		PDF files on demand. We use a custom HTML-like markup language designed for laying
+		      		out pageable documents in the simplest way possible.</p>
+		      		<p></p>
+		      		<p></p>
+		      		<p></p>
+        		</div>
+        </div>
+    </div>
+    
     <script src="/lib/jquery/jquery.js"></script>
     <script src="/lib/bootstrap/js/bootstrap.min.js"></script>
 
