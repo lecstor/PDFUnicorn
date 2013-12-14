@@ -94,6 +94,22 @@ sub validate{
     # loop through data attributes
     foreach my $attr_name (keys %$data){
 
+        if ($attr_name eq '_required'){
+            my $req = $data->{_required};
+            if ($req->{or}){
+                my $ok = 0;
+                foreach my $opt (@{$req->{or}}){
+                    if ($opt){
+                        $ok = 1;
+                        last;
+                    }
+                    unless($ok){
+                        push(@$errors, 'Require attribute, one of: '.join(', ', @{$req->{or}}));
+                    }
+                }
+            }
+        }
+
         # verify attr exists in schema
         unless ($schema->{$attr_name}){
             push(@$errors, 'Unexpected object attribute: "'.$attr_name.'"');
