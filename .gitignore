@@ -5,3 +5,4 @@ perltidy.LOG
 public/cory_unicorn.jpeg
 /*.pdf
 local/
+/.includepath
