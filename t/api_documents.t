@@ -21,7 +21,7 @@ $t->app->media_directory('t/media_directory');
 
 #$t->post_ok(
 #    '/api/v1/documents',
-#    { 'Authorization' => 'PDFUToken token="1e551787-903e-11e2-b2b6-0bbccb145af3"' },
+#    { 'Authorization' => 'Basic 1e551787-903e-11e2-b2b6-0bbccb145af3"' },
 #    json => {
 #        id => 1,
 #        name => 'Test 1',
@@ -42,7 +42,7 @@ $t->app->media_directory('t/media_directory');
 #
 #$t->get_ok(
 #    '/api/v1/documents',
-#    { 'Authorization' => 'PDFUToken token="1e551787-903e-11e2-b2b6-0bbccb145af3"' },
+#    { 'Authorization' => 'Basic 1e551787-903e-11e2-b2b6-0bbccb145af3"' },
 #)->status_is(200);
 #$json = $t->tx->res->json;
 #is ref($json), 'ARRAY', 'is a list';
@@ -59,7 +59,7 @@ $t->app->media_directory('t/media_directory');
 #
 #$t->get_ok(
 #    '/api/v1/documents/1',
-#    { 'Authorization' => 'PDFUToken token="1e551787-903e-11e2-b2b6-0bbccb145af3"' },
+#    { 'Authorization' => 'Basic 1e551787-903e-11e2-b2b6-0bbccb145af3"' },
 #)->status_is(200);
 #
 #$json = $t->tx->res->json;
@@ -78,7 +78,7 @@ $t->app->media_directory('t/media_directory');
 
 $t->post_ok(
     '/api/v1/documents',
-    { 'Authorization' => 'PDFUToken token="1e551787-903e-11e2-b2b6-0bbccb145af3"' },
+    { 'Authorization' => 'Basic 1e551787-903e-11e2-b2b6-0bbccb145af3' },
     json => {
         id => 2,
         name => 'Test 2',
@@ -101,7 +101,7 @@ ok !$json->{file}, 'no file';
 
 $t->get_ok(
     '/api/v1/documents/2',
-    { 'Authorization' => 'PDFUToken token="1e551787-903e-11e2-b2b6-0bbccb145af3"' },
+    { 'Authorization' => 'Basic 1e551787-903e-11e2-b2b6-0bbccb145af3' },
 )->status_is(200);
 
 $json = $t->tx->res->json;
@@ -119,7 +119,7 @@ ok $json->{file}, 'file';
 $t->get_ok(
     '/api/v1/documents/2',
     {
-        'Authorization' => 'PDFUToken token="1e551787-903e-11e2-b2b6-0bbccb145af3"',
+        'Authorization' => 'Basic 1e551787-903e-11e2-b2b6-0bbccb145af3',
         'Accept' => 'application/pdf'
     },
 )->status_is(200);
