@@ -11,12 +11,13 @@ sub schemas{
             name => { type => 'string', required => 1 },
             type => { type => 'string' },
             data => { type => 'object' },
-            source => { type => 'string' },
+            source => { type => 'string', required => 1 },
             created => { type => 'datetime', bson => 'time' },
             modified => { type => 'datetime', bson => 'time' },
             public => { type => 'boolean', bson => 'bool' },
             owner => { type => 'string', bson => 'oid' },
             images => { type => 'object' },
+            #_required => { or => [qw(source template)] }
         },
         'DocumentQuery', {
             id => { type => 'string' },
