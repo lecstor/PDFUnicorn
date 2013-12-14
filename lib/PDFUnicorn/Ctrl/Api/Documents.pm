@@ -15,50 +15,82 @@ sub query_schema{ 'DocumentQuery' }
 sub create {
 	my $self = shift;
     my $data = $self->req->json();
-    $self->validate($self->item_schema, $data);
+    if (my $errors = $self->invalidate($self->item_schema, $data)){
+        return $self->render(
+            status => 422,
+            json => { status => 'invalid_request', data => { errors => $errors } }
+        );
+    }
 
     $data->{owner} = $self->api_key_owner;
-    $data->{id} = "$data->{id}";
-    $data->{uri} = "/v1/".$self->uri."/$data->{id}";
+    $data->{id} = $data->{id} ? "$data->{id}" : bson_oid;
+    $data->{uri} = "/api/v1/".$self->uri."/$data->{id}";
     $data->{file} = undef;
-     
+
     $self->render_later;
+    
+    if ($self->req->headers->accept && $self->req->headers->accept =~ m!\bapplication/pdf\b!){
+        
+        $self->collection->create($data, sub{
+            my ($err, $doc) = @_;
+            
+            my $grid = PDF::Grid->new({
+                media_directory => $self->app->media_directory.'/'.$self->api_key_owner.'/',
+                source => $doc->{source},
+            });
+            
+            $grid->render_template;
+            my $pdf_doc = $grid->producer->stringify();    
 
-    $self->on(finish => sub{
-        my $c = shift;
+            $self->render( data => $pdf_doc );
+        });
+
         
-        my $doc = $self->stash->{'pdfunicorn.doc'};
+    } else {
         
-        if (!$doc){ die "a flaming death.."; }
-        
-        my $grid = PDF::Grid->new({
-            media_directory => $c->app->media_directory.'/'.$c->api_key_owner().'/',
-            source => $doc->{source},
+        $self->on(finish => sub{
+            my $c = shift;
+            
+            my $doc = $self->stash->{'pdfunicorn.doc'};
+            
+            if (!$doc){ die "a flaming death.."; }
+            
+            my $grid = PDF::Grid->new({
+                media_directory => $c->app->media_directory.'/'.$c->api_key_owner().'/',
+                source => $doc->{source},
+            });
+            
+            $grid->render_template;
+            my $pdf_doc = $grid->producer->stringify();    
+            $grid->producer->end;
+            my $gfs = $self->gridfs->prefix($self->api_key_owner());
+            my $oid = $gfs->writer->filename($doc->{name})->write($pdf_doc)->close;
+            
+            my $opts = {
+                query => { id => $doc->{id} },
+                update => { '$set' => { file => $oid }},
+            };
+            $self->collection->find_and_modify($opts => sub {
+                my ($collection, $err, $doc) = @_;
+                # anything to do here?
+                # call a webhook?
+            });
+     
+        });
+    
+        $self->collection->create($data, sub{
+            my ($err, $doc) = @_;
+            $self->stash->{'pdfunicorn.doc'} = $doc;
+            $self->render(
+                json => {
+                    status => 'ok',
+                    data => $doc
+                }
+            );
         });
         
-        $grid->render_template;
-        my $pdf_doc = $grid->producer->stringify();    
-        $grid->producer->end;
-        my $gfs = $self->gridfs->prefix($self->api_key_owner());
-        my $oid = $gfs->writer->filename($doc->{name})->write($pdf_doc)->close;
-        
-        my $opts = {
-            query => { id => $doc->{id} },
-            update => { '$set' => { file => $oid }},
-        };
-        $self->collection->find_and_modify($opts => sub {
-            my ($collection, $err, $doc) = @_;
-            # anything to do here?
-            # call a webhook?
-        });
- 
-    });
+    }
 
-    $self->collection->create($data, sub{
-        my ($err, $doc) = @_;
-        $self->stash->{'pdfunicorn.doc'} = $doc;
-        $self->render(json => $doc);
-    });
 
 }
 
@@ -69,7 +101,7 @@ sub find_one {
     #return $self->render_not_found unless $id = $self->validate_type('oid', $id);
     
     $self->render_later;
-    $self->collection->find_one({ id => $id }, sub{
+    $self->collection->find_one({ id => bson_oid $id }, sub{
         #warn Data::Dumper->Dumper(\@_);
         my ($err, $doc) = @_;
         if ($doc){
