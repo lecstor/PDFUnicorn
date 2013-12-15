@@ -23,9 +23,8 @@ sub create {
     }
 
     $data->{owner} = $self->api_key_owner;
-    $data->{id} = $data->{id} ? "$data->{id}" : bson_oid;
-    #$data->{uri} = "/api/v1/".$self->uri."/$data->{id}";
     $data->{file} = undef;
+    $data->{id} = "$data->{id}" if $data->{id};
 
     $self->render_later;
     
