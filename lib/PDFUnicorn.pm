@@ -26,12 +26,12 @@ sub startup {
             #Mango->new('mongodb://<user>:<pass>@<server>/<database>');
             Mango->new('mongodb://127.0.0.1/pdfunicorn');
         });
-        $self->attr(media_directory => 'pdf_unicorn/images/');
+        $self->attr(media_directory => 'pdf_unicorn/images');
     } else {
     	$self->attr(mango => sub { 
             Mango->new('mongodb://<user>:<pass>@<server>/pdfunicorn');
         });
-        $self->attr(media_directory => '/pdf_unicorn/images/');
+        $self->attr(media_directory => '/pdf_unicorn/images');
     }
     
     $self->helper('mango' => sub { shift->app->mango });
@@ -200,8 +200,8 @@ sub startup {
 	$api->delete('/v1/documents/:id')->to('api-documents#delete');
 	
 	$api->post('/v1/images')->to('api-images#create');
-	$api->get('/v1/images')->to('api-images#list');
-	$api->get('/v1/images/:id')->to('api-images#fetch');
+	$api->get('/v1/images')->to('api-images#find');
+	$api->get('/v1/images/:id')->to('api-images#find_one');
 	$api->delete('/v1/images/:id')->to('api-images#delete');
 	
 }
