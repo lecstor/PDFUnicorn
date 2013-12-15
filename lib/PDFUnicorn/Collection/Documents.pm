@@ -8,7 +8,6 @@ sub schemas{
     {
         'Document', {
             id => { type => 'string' },
-            name => { type => 'string', required => 1 },
             uri => { type => 'string' },
             type => { type => 'string' },
             data => { type => 'object' },
@@ -22,7 +21,6 @@ sub schemas{
         },
         'DocumentQuery', {
             id => { type => 'string' },
-            name => { type => 'string' },
             type => { type => 'string' },
             created => { type => 'datetime', bson => 'time' },
             modified => { type => 'datetime', bson => 'time' },
