@@ -6,6 +6,7 @@ use Mango::BSON ':bson';
 use File::Path 'make_path';
 use URI::Escape;
 
+
 sub collection{ shift->db_images }
 
 sub uri{ 'images' }
@@ -35,12 +36,11 @@ sub create {
         id => $id,
         owner => $self->api_key_owner,
     };
-    
+        
     $self->render_later;
     
     $self->collection->create($image_data, sub{
         my ($err, $doc) = @_;
-        #warn 'images api colletion create '.Data::Dumper->Dumper($doc);
         my $doc_id = $doc->{_id};
         my $base = $self->app->media_directory.'/'.$self->api_key_owner;
         my $file = $base . "/$filename";
@@ -48,49 +48,61 @@ sub create {
         make_path($base);
         $upload->move_to($file);
         
-        $doc->{uri} = "/api/v1/".$self->uri."/$doc_id",
-        $self->render( 
-            json => {
-                status => 'ok',
-                data => $doc
-            }
-        );
+        $self->serve_doc($doc);
     });  
-
 }
+
 
 sub find_one {
 	my $self = shift;
 	my $id = $self->stash('id');
     return $self->render_not_found unless $id = $self->validate_type('oid', $id);
-	my $format = $self->stash('format');
-	my $meta = 1 if $format && $format eq 'meta';
-    
-    my $media_base = $self->app->media_directory.'/'.$self->api_key_owner;
-    
+        
     $self->render_later;
     $self->collection->find_one({ _id => bson_oid $id }, sub{
-        #warn Data::Dumper->Dumper(\@_);
         my ($err, $doc) = @_;
         if ($doc){
             if ($doc->{owner} eq $self->api_key_owner){
-                if ($meta){
-                    $doc->{uri} = "/api/v1/".$self->uri."/$doc->{_id}";
-                    return $self->render(json => { status => 'ok', data => $doc }) ;
-                } else {
-                    $self->res->headers->content_disposition('attachment; filename='.$doc->{name}.';');
-                    my $local_file_name = $media_base.'/'.uri_escape($doc->{name});
-                    my ($ext) = $doc->{name} =~ /\.([^.]+)$/;
-                    $self->res->headers->content_type("image/$ext");
-                    $self->res->content->asset(Mojo::Asset::File->new(path => $local_file_name));
-                    return $self->rendered(200);
-                }
+                $self->serve_doc($doc);
             }
         }
         $self->render_not_found;
     });
-    Mojo::IOLoop->start unless Mojo::IOLoop->is_running;  
+}
+
+
+sub serve_doc{
+    my ($self, $doc) = @_;
+	my $format = $self->stash('format');
+    if ($format && $format eq 'binary'){
+        my $media_base = $self->app->media_directory.'/'.$self->api_key_owner;
+        $self->res->headers->content_disposition('attachment; filename='.$doc->{name}.';');
+        my $local_file_name = $media_base.'/'.uri_escape($doc->{name});
+        my ($ext) = $doc->{name} =~ /\.([^.]+)$/;
+        $self->res->headers->content_type("image/$ext");
+        $self->res->content->asset(Mojo::Asset::File->new(path => $local_file_name));
+        $self->rendered(200);
+    } else {
+        $doc->{uri} = "/api/v1/".$self->uri."/$doc->{_id}";
+        $self->render(json => { status => 'ok', data => $doc }) ;
+    }
 }
 
 
 1;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

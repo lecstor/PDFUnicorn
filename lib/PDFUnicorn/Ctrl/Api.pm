@@ -10,25 +10,17 @@ use PDF::Grid;
 
 #use Data::Dumper ('Dumper');
 
-sub auth_filters {
-	my ($self, $query) = @_;
-    #warn 'auth_filters query: '.$self->dumper($query);
-	if (exists $query->{archived} && $query->{archived}){
-	    $query->{user} = 1;
-	}
-	if (exists $query->{user}){
-	    if ($query->{user}){
-	        #warn 'auth_filters:auth_user_id: '.$self->auth_user_id;
-	        $query->{user} = $self->auth_user_id;
-	    } else {
-	        delete $query->{user};
-	    }
-	}
-	unless (exists $query->{user} && $query->{user}){
-	    $query->{public} = bson_true;
-	}
-	return $query;
-}
+=item API
+
+All calls to the API must include a Basic Authentication header containing your
+API key.
+
+    Authorisation: "Basic 1e551787-903e-11e2-b2b6-0bbccb145af3"
+    
+All calls to the API must use a secure (https) connection.
+
+=cut
+
 
 sub create {
 	my $self = shift;
@@ -50,7 +42,7 @@ sub create {
         $doc->{uri} = "/api/v1/".$self->uri."/$doc->{_id}";
         $self->render(json => { status => 'ok', data => $doc });
     });
-    
+    Mojo::IOLoop->start unless Mojo::IOLoop->is_running;
 }
 
 sub find {
@@ -71,6 +63,7 @@ sub find {
         }
         $self->render(json => { status => 'ok', data => $docs });
     });
+    
 }
 
 sub find_one {
@@ -90,7 +83,6 @@ sub find_one {
         }
         $self->render_not_found;
     });
-    Mojo::IOLoop->start unless Mojo::IOLoop->is_running;  
 }
 
 sub update{
@@ -119,7 +111,6 @@ sub update{
             }
         }
     );
-    Mojo::IOLoop->start unless Mojo::IOLoop->is_running;
 }
 
 sub archive{

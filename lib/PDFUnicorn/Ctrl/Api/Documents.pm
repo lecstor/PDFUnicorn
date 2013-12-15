@@ -12,6 +12,31 @@ sub item_schema{ 'Document' }
 sub query_schema{ 'DocumentQuery' }
 
 
+=item API: Document Create
+
+Create a document. Returns the generated document by default.
+Returns document metadata if meta format is specified.
+
+May optionally include your internal id for the document.
+
+Req:
+    POST /api/v1/documents.binary
+    { source: "<doc>Hello World!</doc>" }
+Res:
+    Binary file
+
+Req:
+    POST /api/v1/documents
+    { source: "<doc>Hello World!</doc>", id: "mydocid" }
+Res:
+    JSON: {
+        source: "<doc>Hello World!</doc>",
+        id: "mydocid",
+        _id: "blahblah",
+    }
+
+=cut
+
 sub create {
 	my $self = shift;
     my $data = $self->req->json();
@@ -23,7 +48,7 @@ sub create {
     }
 
 	my $format = $self->stash('format');
-	my $meta = 1 if $format && $format eq 'meta';
+	my $binary = 1 if $format && $format eq 'binary';
 	
     $data->{owner} = $self->api_key_owner;
     $data->{file} = undef;
@@ -31,7 +56,23 @@ sub create {
 
     $self->render_later;
     
-    if ($meta){
+    if ($binary){
+        
+        $self->collection->create($data, sub{
+            my ($err, $doc) = @_;
+            
+            my $grid = PDF::Grid->new({
+                media_directory => $self->app->media_directory.'/'.$self->api_key_owner.'/',
+                source => $doc->{source},
+            });
+            
+            $grid->render_template;
+            my $pdf_doc = $grid->producer->stringify();    
+
+            $self->render( data => $pdf_doc );
+        });
+        
+    } else {
         
         $self->on(finish => sub{
             my $c = shift;
@@ -61,7 +102,7 @@ sub create {
                 # anything to do here?
                 # call a webhook?
             });
-     
+            Mojo::IOLoop->start unless Mojo::IOLoop->is_running;
         });
     
         $self->collection->create($data, sub{
@@ -70,23 +111,6 @@ sub create {
             $self->stash->{'pdfunicorn.doc'} = $doc;
             $self->render( json => { status => 'ok', data => $doc } );
         });
-        
-    } else {
-        
-        $self->collection->create($data, sub{
-            my ($err, $doc) = @_;
-            
-            my $grid = PDF::Grid->new({
-                media_directory => $self->app->media_directory.'/'.$self->api_key_owner.'/',
-                source => $doc->{source},
-            });
-            
-            $grid->render_template;
-            my $pdf_doc = $grid->producer->stringify();    
-
-            $self->render( data => $pdf_doc );
-        });
-        
     }
 
 
@@ -98,28 +122,26 @@ sub find_one {
 	my $id = $self->stash('id');
     return $self->render_not_found unless $id = $self->validate_type('oid', $id);
 	my $format = $self->stash('format');
-	my $meta = 1 if $format && $format eq 'meta';
+	my $binary = 1 if $format && $format eq 'binary';
 	
-    
     $self->render_later;
     $self->collection->find_one({ _id => bson_oid $id }, sub{
         #warn Data::Dumper->Dumper(\@_);
         my ($err, $doc) = @_;
         if ($doc){
             if ($doc->{owner} eq $self->api_key_owner){
-                if ($meta){
-                    $doc->{uri} = "/api/v1/".$self->uri."/$doc->{_id}";
-                    return $self->render(json => { status => 'ok', data => $doc });
-                } else {
+                if ($binary){
                     my $gfs = $self->gridfs->prefix($self->api_key_owner());
                     my $reader = $gfs->reader->open($doc->{file});
                     return $self->render(data => $reader->slurp);
+                } else {
+                    $doc->{uri} = "/api/v1/".$self->uri."/$doc->{_id}";
+                    return $self->render(json => { status => 'ok', data => $doc });
                 }
             }
         }
         $self->render_not_found;
     });
-    Mojo::IOLoop->start unless Mojo::IOLoop->is_running;  
 }
 
     
