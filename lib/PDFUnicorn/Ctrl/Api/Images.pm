@@ -16,26 +16,22 @@ sub query_schema{ 'ImageQuery' }
 sub create {
 	my $self = shift;
     my $upload = $self->req->upload('image');
-    my $id = $self->req->param('id');
-    my $name = $self->req->param('name');
-    my $filename = uri_escape($name);
-
-    my $base = $self->app->media_directory.$self->api_key_owner;
-    my $file = $base . "/$filename";
     
-    if ($upload){
-        make_path($base);
-        $upload->move_to($file);
-    } else {
-        die Data::Dumper->Dumper($self->req);
+    if (!$upload){
+        return $self->render(
+            status => 422,
+            json => { status => 'invalid_request', data => { errors => 'There was no image data in the upload request.' } }
+        );
     }
     
-    
-    $id ||= bson_oid;
-    
+    my $id = $self->req->param('id');
+    my $name = $self->req->param('name');
+    $name =~ s!^/+!!;
+    $name =~ s!/+$!!;
+    #my $filename = uri_escape($name);
+
     my $image_data = {
         name => $name,
-        uri => "/api/v1/".$self->uri."/$id",
         id => $id,
         owner => $self->api_key_owner,
     };
@@ -45,6 +41,14 @@ sub create {
     $self->collection->create($image_data, sub{
         my ($err, $doc) = @_;
         #warn 'images api colletion create '.Data::Dumper->Dumper($doc);
+        my $doc_id = $doc->{_id};
+        my $base = $self->app->media_directory.'/'.$self->api_key_owner;
+        my $file = $base . "/$doc_id";
+        
+        make_path($base);
+        $upload->move_to($file);
+        
+        $doc->{uri} = "/api/v1/".$self->uri."/$doc_id",
         $self->render( 
             json => {
                 status => 'ok',
@@ -52,6 +56,7 @@ sub create {
             }
         );
     });  
+
 }
 
 
