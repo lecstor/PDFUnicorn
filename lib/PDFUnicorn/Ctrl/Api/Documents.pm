@@ -97,9 +97,12 @@ sub create {
 
 
 sub find_one {
-	my $self = shift;
+	my $self = shift;	
 	my $id = $self->stash('id');
-    #return $self->render_not_found unless $id = $self->validate_type('oid', $id);
+    return $self->render_not_found unless $id = $self->validate_type('oid', $id);
+	my $format = $self->stash('format');
+	my $meta = 1 if $format && $format eq 'meta';
+	
     
     $self->render_later;
     $self->collection->find_one({ _id => bson_oid $id }, sub{
@@ -107,14 +110,13 @@ sub find_one {
         my ($err, $doc) = @_;
         if ($doc){
             if ($doc->{owner} eq $self->api_key_owner){
-                my $accept_headers = $self->req->headers->accept;
-                if ($accept_headers && $accept_headers =~ m!application/pdf!){
+                if ($meta){
+                    $doc->{uri} = "/api/v1/".$self->uri."/$doc->{_id}";
+                    return $self->render(json => { status => 'ok', data => $doc });
+                } else {
                     my $gfs = $self->gridfs->prefix($self->api_key_owner());
                     my $reader = $gfs->reader->open($doc->{file});
                     return $self->render(data => $reader->slurp);
-                } else {
-                    $doc->{uri} = "/api/v1/".$self->uri."/$doc->{_id}";
-                    return $self->render(json => { status => 'ok', data => $doc });
                 }
             }
         }
