@@ -8,6 +8,10 @@ requires 'Mojolicious::Plugin::Util::RandomString';
 requires 'Moo';
 requires 'Time::HiRes';
 requires 'Try';
+
+# helpers for Mojo::IOLoop
+requires 'EV', '>= 4';
+requires 'IO::Socket::IP', '>= 0.16';
 requires 'IO::Socket::SSL', '>= 1.75';
 
 on 'test' => sub {
@@ -26,3 +30,5 @@ requires 'Try';
 requires 'XML::Parser';
 requires 'YAML';
 requires 'YAML::Syck';
+
+
