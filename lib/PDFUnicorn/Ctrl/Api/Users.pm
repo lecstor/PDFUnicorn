@@ -4,10 +4,33 @@ use Mojo::Base 'Mojolicious::Controller';
 use Mojo::JSON;
 use Try;
 
+
+sub collection{ shift->db_users }
+
+sub uri{ 'users' }
+sub item_schema{ 'User' }
+sub query_schema{ 'UserQuery' }
+
+
 sub create {
 	my $self = shift;
     
     my $data = $self->req->json();
+    if (my $errors = $self->invalidate($self->item_schema, $data)){
+        return $self->render(
+            status => 422,
+            json => { status => 'invalid_request', data => { errors => $errors } }
+        );
+    }
+    
+    $data->{owner} = $self->api_key_owner;
+    
+    $self->render_later;
+    
+    $self->collection->create($data, sub{
+        my ($err, $doc) = @_;
+
+    });
     
 	my $response = { ok => 0 };
     my $user;
@@ -17,7 +40,6 @@ sub create {
             email => $data->{email},
             firstname => $data->{firstname},
             surname => $data->{surname},
-            is_user => 1,
             password_key => $self->random_string(length => 24),
         });
     }

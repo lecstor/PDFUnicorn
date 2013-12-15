@@ -41,12 +41,17 @@ sub find_and_modify{
 
 sub find_one{
     my ($self, $query, $callback) = @_;
-    die 'Need a callback!' unless $callback;
-    $self->collection->find_one($query => sub{
-        my ($coll, $err, $doc) = @_;
-        $callback->($err, $doc);
-    });
-    Mojo::IOLoop->start unless Mojo::IOLoop->is_running;
+    #die 'Need a callback!' unless $callback;
+    if ($callback){
+        $self->collection->find_one($query => sub{
+            my ($coll, $err, $doc) = @_;
+            $callback->($err, $doc);
+        });
+        Mojo::IOLoop->start unless Mojo::IOLoop->is_running;
+    } else {
+        return  $self->collection->find_one($query);
+    }
+    
 }
 
 sub find_all{

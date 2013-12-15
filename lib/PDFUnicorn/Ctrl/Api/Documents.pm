@@ -3,7 +3,6 @@ use Mojo::Base 'PDFUnicorn::Ctrl::Api';
 
 use Mojo::JSON;
 use Mango::BSON ':bson';
-use Mojo::IOLoop::Delay;
 
   
 sub collection{ shift->db_documents }
@@ -11,6 +10,7 @@ sub collection{ shift->db_documents }
 sub uri{ 'documents' }
 sub item_schema{ 'Document' }
 sub query_schema{ 'DocumentQuery' }
+
 
 sub create {
 	my $self = shift;
@@ -24,7 +24,7 @@ sub create {
 
     $data->{owner} = $self->api_key_owner;
     $data->{id} = $data->{id} ? "$data->{id}" : bson_oid;
-    $data->{uri} = "/api/v1/".$self->uri."/$data->{id}";
+    #$data->{uri} = "/api/v1/".$self->uri."/$data->{id}";
     $data->{file} = undef;
 
     $self->render_later;
@@ -66,6 +66,7 @@ sub create {
             my $gfs = $self->gridfs->prefix($self->api_key_owner());
             my $oid = $gfs->writer->filename($doc->{name})->write($pdf_doc)->close;
             
+            # here we set the file oid in the document
             my $opts = {
                 query => { id => $doc->{id} },
                 update => { '$set' => { file => $oid }},
@@ -80,6 +81,7 @@ sub create {
     
         $self->collection->create($data, sub{
             my ($err, $doc) = @_;
+            $doc->{uri} = "/api/v1/".$self->uri."/$doc->{_id}";
             $self->stash->{'pdfunicorn.doc'} = $doc;
             $self->render(
                 json => {
@@ -101,7 +103,7 @@ sub find_one {
     #return $self->render_not_found unless $id = $self->validate_type('oid', $id);
     
     $self->render_later;
-    $self->collection->find_one({ id => bson_oid $id }, sub{
+    $self->collection->find_one({ _id => bson_oid $id }, sub{
         #warn Data::Dumper->Dumper(\@_);
         my ($err, $doc) = @_;
         if ($doc){
@@ -112,7 +114,8 @@ sub find_one {
                     my $reader = $gfs->reader->open($doc->{file});
                     return $self->render(data => $reader->slurp);
                 } else {
-                    return $self->render(json => $doc);
+                    $doc->{uri} = "/api/v1/".$self->uri."/$doc->{_id}";
+                    return $self->render(json => { status => 'ok', data => $doc });
                 }
             }
         }

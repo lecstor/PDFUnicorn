@@ -1,39 +1,41 @@
 package PDFUnicorn::Collection::Users;
 use base 'PDFUnicorn::Collection';
+use Moo;
 use Mango::BSON ':bson';
 use Mojo::Util qw(md5_sum);
+use Time::HiRes 'time';
 
 use Email::Sender::Simple qw(sendmail);
 use Email::Simple;
 use Email::Simple::Creator;
 
 
-sub create{
-    my ($self, $data) = @_;
-    
-    # validate data here
-    
-    my $email = $data->{email};
-    die 'missing_email' unless $email;
-    
-    my $time_zone = $data->{time_zone};
-    #die 'missing_timezone' unless $time_zone;
-    
-	$email =~ s/^\s+//;
-	$email =~ s/\s+$//;
-	
-    die 'missing_email' unless $email;
-    die 'not_email' if $email =~ /\s/;
-    die 'not_email' unless $email =~ /.+\@[^\s.]+\.[^\s.]+/;
-    
-    my $user = $self->find_one({ 'username' => lc($email) });
-    return $user if $user;
-    
-    $data->{username} = lc($email);
-    $data->{time_zone} = $time_zone;
-    $data->{created} = bson_time;
-    $data->{modified} = $data->{created};
-    
+sub schemas{
+    {
+        'User', {
+            username => { type => 'string', required => 1 },
+            firstname => { type => 'string' },
+            surname => { type => 'string' },
+            uri => { type => 'string' },
+            password_key => { type => 'object' },
+            timezone => { type => 'string' },
+            created => { type => 'datetime', bson => 'time' },
+            modified => { type => 'datetime', bson => 'time' },
+        },
+        'UserQuery', {
+            username => { type => 'string' },
+            firstname => { type => 'string' },
+            surname => { type => 'string' },
+            timezone => { type => 'string' },
+            password_key => { type => 'string' },
+            created => { type => 'datetime', bson => 'time' },
+            modified => { type => 'datetime', bson => 'time' },
+        }
+    }
+}
+
+before 'create' => sub {
+    my ($self, $data, $callback) = @_;
     if (my $key = $data->{password_key}){
         $data->{password_key} = {
             key => $key,
@@ -42,10 +44,41 @@ sub create{
             uses => [], # [bson_time]
         }
     }
-        
-    my $oid = $self->collection->insert($data);
-    return $self->find_one({ _id => $oid });
-}
+};
+
+#sub create{
+#    my ($self, $data, $callback) = @_;
+#    die 'Need a callback!' unless $callback;
+#
+#    my $email = $data->{email};
+#    die 'missing_email' unless $email;
+#        
+#	$email =~ s/^\s+//;
+#	$email =~ s/\s+$//;
+#	
+#    die 'missing_email' unless $email;
+#    die 'not_email' if $email =~ /\s/;
+#    die 'not_email' unless $email =~ /.+\@[^\s.]+\.[^\s.]+/;
+#    
+#    my $user = $self->find_one({ 'username' => lc($email) });
+#    return $user if $user;
+#    
+#    $data->{username} = lc($email);
+#    $data->{created} = bson_time;
+#    $data->{modified} = $data->{created};
+#    
+#    if (my $key = $data->{password_key}){
+#        $data->{password_key} = {
+#            key => $key,
+#            created => bson_time,
+#            reads => [], # [bson_time]
+#            uses => [], # [bson_time]
+#        }
+#    }
+#        
+#    my $oid = $self->collection->insert($data);
+#    return $self->find_one({ _id => $oid });
+#}
 
 sub send_password_key{
     my ($self, $user) = @_;

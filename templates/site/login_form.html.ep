@@ -1,17 +1,8 @@
-<form action="/log-in" method="post" class="form-horizontal">
-	<div class="control-group">
-		<label class="email control-label">Your email address:</label>
-		<div class="controls">
-			<input type="email" name="username">
-		</div>
-	</div>
-	<div class="control-group">
-		<label class="email control-label">Your password:</label>
-		<div class="controls">
-			<input type="password" name="password">
-			<button type="submit" class="btn btn-primary">Let Me In</button>
-		</div>
-		<p></p>
-		<p>Leave your password blank if you don't remember it and I'll send you an account key via email.</p>
-	</div>
+
+<form action="/log-in" method="post" class="form-signin" role="form">
+    <h2 class="form-signin-heading">Log In</h2>
+    <input name="username" type="email" class="form-control" placeholder="Email address" required autofocus>
+    <input name="password" type="password" class="form-control" placeholder="Password">
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Log In</button>
+    <p class="help-block">Leave your password blank if you don't remember it and I'll send you an account key via email.</p>
 </form>

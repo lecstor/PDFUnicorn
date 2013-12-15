@@ -107,21 +107,32 @@ sub startup {
     );
 
     $self->helper(
-        'auth_user_time_zone' => sub {
+        'auth_user_timezone' => sub {
             my $ctrl = shift;
             my $user = $ctrl->auth_user;
-            my $time_zone = $user->{time_zone};
-            $time_zone ||= $ctrl->session->{time_zone} || 'local';
-            return $time_zone;
+            my $timezone = $user->{timezone};
+            $timezone ||= $ctrl->session->{timezone} || 'local';
+            return $timezone;
         }
     );
 
     $self->helper(
         'api_key' => sub {
-            #my $auth = shift->req->headers->authorization;
-            my $auth = shift->req->url->to_abs->userinfo;
-            my ($token) = $auth =~ /^(.*):/;
-            return $token;
+            my $ctrl = shift;
+            
+            my $auth = $ctrl->req->headers->authorization;
+            
+            if ($auth){
+                my ($token) = $auth =~ /^Basic (.*)/;
+                return $token;
+            } else {
+                $auth = $ctrl->req->url->to_abs->userinfo;
+                if ($auth){
+                    my ($token) = $auth =~ /^(.*):/;
+                    return $token;
+                }
+            }
+            
         }
     );
 
@@ -142,7 +153,7 @@ sub startup {
     my $api = $r->bridge('/api')->to(cb => sub {
         my $self = shift;
 
-        warn Data::Dumper->Dumper($self->req->headers);
+        #warn Data::Dumper->Dumper($self->req->headers);
 
         #my $auth = $self->req->headers->authorization;
         return 1 if $self->api_key eq '1e551787-903e-11e2-b2b6-0bbccb145af3';

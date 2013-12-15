@@ -12,12 +12,10 @@
 </head>
 <body>
 	%= include 'site/header'
-	<div class="container">
-		<div id="content">
-			<div class="jumbotron">
-				%= include 'site/sign_up_form'
-			</div>
-		</div>
-	</div>
+
+    <div class="container">
+		%= include 'site/sign_up_form'
+    </div>
+
 </body>
 </html>

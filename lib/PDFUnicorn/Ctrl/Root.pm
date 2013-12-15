@@ -64,41 +64,37 @@ sub sign_up {
 
 	my $name = $self->param('name');
 	my $email_addr = $self->param('email');
-	my $time_zone = $self->param('time_zone');
+	my $timezone = $self->param('timezone');
 	my $error;
 	my $user;
 	
-	try {
-        $user = $self->db_users->create({
-            email => $email_addr,
-            firstname => $name,
-            is_user => 1,
-            password_key => $self->random_string(length => 24),
-            time_zone => $time_zone,
-        });
-	}
-	catch {
-	    when (/not_email/){
-	        $error = 'not_email';
-	    }
-	    when (/missing_email/){
-	        $error = 'missing_email';
-	    }
-	    default { die $_; }
-	};
+	my $data = {
+        email => $email_addr,
+        firstname => $name,
+        is_user => 1,
+        password_key => $self->random_string(length => 24),
+        timezone => $timezone,
+    };
 
-    if ($user){
-        $self->db_users->send_password_key($user);
-        $self->session->{user} = $user;
-    }
-
-    $self->render(
-        #template => 'root/sign_up_form',
-        email => $user ? $user->{email} : $email_addr,
-        name => $user ? $user->{firstname} : $name,
-        error => $error,
-    );
+    $self->render_later;
 	
+    $self->db_users->create($data, sub{
+        my ($err, $doc) = @_;
+        # TODO: Error handling!
+        
+        if ($doc){
+            $self->db_users->send_password_key($doc);
+            $self->session->{user} = $doc;
+        }
+        
+        $self->render(
+            #template => 'root/sign_up_form',
+            email => $doc ? $doc->{email} : $email_addr,
+            name => $doc ? $doc->{firstname} : $name,
+            error => $error,
+        );
+    });
+
 }
 
 sub log_in_form {
@@ -115,14 +111,23 @@ sub log_in{
 	my $password = $self->param('password');
     my $user = $self->db_users->find_one({ 'username' => lc($username) });
     if ($user){
-        if ($self->db_users->check_password($user, $password)){
-            $self->session->{user} = $user;
-            $self->redirect_to('/');
-            return;
+        if ($password){
+            if ($self->db_users->check_password($user, $password)){
+                $self->session->{user} = $user;
+                $self->redirect_to('/');
+                return;
+            }
+        } else {
+            # send account key
+            return $self->render(
+                error => undef,
+                message => 'I\'ve emailed you a link to reset your password.'
+            );
         }
     }
     $self->render(
-        error => 'Sorry, the username/password is incorrect'
+        error => 'Sorry, the username/password is incorrect',
+        message => undef,
     );
     
 }
@@ -141,26 +146,28 @@ sub set_password_form{
     delete $self->stash->{code};
     delete $self->stash->{email};
 
-    my $user = $self->db_users->find_one({'password_key.key' => $code });
-
-    if ($user){
-        my $user_email_hash = md5_sum($user->{email});
-        if ($user_email_hash eq $email_hash){
-            $self->session->{user} = $user;
-            return $self->render(error => undef, user => $user);
+    $self->render_later;
+	
+    my $user = $self->db_users->find_one({'password_key.key' => $code },
+        sub {
+            my ($err, $doc) = @_;
+            # TODO: Error handling!
+            if ($doc){
+                my $user_email_hash = md5_sum($doc->{email});
+                if ($user_email_hash eq $email_hash){
+                    $self->session->{user} = $doc;
+                    return $self->render(error => undef, user => $doc);
+                }
+            }
+            $self->render(
+                template => 'root/log_in',
+                email => undef,
+                error => "Sorry, that account key is invalid. Please enter your email address below and I'll send you a new account key.",
+            );
+            
         }
-        return $self->render(
-            template => 'root/log_in',
-            email => undef,
-            error => "Sorry, that account key is invalid. Please enter your email address below and I'll send you a new account key.",
-        );
-    }
-    $self->render(
-        template => 'root/log_in',
-        email => undef,
-        error => "Sorry, that account key is invalid. Please enter your email address below and I'll send you a new account key.",
     );
-    
+
 }
 
 sub set_password{

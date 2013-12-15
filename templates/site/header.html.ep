@@ -15,7 +15,7 @@
     	</div>
 	    <div class="navbar-collapse collapse">
 		  <ul class="nav navbar-nav">
-		  	% my ($features, $pricing);
+		  	% my ($features, $pricing) = ('','');
 		  	% if (current_route 'pricing') { $pricing = 'class="active"' }
 		  	% elsif (current_route 'features') { $features = 'class="active"' }
 		    <li <%== $features %>><a href="/features">Features</a></li>

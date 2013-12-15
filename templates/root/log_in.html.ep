@@ -1,27 +1,22 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Feedem - meal planning for the rest of us..</title>
-    <meta name="description" content="quick and easy meal planning and shopping list creation" />
+    <title>PDFUnicorn - Log In</title>
 	%= include 'site/head'
 	%= include 'mixpanel'
-  
-    <!-- record subscription -->
-	% if (!$error){
-	  	<script type="text/javascript">mixpanel.track('log-in-form')</script>
-  	% }
+  	<script type="text/javascript">mixpanel.track('view-login-page')</script>
 </head>
+
 <body>
+	%= include 'site/header'
 	<div class="container">
-		%= include 'site/header'
-		<div id="content">
-			<div class="hero-unit">
-				% if ($error){
-					<p class="lead"><%= $error %></p>
-				% }
-				%= include 'site/login_form'
-			</div>
-		</div>
+		% if ($error){
+			<p class="text-danger lead"><%= $error %></p>
+		% }
+		% if ($message){
+			<p class="text-success lead"><%= $message %></p>
+		% }
+		%= include 'site/login_form'
 	</div>
 </body>
 </html>

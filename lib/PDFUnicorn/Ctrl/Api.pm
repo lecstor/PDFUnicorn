@@ -34,16 +34,21 @@ sub create {
 	my $self = shift;
     #warn Mojo::JSON->new->encode($self->req->json());
     my $data = $self->req->json();
-    $self->validate($self->item_schema, $data);
+    if (my $errors = $self->invalidate($self->item_schema, $data)){
+        return $self->render(
+            status => 422,
+            json => { status => 'invalid_request', data => { errors => $errors } }
+        );
+    }
 
     $data->{owner} = $self->api_key;
     $data->{id} = "$data->{id}";
-    $data->{uri} = "/v1/".$self->uri."/$data->{id}";
     
     $self->render_later;
     $self->collection->create($data, sub{
         my ($err, $doc) = @_;
-        $self->render(json => $doc);
+        $doc->{uri} = "/api/v1/".$self->uri."/$doc->{_id}";
+        $self->render(json => { status => 'ok', data => $doc });
     });
     
 }
@@ -51,16 +56,20 @@ sub create {
 sub find {
 	my $self = shift;
     my $query = $self->req->query_params->to_hash;
-    try{
-        $self->validate($self->query_schema, $query);
-    } catch {
-        return $self->render_exception($_);
-    };
+    if (my $errors = $self->invalidate($self->query_schema, $query)){
+        return $self->render(
+            status => 422,
+            json => { status => 'invalid_request', data => { errors => $errors } }
+        );
+    }
     $query->{owner} = $self->api_key_owner;
     $self->render_later;
     $self->collection->find_all($query, sub{
         my ($cursor, $err, $docs) = @_;
-        $self->render(json => $docs);
+        foreach my $doc (@$docs){
+            $doc->{uri} = "/api/v1/".$self->uri."/$doc->{_id}";
+        }
+        $self->render(json => { status => 'ok', data => $docs });
     });
 }
 
@@ -70,12 +79,13 @@ sub find_one {
     #return $self->render_not_found unless $id = $self->validate_type('oid', $id);
     
     $self->render_later;
-    $self->collection->find_one({ id => $id }, sub{
+    $self->collection->find_one({ _id => bson_oid $id }, sub{
         #warn Data::Dumper->Dumper(\@_);
         my ($err, $doc) = @_;
         if ($doc){
             if ($doc->{owner} eq $self->api_key_owner){
-                return $self->render(json => $doc) ;
+                $doc->{uri} = "/api/v1/".$self->uri."/$doc->{_id}";
+                return $self->render(json => { status => 'ok', data => $doc }) ;
             }
         }
         $self->render_not_found;
@@ -87,7 +97,14 @@ sub update{
 	my $self = shift;
 	my $id = $self->stash('id');
     my $data = $self->req->json();
-    $self->validate($self->item_schema, $data);
+    delete $data->{uri};
+
+    if (my $errors = $self->invalidate($self->item_schema, $data)){
+        return $self->render(
+            status => 422, json => { status => 'invalid_request', data => { errors => $errors } }
+        );
+    }
+
     delete $data->{_id};
     $data->{owner} = $self->api_key_owner;
     $self->render_later;
@@ -98,7 +115,7 @@ sub update{
                 warn $err;
                 $self->render_not_found;
             } else {
-                return $self->render(json => { 'ok' => 1, data => $doc });
+                return $self->render(json => { status => 'ok' });
             }
         }
     );
@@ -115,7 +132,7 @@ sub archive{
                 $doc->{archived} = bson_true;
                 # TODO: needs to be non-blocking..
                 $self->collection->update({ _id => bson_oid $id }, $doc);
-                return $self->render(json => { 'ok' => 1 });
+                return $self->render(json => { status => 'ok' });
             }
             
         }
