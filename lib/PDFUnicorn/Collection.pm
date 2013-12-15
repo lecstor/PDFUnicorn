@@ -24,10 +24,6 @@ sub create{
         Mojo::IOLoop->start unless Mojo::IOLoop->is_running;    
     });
     
-#    $self->collection->save($data, sub{
-#        my ($coll, $err, $oid) = @_;
-#        $self->find_one({ _id => $oid }, $callback);
-#    });
     Mojo::IOLoop->start unless Mojo::IOLoop->is_running;    
 }
 
