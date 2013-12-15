@@ -9,6 +9,7 @@ sub schemas{
         'Document', {
             id => { type => 'string' },
             name => { type => 'string', required => 1 },
+            uri => { type => 'string' },
             type => { type => 'string' },
             data => { type => 'object' },
             source => { type => 'string', required => 1 },
