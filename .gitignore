@@ -6,5 +6,5 @@ public/cory_unicorn.jpeg
 /*.pdf
 local/
 /.includepath
-/.pdf_unicorn/*
+/pdf_unicorn/*
 /fonts_available.yaml
