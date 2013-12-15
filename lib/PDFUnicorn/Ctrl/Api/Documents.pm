@@ -22,30 +22,16 @@ sub create {
         );
     }
 
+	my $format = $self->stash('format');
+	my $meta = 1 if $format && $format eq 'meta';
+	
     $data->{owner} = $self->api_key_owner;
     $data->{file} = undef;
     $data->{id} = "$data->{id}" if $data->{id};
 
     $self->render_later;
     
-    if ($self->req->headers->accept && $self->req->headers->accept =~ m!\bapplication/pdf\b!){
-        
-        $self->collection->create($data, sub{
-            my ($err, $doc) = @_;
-            
-            my $grid = PDF::Grid->new({
-                media_directory => $self->app->media_directory.'/'.$self->api_key_owner.'/',
-                source => $doc->{source},
-            });
-            
-            $grid->render_template;
-            my $pdf_doc = $grid->producer->stringify();    
-
-            $self->render( data => $pdf_doc );
-        });
-
-        
-    } else {
+    if ($meta){
         
         $self->on(finish => sub{
             my $c = shift;
@@ -82,12 +68,23 @@ sub create {
             my ($err, $doc) = @_;
             $doc->{uri} = "/api/v1/".$self->uri."/$doc->{_id}";
             $self->stash->{'pdfunicorn.doc'} = $doc;
-            $self->render(
-                json => {
-                    status => 'ok',
-                    data => $doc
-                }
-            );
+            $self->render( json => { status => 'ok', data => $doc } );
+        });
+        
+    } else {
+        
+        $self->collection->create($data, sub{
+            my ($err, $doc) = @_;
+            
+            my $grid = PDF::Grid->new({
+                media_directory => $self->app->media_directory.'/'.$self->api_key_owner.'/',
+                source => $doc->{source},
+            });
+            
+            $grid->render_template;
+            my $pdf_doc = $grid->producer->stringify();    
+
+            $self->render( data => $pdf_doc );
         });
         
     }
