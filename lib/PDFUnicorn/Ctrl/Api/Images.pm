@@ -28,7 +28,7 @@ sub create {
     my $name = $self->req->param('name');
     $name =~ s!^/+!!;
     $name =~ s!/+$!!;
-    #my $filename = uri_escape($name);
+    my $filename = uri_escape($name);
 
     my $image_data = {
         name => $name,
@@ -43,7 +43,7 @@ sub create {
         #warn 'images api colletion create '.Data::Dumper->Dumper($doc);
         my $doc_id = $doc->{_id};
         my $base = $self->app->media_directory.'/'.$self->api_key_owner;
-        my $file = $base . "/$doc_id";
+        my $file = $base . "/$filename";
         
         make_path($base);
         $upload->move_to($file);
@@ -57,6 +57,39 @@ sub create {
         );
     });  
 
+}
+
+sub find_one {
+	my $self = shift;
+	my $id = $self->stash('id');
+    return $self->render_not_found unless $id = $self->validate_type('oid', $id);
+	my $format = $self->stash('format');
+	my $meta = 1 if $format && $format eq 'meta';
+    
+    my $media_base = $self->app->media_directory.'/'.$self->api_key_owner;
+    
+    $self->render_later;
+    $self->collection->find_one({ _id => bson_oid $id }, sub{
+        #warn Data::Dumper->Dumper(\@_);
+        my ($err, $doc) = @_;
+        if ($doc){
+            if ($doc->{owner} eq $self->api_key_owner){
+                if ($meta){
+                    $doc->{uri} = "/api/v1/".$self->uri."/$doc->{_id}";
+                    return $self->render(json => { status => 'ok', data => $doc }) ;
+                } else {
+                    $self->res->headers->content_disposition('attachment; filename='.$doc->{name}.';');
+                    my $local_file_name = $media_base.'/'.uri_escape($doc->{name});
+                    my ($ext) = $doc->{name} =~ /\.([^.]+)$/;
+                    $self->res->headers->content_type("image/$ext");
+                    $self->res->content->asset(Mojo::Asset::File->new(path => $local_file_name));
+                    return $self->rendered(200);
+                }
+            }
+        }
+        $self->render_not_found;
+    });
+    Mojo::IOLoop->start unless Mojo::IOLoop->is_running;  
 }
 
 
