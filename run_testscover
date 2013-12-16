@@ -1,0 +1,1 @@
+HARNESS_PERL_SWITCHES=-MDevel::Cover carton exec prove -lv t/

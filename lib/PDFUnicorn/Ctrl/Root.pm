@@ -56,7 +56,7 @@ sub about {
 
 sub sign_up_form {
 	my $self = shift;
-    $self->render(name => '', email => '');
+    $self->render(name => '', email => '', error => '');
 }
 
 sub sign_up {
@@ -65,6 +65,23 @@ sub sign_up {
 	my $name = $self->param('name');
 	my $email_addr = $self->param('email');
 	my $timezone = $self->param('timezone');
+	my $email_length = length($email_addr);
+	
+	for my $each (($name,$email_addr,$timezone)){
+	    next unless $each;
+	    $each =~ s/^\s+//;
+	    $each =~ s/\s+$//;
+	}
+	
+	unless ($email_addr && $email_addr =~ /^.+\@[^.\s]+\.[^\s]+$/){
+        return $self->render(
+            #template => 'root/sign_up_form',
+            email => $email_addr,
+            name => $name,
+            error => $email_length ? 'bad_email' : 'missing_email',
+        );
+	}	
+	
 	my $error;
 	my $user;
 	
@@ -91,7 +108,7 @@ sub sign_up {
             #template => 'root/sign_up_form',
             email => $doc ? $doc->{email} : $email_addr,
             name => $doc ? $doc->{firstname} : $name,
-            error => $error,
+            error => $err || '',
         );
     });
 
@@ -101,7 +118,8 @@ sub log_in_form {
 	my $self = shift;
     $self->render(
         template => 'root/log_in',
-        error => ''
+        error => '',
+        message => ''
     );
 }
 
@@ -120,14 +138,14 @@ sub log_in{
         } else {
             # send account key
             return $self->render(
-                error => undef,
+                error => '',
                 message => 'I\'ve emailed you a link to reset your password.'
             );
         }
     }
     $self->render(
         error => 'Sorry, the username/password is incorrect',
-        message => undef,
+        message => '',
     );
     
 }
@@ -156,12 +174,13 @@ sub set_password_form{
                 my $user_email_hash = md5_sum($doc->{email});
                 if ($user_email_hash eq $email_hash){
                     $self->session->{user} = $doc;
-                    return $self->render(error => undef, user => $doc);
+                    return $self->render(error => '', user => $doc);
                 }
             }
             $self->render(
                 template => 'root/log_in',
-                email => undef,
+                email => '',
+                message => '',
                 error => "Sorry, that account key is invalid. Please enter your email address below and I'll send you a new account key.",
             );
             
