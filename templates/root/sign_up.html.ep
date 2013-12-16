@@ -22,6 +22,9 @@
 			% } elsif ($error eq 'missing_email'){
 				<p class="lead">Sorry, you'll need to enter an email address at least..</p>
 				%= include 'site/sign_up_form'
+			% } elsif ($error eq 'bad_email'){
+				<p class="lead">Cmon, enter your real email address..</p>
+				%= include 'site/sign_up_form'
 			% } else {
 				<p class="lead">Hey, 
 				% if ($name){
