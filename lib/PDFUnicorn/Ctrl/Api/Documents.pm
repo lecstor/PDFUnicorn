@@ -68,6 +68,7 @@ sub create {
             
             $grid->render_template;
             my $pdf_doc = $grid->producer->stringify();    
+            $grid->producer->end;
 
             $self->render( data => $pdf_doc );
         });
