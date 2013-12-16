@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>PDFUnicorn - online PDF generator</title>
+	%= include 'site/head'
+	%= include 'mixpanel'
+  
+    <!-- record main page view -->
+  	<script type="text/javascript">mixpanel.track('view-main-page')</script>
+</head>
+
+<body>
+	%= include 'site/header'
+
+    <div class="container">
+    
+        <div class="row row-offcanvas row-offcanvas-left">
+        
+	    	%= include 'admin/side_nav'   
+	    
+	    	<div class="col-xs-12 col-sm-9">
+			    <p class="pull-right visible-xs">
+	                <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
+	            </p>
+				% my $user = session 'user';
+				% my $name = $user->{firstname} ? ' '.$user->{firstname} : '';
+	    		<p>Hi<%= $name %>, thanks for using PDFUnicorn!</p>
+	    		<p></p>
+	    		<p>
+	    			<form method="post" action="/admin/get-pdf">
+		    			<textarea name="source" class="form-control" rows="15">
+<doc size="A4" orientation="landscape">
+	<style>
+        row:
+            margin: 5
+            padding: 20
+        cell:
+            border: 1
+            border-radius: 5
+            margin: 5
+            padding: 10
+        class:
+            red:
+                border: 1
+                border-color: red
+	</style>
+	<page padding="10">
+		<row columns="2">
+			<cell>I'm a cell</cell>
+			<cell>I'm another cell</cell>
+		</row>
+		<row columns="3">
+			<cell align="left">I'm a cell</cell>
+			<cell align="center">I'm another cell</cell>
+			<cell align="right">I'm another cell</cell>
+		</row>
+	</page>
+</doc>
+		    			</textarea>
+		    			<button type="submit" class="btn btn-primary pull-right">Get the PDF</button>
+					</form>
+	    		</p>
+	    	</div>
+    	
+    	</div>
+    </div>
+    
+    <script src="/lib/jquery/jquery.js"></script>
+    <script src="/lib/bootstrap/js/bootstrap.min.js"></script>
+
+</body>
+</html>

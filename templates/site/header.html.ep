@@ -30,7 +30,7 @@
 		  </ul>
 	      <ul class="nav navbar-nav navbar-right">
 	      	% if (session 'user'){
-	            <li><a href="/log-in">Your Account</a></li>
+	            <li><a href="/admin/dash">Account Admin</a></li>
 	            <li><a href="/log-out">Log Out</a></li>
 	        % } else {
 	            <li><a href="/log-in">Log In</a></li>

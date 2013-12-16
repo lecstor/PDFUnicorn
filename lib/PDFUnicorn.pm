@@ -194,6 +194,14 @@ sub startup {
 	$r->get('set-password/:code/:email')->to('root#set_password_form');
 	$r->post('set-password')->to('root#set_password');
 	
+	$r->get('admin')->to('admin#dash');
+	$r->get('admin/api-key')->to('admin#apikey');
+	$r->get('admin/billing')->to('admin#billing');
+	$r->post('admin/get-pdf')->to('admin#get_pdf');
+	
+	
+	
+	
 	$api->post('/v1/documents')->to('api-documents#create');
 	$api->get('/v1/documents')->to('api-documents#find');
 	$api->get('/v1/documents/:id')->to('api-documents#find_one');
