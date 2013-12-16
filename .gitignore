@@ -8,3 +8,4 @@ local/
 /.includepath
 /pdf_unicorn/*
 /fonts_available.yaml
+/cover_db
