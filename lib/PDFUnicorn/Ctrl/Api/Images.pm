@@ -91,6 +91,11 @@ sub serve_doc{
 
 1;
 
+#    $self->render_file(
+#        'filepath' => 'pdf_unicorn_demo1.pdf',
+#        'format'   => 'pdf',                 # will change Content-Type "application/x-download" to "application/pdf"
+#        'content_disposition' => 'inline',   # will change Content-Disposition from "attachment" to "inline"
+#    );
 
 
 
