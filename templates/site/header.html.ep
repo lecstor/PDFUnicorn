@@ -2,41 +2,42 @@
 <div class="navbar navbar-default navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
-	        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-	      	</button>
-			<ul class="nav navbar-nav">
-			  	<li style="margin-right: 10px"><a href="http://www.mystockvectors.com/" style="padding: 0" target="_blank" ><img src="/img/unicorn_48.png" title="The Unicorn. drawn by Cory Thoman. named by me." alt="[logo] The Unicorn. drawn by Cory Thoman. named by me."></a></li>
-			  	<li><a class="navbar-brand" style="font-size: 25px" href="/">PDFUnicorn</a></li>
-			</ul>
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+    			<span class="icon-bar"></span>
+    			<span class="icon-bar"></span>
+    			<span class="icon-bar"></span>
+          	</button>
+    		<ul class="nav navbar-nav">
+    		  	<li style="margin-right: 10px">
+                    <a href="http://www.mystockvectors.com/" style="padding: 0" target="_blank" ><img src="/img/unicorn_48.png" title="The Unicorn. drawn by Cory Thoman. named by me." alt="[logo] The Unicorn. drawn by Cory Thoman. named by me."></a></li>
+    		  	<li><a class="navbar-brand" style="font-size: 25px" href="/">PDFUnicorn</a></li>
+    		</ul>
       
     	</div>
-	    <div class="navbar-collapse collapse">
-		  <ul class="nav navbar-nav">
-		  	% my ($features, $pricing) = ('','');
-		  	% if (current_route 'pricing') { $pricing = 'class="active"' }
-		  	% elsif (current_route 'features') { $features = 'class="active"' }
-		    <li <%== $features %>><a href="/features">Features</a></li>
-		    <li <%== $pricing %>><a href="/pricing">Pricing</a></li>
-		    <li class="dropdown">
-		      <a href="#" class="dropdown-toggle" data-toggle="dropdown">More <b class="caret"></b></a>
-		      <ul class="dropdown-menu">
-		        <li><a href="/about">About</a></li>
-		        <!-- li><a href="/blog">Blog</a></li -->
-		      </ul>
-		    </li>
-		  </ul>
-	      <ul class="nav navbar-nav navbar-right">
-	      	% if (session 'user'){
-	            <li><a href="/admin/dash">Account Admin</a></li>
-	            <li><a href="/log-out">Log Out</a></li>
-	        % } else {
-	            <li><a href="/log-in">Log In</a></li>
-	        	<li><a href="/sign-up">Sign Up</a></li>
-			% }
-	      </ul>
-	    </div><!--/.nav-collapse -->
-  </div>
+        <div class="navbar-collapse collapse">
+    	  <ul class="nav navbar-nav">
+    	  	% my ($features, $pricing) = ('','');
+    	  	% if (current_route 'pricing') { $pricing = 'class="active"' }
+    	  	% elsif (current_route 'features') { $features = 'class="active"' }
+    	    <li <%== $features %>><a href="/features">Features</a></li>
+    	    <li <%== $pricing %>><a href="/pricing">Pricing</a></li>
+    	    <li class="dropdown">
+    	      <a href="#" class="dropdown-toggle" data-toggle="dropdown">More <b class="caret"></b></a>
+    	      <ul class="dropdown-menu">
+    	        <li><a href="/about">About</a></li>
+    	        <!-- li><a href="/blog">Blog</a></li -->
+    	      </ul>
+    	    </li>
+    	  </ul>
+          <ul class="nav navbar-nav navbar-right">
+          	% if (session 'user'){
+                <li><a href="/admin/dash">Account Admin</a></li>
+                <li><a href="/log-out">Log Out</a></li>
+            % } else {
+                <li><a href="/log-in">Log In</a></li>
+            	<li><a href="/sign-up">Sign Up</a></li>
+    		% }
+          </ul>
+        </div><!--/.nav-collapse -->
+    </div>
 </div>
