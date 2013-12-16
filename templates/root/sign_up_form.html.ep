@@ -17,5 +17,6 @@
 		%= include 'site/sign_up_form'
     </div>
 
+    %= include 'site/foot'
 </body>
 </html>

@@ -18,5 +18,7 @@
 		% }
 		%= include 'site/login_form'
 	</div>
+	
+    %= include 'site/foot'
 </body>
 </html>
