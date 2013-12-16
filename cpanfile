@@ -16,6 +16,8 @@ requires 'IO::Socket::SSL', '>= 1.75';
 
 on 'test' => sub {
     requires 'Data::Dumper::Perltidy';
+    requires 'Test::Exception';
+    requires 'Devel::Cover';
 };
 
 

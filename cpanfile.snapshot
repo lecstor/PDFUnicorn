@@ -1064,6 +1064,60 @@ DISTRIBUTIONS
       perl 5.011002
       strict 0
       warnings 0
+  Devel-Cover-1.08
+    pathname: P/PJ/PJCJ/Devel-Cover-1.08.tar.gz
+    provides:
+      Devel::Cover 1.08
+      Devel::Cover::Annotation::Git 1.08
+      Devel::Cover::Annotation::Random 1.08
+      Devel::Cover::Annotation::Svk 1.08
+      Devel::Cover::Branch 1.08
+      Devel::Cover::Condition 1.08
+      Devel::Cover::Condition_and_2 1.08
+      Devel::Cover::Condition_and_3 1.08
+      Devel::Cover::Condition_or_2 1.08
+      Devel::Cover::Condition_or_3 1.08
+      Devel::Cover::Condition_xor_4 1.08
+      Devel::Cover::Criterion 1.08
+      Devel::Cover::DB 1.08
+      Devel::Cover::DB::Criterion 1.08
+      Devel::Cover::DB::Digests 1.08
+      Devel::Cover::DB::File 1.08
+      Devel::Cover::DB::IO 1.08
+      Devel::Cover::DB::IO::JSON 1.08
+      Devel::Cover::DB::IO::Storable 1.08
+      Devel::Cover::DB::Run 1.08
+      Devel::Cover::DB::Structure 1.08
+      Devel::Cover::Html_Common 1.08
+      Devel::Cover::Inc 1.08
+      Devel::Cover::Op 1.08
+      Devel::Cover::Pod 1.08
+      Devel::Cover::Report::Compilation 1.08
+      Devel::Cover::Report::Html 1.08
+      Devel::Cover::Report::Html_basic 1.08
+      Devel::Cover::Report::Html_basic::Template::Provider 1.08
+      Devel::Cover::Report::Html_minimal 1.08
+      Devel::Cover::Report::Html_subtle 1.08
+      Devel::Cover::Report::Html_subtle::Template::Provider 1.08
+      Devel::Cover::Report::Sort 1.08
+      Devel::Cover::Report::Text 1.08
+      Devel::Cover::Report::Text2 1.08
+      Devel::Cover::Report::Vim 1.08
+      Devel::Cover::Report::Vim::Template::Provider 1.08
+      Devel::Cover::Statement 1.08
+      Devel::Cover::Subroutine 1.08
+      Devel::Cover::Test 1.08
+      Devel::Cover::Time 1.08
+      Devel::Cover::Truth_Table 1.08
+      Devel::Cover::Truth_Table::Row 1.08
+      Devel::Cover::Util 1.08
+      Devel::Cover::Web 1.08
+    requirements:
+      Digest::MD5 0
+      ExtUtils::MakeMaker 0
+      Storable 0
+      Test::More 0
+      Test::Warn 0
   Devel-GlobalDestruction-0.12
     pathname: H/HA/HAARG/Devel-GlobalDestruction-0.12.tar.gz
     provides:
@@ -1153,6 +1207,14 @@ DISTRIBUTIONS
       perl 5.006
       strict 0
       warnings 0
+  EV-4.15
+    pathname: M/ML/MLEHMANN/EV-4.15.tar.gz
+    provides:
+      EV 4.15
+      EV::MakeMaker undef
+    requirements:
+      ExtUtils::MakeMaker 0
+      common::sense 0
   Email-Abstract-3.006
     pathname: R/RJ/RJBS/Email-Abstract-3.006.tar.gz
     provides:
@@ -1328,6 +1390,40 @@ DISTRIBUTIONS
       ExtUtils::MakeMaker 0
       HTTP::Date 6
       perl 5.006002
+  File-Slurp-9999.19
+    pathname: U/UR/URI/File-Slurp-9999.19.tar.gz
+    provides:
+      File::Slurp 9999.19
+      FileSlurp_12 9999.13
+    requirements:
+      Carp 0
+      Exporter 0
+      ExtUtils::MakeMaker 0
+      Fcntl 0
+      POSIX 0
+  File-Temp-0.2304
+    pathname: D/DA/DAGOLDEN/File-Temp-0.2304.tar.gz
+    provides:
+      File::Temp 0.2304
+    requirements:
+      Carp 0
+      Carp::Heavy 0
+      Cwd 0
+      Exporter 5.57
+      ExtUtils::MakeMaker 6.17
+      Fcntl 1.03
+      File::Path 2.06
+      File::Spec 0.8
+      IO::Handle 0
+      IO::Seekable 0
+      POSIX 0
+      Scalar::Util 0
+      Symbol 0
+      constant 0
+      overload 0
+      parent 0.221
+      strict 0
+      vars 0
   Font-TTF-1.03
     pathname: M/MH/MHOSKEN/Font-TTF-1.03.tar.gz
     provides:
@@ -1523,6 +1619,14 @@ DISTRIBUTIONS
       ExtUtils::MakeMaker 6.30
       File::Temp 0
       Scalar::Util 0
+      Test::More 0.88
+  IO-Socket-IP-0.24
+    pathname: P/PE/PEVANS/IO-Socket-IP-0.24.tar.gz
+    provides:
+      IO::Socket::IP 0.24
+    requirements:
+      IO::Socket 0
+      Socket 1.97
       Test::More 0.88
   IO-Socket-SSL-1.962
     pathname: S/SU/SULLR/IO-Socket-SSL-1.962.tar.gz
@@ -2218,6 +2322,20 @@ DISTRIBUTIONS
       Scalar::Util 0
       strict 0
       warnings 0
+  Sub-Uplevel-0.24
+    pathname: D/DA/DAGOLDEN/Sub-Uplevel-0.24.tar.gz
+    provides:
+      Sub::Uplevel 0.24
+    requirements:
+      Carp 0
+      Exporter 0
+      ExtUtils::MakeMaker 6.30
+      File::Find 0
+      File::Temp 0
+      Test::More 0
+      constant 0
+      strict 0
+      warnings 0
   Test-Deep-0.110
     pathname: R/RJ/RJBS/Test-Deep-0.110.tar.gz
     provides:
@@ -2276,6 +2394,17 @@ DISTRIBUTIONS
       Test::More 0
       Test::NoWarnings 0.02
       Test::Tester 0.04
+  Test-Exception-0.32
+    pathname: A/AD/ADIE/Test-Exception-0.32.tar.gz
+    provides:
+      Test::Exception 0.32
+    requirements:
+      Sub::Uplevel 0.18
+      Test::Builder 0.7
+      Test::Builder::Tester 1.07
+      Test::Harness 2.03
+      Test::More 0.7
+      Test::Simple 0.7
   Test-Fatal-0.013
     pathname: R/RJ/RJBS/Test-Fatal-0.013.tar.gz
     provides:
@@ -2374,6 +2503,22 @@ DISTRIBUTIONS
     requirements:
       ExtUtils::MakeMaker 0
       Test::Builder 0
+  Test-Warn-0.24
+    pathname: C/CH/CHORNY/Test-Warn-0.24.tar.gz
+    provides:
+      Test::Warn 0.24
+      Test::Warn::Categorization 0.24
+      Test::Warn::DAG_Node_Tree 0.24
+    requirements:
+      Carp 1.22
+      ExtUtils::MakeMaker 0
+      File::Spec 0
+      Sub::Uplevel 0.12
+      Test::Builder 0.13
+      Test::Builder::Tester 1.02
+      Test::More 0
+      Tree::DAG_Node 1.02
+      perl 5.006
   Throwable-0.200009
     pathname: R/RJ/RJBS/Throwable-0.200009.tar.gz
     provides:
@@ -2434,6 +2579,19 @@ DISTRIBUTIONS
       Time::Zone 2.24
     requirements:
       ExtUtils::MakeMaker 0
+  Tree-DAG_Node-1.18
+    pathname: R/RS/RSAVAGE/Tree-DAG_Node-1.18.tgz
+    provides:
+      Tree::DAG_Node 1.18
+    requirements:
+      File::Slurp 9999.19
+      File::Spec 3.4
+      File::Temp 0.2301
+      Module::Build 0.38
+      Test::More 0.98
+      perl 5.008001
+      strict 0
+      warnings 0
   Try-0.03
     pathname: D/DO/DOY/Try-0.03.tar.gz
     provides:
@@ -2592,6 +2750,12 @@ DISTRIBUTIONS
     requirements:
       ExtUtils::MakeMaker 6.59
       perl 5.006
+  common-sense-3.72
+    pathname: M/ML/MLEHMANN/common-sense-3.72.tar.gz
+    provides:
+      common::sense 3.72
+    requirements:
+      ExtUtils::MakeMaker 0
   libwww-perl-6.05
     pathname: G/GA/GAAS/libwww-perl-6.05.tar.gz
     provides:
