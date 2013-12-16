@@ -1,5 +1,5 @@
 <!-- Fixed navbar -->
-<div class="navbar navbar-default navbar-fixed-top">
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -7,10 +7,9 @@
     			<span class="icon-bar"></span>
     			<span class="icon-bar"></span>
           	</button>
-    		<ul class="nav navbar-nav">
-    		  	<li style="margin-right: 10px">
-                    <a href="http://www.mystockvectors.com/" style="padding: 0" target="_blank" ><img src="/img/unicorn_48.png" title="The Unicorn. drawn by Cory Thoman. named by me." alt="[logo] The Unicorn. drawn by Cory Thoman. named by me."></a></li>
-    		  	<li><a class="navbar-brand" style="font-size: 25px" href="/">PDFUnicorn</a></li>
+    		<ul class="nav navbar-nav" style="width: 210px">
+                    <a href="http://www.mystockvectors.com/" class="pull-left" style="padding: 0 10px 0 0" target="_blank" ><img src="/img/unicorn_48.png" title="The Unicorn. drawn by Cory Thoman. named by me." alt="[logo] The Unicorn. drawn by Cory Thoman. named by me."></a>
+                    <a class="navbar-brand" style="font-size: 25px" href="/">PDFUnicorn</a>
     		</ul>
       
     	</div>
