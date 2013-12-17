@@ -47,7 +47,7 @@ sub startup {
     $db->collection('users')->ensure_index({ 'password_key.key' => 1});
     
     # do we need both? should they only have one attribute each?
-    $db->collection('apikeys')->ensure_index({ key => 1, owner => 1 });
+    $db->collection('apikeys')->ensure_index({ key => 1, owner => 1, trashed => 1 });
     #$db->collection('apikeys')->ensure_index({ key => 1 });
 
     my $validator = PDFUnicorn::Valid->new();
@@ -222,8 +222,9 @@ sub startup {
 	$admin->get('/billing')->to('admin#billing');
 	$admin->post('/get-pdf')->to('admin#get_pdf');
 	
-	
-	
+    #$admin->get('/rest/apikeys')->to('admin-rest-apikeys#find');
+    $admin->put('/rest/apikeys/:key')->to('admin-rest-apikeys#set_active');
+    $admin->delete('/rest/apikeys/:key')->to('admin-rest-apikeys#delete');
 	
 	$api->post('/v1/documents')->to('api-documents#create');
 	$api->get('/v1/documents')->to('api-documents#find');

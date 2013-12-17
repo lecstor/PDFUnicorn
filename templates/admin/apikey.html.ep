@@ -37,8 +37,8 @@
                         <tr>
                             <td><%= $doc->{name} %></td>
                             <td><%= $doc->{key} %></td>
-                            <td><button type="button" class="btn btn-warning btn-xs">Deactivate</button></td>
-                            <td><button type="button" class="btn btn-danger btn-xs">Delete</button></td>
+                            <td id="activate-apikey-container" data-key="<%= $doc->{key} %>"></td>
+                            <td id="delete-apikey-container" data-key="<%= $doc->{key} %>"></td>
                         </tr>
                     % }
                     </tbody>
@@ -48,8 +48,17 @@
     	</div>
     </div>
     
-    <script src="/lib/jquery/jquery.js"></script>
-    <script src="/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script id="deactivate-apikey-button" type="template">
+        <button type="button" class="btn btn-warning btn-xs">Deactivate</button>
+    </script>
+    <script id="reactivate-apikey-button" type="template">
+        <button type="button" class="btn btn-success btn-xs">Reactivate</button>
+    </script>
+    <script id="delete-apikey-button" type="template">
+        <button type="button" class="btn btn-danger btn-xs">Delete</button>
+    </script>
+    
+    %= include 'site/foot'
 
 </body>
 </html>
