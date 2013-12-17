@@ -8,6 +8,7 @@ requires 'Mojolicious::Plugin::Util::RandomString';
 requires 'Moo';
 requires 'Time::HiRes';
 requires 'Try';
+requires 'Data::UUID';
 
 # helpers for Mojo::IOLoop
 requires 'EV', '>= 4';
