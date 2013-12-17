@@ -19,26 +19,6 @@ sub home {
 	$self->render();
 }
 
-sub get_pdf{
-	my $self = shift;
-	my $data = $self->param('data');
-	my $tmpl = $self->param('template');
-
-    my $pdf = PDF::Grid->new({
-        source => $tmpl,
-        data => $data,
-    });
-    $pdf->render_template;
-    $pdf->producer->saveas('pdf_unicorn_demo1.pdf');    
-    $pdf->producer->end;
-
-    $self->render_file(
-        'filepath' => 'pdf_unicorn_demo1.pdf',
-        'format'   => 'pdf',                 # will change Content-Type "application/x-download" to "application/pdf"
-        'content_disposition' => 'inline',   # will change Content-Disposition from "attachment" to "inline"
-    );
-}
-
 sub features {
 	my $self = shift;
     $self->render();
@@ -131,8 +111,8 @@ sub log_in{
     if ($user){
         if ($password){
             if ($self->db_users->check_password($user, $password)){
-                $self->session->{user} = $user;
-                $self->redirect_to('/');
+                $self->session->{user_id} = $user->{_id};
+                $self->redirect_to('/admin');
                 return;
             }
         } else {
@@ -192,7 +172,7 @@ sub set_password_form{
 sub set_password{
     my $self = shift;
 	my $password = $self->param('password');
-	my $user = $self->auth_user;
+	my $user = $self->app_user;
 	$self->db_users->set_password($user, $password, $self->random_string(length => 2));
     $self->redirect_to('/');
 }

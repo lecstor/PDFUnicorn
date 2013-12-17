@@ -6,7 +6,7 @@
 	%= include 'mixpanel'
   
     <!-- record main page view -->
-  	<script type="text/javascript">mixpanel.track('view-main-page')</script>
+  	<script type="text/javascript">mixpanel.track('view-apikey-page')</script>
 </head>
 
 <body>
@@ -19,10 +19,30 @@
 	    	%= include 'admin/side_nav'   
 	    
 	    	<div class="col-xs-12 col-sm-9">
-			    <p class="pull-right visible-xs">
-	                <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
-	            </p>
-	    		<p>Hi, and thanks again for using PDFUnicorn!</p>
+                <p class="pull-right visible-xs">
+                    <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
+                </p>
+                
+                <h4>Your API Keys</h4>
+                
+                <table class="table table-striped table-hover">
+                    <tbody>
+                    <thead>
+                        <th>Name</th>
+                        <th>Key</th>
+                        <th>Deactivate</th>
+                        <th>Delete</th>
+                    </thead>
+                    % foreach my $doc (@$keys){
+                        <tr>
+                            <td><%= $doc->{name} %></td>
+                            <td><%= $doc->{key} %></td>
+                            <td><button type="button" class="btn btn-warning btn-xs">Deactivate</button></td>
+                            <td><button type="button" class="btn btn-danger btn-xs">Delete</button></td>
+                        </tr>
+                    % }
+                    </tbody>
+                </table>
 	    	</div>
     	
     	</div>

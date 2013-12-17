@@ -5,6 +5,8 @@ use Mojo::JSON;
 
 use Mango::BSON ':bson';
 
+use Data::UUID;
+
 use Try;
 
 use lib '../PDF-Grid/lib';
@@ -21,7 +23,28 @@ sub dash {
 
 sub apikey {
 	my $self = shift;
-	$self->render();
+	my $user = $self->app_user;
+	
+    $self->render_later;
+    
+    my $query = { owner => $user->{_id} };
+    $self->db_apikeys->find_all($query, sub{
+        my ($cursor, $err, $docs) = @_;
+        if (@$docs){
+            $self->render( keys => $docs );
+        } else {
+            $self->db_apikeys->create({
+                owner => $user->{_id},
+                key => Data::UUID->new->create_str,
+                name => 'the first one',
+                active => bson_true,
+            }, sub {
+                my ($err, $docs) = @_;
+                $docs ||= [];
+                $self->render( keys => $docs);
+            });
+        }
+    }, { key: 1, owner: 1, _id:0 });
 }
 
 sub billing {

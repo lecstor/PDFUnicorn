@@ -7,6 +7,7 @@ use Mango::BSON ':bson';
 use PDFUnicorn::Collection::Users;
 use PDFUnicorn::Collection::Documents;
 use PDFUnicorn::Collection::Images;
+use PDFUnicorn::Collection::APIKeys;
 use PDFUnicorn::Valid;
 
 # This method will run once at server start
@@ -44,6 +45,10 @@ sub startup {
     # ensure indexes
     $db->collection('users')->ensure_index({ username => 1});
     $db->collection('users')->ensure_index({ 'password_key.key' => 1});
+    
+    # do we need both? should they only have one attribute each?
+    $db->collection('apikeys')->ensure_index({ key => 1, owner => 1 });
+    #$db->collection('apikeys')->ensure_index({ key => 1 });
 
     my $validator = PDFUnicorn::Valid->new();
 
@@ -51,6 +56,7 @@ sub startup {
         { name => 'db_users', class => 'PDFUnicorn::Collection::Users', collection => 'users' },
         { name => 'db_documents', class => 'PDFUnicorn::Collection::Documents', collection => 'documents' },
         { name => 'db_images', class => 'PDFUnicorn::Collection::Images', collection => 'images' },
+        { name => 'db_apikeys', class => 'PDFUnicorn::Collection::APIKeys', collection => 'apikeys' },
     ];
     
     for my $helper (@$helpers){
@@ -89,27 +95,26 @@ sub startup {
     );
         
     $self->helper(
-        'auth_user' => sub {
+        'app_user' => sub {
             my $ctrl = shift;
-            my $user_id = $ctrl->session->{user}{_id};
+            my $user_id = $ctrl->session->{user_id};
             return undef unless $user_id;
-            return $ctrl->app->db_users->find_one(bson_oid $user_id);
+            my $user = $ctrl->stash->{app_user} ||=
+                $ctrl->app->db_users->find_one(bson_oid $user_id);
+            return $user;
         }
     );
 
     $self->helper(
-        'auth_user_id' => sub {
-            my $ctrl = shift;
-            my $user = $ctrl->auth_user;
-            return "$user->{_id}";
-            return;
+        'app_user_id' => sub {
+            shift->session->{user_id};
         }
     );
 
     $self->helper(
-        'auth_user_timezone' => sub {
+        'app_user_timezone' => sub {
             my $ctrl = shift;
-            my $user = $ctrl->auth_user;
+            my $user = $ctrl->app_user;
             my $timezone = $user->{timezone};
             $timezone ||= $ctrl->session->{timezone} || 'local';
             return $timezone;
@@ -159,7 +164,7 @@ sub startup {
         return 1 if $self->api_key eq '1e551787-903e-11e2-b2b6-0bbccb145af3';
         
         # Authenticated
-        return 1 if $self->auth_user && $self->auth_user->{_id};
+        return 1 if $self->app_user && $self->app_user->{_id};
 
         # Not authenticated
         $self->render(
@@ -171,6 +176,24 @@ sub startup {
             status => 401
         );
         return undef;
+    });
+
+    my $admin = $r->bridge('/admin')->to(cb => sub {
+        my $self = shift;
+
+        # Authenticated
+        return 1 if $self->app_user;
+
+        # Not authenticated
+        $self->stash->{error} = "Sorry, you'll need to login to get in here..";
+        $self->render(
+            template => "root/log_in",
+            error => "Sorry, you'll need to login to get in here..",
+            message => '',
+            next_page => '',
+            status => 401
+        );
+        return;
     });
 
     # Normal route to controller
@@ -194,10 +217,10 @@ sub startup {
 	$r->get('set-password/:code/:email')->to('root#set_password_form');
 	$r->post('set-password')->to('root#set_password');
 	
-	$r->get('admin')->to('admin#dash');
-	$r->get('admin/api-key')->to('admin#apikey');
-	$r->get('admin/billing')->to('admin#billing');
-	$r->post('admin/get-pdf')->to('admin#get_pdf');
+	$admin->get('/')->to('admin#dash');
+	$admin->get('/api-key')->to('admin#apikey');
+	$admin->get('/billing')->to('admin#billing');
+	$admin->post('/get-pdf')->to('admin#get_pdf');
 	
 	
 	
