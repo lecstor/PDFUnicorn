@@ -55,9 +55,9 @@ sub find_one{
 }
 
 sub find_all{
-    my ($self, $query, $callback) = @_;
+    my ($self, $query, $callback, $fields) = @_;
     die 'Need a callback!' unless $callback;
-    my $cursor = $self->collection->find($query);
+    my $cursor = $self->collection->find($query, $fields);
     $cursor->all($callback);
     Mojo::IOLoop->start unless Mojo::IOLoop->is_running;
 }
