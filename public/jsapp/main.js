@@ -26,4 +26,7 @@ requirejs.config({
     }
 });
 
-require(['admin/apikeys']);
+require(['admin/apikeys'], function(apiKeys){
+    apiKeys.table.setElement($('#api-keys-table'));
+    apiKeys.table.render();
+});

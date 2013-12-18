@@ -22,6 +22,7 @@ sub dash {
 	$self->render();
 }
 
+# TODO: argh! duplicated code from Ctrl::Admin::Rest::Apikeys::find
 sub apikey {
 	my $self = shift;
 	my $user = $self->app_user;
@@ -48,7 +49,7 @@ sub apikey {
                 $self->render( keys => $json->encode([$doc]));
             });
         }
-    }, { key => 1, owner => 1, _id => 0 });
+    }, { key => 1, owner => 1, _id => 0, name => 1, active => 1 });
 }
 
 sub billing {
