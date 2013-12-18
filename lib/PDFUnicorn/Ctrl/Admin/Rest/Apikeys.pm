@@ -33,7 +33,7 @@ sub delete{
 
     $self->db_apikeys->update(
        { key => $self->stash->{'key'}, owner => bson_oid $self->app_user_id },
-       { '$set' => { trashed => bson_true } },
+       { '$set' => { trashed => bson_true, active => bson_false } },
        sub {
            my ($err, $doc) = @_;
            $self->render(json => { status => 'ok' });
