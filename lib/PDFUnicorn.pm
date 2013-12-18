@@ -151,7 +151,15 @@ sub startup {
         'api_key_owner' => sub {
             my $self = shift;
             my $token = $self->api_key;
+            
             # lookup owner and return id
+            my $query = { key => $token };
+            
+            $self->db_apikeys->find_one($query, sub{
+                my ($cursor, $err, $doc) = @_;
+                return $doc->{owner} if $doc && $doc->{active};
+                return $self->render_not_found;
+            }, { key => 1, owner => 1, _id => 0, active => 1, trashed => 1 });
             return $token;
         }
     );
