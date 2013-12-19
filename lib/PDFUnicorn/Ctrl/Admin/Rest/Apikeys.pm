@@ -16,7 +16,7 @@ sub set_active {
     $self->render_later;
 
 	$self->db_apikeys->update(
-	   { key => $self->stash->{'key'}, owner => bson_oid $self->app_user_id },
+	   { key => $self->stash->{'key'}, owner => $self->stash->{app_user}{_id} },
 	   { '$set' => { active => $data->{active} } },
 	   sub {
 	       my ($err, $doc) = @_;
@@ -32,7 +32,7 @@ sub delete{
     $self->render_later;
 
     $self->db_apikeys->update(
-       { key => $self->stash->{'key'}, owner => bson_oid $self->app_user_id },
+       { key => $self->stash->{'key'}, owner => $self->stash->{app_user}{_id} },
        { '$set' => { trashed => bson_true, active => bson_false } },
        sub {
            my ($err, $doc) = @_;

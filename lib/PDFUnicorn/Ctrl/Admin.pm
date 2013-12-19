@@ -25,7 +25,7 @@ sub dash {
 # TODO: argh! duplicated code from Ctrl::Admin::Rest::Apikeys::find
 sub apikey {
 	my $self = shift;
-	my $user_id = $self->app_user_id;
+	my $user_id = $self->stash->{app_user}{_id};
 	
     $self->render_later;
     
