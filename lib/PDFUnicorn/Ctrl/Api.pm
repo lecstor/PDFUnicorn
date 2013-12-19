@@ -55,14 +55,18 @@ sub find {
         );
     }
     $query->{owner} = $self->api_key_owner;
+    
     $self->render_later;
+    
+    $self->app->log->debug('CTRL API FIND');
+    
     $self->collection->find_all($query, sub{
         my ($cursor, $err, $docs) = @_;
         foreach my $doc (@$docs){
             $doc->{uri} = "/api/v1/".$self->uri."/$doc->{_id}";
         }
         $self->render(json => { status => 'ok', data => $docs });
-    });
+    }, {});
     
 }
 

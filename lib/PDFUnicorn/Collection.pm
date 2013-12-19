@@ -20,17 +20,25 @@ sub create{
         
     my $oid = $self->collection->insert($data => sub{
         my ($coll, $err, $oid) = @_;
+        warn $err if $err;
         $self->find_one({ _id => $oid }, $callback);
-        Mojo::IOLoop->start unless Mojo::IOLoop->is_running;    
     });
-    
     Mojo::IOLoop->start unless Mojo::IOLoop->is_running;    
 }
 
-# no non-blocking find?
+# hm different to find_all in the args we call the callback with.
 sub find{
-    my ($self, $query) = @_;
-    return $self->collection->find($query);
+    my ($self, $query, $callback) = @_;
+    my $cursor = $self->collection->find($query);
+    if ($callback){
+        $cursor->all(sub {
+            my ($cursor, $err, $docs) = @_;
+            $callback->($docs);
+        });
+        Mojo::IOLoop->start unless Mojo::IOLoop->is_running;
+    } else {
+        return $cursor->all;
+    }
 }
 
 sub find_and_modify{
@@ -41,10 +49,10 @@ sub find_and_modify{
 
 sub find_one{
     my ($self, $query, $callback) = @_;
-    #die 'Need a callback!' unless $callback;
     if ($callback){
         $self->collection->find_one($query => sub{
             my ($coll, $err, $doc) = @_;
+            warn $err if $err;
             $callback->($err, $doc);
         });
         Mojo::IOLoop->start unless Mojo::IOLoop->is_running;
@@ -57,6 +65,7 @@ sub find_one{
 sub find_all{
     my ($self, $query, $callback, $fields) = @_;
     die 'Need a callback!' unless $callback;
+    warn 'COLLECTION FIND_ALL';
     my $cursor = $self->collection->find($query, $fields);
     $cursor->all($callback);
     Mojo::IOLoop->start unless Mojo::IOLoop->is_running;
@@ -65,7 +74,6 @@ sub find_all{
 sub update{
     my ($self, $query, $data, $callback) = @_;
     die 'Need a callback!' unless $callback;
-    #return $self->collection->update($query, $data);
     $self->collection->update(($query, $data) => $callback);
     Mojo::IOLoop->start unless Mojo::IOLoop->is_running;
 }

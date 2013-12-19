@@ -43,6 +43,8 @@ sub startup {
     $self->attr(gridfs => sub { $self->mango->db->gridfs });
 
     # ensure indexes
+    
+    # db.fs.chunks.ensureIndex({files_id:1, n:1}, {unique: true});
     $db->collection('users')->ensure_index({ username => 1});
     $db->collection('users')->ensure_index({ 'password_key.key' => 1});
     
@@ -55,6 +57,8 @@ sub startup {
         active => 1
     });
     #$db->collection('apikeys')->ensure_index({ key => 1 });
+        
+    
 
     my $validator = PDFUnicorn::Valid->new();
 
@@ -102,28 +106,31 @@ sub startup {
         
     $self->helper(
         'app_user' => sub {
-            my $ctrl = shift;
+            my ($ctrl, $callback) = @_;
             my $user_id = $ctrl->session->{user_id};
-            return undef unless $user_id;
-            my $user = $ctrl->stash->{app_user} ||=
-                $ctrl->app->db_users->find_one(bson_oid $user_id);
-            return $user;
+            if ($callback){
+                warn "cb user_id: $user_id";
+                return $callback->($ctrl, undef) unless $user_id;
+                warn $ctrl->stash->{app_user} if $ctrl->stash->{app_user};
+                return $callback->($ctrl, $ctrl->stash->{app_user}) if $ctrl->stash->{app_user};
+                warn "find_one";
+                $ctrl->app->db_users->find_one({ _id => bson_oid $user_id }, sub{
+                    my ($err, $doc) = @_;
+                    $callback->($ctrl, $doc);
+                });
+            } else {
+                warn "nocb user_id: $user_id";
+                return undef unless $user_id;
+                my $user = $ctrl->stash->{app_user} ||=
+                    $ctrl->app->db_users->find_one(bson_oid $user_id);
+                return $user;
+            }
         }
     );
 
     $self->helper(
         'app_user_id' => sub {
             shift->session->{user_id};
-        }
-    );
-
-    $self->helper(
-        'app_user_timezone' => sub {
-            my $ctrl = shift;
-            my $user = $ctrl->app_user;
-            my $timezone = $user->{timezone};
-            $timezone ||= $ctrl->session->{timezone} || 'local';
-            return $timezone;
         }
     );
 
@@ -147,20 +154,28 @@ sub startup {
         }
     );
 
+    # TODO: see Ctrl::API::Documents::create
+    
     $self->helper(
         'api_key_owner' => sub {
-            my $self = shift;
+            my ($self, $callback) = @_;
             my $token = $self->api_key;
             
             # lookup owner and return id
             my $query = { key => $token };
             
-            $self->db_apikeys->find_one($query, sub{
-                my ($cursor, $err, $doc) = @_;
+            if ($callback){
+                $self->db_apikeys->find_one($query, sub{
+                    my ($err, $doc) = @_;
+                    # first arg gets discarded so add junk
+                    return $callback->('junk',$doc->{owner}) if $doc && $doc->{active};
+                    $callback->();
+                });
+            } else {
+                my $doc = $self->db_apikeys->find_one($query);
                 return $doc->{owner} if $doc && $doc->{active};
-                return $self->render_not_found;
-            }, { key => 1, owner => 1, _id => 0, active => 1, trashed => 1 });
-            return $token;
+                return;
+            }
         }
     );
 
@@ -175,38 +190,56 @@ sub startup {
         #warn Data::Dumper->Dumper($self->req->headers);
 
         #my $auth = $self->req->headers->authorization;
-        return 1 if $self->api_key eq '1e551787-903e-11e2-b2b6-0bbccb145af3';
+        #return 1 if $self->api_key eq '1e551787-903e-11e2-b2b6-0bbccb145af3';
         
         # Authenticated
-        return 1 if $self->app_user && $self->app_user->{_id};
+        #return 1 if $self->app_user && $self->app_user->{active};
+        
+        warn "!!!!!!!!!!!!!!!!!!!!";
+        $self->app_user(sub{
+            my ($self, $app_user) = @_;
+            warn Data::Dumper->Dumper(@_);
+            warn Data::Dumper->Dumper($app_user);
+            if ($app_user && $app_user->{active}){
+                $self->stash->{app_user} = $app_user;
+                $self->continue; # make it so - same as returning true from the bridge
+            } else {
+                # Not authenticated
+                return $self->render(
+                    json => {
+                        ok => 0,
+                        text => "Sorry, you'll need to login to get in here..",
+                    },
+                    text => "Sorry, you'll need to login to get in here..",
+                    status => 401
+                );
+            }
+        });
 
-        # Not authenticated
-        $self->render(
-            json => {
-                ok => 0,
-                text => "Sorry, you'll need to login to get in here..",
-            },
-            text => "Sorry, you'll need to login to get in here..",
-            status => 401
-        );
-        return undef;
+        return;
     });
 
     my $admin = $r->bridge('/admin')->to(cb => sub {
         my $self = shift;
-
-        # Authenticated
-        return 1 if $self->app_user;
-
-        # Not authenticated
-        $self->stash->{error} = "Sorry, you'll need to login to get in here..";
-        $self->render(
-            template => "root/log_in",
-            error => "Sorry, you'll need to login to get in here..",
-            message => '',
-            next_page => '',
-            status => 401
-        );
+        warn "!!!!!!!!!!!!!!!!!!!!";
+        $self->app_user(sub{
+            my ($self, $app_user) = @_;
+            warn Data::Dumper->Dumper(@_);
+            warn Data::Dumper->Dumper($app_user);
+            if ($app_user && $app_user->{active}){
+                $self->stash->{app_user} = $app_user;
+                $self->continue; # make it so - same as returning true from the bridge
+            } else {
+                # Not authenticated
+                return $self->render(
+                    template => "root/log_in",
+                    error => "Sorry, you'll need to login to get in here..",
+                    message => '',
+                    next_page => '',
+                    status => 401
+                );
+            }
+        });
         return;
     });
 

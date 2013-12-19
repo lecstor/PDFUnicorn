@@ -19,6 +19,7 @@ sub schemas{
             uri => { type => 'string' },
             password_key => { type => 'object' },
             timezone => { type => 'string' },
+            public => { type => 'boolean', bson => 'bool', required => 1 },
             created => { type => 'datetime', bson => 'time' },
             modified => { type => 'datetime', bson => 'time' },
         },
@@ -27,6 +28,7 @@ sub schemas{
             firstname => { type => 'string' },
             surname => { type => 'string' },
             timezone => { type => 'string' },
+            public => { type => 'boolean', bson => 'bool' },
             password_key => { type => 'string' },
             created => { type => 'datetime', bson => 'time' },
             modified => { type => 'datetime', bson => 'time' },
@@ -100,14 +102,16 @@ sub send_password_key{
 }
 
 sub set_password{
-    my ($self, $user, $password, $salt) = @_;
+    my ($self, $user_id, $password, $salt, $callback) = @_;
     $password = crypt($password, $salt);
     #warn "set_password: ".$password;
     #warn "user id: ".$user->{_id};
-    
-    $user->{password} = $password;
-    
-    return $self->collection->update( { _id => $user->{_id} }, $user );
+        
+    $self->collection->update(
+        { _id => $user_id },
+        { '$set' => { password => $password } },
+        $callback
+    );
 }
 
 sub check_password{

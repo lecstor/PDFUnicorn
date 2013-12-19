@@ -44,20 +44,20 @@ sub delete{
 # TODO: argh! duplicated code from Ctrl::Admin::apikey
 sub find{
     my ($self) = shift;
-    my $user = $self->app_user;
+    my $user_id = $self->app_user_id;
     
     $self->render_later;
     
-    my $query = { owner => $user->{_id}, trashed => bson_false };
+    my $query = { owner => $user_id, trashed => bson_false };
     
     $self->db_apikeys->find_all($query, sub{
         my ($cursor, $err, $docs) = @_;
         my $json  = Mojo::JSON->new;
         if ($docs && @$docs){
-            $self->render( json => { status => 'ok', keys => $docs } );
+            $self->render( json => { status => 'ok', data => $docs } );
         } else {
             $self->db_apikeys->create({
-                owner => $user->{_id},
+                owner => $user_id,
                 key => Data::UUID->new->create_str,
                 name => 'the first one',
                 active => bson_true,

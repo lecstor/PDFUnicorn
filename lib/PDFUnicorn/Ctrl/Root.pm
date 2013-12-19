@@ -68,9 +68,9 @@ sub sign_up {
 	my $data = {
         email => $email_addr,
         firstname => $name,
-        is_user => 1,
         password_key => $self->random_string(length => 24),
         timezone => $timezone,
+        active => bson_true,
     };
 
     $self->render_later;
@@ -81,7 +81,7 @@ sub sign_up {
         
         if ($doc){
             $self->db_users->send_password_key($doc);
-            $self->session->{user} = $doc;
+            $self->session->{user_id} = $doc->{_id};
         }
         
         $self->render(
@@ -107,25 +107,34 @@ sub log_in{
     my $self = shift;
 	my $username = $self->param('username');
 	my $password = $self->param('password');
-    my $user = $self->db_users->find_one({ 'username' => lc($username) });
-    if ($user){
-        if ($password){
-            if ($self->db_users->check_password($user, $password)){
-                $self->session->{user_id} = $user->{_id};
-                $self->redirect_to('/admin');
-                return;
+
+    $self->render_later;
+
+    my $user = $self->db_users->find_one(
+        { 'username' => lc($username) },
+        sub {
+            my ($err, $doc) = @_;
+            if ($doc){
+                if ($password){
+                    if ($self->db_users->check_password($doc, $password)){
+                        $self->session->{user_id} = $doc->{_id};
+                        $self->redirect_to('/admin');
+                        return;
+                    }
+                } else {
+                    $self->db_users->send_password_key($doc);
+                    return $self->render(
+                        error => '',
+                        message => 'I\'ve emailed you a link to reset your password.'
+                    );
+                }
             }
-        } else {
-            # send account key
-            return $self->render(
-                error => '',
-                message => 'I\'ve emailed you a link to reset your password.'
+            $self->render(
+                error => 'Sorry, the username/password is incorrect',
+                message => '',
             );
+            
         }
-    }
-    $self->render(
-        error => 'Sorry, the username/password is incorrect',
-        message => '',
     );
     
 }
@@ -153,7 +162,7 @@ sub set_password_form{
             if ($doc){
                 my $user_email_hash = md5_sum($doc->{email});
                 if ($user_email_hash eq $email_hash){
-                    $self->session->{user} = $doc;
+                    $self->session->{user_id} = $doc->{_id};
                     return $self->render(error => '', user => $doc);
                 }
             }
@@ -172,8 +181,11 @@ sub set_password_form{
 sub set_password{
     my $self = shift;
 	my $password = $self->param('password');
-	my $user = $self->app_user;
-	$self->db_users->set_password($user, $password, $self->random_string(length => 2));
+	$self->db_users->set_password(
+        $self->app_user_id, $password,
+        $self->random_string(length => 2),
+        sub{}
+    );
     $self->redirect_to('/');
 }
 

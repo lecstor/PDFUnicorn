@@ -3,7 +3,7 @@ use Mojo::Base 'PDFUnicorn::Ctrl::Api';
 
 use Mojo::JSON;
 use Mango::BSON ':bson';
-
+use Mojo::IOLoop;
   
 sub collection{ shift->db_documents }
 
@@ -50,69 +50,100 @@ sub create {
 	my $format = $self->stash('format');
 	my $binary = 1 if $format && $format eq 'binary';
 	
-    $data->{owner} = $self->api_key_owner;
-    $data->{file} = undef;
-    $data->{id} = "$data->{id}" if $data->{id};
-
     $self->render_later;
+	
+	# TODO: Mojo::IOLoop "begin" callbacks discard first arg
+	# this should probably just be implemented as a callback to api_key_owner   
+    # but it works, so I'm keeping it for now..
     
-    if ($binary){
-        
-        $self->collection->create($data, sub{
-            my ($err, $doc) = @_;
-            
-            my $grid = PDF::Grid->new({
-                media_directory => $self->app->media_directory.'/'.$self->api_key_owner.'/',
-                source => $doc->{source},
-            });
-            
-            $grid->render_template;
-            my $pdf_doc = $grid->producer->stringify();    
-            $grid->producer->end;
-
-            $self->render( data => $pdf_doc );
-        });
-        
-    } else {
-        
-        $self->on(finish => sub{
-            my $c = shift;
-            
-            my $doc = $self->stash->{'pdfunicorn.doc'};
-            
-            if (!$doc){ die "a flaming death.."; }
-            
-            my $grid = PDF::Grid->new({
-                media_directory => $c->app->media_directory.'/'.$c->api_key_owner().'/',
-                source => $doc->{source},
-            });
-            
-            $grid->render_template;
-            my $pdf_doc = $grid->producer->stringify();    
-            $grid->producer->end;
-            my $gfs = $self->gridfs->prefix($self->api_key_owner());
-            my $oid = $gfs->writer->filename($doc->{name})->write($pdf_doc)->close;
-            
-            # here we set the file oid in the document
-            my $opts = {
-                query => { id => $doc->{id} },
-                update => { '$set' => { file => $oid }},
-            };
-            $self->collection->find_and_modify($opts => sub {
-                my ($collection, $err, $doc) = @_;
-                # anything to do here?
-                # call a webhook?
-            });
-            Mojo::IOLoop->start unless Mojo::IOLoop->is_running;
-        });
+    # the callback returned by $delay->begin discards the first arg it's given?
+    # so when calling the callback in api_key_owner we add junk to the start.
+    # calling api_key_owner with a callback we need to be aware that the sub will
+    # recieve junk as it's first arg..
+    # what am I doing wrong here?
     
-        $self->collection->create($data, sub{
-            my ($err, $doc) = @_;
-            $doc->{uri} = "/api/v1/".$self->uri."/$doc->{_id}";
-            $self->stash->{'pdfunicorn.doc'} = $doc;
-            $self->render( json => { status => 'ok', data => $doc } );
-        });
-    }
+	my $delay = Mojo::IOLoop->delay(sub{
+        my ($delay, $owner) = @_;
+        
+        warn Data::Dumper->Dumper(\@_);
+        
+        #$data->{owner} = $self->api_key_owner;
+        $data->{owner} = $owner;
+        #warn "api_key_owner: $data->{owner}";
+        warn "api_key_owner: ".Data::Dumper->Dumper($data->{owner});
+        warn "api_key: ".$self->api_key;
+        
+        $data->{file} = undef;
+        $data->{id} = "$data->{id}" if $data->{id};
+    
+            
+        if ($binary){
+            
+            $self->collection->create($data, sub{
+                my ($err, $doc) = @_;
+                
+                my $grid = PDF::Grid->new({
+                    media_directory => $self->app->media_directory.'/'.$self->api_key_owner.'/',
+                    source => $doc->{source},
+                });
+                
+                $grid->render_template;
+                my $pdf_doc = $grid->producer->stringify();    
+                $grid->producer->end;
+    
+                $self->render( data => $pdf_doc );
+            });
+            
+        } else {
+                    
+            $self->on(finish => sub{
+                my $c = shift;
+                
+                my $doc = $c->stash->{'pdfunicorn.doc'};
+                
+                if (!$doc){ die "a flaming death.."; }
+                
+                my $grid = PDF::Grid->new({
+                    media_directory => $c->app->media_directory.'/'.$c->api_key_owner().'/',
+                    source => $doc->{source},
+                });
+                
+                $grid->render_template;
+                my $pdf_doc = $grid->producer->stringify();    
+                $grid->producer->end;
+                my $gfs = $c->gridfs->prefix($c->api_key_owner());
+                my $oid = $gfs->writer->filename($doc->{name})->write($pdf_doc)->close;
+                
+                # here we set the file oid in the document
+                my $opts = {
+                    query => { id => $doc->{id} },
+                    update => { '$set' => { file => $oid }},
+                };
+                $self->collection->find_and_modify($opts => sub {
+                    my ($collection, $err, $doc) = @_;
+                    # anything to do here?
+                    # call a webhook?
+                });
+            });
+        
+            $self->collection->create($data, sub{
+                my ($err, $doc) = @_;
+                warn $err if $err;
+                $doc->{uri} = "/api/v1/".$self->uri."/$doc->{_id}";
+                $self->stash->{'pdfunicorn.doc'} = $doc;
+                $self->render( json => { status => 'ok', data => $doc } );
+            });
+        }
+    });
+	$self->api_key_owner($delay->begin);
+	
+	
+	
+	
+	
+	
+	
+	
 
 
 }
