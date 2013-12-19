@@ -162,27 +162,44 @@ sub startup {
     my $api = $r->bridge('/api')->to(cb => sub {
         my $self = shift;
 
-        $self->app_user(sub{
-            my ($self, $app_user) = @_;
-            if ($app_user && $app_user->{active}){
-                $self->stash->{app_user} = $app_user; # deprecated
-                $self->stash->{api_key_owner} = $app_user;
-                $self->continue; # make it so - same as returning true from the bridge
-            } else {
-                # Not authenticated
-                return $self->render(
-                    json => {
-                        ok => 0,
-                        text => "Sorry, you'll need to login to get in here..",
-                    },
-                    text => "Sorry, you'll need to login to get in here..",
-                    status => 401
-                );
-            }
-        });
+        my $token = $self->api_key;
+              
+        # lookup owner and return id
+        my $query = { key => $token };
 
+        $self->db_apikeys->find_one($query, sub{
+            my ($err, $doc) = @_;
+            return unless $doc;
+            $self->stash->{api_key_owner_id} = $doc->{owner};
+            $self->continue; # make it so - same as returning true from the bridge
+        });
         return;
     });
+
+
+
+
+#        $self->app_user(sub{
+#            my ($self, $app_user) = @_;
+#            if ($app_user && $app_user->{active}){
+#                $self->stash->{app_user} = $app_user; # deprecated
+#                $self->stash->{api_key_owner} = $app_user;
+#                $self->continue; # make it so - same as returning true from the bridge
+#            } else {
+#                # Not authenticated
+#                return $self->render(
+#                    json => {
+#                        ok => 0,
+#                        text => "Sorry, you'll need to login to get in here..",
+#                    },
+#                    text => "Sorry, you'll need to login to get in here..",
+#                    status => 401
+#                );
+#            }
+#        });
+#
+#        return;
+#    });
 
     my $admin = $r->bridge('/admin')->to(cb => sub {
         my $self = shift;

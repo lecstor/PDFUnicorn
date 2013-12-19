@@ -34,7 +34,7 @@ sub create {
     my $image_data = {
         name => $name,
         id => $id,
-        owner => $self->stash->{api_key_owner}{_id},
+        owner => $self->stash->{api_key_owner_id},
     };
         
     $self->render_later;
@@ -42,7 +42,7 @@ sub create {
     $self->collection->create($image_data, sub{
         my ($err, $doc) = @_;
         my $doc_id = $doc->{_id};
-        my $base = $self->app->media_directory.'/'.$self->stash->{api_key_owner}{_id};
+        my $base = $self->app->media_directory.'/'.$self->stash->{api_key_owner_id};
         my $file = $base . "/$filename";
         
         make_path($base);
@@ -62,7 +62,7 @@ sub find_one {
     $self->collection->find_one({ _id => bson_oid $id }, sub{
         my ($err, $doc) = @_;
         if ($doc){
-            if ($doc->{owner} eq $self->stash->{api_key_owner}{_id}){
+            if ($doc->{owner} eq $self->stash->{api_key_owner_id}){
                 return $self->serve_doc($doc);
             }
         }
@@ -75,7 +75,7 @@ sub serve_doc{
     my ($self, $doc) = @_;
 	my $format = $self->stash('format');
     if ($format && $format eq 'binary'){
-        my $media_base = $self->app->media_directory.'/'.$self->stash->{api_key_owner}{_id};
+        my $media_base = $self->app->media_directory.'/'.$self->stash->{api_key_owner_id};
         $self->res->headers->content_disposition('attachment; filename='.$doc->{name}.';');
         my $local_file_name = $media_base.'/'.uri_escape($doc->{name});
         my ($ext) = $doc->{name} =~ /\.([^.]+)$/;

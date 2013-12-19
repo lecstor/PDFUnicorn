@@ -52,7 +52,7 @@ sub create {
 	
     $self->render_later;
 
-    $data->{owner} = $self->stash->{api_key_owner}{_id};        
+    $data->{owner} = $self->stash->{api_key_owner_id};        
     $data->{file} = undef;
     $data->{id} = "$data->{id}" if $data->{id};
         
@@ -62,7 +62,7 @@ sub create {
             my ($err, $doc) = @_;
             
             my $grid = PDF::Grid->new({
-                media_directory => $self->app->media_directory.'/'.$self->stash->{api_key_owner}{_id}.'/',
+                media_directory => $self->app->media_directory.'/'.$self->stash->{api_key_owner_id}.'/',
                 source => $doc->{source},
             });
             
@@ -83,14 +83,14 @@ sub create {
             if (!$doc){ die "a flaming death.."; }
             
             my $grid = PDF::Grid->new({
-                media_directory => $c->app->media_directory.'/'.$c->stash->{api_key_owner}{_id}.'/',
+                media_directory => $c->app->media_directory.'/'.$c->stash->{api_key_owner_id}.'/',
                 source => $doc->{source},
             });
             
             $grid->render_template;
             my $pdf_doc = $grid->producer->stringify();    
             $grid->producer->end;
-            my $gfs = $c->gridfs->prefix($c->stash->{api_key_owner}{_id});
+            my $gfs = $c->gridfs->prefix($c->stash->{api_key_owner_id});
             my $oid = $gfs->writer->filename($doc->{name})->write($pdf_doc)->close;
             
             # here we set the file oid in the document
@@ -128,7 +128,7 @@ sub find_one {
     $self->collection->find_one({ _id => bson_oid $id }, sub{
         my ($err, $doc) = @_;
         if ($doc){
-            if ($doc->{owner} eq $self->stash->{api_key_owner}{_id}){
+            if ($doc->{owner} eq $self->stash->{api_key_owner_id}){
                 if ($binary){
                     my $gfs = $self->gridfs->prefix($doc->{owner});
                     my $reader = $gfs->reader->open($doc->{file});

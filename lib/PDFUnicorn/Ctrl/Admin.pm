@@ -67,7 +67,7 @@ sub get_pdf{
 	my $source = $self->param('source');
 
     my $grid = PDF::Grid->new({
-        #media_directory => $self->app->media_directory.'/'.$self->stash->{api_key_owner}{_id}.'/',
+        #media_directory => $self->app->media_directory.'/'.$self->stash->{api_key_owner_id}.'/',
         source => $source,
     });
     

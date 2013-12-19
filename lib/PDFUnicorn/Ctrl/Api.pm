@@ -53,7 +53,7 @@ sub find {
             json => { status => 'invalid_request', data => { errors => $errors } }
         );
     }
-    $query->{owner} = $self->stash->{api_key_owner}{_id};
+    $query->{owner} = $self->stash->{api_key_owner_id};
     
     $self->render_later;
         
@@ -76,7 +76,7 @@ sub find_one {
     $self->collection->find_one({ _id => bson_oid $id }, sub{
         my ($err, $doc) = @_;
         if ($doc){
-            if ($doc->{owner} eq $self->stash->{api_key_owner}{_id}){
+            if ($doc->{owner} eq $self->stash->{api_key_owner_id}){
                 $doc->{uri} = "/api/v1/".$self->uri."/$doc->{_id}";
                 return $self->render(json => { status => 'ok', data => $doc }) ;
             }
@@ -98,7 +98,7 @@ sub update{
     }
 
     delete $data->{_id};
-    $data->{owner} = $self->stash->{api_key_owner}{_id};
+    $data->{owner} = $self->stash->{api_key_owner_id};
     $self->render_later;
     $self->collection->update(
         ( { _id => $id, owner => $self->$data->{owner} }, $data ) => sub {
@@ -119,7 +119,7 @@ sub archive{
 	$self->collection->find_one(bson_oid $id, sub{
         my ($err, $doc) = @_;
         if ($doc){
-            if ($doc->{owner} eq $self->stash->{api_key_owner}{_id}){
+            if ($doc->{owner} eq $self->stash->{api_key_owner_id}){
                 $doc->{archived} = bson_true;
                 # TODO: needs to be non-blocking..
                 $self->collection->update({ _id => bson_oid $id }, $doc);
