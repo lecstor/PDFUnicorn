@@ -125,7 +125,7 @@ sub log_in{
     $self->render_later;
 
     my $user = $self->db_users->find_one(
-        { 'username' => lc($username) },
+        { 'email' => lc($username) },
         sub {
             my ($err, $doc) = @_;
             if ($doc){

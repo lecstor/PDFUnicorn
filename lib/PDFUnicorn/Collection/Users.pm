@@ -49,7 +49,7 @@ sub schemas{
 #    die 'not_email' if $email =~ /\s/;
 #    die 'not_email' unless $email =~ /.+\@[^\s.]+\.[^\s.]+/;
 #    
-#    my $user = $self->find_one({ 'username' => lc($email) });
+#    my $user = $self->find_one({ 'email' => lc($email) });
 #    return $user if $user;
 #    
 #    $data->{username} = lc($email);

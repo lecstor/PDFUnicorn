@@ -212,7 +212,7 @@ sub startup {
                 # Not authenticated
                 return $self->render(
                     template => "root/log_in",
-                    error => "Sorry, you'll need to login to get in here..",
+                    error => "Sorry, you need to log in..",
                     message => '',
                     next_page => '',
                     status => 401

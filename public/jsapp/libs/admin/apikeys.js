@@ -49,9 +49,9 @@ define(["layoutmanager","underscore"], function(Layout, _) {
             this.setView('.apikey-delete', button);
 
         },
-        render: function(){
-            this.$el.html(this.template(this.model.attributes));
-            return this;
+        afterRender: function(){
+            var colour = this.model.attributes['active'] ? '#FFFFFF' : '#FFD7D7';
+            this.$('td').css('background-color',colour);
         },
         deactivate: function(){
             this.model.save({'active': false});
@@ -67,10 +67,6 @@ define(["layoutmanager","underscore"], function(Layout, _) {
             tmp.remove();
             this.render();
         },
-        // destroy: function(){
-            // console.log('helo destroy');
-            // this.trigger('key:remove', this.model);
-        // }
     });
 
     var TableView = Backbone.Layout.extend({
