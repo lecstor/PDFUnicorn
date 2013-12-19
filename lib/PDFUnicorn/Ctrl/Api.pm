@@ -24,7 +24,6 @@ All calls to the API must use a secure (https) connection.
 
 sub create {
 	my $self = shift;
-    #warn Mojo::JSON->new->encode($self->req->json());
     my $data = $self->req->json();
     if (my $errors = $self->invalidate($self->item_schema, $data)){
         return $self->render(
@@ -54,12 +53,10 @@ sub find {
             json => { status => 'invalid_request', data => { errors => $errors } }
         );
     }
-    $query->{owner} = $self->api_key_owner;
+    $query->{owner} = $self->stash->{api_key_owner}{_id};
     
     $self->render_later;
-    
-    $self->app->log->debug('CTRL API FIND');
-    
+        
     $self->collection->find_all($query, sub{
         my ($cursor, $err, $docs) = @_;
         foreach my $doc (@$docs){
@@ -77,10 +74,9 @@ sub find_one {
     
     $self->render_later;
     $self->collection->find_one({ _id => bson_oid $id }, sub{
-        #warn Data::Dumper->Dumper(\@_);
         my ($err, $doc) = @_;
         if ($doc){
-            if ($doc->{owner} eq $self->api_key_owner){
+            if ($doc->{owner} eq $self->stash->{api_key_owner}{_id}){
                 $doc->{uri} = "/api/v1/".$self->uri."/$doc->{_id}";
                 return $self->render(json => { status => 'ok', data => $doc }) ;
             }
@@ -102,10 +98,10 @@ sub update{
     }
 
     delete $data->{_id};
-    $data->{owner} = $self->api_key_owner;
+    $data->{owner} = $self->stash->{api_key_owner}{_id};
     $self->render_later;
     $self->collection->update(
-        ( { _id => $id, owner => $self->api_key_owner }, $data ) => sub {
+        ( { _id => $id, owner => $self->$data->{owner} }, $data ) => sub {
             my ($collection, $err, $doc) = @_;
             if ($err){
                 warn $err;
@@ -123,7 +119,7 @@ sub archive{
 	$self->collection->find_one(bson_oid $id, sub{
         my ($err, $doc) = @_;
         if ($doc){
-            if ($doc->{owner} eq $self->api_key_owner){
+            if ($doc->{owner} eq $self->stash->{api_key_owner}{_id}){
                 $doc->{archived} = bson_true;
                 # TODO: needs to be non-blocking..
                 $self->collection->update({ _id => bson_oid $id }, $doc);

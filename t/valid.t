@@ -6,6 +6,7 @@ use PDFUnicorn::Valid;
 use DateTime;
 use Data::Dumper::Perltidy;
 use Clone qw(clone);
+use Try;
 
 
 my $valid = PDFUnicorn::Valid->new();
@@ -106,7 +107,7 @@ my $types = {
 $valid->set_schema(
     'Day', {
         _id => { type => 'oid' },
-        name => { type => 'string', required => 1, trace => 1 },
+        name => { type => 'string', required => 1 },
         user => { type => 'string', required => 1 },
         day => { type => 'date', required => 1 },
         created => { type => 'datetime' },
@@ -231,17 +232,21 @@ is($res->[0], q!Not an array: "meals"!);
 
 $day->{meals} = $meals;
 
-$res = $valid->validate({
-    _id => { type => 'string', match => qr/^[[:xdigit:]]{24}$/, bson => 'oid' },
-    name => { type => 'string', required => 1, bson=>'huh?' },
-    user => { type => 'string', required => 1 },
-    not_required => { type => 'string' },
-    day => { type => 'date', required => 1 },
-    created => { type => 'datetime' },
-    modified => { type => 'datetime' },
-    meals => { type => ['object'], schema => 'Meal' }
-}, clone($day));
-is(@$res, 0);
+try{
+    $res = $valid->validate({
+        _id => { type => 'string', match => qr/^[[:xdigit:]]{24}$/, bson => 'oid' },
+        name => { type => 'string', required => 1, bson=>'huh?' },
+        user => { type => 'string', required => 1 },
+        not_required => { type => 'string' },
+        day => { type => 'date', required => 1 },
+        created => { type => 'datetime' },
+        modified => { type => 'datetime' },
+        meals => { type => ['object'], schema => 'Meal' }
+    }, clone($day));
+    is(@$res, 0);
+} catch {
+    ok($_ =~ 'unknown bson type\: huh\? for name at', 'unknown bson type');
+}
 
 $day->{meals}[0]{public} = 0;
 $res = $valid->validate({

@@ -193,7 +193,7 @@ sub validate_attribute{
         } elsif ($bson_type eq 'time'){
             $value = bson_time $value;
         } else {
-            warn "unknown bson type: $bson_type for $attr_name";
+            die "unknown bson type: $bson_type for $attr_name";
         }
     }
     return $value;    

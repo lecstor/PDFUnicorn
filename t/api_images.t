@@ -34,7 +34,7 @@ my $api_key_data = $t->tx->res->json->{data}[0];
 my $api_key = $api_key_data->{key};
 my $owner_id = $api_key_data->{owner};
 
-warn "api_key: $api_key owner_id: $owner_id";
+#warn "api_key: $api_key owner_id: $owner_id";
 
 my $headers = { 'Authorization' => "Basic $api_key" };
 

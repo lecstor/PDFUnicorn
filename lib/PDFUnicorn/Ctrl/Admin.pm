@@ -35,7 +35,6 @@ sub apikey {
         my ($cursor, $err, $docs) = @_;
         my $json  = Mojo::JSON->new;
         if ($docs && @$docs){
-            warn Data::Dumper->Dumper($docs);
             $self->render( keys => $json->encode($docs) );
         } else {
             $self->db_apikeys->create({
@@ -68,7 +67,7 @@ sub get_pdf{
 	my $source = $self->param('source');
 
     my $grid = PDF::Grid->new({
-        #media_directory => $self->app->media_directory.'/'.$self->api_key_owner().'/',
+        #media_directory => $self->app->media_directory.'/'.$self->stash->{api_key_owner}{_id}.'/',
         source => $source,
     });
     

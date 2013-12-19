@@ -13,40 +13,27 @@ use Email::Simple::Creator;
 sub schemas{
     {
         'User', {
-            username => { type => 'string', required => 1 },
+            email => { type => 'string', required => 1 },
             firstname => { type => 'string' },
             surname => { type => 'string' },
             uri => { type => 'string' },
             password_key => { type => 'object' },
             timezone => { type => 'string' },
-            public => { type => 'boolean', bson => 'bool', required => 1 },
+            active => { type => 'boolean', bson => 'bool', required => 1 },
             created => { type => 'datetime', bson => 'time' },
             modified => { type => 'datetime', bson => 'time' },
         },
         'UserQuery', {
-            username => { type => 'string' },
+            email => { type => 'string' },
             firstname => { type => 'string' },
             surname => { type => 'string' },
             timezone => { type => 'string' },
-            public => { type => 'boolean', bson => 'bool' },
             password_key => { type => 'string' },
             created => { type => 'datetime', bson => 'time' },
             modified => { type => 'datetime', bson => 'time' },
         }
     }
 }
-
-before 'create' => sub {
-    my ($self, $data, $callback) = @_;
-    if (my $key = $data->{password_key}){
-        $data->{password_key} = {
-            key => $key,
-            created => bson_time,
-            reads => [], # [bson_time]
-            uses => [], # [bson_time]
-        }
-    }
-};
 
 #sub create{
 #    my ($self, $data, $callback) = @_;

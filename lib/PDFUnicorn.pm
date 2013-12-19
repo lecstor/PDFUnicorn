@@ -25,7 +25,7 @@ sub startup {
     if ($self->mode eq 'development'){
     	$self->attr(mango => sub { 
             #Mango->new('mongodb://<user>:<pass>@<server>/<database>');
-            Mango->new('mongodb://127.0.0.1/pdfunicorn');
+            Mango->new('mongodb://127.0.0.1/pdfunicorn_test');
         });
         $self->attr(media_directory => 'pdf_unicorn/images');
     } else {
@@ -45,17 +45,19 @@ sub startup {
     # ensure indexes
     
     # db.fs.chunks.ensureIndex({files_id:1, n:1}, {unique: true});
-    $db->collection('users')->ensure_index({ username => 1});
+    $db->collection('users')->ensure_index({ email => 1});
     $db->collection('users')->ensure_index({ 'password_key.key' => 1});
     
-    # do we need both? should they only have one attribute each?
-    $db->collection('apikeys')->ensure_index({
-        key => 1,
-        owner => 1,
-        trashed => 1,
-        name => 1,
-        active => 1
-    });
+    # use bson_doc to maintain order of attributes    
+    $db->collection('apikeys')->ensure_index(
+        bson_doc(
+            key => 1,
+            owner => 1,
+            trashed => 1,
+            name => 1,
+            active => 1
+        )
+    );
     #$db->collection('apikeys')->ensure_index({ key => 1 });
         
     
@@ -109,17 +111,14 @@ sub startup {
             my ($ctrl, $callback) = @_;
             my $user_id = $ctrl->session->{user_id};
             if ($callback){
-                warn "cb user_id: $user_id";
                 return $callback->($ctrl, undef) unless $user_id;
-                warn $ctrl->stash->{app_user} if $ctrl->stash->{app_user};
+                
                 return $callback->($ctrl, $ctrl->stash->{app_user}) if $ctrl->stash->{app_user};
-                warn "find_one";
                 $ctrl->app->db_users->find_one({ _id => bson_oid $user_id }, sub{
                     my ($err, $doc) = @_;
                     $callback->($ctrl, $doc);
                 });
             } else {
-                warn "nocb user_id: $user_id";
                 return undef unless $user_id;
                 my $user = $ctrl->stash->{app_user} ||=
                     $ctrl->app->db_users->find_one(bson_oid $user_id);
@@ -154,30 +153,6 @@ sub startup {
         }
     );
 
-    # TODO: see Ctrl::API::Documents::create
-    
-    $self->helper(
-        'api_key_owner' => sub {
-            my ($self, $callback) = @_;
-            my $token = $self->api_key;
-            
-            # lookup owner and return id
-            my $query = { key => $token };
-            
-            if ($callback){
-                $self->db_apikeys->find_one($query, sub{
-                    my ($err, $doc) = @_;
-                    # first arg gets discarded so add junk
-                    return $callback->('junk',$doc->{owner}) if $doc && $doc->{active};
-                    $callback->();
-                });
-            } else {
-                my $doc = $self->db_apikeys->find_one($query);
-                return $doc->{owner} if $doc && $doc->{active};
-                return;
-            }
-        }
-    );
 
     # Router
     my $r = $self->routes;
@@ -187,21 +162,11 @@ sub startup {
     my $api = $r->bridge('/api')->to(cb => sub {
         my $self = shift;
 
-        #warn Data::Dumper->Dumper($self->req->headers);
-
-        #my $auth = $self->req->headers->authorization;
-        #return 1 if $self->api_key eq '1e551787-903e-11e2-b2b6-0bbccb145af3';
-        
-        # Authenticated
-        #return 1 if $self->app_user && $self->app_user->{active};
-        
-        warn "!!!!!!!!!!!!!!!!!!!!";
         $self->app_user(sub{
             my ($self, $app_user) = @_;
-            warn Data::Dumper->Dumper(@_);
-            warn Data::Dumper->Dumper($app_user);
             if ($app_user && $app_user->{active}){
-                $self->stash->{app_user} = $app_user;
+                $self->stash->{app_user} = $app_user; # deprecated
+                $self->stash->{api_key_owner} = $app_user;
                 $self->continue; # make it so - same as returning true from the bridge
             } else {
                 # Not authenticated
@@ -221,11 +186,8 @@ sub startup {
 
     my $admin = $r->bridge('/admin')->to(cb => sub {
         my $self = shift;
-        warn "!!!!!!!!!!!!!!!!!!!!";
         $self->app_user(sub{
             my ($self, $app_user) = @_;
-            warn Data::Dumper->Dumper(@_);
-            warn Data::Dumper->Dumper($app_user);
             if ($app_user && $app_user->{active}){
                 $self->stash->{app_user} = $app_user;
                 $self->continue; # make it so - same as returning true from the bridge

@@ -25,7 +25,10 @@
 			% } elsif ($error eq 'bad_email'){
 				<p class="lead">Cmon, enter your real email address..</p>
 				%= include 'site/sign_up_form'
-			% } else {
+			% } elsif($error) {
+                <p class="lead">Error: <%= $error %></p>
+                %= include 'site/sign_up_form'
+            % } else {
 				<p class="lead">Hey, 
 				% if ($name){
 					<%= $name %>, 

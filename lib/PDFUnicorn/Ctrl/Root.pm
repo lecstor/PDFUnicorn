@@ -68,11 +68,25 @@ sub sign_up {
 	my $data = {
         email => $email_addr,
         firstname => $name,
-        password_key => $self->random_string(length => 24),
+        password_key => {
+            key => $self->random_string(length => 24),
+            created => bson_time,
+            reads => [], # [bson_time]
+            uses => [], # [bson_time]
+        },
         timezone => $timezone,
         active => bson_true,
     };
 
+    if (my $errors = $self->invalidate('User', $data)){
+        return $self->render(
+            email => $email_addr || '',
+            name => $name,
+            error => @$errors ? $errors->[0] : '',
+            errors => $errors || [],
+        );
+    }
+    
     $self->render_later;
 	
     $self->db_users->create($data, sub{

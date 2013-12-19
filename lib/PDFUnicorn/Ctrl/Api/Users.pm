@@ -15,52 +15,43 @@ sub query_schema{ 'UserQuery' }
 sub create {
 	my $self = shift;
     
+	my $response = { ok => 0 };
+
+    my $user_data = {
+        email => $data->{email},
+        firstname => $data->{firstname},
+        surname => $data->{surname},
+        password_key => {
+            key => $self->random_string(length => 24),
+            created => bson_time,
+            reads => [], # [bson_time]
+            uses => [], # [bson_time]
+        }
+    };
+    
     my $data = $self->req->json();
-    if (my $errors = $self->invalidate($self->item_schema, $data)){
+    if (my $errors = $self->invalidate($self->item_schema, $user_data)){
         return $self->render(
             status => 422,
             json => { status => 'invalid_request', data => { errors => $errors } }
         );
     }
     
-    $data->{owner} = $self->api_key_owner;
-    
     $self->render_later;
     
-    $self->collection->create($data, sub{
+    my $user = $self->collection->create($user_data, sub{
         my ($err, $doc) = @_;
-
+        if ($user){
+            $response->{data} = $user;
+            $response->{ok} = 1;
+            $self->db_users->send_password_key($user);
+            $self->session->{user} = $user;
+        }
+        
+        $self->render(json => $response);
+        
     });
-    
-	my $response = { ok => 0 };
-    my $user;
-    
-	try {
-        $user = $self->db_users->create({
-            email => $data->{email},
-            firstname => $data->{firstname},
-            surname => $data->{surname},
-            password_key => $self->random_string(length => 24),
-        });
-    }
-	catch {
-	    when (/not_email/){
-	        $response->{errors} = ["Sorry, that doesn't look like an email address to me.."];
-	    }
-	    when (/missing_email/){
-	        $response->{errors} = ["Sorry, you need to enter an email address.."];
-	    }
-	    default { warn "die"; die $self->dumper($_); }
-	};
 
-    if ($user){
-        $response->{data} = $user;
-        $response->{ok} = 1;
-        $self->db_users->send_password_key($user);
-        $self->session->{user} = $user;
-    }
-    
-    $self->render(json => $response);
 }
 
 1;

@@ -67,7 +67,7 @@ $t->post_ok(
     ->json_is( '/data/source' => '<doc><page>Test 2!<img src="cory_unicorn.jpeg" /></page></doc>', "correct source" )
     ->json_is( '/data/file' => undef, "file is undef" );
 
-warn Data::Dumper->Dumper($t->tx->res);
+#warn Data::Dumper->Dumper($t->tx->res);
 
 my $json = $t->tx->res->json->{data};
 is $json->{uri}, '/api/v1/documents/'.$json->{_id}, 'uri';
