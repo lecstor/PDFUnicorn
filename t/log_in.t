@@ -30,7 +30,7 @@ $t->post_ok('/log-in', => form => { username => 'Jason', password => 'something'
     ->status_is(200)
     ->element_exists('input[name="username"]')
     ->element_exists('input[name="password"]')
-    ->content_like(qr/username\/password is incorrect/);
+    ->content_like(qr/enter an email/);
 
 $t->post_ok('/sign-up', => form => {
     name => 'Jason',
@@ -43,12 +43,8 @@ my $body = $deliveries[0]->{email}->get_body;
 my ($code, $email_hash) = $body =~ /\/set-password\/(\w+)\/(\w+)/;
 
 $t->get_ok('/set-password/'.$code.'/'.$email_hash)->status_is(200);
-$t->post_ok('/set-password', => form => { password => 'pass' })->status_is(302);
+$t->post_ok('/admin/set-password', => form => { password => 'pass' })->status_is(302);
 
-#$t->get_ok('/app')->status_is(200);
-
-#done_testing();
-#__END__
 
 $t->get_ok('/log-out')->status_is(302);
 
@@ -58,10 +54,10 @@ $t->post_ok('/log-in', => form => { username => 'jason+1@lecstor.com', password 
     ->status_is(200)
     ->element_exists('input[name="username"]')
     ->element_exists('input[name="password"]')
-    ->content_like(qr/username\/password is incorrect/);
+    ->content_like(qr/that password is incorrect/);
     
 $t->post_ok('/log-in', => form => { username => 'jason+1@lecstor.com', password => 'pass' })
-    ->status_is(200);
+    ->status_is(302);
 
 #$t->get_ok('/app')->status_is(200);
 

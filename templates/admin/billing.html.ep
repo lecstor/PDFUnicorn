@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>PDFUnicorn - online PDF generator</title>
+    %= include 'site/head'
+    %= include 'mixpanel'
+  
+    <!-- record main page view -->
+    <script type="text/javascript">mixpanel.track('view-main-page')</script>
+</head>
+
+<body>
+    %= include 'site/header'
+
+    <div class="container">
+    
+        <div class="row row-offcanvas row-offcanvas-left">
+        
+            %= include 'admin/side_nav'   
+        
+            <div class="col-xs-12 col-sm-9">
+                <p class="pull-right visible-xs">
+                    <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
+                </p>
+                
+                <form action="" method="POST">
+                    <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                        data-key="<%= stripe_api_key %>"
+                        data-amount="2000"
+                        data-name="Demo Site"
+                        data-description="2 widgets ($20.00)"
+                        data-image="/128x128.png">
+                    </script>
+                </form>
+                
+            </div>
+        
+        </div>
+    </div>
+    
+    %= include 'site/foot'
+
+</body>
+</html>

@@ -57,7 +57,7 @@ sub find_one{
         });
         Mojo::IOLoop->start unless Mojo::IOLoop->is_running;
     } else {
-        return  $self->collection->find_one($query);
+        return $self->collection->find_one($query);
     }
     
 }

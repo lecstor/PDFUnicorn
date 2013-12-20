@@ -12,18 +12,21 @@ use Data::Dumper::Perltidy;
 # Disable IPv6, epoll and kqueue
 # BEGIN { $ENV{MOJO_NO_IPV6} = $ENV{MOJO_POLL} = 1 }
 
+BEGIN { $ENV{EMAIL_SENDER_TRANSPORT} = 'Test' }
 
 my $mango = Mango->new('mongodb://127.0.0.1/pdfunicorn_test');
 my $images = $mango->db->collection('images');
 my $documents = $mango->db->collection('documents');
 try{ $images->drop }
 try{ $documents->drop }
+my $users = $mango->db->collection('users');
+try{ $users->drop }
 
 my $results;
 
 my $t = Test::Mojo->new('PDFUnicorn');
 $t->app->mango($mango);
-$t->app->media_directory('t/media_directory');
+$t->app->config->{media_directory} = 't/media_directory';
 
 
 $t->post_ok('/sign-up', => form => { name => 'Jason', email => 'jason+1@lecstor.com', time_zone => 'America/Chicago' })

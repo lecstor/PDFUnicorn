@@ -108,7 +108,7 @@ sub sign_up {
                 });
             }
         } else {
-            $self->send_password_key($user);
+            $self->send_password_key($doc);
             $self->session->{user_id} = $doc->{_id};
         }
         
@@ -135,6 +135,15 @@ sub log_in{
 	my $username = $self->param('username');
 	my $password = $self->param('password');
 
+    unless ($username && $username =~ /^.+\@[^.\s]+\.[^\s]+$/){
+        return $self->render(
+            #template => 'root/sign_up_form',
+            email => $username,
+            error => 'Please enter an email address',
+            message => '',
+        );
+    }   
+    
     $self->render_later;
 
     my $user = $self->db_users->find_one(
@@ -142,25 +151,37 @@ sub log_in{
         sub {
             my ($err, $doc) = @_;
             if ($doc){
-                warn Data::Dumper->Dumper($doc);
-                if ($password){
-                    if ($self->db_users->check_password($doc, $password)){
-                        $self->session->{user_id} = $doc->{_id};
-                        $self->redirect_to('/admin');
-                        return;
-                    }
-                } else {
+                if (!$password){
+                    # no password given
                     $self->send_password_key($doc);
                     return $self->render(
                         error => '',
                         message => 'I\'ve emailed you a link to reset your password.'
                     );
+                } elsif ($password && $doc->{password}){
+                    if ($self->db_users->check_password($doc, $password)){
+                        $self->session->{user_id} = $doc->{_id};
+                        $self->redirect_to('/admin');
+                        return;
+                    } else {
+                        return $self->render(
+                            error => 'Sorry, that password is incorrect',
+                            message => '',
+                        );
+                    }
+                } else {
+                    # password given and document password exists
+                    return $self->render(
+                        error => 'You need a password key to access this account. Submit the log in form without a password and I\'ll send you one.',
+                        message => ''
+                    );
                 }
+            } else {
+                return $self->render(
+                    error => 'Sorry, we couldn\'t find an account for that email address.',
+                    message => '',
+                );
             }
-            $self->render(
-                error => 'Sorry, the username/password is incorrect',
-                message => '',
-            );
             
         }
     );
@@ -206,16 +227,6 @@ sub set_password_form{
 
 }
 
-sub set_password{
-    my $self = shift;
-	my $password = $self->param('password');
-	$self->db_users->set_password(
-        $self->stash->{app_user_id}, $password,
-        $self->random_string(length => 2),
-        sub{}
-    );
-    $self->redirect_to('/');
-}
 
 
 1;

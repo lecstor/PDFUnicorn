@@ -28,7 +28,7 @@
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-              	% if (app_user){
+              	% if ($app_user){
                     <li><a href="/admin">Account Admin</a></li>
                     <li><a href="/log-out">Log Out</a></li>
                 % } else {

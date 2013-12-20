@@ -61,13 +61,29 @@ sub personal {
 	$self->render();
 }
 
+sub set_password{
+    my $self = shift;
+    my $password = $self->param('password');
+    my $app_user_id = $self->stash->{app_user}{_id};
+    
+    return $self->redirect_to('/log-in') unless $app_user_id;
+    $self->render_later;
+    $self->db_users->set_password(
+        $app_user_id, $password,
+        $self->random_string(length => 2),
+        sub{
+            $self->redirect_to('/');
+        }
+    );
+    
+}
 
 sub get_pdf{
 	my $self = shift;
 	my $source = $self->param('source');
 
     my $grid = PDF::Grid->new({
-        #media_directory => $self->app->media_directory.'/'.$self->stash->{api_key_owner_id}.'/',
+        #media_directory => $self->config->{media_directory}.'/'.$self->stash->{api_key_owner_id}.'/',
         source => $source,
     });
     

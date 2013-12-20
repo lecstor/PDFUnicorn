@@ -10,6 +10,8 @@ use Try;
 
 use Data::Dumper::Perltidy;
 
+BEGIN { $ENV{EMAIL_SENDER_TRANSPORT} = 'Test' }
+
 my $mango = Mango->new('mongodb://127.0.0.1/pdfunicorn_test');
 my $documents = $mango->db->collection('documents');
 my $apikeys = $mango->db->collection('apikeys');
@@ -22,7 +24,7 @@ my $results;
 
 my $t = Test::Mojo->new('PDFUnicorn');
 $t->app->mango($mango);
-$t->app->media_directory('t/media_directory');
+$t->app->config->{media_directory} = 't/media_directory';
 
 
 $t->post_ok('/sign-up', => form => { name => 'Jason', email => 'jason+1@lecstor.com', time_zone => 'America/Chicago' })

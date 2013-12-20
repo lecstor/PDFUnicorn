@@ -42,7 +42,7 @@ sub create {
     $self->collection->create($image_data, sub{
         my ($err, $doc) = @_;
         my $doc_id = $doc->{_id};
-        my $base = $self->app->media_directory.'/'.$self->stash->{api_key_owner_id};
+        my $base = $self->config->{media_directory}.'/'.$self->stash->{api_key_owner_id};
         my $file = $base . "/$filename";
         
         make_path($base);
@@ -75,7 +75,7 @@ sub serve_doc{
     my ($self, $doc) = @_;
 	my $format = $self->stash('format');
     if ($format && $format eq 'binary'){
-        my $media_base = $self->app->media_directory.'/'.$self->stash->{api_key_owner_id};
+        my $media_base = $self->config->{media_directory}.'/'.$self->stash->{api_key_owner_id};
         $self->res->headers->content_disposition('attachment; filename='.$doc->{name}.';');
         my $local_file_name = $media_base.'/'.uri_escape($doc->{name});
         my ($ext) = $doc->{name} =~ /\.([^.]+)$/;

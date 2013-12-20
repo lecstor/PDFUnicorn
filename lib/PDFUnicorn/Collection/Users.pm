@@ -36,69 +36,10 @@ sub schemas{
     }
 }
 
-#sub create{
-#    my ($self, $data, $callback) = @_;
-#    die 'Need a callback!' unless $callback;
-#
-#    my $email = $data->{email};
-#    die 'missing_email' unless $email;
-#        
-#	$email =~ s/^\s+//;
-#	$email =~ s/\s+$//;
-#	
-#    die 'missing_email' unless $email;
-#    die 'not_email' if $email =~ /\s/;
-#    die 'not_email' unless $email =~ /.+\@[^\s.]+\.[^\s.]+/;
-#    
-#    my $user = $self->find_one({ 'email' => lc($email) });
-#    return $user if $user;
-#    
-#    $data->{username} = lc($email);
-#    $data->{created} = bson_time;
-#    $data->{modified} = $data->{created};
-#    
-#    if (my $key = $data->{password_key}){
-#        $data->{password_key} = {
-#            key => $key,
-#            created => bson_time,
-#            reads => [], # [bson_time]
-#            uses => [], # [bson_time]
-#        }
-#    }
-#        
-#    my $oid = $self->collection->insert($data);
-#    return $self->find_one({ _id => $oid });
-#}
-
-#sub send_password_key{
-#    my ($self, $user, $host) = @_;
-#    my $email_sum = md5_sum $user->{email};
-#    
-#    #warn "send_password_key.user.firstname: '". $user->{firstname}."'";
-#    
-#    my $to = $user->{firstname} ? qq("$user->{firstname}" <$user->{email}>) : $user->{email};
-#    
-#    $self->stash->{key_url} = $host ."/". $user->{password_key}{key} ."/". $email_sum;
-#    
-#    my $body = $self->render('email/password_key', partial => 1, format => 'text');
-#    
-#    my $email = Email::Simple->create(
-#        header => [
-#            To      => $to,
-#            From    => '"PDFUnicorn" <server@pdfunicorn.com>',
-#            Subject => "Set your password on PDFUnicorn",
-#        ],
-#        body => $body
-#    );
-#    sendmail($email);
-#}
 
 sub set_password{
     my ($self, $user_id, $password, $salt, $callback) = @_;
-    $password = crypt($password, $salt);
-    #warn "set_password: ".$password;
-    #warn "user id: ".$user->{_id};
-        
+    $password = crypt($password, $salt);        
     $self->collection->update(
         { _id => $user_id },
         { '$set' => { password => $password } },
@@ -106,11 +47,10 @@ sub set_password{
     );
 }
 
+
 sub check_password{
     my ($self, $user, $password) = @_;
-    #warn "check_password user: ".$user->{password}." pass: ".$password;
     my $passhash = crypt($password, $user->{password});
-    #warn $passhash;
     return 1 if $passhash eq $user->{password};
     return 0;
 }
