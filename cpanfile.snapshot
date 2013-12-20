@@ -66,10 +66,10 @@ DISTRIBUTIONS
       Class::Singleton 1.4
     requirements:
       ExtUtils::MakeMaker 0
-  Clone-0.35
-    pathname: G/GA/GARU/Clone-0.35.tar.gz
+  Clone-0.36
+    pathname: G/GA/GARU/Clone-0.36.tar.gz
     provides:
-      Clone 0.35
+      Clone 0.36
     requirements:
       ExtUtils::MakeMaker 0
       Test::More 0
@@ -100,16 +100,16 @@ DISTRIBUTIONS
     requirements:
       Digest::MD5 0
       ExtUtils::MakeMaker 0
-  DateTime-1.03
-    pathname: D/DR/DROLSKY/DateTime-1.03.tar.gz
+  DateTime-1.04
+    pathname: D/DR/DROLSKY/DateTime-1.04.tar.gz
     provides:
-      DateTime 1.03
-      DateTime::Duration 1.03
-      DateTime::Helpers 1.03
-      DateTime::Infinite 1.03
-      DateTime::Infinite::Future 1.03
-      DateTime::Infinite::Past 1.03
-      DateTime::LeapSecond 1.03
+      DateTime 1.04
+      DateTime::Duration 1.04
+      DateTime::Helpers 1.04
+      DateTime::Infinite 1.04
+      DateTime::Infinite::Future 1.04
+      DateTime::Infinite::Past 1.04
+      DateTime::LeapSecond 1.04
       inc::MyModuleBuild undef
     requirements:
       Carp 0
@@ -1779,10 +1779,10 @@ DISTRIBUTIONS
       Net::Domain 1.05
       Net::SMTP 1.03
       Test::More 0
-  Mango-0.19
-    pathname: S/SR/SRI/Mango-0.19.tar.gz
+  Mango-0.22
+    pathname: S/SR/SRI/Mango-0.22.tar.gz
     provides:
-      Mango 0.19
+      Mango 0.22
       Mango::BSON undef
       Mango::BSON::Binary undef
       Mango::BSON::Code undef
@@ -1864,8 +1864,8 @@ DISTRIBUTIONS
       perl 5.006
       strict 0
       warnings 0
-  Mojolicious-4.60
-    pathname: M/MR/MRAMBERG/Mojolicious-4.60.tar.gz
+  Mojolicious-4.63
+    pathname: S/SR/SRI/Mojolicious-4.63.tar.gz
     provides:
       Mojo undef
       Mojo::Asset undef
@@ -1928,7 +1928,7 @@ DISTRIBUTIONS
       Mojo::UserAgent::Server undef
       Mojo::UserAgent::Transactor undef
       Mojo::Util undef
-      Mojolicious 4.60
+      Mojolicious 4.63
       Mojolicious::Command undef
       Mojolicious::Command::cgi undef
       Mojolicious::Command::cpanify undef
@@ -1976,7 +1976,6 @@ DISTRIBUTIONS
       ojo undef
     requirements:
       ExtUtils::MakeMaker 0
-      perl 5.010001
   Mojolicious-Plugin-RenderFile-0.06
     pathname: K/KO/KOORCHIK/Mojolicious-Plugin-RenderFile-0.06.tar.gz
     provides:
@@ -2717,33 +2716,33 @@ DISTRIBUTIONS
       ExtUtils::MakeMaker 0
       LWP 0
       perl 5.00405
-  YAML-0.86
-    pathname: I/IN/INGY/YAML-0.86.tar.gz
+  YAML-0.88
+    pathname: I/IN/INGY/YAML-0.88.tar.gz
     provides:
-      Test::YAML 0.86
-      Test::YAML::Filter 0.86
-      YAML 0.86
-      YAML::Any 0.86
-      YAML::Dumper 0.86
-      YAML::Dumper::Base 0.86
-      YAML::Error 0.86
-      YAML::Loader 0.86
-      YAML::Loader::Base 0.86
-      YAML::Marshall 0.86
-      YAML::Mo 0.86
-      YAML::Node 0.86
-      YAML::Tag 0.86
-      YAML::Type::blessed 0.86
-      YAML::Type::code 0.86
-      YAML::Type::glob 0.86
-      YAML::Type::ref 0.86
-      YAML::Type::regexp 0.86
-      YAML::Type::undef 0.86
-      YAML::Types 0.86
-      YAML::Warning 0.86
-      yaml_mapping 0.86
-      yaml_scalar 0.86
-      yaml_sequence 0.86
+      Test::YAML 0.88
+      Test::YAML::Filter 0.88
+      YAML 0.88
+      YAML::Any 0.88
+      YAML::Dumper 0.88
+      YAML::Dumper::Base 0.88
+      YAML::Error 0.88
+      YAML::Loader 0.88
+      YAML::Loader::Base 0.88
+      YAML::Marshall 0.88
+      YAML::Mo 0.88
+      YAML::Node 0.88
+      YAML::Tag 0.88
+      YAML::Type::blessed 0.88
+      YAML::Type::code 0.88
+      YAML::Type::glob 0.88
+      YAML::Type::ref 0.88
+      YAML::Type::regexp 0.88
+      YAML::Type::undef 0.88
+      YAML::Types 0.88
+      YAML::Warning 0.88
+      yaml_mapping 0.88
+      yaml_scalar 0.88
+      yaml_sequence 0.88
     requirements:
       ExtUtils::MakeMaker 6.59
       perl 5.008001
