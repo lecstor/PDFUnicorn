@@ -29,29 +29,12 @@ sub startup {
 
     warn "Mode: ".$self->mode;
 
-    if ($self->mode eq 'development'){
-    	$self->attr(mango => sub { 
-            #Mango->new('mongodb://<user>:<pass>@<server>/<database>');
-            Mango->new('mongodb://127.0.0.1/pdfunicorn_test');
-        });
-        $self->attr(media_directory => 'pdf_unicorn/images');
-        $self->defaults({
-            media_directory => 'pdf_unicorn/images',
-            stripe_api_key => 'pk_test_J6K5pPQjNGp8FH56bLdfb4L6',
-            stripe_api_key_secret => 'sk_test_HKPw1c2FnyHyUk0wGOPmzCMy',
-        });
-    } else {
-    	$self->attr(mango => sub { 
-            #Mango->new('mongodb://<user>:<pass>@<server>/pdfunicorn');
-            Mango->new('mongodb://127.0.0.1/pdfunicorn_test');
-        });
-        $self->attr(media_directory => '/pdf_unicorn/images');
-        $self->defaults({
-            media_directory => '/pdf_unicorn/images',
-            stripe_api_key => 'pk_live_ZPhFhqH5VBURgs9EAhctaIps',
-            stripe_api_key_secret => 'sk_live_VfRus9IkglOrH4lgBRjIA8WM',
-        });
-    }
+    # add empty app_user to stash so templates can check it
+    $self->defaults->{app_user} = undef;
+
+    $self->attr(mango => sub { 
+        Mango->new($self->config->{mongodb}{connect});
+    });
     
     $self->helper('mango' => sub { shift->app->mango });
     $self->helper('gridfs' => sub { shift->app->gridfs });
@@ -76,9 +59,6 @@ sub startup {
             active => 1
         )
     );
-    #$db->collection('apikeys')->ensure_index({ key => 1 });
-        
-    
 
     my $validator = PDFUnicorn::Valid->new();
 
@@ -120,7 +100,7 @@ sub startup {
             $host .= ":$port" if $port && $port != 80;
             my $to = $user->{firstname} ? qq("$user->{firstname}" <$user->{email}>) : $user->{email};
             $ctrl->stash->{key_url} = 
-                $host ."/". $user->{password_key}{key} ."/". $email_sum;
+                $host ."/set-password/". $user->{password_key}{key} ."/". $email_sum;
             $ctrl->stash->{user_firstname} = $user->{firstname};
             my $email = Email::Simple->create(
                 header => [
@@ -146,27 +126,6 @@ sub startup {
         'validate_type' => sub {
             my ($ctrl, $type_name, $data) = @_;
             return $validator->validate_type($type_name, $data);
-        }
-    );
-        
-    $self->helper(
-        'app_user' => sub {
-            my ($ctrl, $callback) = @_;
-            my $user_id = $ctrl->session->{user_id};
-            if ($callback){
-                return $callback->($ctrl, undef) unless $user_id;
-                
-                return $callback->($ctrl, $ctrl->stash->{app_user}) if $ctrl->stash->{app_user};
-                $ctrl->app->db_users->find_one({ _id => bson_oid $user_id }, sub{
-                    my ($err, $doc) = @_;
-                    $callback->($ctrl, $doc);
-                });
-            } else {
-                return undef unless $user_id;
-                my $user = $ctrl->stash->{app_user} ||=
-                    $ctrl->app->db_users->find_one(bson_oid $user_id);
-                return $user;
-            }
         }
     );
 
@@ -219,22 +178,30 @@ sub startup {
         return;
     });
 
+
     my $admin = $r->bridge('/admin')->to(cb => sub {
         my $self = shift;
-        $self->app_user(sub{
-            my ($self, $app_user) = @_;
-            if ($app_user && $app_user->{active}){
-                $self->stash->{app_user} = $app_user;
+        
+        my $user_id = $self->session->{user_id};
+        warn "USERID: $user_id";
+        return unless $user_id;
+        
+        $self->app->db_users->find_one({ _id => bson_oid $user_id }, sub{
+            my ($err, $doc) = @_;
+            
+            if ($doc && $doc->{active}){
+                $self->stash->{app_user} = $doc;
                 $self->continue; # make it so - same as returning true from the bridge
             } else {
                 # Not authenticated
-                return $self->render(
+                $self->render(
                     template => "root/log_in",
                     error => "Sorry, you need to log in..",
                     message => '',
                     next_page => '',
                     status => 401
                 );
+                return;
             }
         });
         return;
@@ -259,12 +226,12 @@ sub startup {
 	#$r->get('/stripe/connect')->to('stripe#connect');
 	
 	$r->get('set-password/:code/:email')->to('root#set_password_form');
-	$r->post('set-password')->to('root#set_password');
 	
 	$admin->get('/')->to('admin#dash');
 	$admin->get('/api-key')->to('admin#apikey');
 	$admin->get('/billing')->to('admin#billing');
 	$admin->post('/get-pdf')->to('admin#get_pdf');
+	$admin->post('set-password')->to('admin#set_password');
 	
     $admin->get('/rest/apikeys')->to('admin-rest-apikeys#find');
     $admin->put('/rest/apikeys/:key')->to('admin-rest-apikeys#set_active');
