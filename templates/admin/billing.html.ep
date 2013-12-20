@@ -25,7 +25,7 @@
                 
                 <form action="" method="POST">
                     <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                        data-key="<%= stripe_api_key %>"
+                        data-key="<%= $config->{stripe}{public_api_key} %>"
                         data-amount="2000"
                         data-name="Demo Site"
                         data-description="2 widgets ($20.00)"
