@@ -3,6 +3,11 @@ use Mojo::Base 'Mojolicious';
 
 use Mango;
 use Mango::BSON ':bson';
+use Mojo::Util qw(md5_sum);
+
+use Email::Sender::Simple qw(sendmail);
+use Email::Simple;
+use Email::Simple::Creator;
 
 use PDFUnicorn::Collection::Users;
 use PDFUnicorn::Collection::Documents;
@@ -20,7 +25,9 @@ sub startup {
     $self->plugin('PODRenderer');
     $self->plugin('RenderFile');
     $self->plugin('Util::RandomString');
+    $self->plugin('Config');
 
+    warn "Mode: ".$self->mode;
 
     if ($self->mode eq 'development'){
     	$self->attr(mango => sub { 
@@ -28,11 +35,22 @@ sub startup {
             Mango->new('mongodb://127.0.0.1/pdfunicorn_test');
         });
         $self->attr(media_directory => 'pdf_unicorn/images');
+        $self->defaults({
+            media_directory => 'pdf_unicorn/images',
+            stripe_api_key => 'pk_test_J6K5pPQjNGp8FH56bLdfb4L6',
+            stripe_api_key_secret => 'sk_test_HKPw1c2FnyHyUk0wGOPmzCMy',
+        });
     } else {
     	$self->attr(mango => sub { 
-            Mango->new('mongodb://<user>:<pass>@<server>/pdfunicorn');
+            #Mango->new('mongodb://<user>:<pass>@<server>/pdfunicorn');
+            Mango->new('mongodb://127.0.0.1/pdfunicorn_test');
         });
         $self->attr(media_directory => '/pdf_unicorn/images');
+        $self->defaults({
+            media_directory => '/pdf_unicorn/images',
+            stripe_api_key => 'pk_live_ZPhFhqH5VBURgs9EAhctaIps',
+            stripe_api_key_secret => 'sk_live_VfRus9IkglOrH4lgBRjIA8WM',
+        });
     }
     
     $self->helper('mango' => sub { shift->app->mango });
@@ -45,7 +63,7 @@ sub startup {
     # ensure indexes
     
     # db.fs.chunks.ensureIndex({files_id:1, n:1}, {unique: true});
-    $db->collection('users')->ensure_index({ email => 1});
+    $db->collection('users')->ensure_index({ email => 1}, { unique => 1 });
     $db->collection('users')->ensure_index({ 'password_key.key' => 1});
     
     # use bson_doc to maintain order of attributes    
@@ -91,6 +109,31 @@ sub startup {
             }
         );
     }    
+    
+    $self->helper(
+        'send_password_key' => sub {
+            my ($ctrl, $user) = @_;
+            my $original_format = $ctrl->stash->{format};
+            my $email_sum = md5_sum $user->{email};
+            my $host = $ctrl->req->url->to_abs->host;
+            my $port = $ctrl->req->url->port;
+            $host .= ":$port" if $port && $port != 80;
+            my $to = $user->{firstname} ? qq("$user->{firstname}" <$user->{email}>) : $user->{email};
+            $ctrl->stash->{key_url} = 
+                $host ."/". $user->{password_key}{key} ."/". $email_sum;
+            $ctrl->stash->{user_firstname} = $user->{firstname};
+            my $email = Email::Simple->create(
+                header => [
+                    To      => $to,
+                    From    => '"PDFUnicorn" <server@pdfunicorn.com>',
+                    Subject => "Set your password on PDFUnicorn",
+                ],
+                body => $ctrl->render('email/password_key', partial => 1, format => 'text')
+            );
+            sendmail($email);
+            $ctrl->stash->{format} = $original_format;
+        }
+    );
     
     $self->helper(
         'invalidate' => sub {
@@ -175,31 +218,6 @@ sub startup {
         });
         return;
     });
-
-
-
-
-#        $self->app_user(sub{
-#            my ($self, $app_user) = @_;
-#            if ($app_user && $app_user->{active}){
-#                $self->stash->{app_user} = $app_user; # deprecated
-#                $self->stash->{api_key_owner} = $app_user;
-#                $self->continue; # make it so - same as returning true from the bridge
-#            } else {
-#                # Not authenticated
-#                return $self->render(
-#                    json => {
-#                        ok => 0,
-#                        text => "Sorry, you'll need to login to get in here..",
-#                    },
-#                    text => "Sorry, you'll need to login to get in here..",
-#                    status => 401
-#                );
-#            }
-#        });
-#
-#        return;
-#    });
 
     my $admin = $r->bridge('/admin')->to(cb => sub {
         my $self = shift;

@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Feedem - meal planning for the rest of us..</title>
-    <meta name="description" content="quick and easy meal planning and shopping list creation" />
+    <title>PDFUnicorn - Sign Up</title>
+    <meta name="description" content="online PDF renderer" />
 	%= include 'site/head'
 	%= include 'mixpanel'
   

@@ -76,6 +76,7 @@ sub sign_up {
         },
         timezone => $timezone,
         active => bson_true,
+        password => '',
     };
 
     if (my $errors = $self->invalidate('User', $data)){
@@ -88,24 +89,36 @@ sub sign_up {
     }
     
     $self->render_later;
-	
+    
     $self->db_users->create($data, sub{
         my ($err, $doc) = @_;
-        # TODO: Error handling!
         
-        if ($doc){
-            $self->db_users->send_password_key($doc);
+        if ($err){
+            if ($err =~ /^E11000 duplicate key error/){
+                # clear the error and send a key
+                $err = '';
+                return $self->db_users->find_one({ email => $data->{email} }, sub{
+                    my ($err, $doc) = @_;
+                    $self->send_password_key($doc) unless $err;
+                    $self->render(
+                        email => $data->{email},
+                        name => $data->{firstname},
+                        error => $err || '',
+                    );
+                });
+            }
+        } else {
+            $self->send_password_key($user);
             $self->session->{user_id} = $doc->{_id};
         }
         
         $self->render(
-            #template => 'root/sign_up_form',
             email => $doc ? $doc->{email} : $email_addr,
             name => $doc ? $doc->{firstname} : $name,
             error => $err || '',
         );
     });
-
+	
 }
 
 sub log_in_form {
@@ -129,6 +142,7 @@ sub log_in{
         sub {
             my ($err, $doc) = @_;
             if ($doc){
+                warn Data::Dumper->Dumper($doc);
                 if ($password){
                     if ($self->db_users->check_password($doc, $password)){
                         $self->session->{user_id} = $doc->{_id};
@@ -136,7 +150,7 @@ sub log_in{
                         return;
                     }
                 } else {
-                    $self->db_users->send_password_key($doc);
+                    $self->send_password_key($doc);
                     return $self->render(
                         error => '',
                         message => 'I\'ve emailed you a link to reset your password.'
@@ -196,7 +210,7 @@ sub set_password{
     my $self = shift;
 	my $password = $self->param('password');
 	$self->db_users->set_password(
-        $self->app_user_id, $password,
+        $self->stash->{app_user_id}, $password,
         $self->random_string(length => 2),
         sub{}
     );

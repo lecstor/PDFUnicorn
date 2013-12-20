@@ -2,12 +2,12 @@ package PDFUnicorn::Collection::Users;
 use base 'PDFUnicorn::Collection';
 use Moo;
 use Mango::BSON ':bson';
-use Mojo::Util qw(md5_sum);
+#use Mojo::Util qw(md5_sum);
 use Time::HiRes 'time';
 
-use Email::Sender::Simple qw(sendmail);
-use Email::Simple;
-use Email::Simple::Creator;
+#use Email::Sender::Simple qw(sendmail);
+#use Email::Simple;
+#use Email::Simple::Creator;
 
 
 sub schemas{
@@ -18,6 +18,7 @@ sub schemas{
             surname => { type => 'string' },
             uri => { type => 'string' },
             password_key => { type => 'object' },
+            password => { type => 'string' },
             timezone => { type => 'string' },
             active => { type => 'boolean', bson => 'bool', required => 1 },
             created => { type => 'datetime', bson => 'time' },
@@ -69,24 +70,28 @@ sub schemas{
 #    return $self->find_one({ _id => $oid });
 #}
 
-sub send_password_key{
-    my ($self, $user) = @_;
-    my $email_sum = md5_sum $user->{email};
-    
-    #warn "send_password_key.user.firstname: '". $user->{firstname}."'";
-    
-    my $to = $user->{firstname} ? qq("$user->{firstname}" <$user->{email}>) : $user->{email};
-    
-    my $email = Email::Simple->create(
-        header => [
-            To      => $to,
-            From    => '"PDFUnicorn" <server@pdfunicorn.com>',
-            Subject => "Set your password on PDFUnicorn",
-        ],
-        body => "http://pdfunicorn.com/set-password/" . $user->{password_key}{key} . "/". $email_sum ."\n",
-    );
-    sendmail($email);
-}
+#sub send_password_key{
+#    my ($self, $user, $host) = @_;
+#    my $email_sum = md5_sum $user->{email};
+#    
+#    #warn "send_password_key.user.firstname: '". $user->{firstname}."'";
+#    
+#    my $to = $user->{firstname} ? qq("$user->{firstname}" <$user->{email}>) : $user->{email};
+#    
+#    $self->stash->{key_url} = $host ."/". $user->{password_key}{key} ."/". $email_sum;
+#    
+#    my $body = $self->render('email/password_key', partial => 1, format => 'text');
+#    
+#    my $email = Email::Simple->create(
+#        header => [
+#            To      => $to,
+#            From    => '"PDFUnicorn" <server@pdfunicorn.com>',
+#            Subject => "Set your password on PDFUnicorn",
+#        ],
+#        body => $body
+#    );
+#    sendmail($email);
+#}
 
 sub set_password{
     my ($self, $user_id, $password, $salt, $callback) = @_;

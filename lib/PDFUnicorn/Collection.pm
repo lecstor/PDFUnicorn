@@ -20,7 +20,7 @@ sub create{
         
     my $oid = $self->collection->insert($data => sub{
         my ($coll, $err, $oid) = @_;
-        warn $err if $err;
+        return $callback->($err) if $err;
         $self->find_one({ _id => $oid }, $callback);
     });
     Mojo::IOLoop->start unless Mojo::IOLoop->is_running;    

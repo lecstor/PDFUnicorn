@@ -41,15 +41,13 @@ sub create {
     
     my $user = $self->collection->create($user_data, sub{
         my ($err, $doc) = @_;
-        if ($user){
-            $response->{data} = $user;
+        if ($doc){
+            $response->{data} = $doc;
             $response->{ok} = 1;
-            $self->db_users->send_password_key($user);
-            $self->session->{user} = $user;
+            $self->send_password_key($doc);
+            $self->session->{user} = $doc;
         }
-        
         $self->render(json => $response);
-        
     });
 
 }
