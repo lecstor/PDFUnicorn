@@ -212,6 +212,7 @@ sub set_password_form{
                 my $user_email_hash = md5_sum($doc->{email});
                 if ($user_email_hash eq $email_hash){
                     $self->session->{user_id} = $doc->{_id};
+                    $self->stash->{app_user} = $doc;
                     return $self->render(error => '', user => $doc);
                 }
             }
