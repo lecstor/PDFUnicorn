@@ -5,6 +5,8 @@ requires 'Mojolicious';
 requires 'Mojolicious::Plugin::PODRenderer';
 requires 'Mojolicious::Plugin::RenderFile';
 requires 'Mojolicious::Plugin::Util::RandomString';
+requires 'Mojolicious::Static';
+
 requires 'Moo';
 requires 'Time::HiRes';
 requires 'Try';
