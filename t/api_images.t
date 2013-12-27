@@ -37,16 +37,13 @@ my $api_key_data = $t->tx->res->json->{data}[0];
 my $api_key = $api_key_data->{key};
 my $owner_id = $api_key_data->{owner};
 
-#warn "api_key: $api_key owner_id: $owner_id";
-
-my $headers = { 'Authorization' => "Basic $api_key" };
 
 
 # create image
+my $url = $t->ua->server->url->userinfo("$api_key:")->path('/api/v1/images');
 
 $t->post_ok(
-    '/api/v1/images',
-    $headers,
+    $url,
     form => {
         image => { file => 't/media_directory/1e551787-903e-11e2-b2b6-0bbccb145af3/cory_unicorn.jpeg' },
         name => '/another_cory_unicorn.jpeg',
@@ -70,8 +67,7 @@ is $doc_uri, '/api/v1/images/'.$json->{_id}, 'uri';
 # list images
 
 $t->get_ok(
-    '/api/v1/images',
-    $headers,
+    $url,
 )->status_is(200)
     ->json_has( '/data/0/_id', "has _id" )
     ->json_has( '/data/0/modified', "has modified" )
@@ -82,10 +78,10 @@ $t->get_ok(
 
 
 # get image meta data
+$url = $t->ua->server->url->userinfo("$api_key:")->path($doc_uri.'.meta');
 
 $t->get_ok(
-    $doc_uri.'.meta',
-    $headers,
+    $url,
 )->status_is(200)
     ->json_has( '/data/_id', "has _id" )
     ->json_has( '/data/modified', "has modified" )
@@ -96,12 +92,9 @@ $t->get_ok(
 
 
 # get raw image
+$url = $t->ua->server->url->userinfo("$api_key:")->path($doc_uri);
 
-$t->get_ok(
-    $doc_uri,
-    $headers,
-)->status_is(200);
-
+$t->get_ok($url)->status_is(200);
 
 unlink('t/media_directory/1e551787-903e-11e2-b2b6-0bbccb145af3/another_cory_unicorn.jpeg');
 

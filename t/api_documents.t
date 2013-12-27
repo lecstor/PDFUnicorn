@@ -35,26 +35,22 @@ my $api_key_data = $t->tx->res->json->{data}[0];
 my $api_key = $api_key_data->{key};
 my $owner_id = $api_key_data->{owner};
 
-warn "api_key: $api_key owner_id: $owner_id";
-
-my $headers = { 'Authorization' => "Basic $api_key" };
 
 # create an image for our pdf
+my $url = $t->ua->server->url->userinfo("$api_key:")->path('/api/v1/images');
 $t->post_ok(
-    '/api/v1/images',
-    $headers,
+    $url,
     form => {
-        image => { file => 't/media_directory/1e551787-903e-11e2-b2b6-0bbccb145af3/cory_unicorn.jpeg' },
+        image => { file => './t/media_directory/1e551787-903e-11e2-b2b6-0bbccb145af3/cory_unicorn.jpeg' },
         name => 'cory_unicorn.jpeg',
     },
 )->status_is(200);
 
-
 # create document
 
+$url = $t->ua->server->url->userinfo("$api_key:")->path('/api/v1/documents');
 $t->post_ok(
-    '/api/v1/documents',
-    $headers,
+    $url,
     json => {
         id => 2,
         source => '<doc><page>Test 2!<img src="cory_unicorn.jpeg" /></page></doc>'
@@ -80,8 +76,7 @@ my $doc_uri = $json->{uri};
 # list documents
 
 $t->get_ok(
-    '/api/v1/documents',
-    $headers,
+    $url,
 )->status_is(200)
     ->json_has( '/data/0/_id', "has _id" )
     ->json_has( '/data/0/modified', "has modified" )
@@ -96,9 +91,9 @@ $t->get_ok(
 
 # get document meta data
 
+$url = $t->ua->server->url->userinfo("$api_key:")->path($doc_uri);
 $t->get_ok(
-    $doc_uri,
-    $headers,
+    $url,
 )->status_is(200)
     ->json_has( '/data/_id', "has _id" )
     ->json_has( '/data/modified', "has modified" )
@@ -114,8 +109,7 @@ $t->get_ok(
 # get document as PDF
 
 $t->get_ok(
-    $doc_uri.'.binary',
-    $headers,
+    $url.'.binary',
 )->status_is(200);
 
 ok($t->tx->res->body =~ /^%PDF/, 'doc is a PDF');
