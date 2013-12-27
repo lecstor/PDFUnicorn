@@ -138,20 +138,13 @@ sub startup {
     $self->helper(
         'api_key' => sub {
             my $ctrl = shift;
-            
-            my $auth = $ctrl->req->headers->authorization;
-            
+
+            my $auth = $ctrl->req->url->to_abs->userinfo;
             if ($auth){
-                my ($token) = $auth =~ /^Basic (.*)/;
+                my ($token) = $auth =~ /^(.*):/;
                 return $token;
-            } else {
-                $auth = $ctrl->req->url->to_abs->userinfo;
-                if ($auth){
-                    my ($token) = $auth =~ /^(.*):/;
-                    return $token;
-                }
             }
-            
+            return;            
         }
     );
 
@@ -165,13 +158,24 @@ sub startup {
         my $self = shift;
 
         my $token = $self->api_key;
+        unless ($token){
+            return $self->render(
+                json => { "status" => "nok", "error" => "Sorry, you need an authorisation header with your api key to use the API" },
+                status => 401
+            );
+        };
               
         # lookup owner and return id
         my $query = { key => $token };
 
         $self->db_apikeys->find_one($query, sub{
             my ($err, $doc) = @_;
-            return unless $doc;
+            unless ($doc){
+                return $self->render(
+                    json => { "status" => "nok", "error" => "Sorry, the api key you provided is invalid" },
+                    status => 401
+                );
+            };
             $self->stash->{api_key_owner_id} = $doc->{owner};
             $self->continue; # make it so - same as returning true from the bridge
         });
@@ -183,8 +187,16 @@ sub startup {
         my $self = shift;
         
         my $user_id = $self->session->{user_id};
-        warn "USERID: $user_id";
-        return unless $user_id;
+        if (!$user_id){
+            $self->render(
+                template => "root/log_in",
+                error => "Sorry, you need to log in..",
+                message => '',
+                next_page => '',
+                status => 401
+            );
+            return;
+        }
         
         $self->app->db_users->find_one({ _id => bson_oid $user_id }, sub{
             my ($err, $doc) = @_;
