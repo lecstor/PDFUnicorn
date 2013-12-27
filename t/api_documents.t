@@ -41,7 +41,7 @@ my $url = $t->ua->server->url->userinfo("$api_key:")->path('/api/v1/images');
 $t->post_ok(
     $url,
     form => {
-        image => { file => './t/media_directory/1e551787-903e-11e2-b2b6-0bbccb145af3/cory_unicorn.jpeg' },
+        image => { file => 't/media_directory/cory_unicorn.jpeg' },
         name => 'cory_unicorn.jpeg',
     },
 )->status_is(200);
