@@ -9,7 +9,7 @@ has collection => (
     is => 'ro',
 );
 
-sub schemas{}
+# sub schemas{}
 
 sub create{
     my ($self, $data, $callback) = @_;
@@ -27,19 +27,19 @@ sub create{
 }
 
 # hm different to find_all in the args we call the callback with.
-sub find{
-    my ($self, $query, $callback) = @_;
-    my $cursor = $self->collection->find($query);
-    if ($callback){
-        $cursor->all(sub {
-            my ($cursor, $err, $docs) = @_;
-            $callback->($docs);
-        });
-        Mojo::IOLoop->start unless Mojo::IOLoop->is_running;
-    } else {
-        return $cursor->all;
-    }
-}
+#sub find{
+#    my ($self, $query, $callback) = @_;
+#    my $cursor = $self->collection->find($query);
+#    if ($callback){
+#        $cursor->all(sub {
+#            my ($cursor, $err, $docs) = @_;
+#            $callback->($docs);
+#        });
+#        Mojo::IOLoop->start unless Mojo::IOLoop->is_running;
+#    } else {
+#        return $cursor->all;
+#    }
+#}
 
 sub find_and_modify{
     my ($self, $query, $callback) = @_;
