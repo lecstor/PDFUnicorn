@@ -7,10 +7,11 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <ul class="nav navbar-nav" style="width: 225px">
+            <a class="navbar-brand" style="font-size: 25px" href="/">PDFUnicorn</a>
+            <!-- ul class="nav navbar-nav" style="width: 225px">
                 <a href="http://www.mystockvectors.com/" class="pull-left" style="padding: 0 10px 0 0" target="_blank" ><img src="/img/unicorn_48.png" title="The Unicorn. drawn by Cory Thoman. named by me." alt="[logo] The Unicorn. drawn by Cory Thoman. named by me."></a>
                 <a class="navbar-brand" style="font-size: 25px" href="/">PDFUnicorn</a>
-            </ul>
+            </ul -->
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">

@@ -24,21 +24,16 @@
         <h2>Features</h2>
 	        <div>
 	        	<ul>
-	        		<li>REST based JSON API for loading images and generating PDF documents</li>
-	        		<li>Easily created custom documents using an html like markup language.</li>
-	        		<li>Repeatable headers and footers</li>
-	        		<li>Automatic text wrapping and paging</li>
+	        		<li>JSON based web service for loading images and generating PDF documents from your server.</li>
+	        		<li>Create custom PDF documents using a simple markup language.</li>
+                    <li>Automatic text wrapping and paging.</li>
+	        		<li>Include headers and footers that appear on each page.</li>
 	        	</ul>
 	       	</div>
         </div>
 
 	    <div class="signup">
-	        <h2 style="text-align: center">Generate up to 500 PDF documents free for 14 days</h2>
-	        <h3 style="text-align: center">No credit card required</h3>
-	        <h3 style="text-align: center">Choose a plan to suit your needs any time</h3>
-	        <div style="text-align: center">
-	        	<button class="btn btn-primary">Click here to start your free trial now</button>
-	       	</div>
+            %= include 'site/signup_prompt'
 	    </div>
     
     %= include 'site/foot'

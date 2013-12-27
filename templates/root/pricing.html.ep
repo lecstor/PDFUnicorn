@@ -31,12 +31,9 @@
     <div class="container">
 
 	  <div class="jumbotron clearfix">
-        <h2 style="text-align: center">Generate PDF documents free for 14 days on the Small plan</h2>
-        <h3 style="text-align: center">No credit card required</h3>
-        <h3 style="text-align: center">Choose a plan to suit your needs any time</h3>
-        <div style="text-align: center">
-        	<button class="btn btn-primary">Click here to start your free trial now</button>
-       	</div>
+	  
+        %= include 'site/signup_prompt'
+
         <div class="col-sm-3">
         <div class="pdfu-plan">
         	<h3 style="text-align: center">Small</h3>
@@ -67,14 +64,6 @@
       	</div>
 	    <h4 class="text-success" style="text-align: center; margin: 40px 0 0 0">a unit is a page of a PDF document or an image in a page</h4>
       </div>
-        <div class="text-muted col-sm-offset-3 col-sm-6">
-      ok, so the plan names aren't great but they're so relative to what you
-      want to do I couldn't come up with any better. If you're creating lower
-      value invoices then Small could be "Small Business" but if your invoices
-      are enterprise level then Small could be "Enterprise".. you could want to
-      create packing slips for DVDs or personalised "how to care for your Ferrari"
-      user manuals.  
-      	</div>
     </div>
 
     %= include 'site/foot'
