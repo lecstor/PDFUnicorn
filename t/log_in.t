@@ -22,7 +22,7 @@ $t->app->mango($mango);
 
 $t->get_ok('/')->status_is(200)->content_like(qr/PDFUnicorn/i);
 
-#$t->get_ok('/app')->status_is(302);
+$t->get_ok('/admin')->status_is(401);
 
 $t->get_ok('/log-in')->status_is(200); #->content_like(qr/action="\/log-in"/i);
 
@@ -37,6 +37,9 @@ $t->post_ok('/sign-up', => form => {
     email => 'jason+1@lecstor.com',
     time_zone => 'America/Chicago'
 })->status_is(200);
+
+$t->get_ok('/admin')->status_is(200);
+$t->get_ok('/admin?get-started')->status_is(200);
 
 my @deliveries = Email::Sender::Simple->default_transport->deliveries;
 my $body = $deliveries[0]->{email}->get_body;

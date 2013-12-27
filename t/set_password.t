@@ -23,6 +23,8 @@ $t->app->mango($mango);
 $users = $t->app->db_users;
 
 $t->get_ok('/')->status_is(200)->content_like(qr/PDFUnicorn/i);
+
+$t->post_ok('/admin/set-password', => form => { password => 'pass' })->status_is(401);
     
 $t->post_ok('/sign-up', => form => { name => 'Jason', email => 'jason+1@lecstor.com', time_zone => 'America/Chicago' })
     ->status_is(200)
@@ -56,7 +58,7 @@ Mojo::IOLoop->timer(3 => sub {
         ->content_like(qr/jason\+1\@lecstor\.com/)
         ->content_like(qr/Set Password/);
     
-    $t->post_ok('/set-password', => form => { password => 'pass' })->status_is(302);
+    $t->post_ok('/admin/set-password', => form => { password => 'pass' })->status_is(302);
     $t->header_like(Location => qr/\/$/);
     
     $t->get_ok('/set-password/BOGUS_CODE/'.$email_hash)->status_is(200)
