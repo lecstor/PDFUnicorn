@@ -66,7 +66,7 @@ sub set_password{
     my $password = $self->param('password');
     my $app_user_id = $self->stash->{app_user}{_id};
     
-    return $self->redirect_to('/log-in') unless $app_user_id;
+    #return $self->status_code(401)->redirect_to('/log-in') unless $app_user_id;
     $self->render_later;
     $self->db_users->set_password(
         $app_user_id, $password,
