@@ -100,16 +100,16 @@ DISTRIBUTIONS
     requirements:
       Digest::MD5 0
       ExtUtils::MakeMaker 0
-  DateTime-1.04
-    pathname: D/DR/DROLSKY/DateTime-1.04.tar.gz
+  DateTime-1.05
+    pathname: D/DR/DROLSKY/DateTime-1.05.tar.gz
     provides:
-      DateTime 1.04
-      DateTime::Duration 1.04
-      DateTime::Helpers 1.04
-      DateTime::Infinite 1.04
-      DateTime::Infinite::Future 1.04
-      DateTime::Infinite::Past 1.04
-      DateTime::LeapSecond 1.04
+      DateTime 1.05
+      DateTime::Duration 1.05
+      DateTime::Helpers 1.05
+      DateTime::Infinite 1.05
+      DateTime::Infinite::Future 1.05
+      DateTime::Infinite::Past 1.05
+      DateTime::LeapSecond 1.05
       inc::MyModuleBuild undef
     requirements:
       Carp 0
@@ -1654,6 +1654,12 @@ DISTRIBUTIONS
       IO::String 1.08
     requirements:
       ExtUtils::MakeMaker 0
+  Import-Into-1.002000
+    pathname: H/HA/HAARG/Import-Into-1.002000.tar.gz
+    provides:
+      Import::Into 1.002000
+    requirements:
+      ExtUtils::MakeMaker 0
   JSON-2.90
     pathname: M/MA/MAKAMAKA/JSON-2.90.tar.gz
     provides:
@@ -1976,6 +1982,7 @@ DISTRIBUTIONS
       ojo undef
     requirements:
       ExtUtils::MakeMaker 0
+      perl 5.010001
   Mojolicious-Plugin-RenderFile-0.06
     pathname: K/KO/KOORCHIK/Mojolicious-Plugin-RenderFile-0.06.tar.gz
     provides:
@@ -1994,33 +2001,36 @@ DISTRIBUTIONS
       Session::Token 1.007
       Test::More 0
       perl 5.010001
-  Moo-1.003001
-    pathname: M/MS/MSTROUT/Moo-1.003001.tar.gz
+  Moo-1.004000
+    pathname: H/HA/HAARG/Moo-1.004000.tar.gz
     provides:
       Method::Generate::Accessor undef
       Method::Generate::BuildAll undef
       Method::Generate::Constructor undef
       Method::Generate::DemolishAll undef
       Method::Inliner undef
-      Moo 1.003001
+      Moo 1.004000
       Moo::HandleMoose undef
       Moo::HandleMoose::FakeConstructor undef
       Moo::HandleMoose::FakeMetaClass undef
+      Moo::HandleMoose::_TypeMap undef
       Moo::Object undef
-      Moo::Role 1.003001
+      Moo::Role 1.004000
       Moo::_Utils undef
       Moo::_mro undef
       Moo::sification undef
-      Sub::Defer 1.003001
-      Sub::Quote 1.003001
+      Sub::Defer 1.004000
+      Sub::Quote 1.004000
       oo undef
     requirements:
       Class::Method::Modifiers 1.1
       Devel::GlobalDestruction 0.11
       Dist::CheckConflicts 0.02
       ExtUtils::MakeMaker 0
+      Import::Into 1.002
       Module::Runtime 0.012
       Role::Tiny 1.003002
+      perl 5.008001
       strictures 1.004003
   MooX-Types-MooseLike-0.25
     pathname: M/MA/MATEU/MooX-Types-MooseLike-0.25.tar.gz
