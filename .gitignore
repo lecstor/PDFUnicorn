@@ -10,3 +10,4 @@ local/
 /fonts_available.yaml
 /cover_db
 /node_modules
+t/media_directory/*/
