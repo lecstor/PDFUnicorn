@@ -40,7 +40,7 @@ sub schemas{
 sub set_password{
     my ($self, $user_id, $password, $salt, $callback) = @_;
     $password = crypt($password, $salt);        
-    $self->collection->update(
+    $self->update(
         { _id => $user_id },
         { '$set' => { password => $password } },
         $callback
