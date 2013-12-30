@@ -16,6 +16,8 @@ sub schemas{
             email => { type => 'string', required => 1 },
             firstname => { type => 'string' },
             surname => { type => 'string' },
+            plan => { type => 'object' },
+            stripe_id => { type => 'string' },
             uri => { type => 'string' },
             password_key => { type => 'object' },
             password => { type => 'string' },

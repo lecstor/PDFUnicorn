@@ -15,6 +15,8 @@ use PDFUnicorn::Collection::Images;
 use PDFUnicorn::Collection::APIKeys;
 use PDFUnicorn::Valid;
 
+use lib '../Mojolicious-Plugin-Stripe/lib';
+
 # This method will run once at server start
 sub startup {
     my $self = shift;
@@ -26,6 +28,7 @@ sub startup {
     $self->plugin('RenderFile');
     $self->plugin('Util::RandomString');
     $self->plugin('Config');
+    $self->plugin('Stripe');
 
     warn "Mode: ".$self->mode;
 

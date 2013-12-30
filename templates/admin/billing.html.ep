@@ -27,9 +27,12 @@
                     <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
                         data-key="<%= $config->{stripe}{public_api_key} %>"
                         data-amount="2000"
-                        data-name="Demo Site"
-                        data-description="2 widgets ($20.00)"
-                        data-image="/128x128.png">
+                        data-name="PDFUnicorn"
+                        data-description="PDFUnicorn Subscription"
+                        data-panel-label="Subscribe to PDFUnicorn"
+                        data-billing-address="true"
+                        data-email="<%= $app_user->{email} %>"
+                        data-label="Subscribe"
                     </script>
                 </form>
                 

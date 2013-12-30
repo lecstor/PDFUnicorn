@@ -34,34 +34,22 @@
 	  
         %= include 'site/signup_prompt'
 
-        <div class="col-sm-3">
-        <div class="pdfu-plan">
-        	<h3 style="text-align: center">Small</h3>
-        	<h2 style="text-align: center">$19/month</h2>
-        	<div style="text-align: center">500 units/month</div>
-      	</div>
-      	</div>
-        <div class="col-sm-3">
-        <div class="pdfu-plan">
-        	<h3 style="text-align: center">Medium</h3>
-        	<h2 style="text-align: center">$49/month</h2>
-        	<div style="text-align: center">1,500 units/month</div>
-      	</div>
-      	</div>
-        <div class="col-sm-3">
-        <div class="pdfu-plan">
-        	<h3 style="text-align: center">Large</h3>
-        	<h2 style="text-align: center">$99/month</h2>
-        	<div style="text-align: center">5,000 units/month</div>
-      	</div>
-      	</div>
-        <div class="col-sm-3">
-        <div class="pdfu-plan">
-        	<h3 style="text-align: center">X-Large</h3>
-        	<h2 style="text-align: center">$199/month</h2>
-        	<div style="text-align: center">20,000 units/month</div>
-      	</div>
-      	</div>
+        % foreach my $plan (@$plans){
+            <div class="col-sm-3">
+                <div class="pdfu-plan" <%== $plan->{recommended} ? 'style="background-color: #E0FFE0"' : '' %>>
+                    <form action="/sign-up" method="post">
+                        <input type="hidden" name="selected_plan" value="<%= $plan->{id} %>" />
+                        <h3 style="text-align: center"><%= $plan->{name} %></h3>
+                        <h2 style="text-align: center">$<%= $plan->{price} %>/month</h2>
+                        <div style="text-align: center"><%= $plan->{units} %> units/month</div>
+                        <div style="text-align: center">
+                            <button type="submit" class="btn btn-primary btn-lg">Start <%= $plan->{name} %> free trial</button>
+                        </div>
+                    </form>         
+                </div>
+            </div>
+        % }
+        
 	    <h4 class="text-success" style="text-align: center; margin: 40px 0 0 0">a unit is a page of a PDF document or an image in a page</h4>
       </div>
     </div>

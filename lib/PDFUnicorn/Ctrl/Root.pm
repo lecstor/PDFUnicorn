@@ -26,7 +26,7 @@ sub features {
 
 sub pricing {
 	my $self = shift;
-    $self->render();
+    $self->render( plans => [sort { $a->{price} <=> $b->{price} } values(%{$self->config->{plans}})] );
 }
 
 sub about {
@@ -36,7 +36,8 @@ sub about {
 
 sub sign_up_form {
 	my $self = shift;
-    $self->render(name => '', email => '', error => '');
+	my $plan = $self->param('plan');
+    $self->render(name => '', email => '', error => '', selected_plan => $plan);
 }
 
 sub sign_up {
@@ -44,10 +45,14 @@ sub sign_up {
 
 	my $name = $self->param('name');
 	my $email_addr = $self->param('email');
+    my $plan_id = $self->param('selected_plan');
 	my $timezone = $self->param('timezone');
 	my $email_length = length($email_addr);
+	my $plan = $self->config->{plans}{$plan_id};
 	
-	for my $each (($name,$email_addr,$timezone)){
+	warn "params: $name $email_addr $plan_id";
+	
+	foreach my $each (($name,$email_addr,$timezone)){
 	    next unless $each;
 	    $each =~ s/^\s+//;
 	    $each =~ s/\s+$//;
@@ -58,7 +63,8 @@ sub sign_up {
             #template => 'root/sign_up_form',
             email => $email_addr,
             name => $name,
-            error => $email_length ? 'bad_email' : 'missing_email',
+            selected_plan => $plan,
+            error => $email_length ? 'bad_email' : ($name ? 'missing_email' : 'show_form'),
         );
 	}	
 	
@@ -77,18 +83,48 @@ sub sign_up {
         timezone => $timezone,
         active => bson_true,
         password => '',
+        plan => $plan,
     };
 
     if (my $errors = $self->invalidate('User', $data)){
         return $self->render(
             email => $email_addr || '',
             name => $name,
+            selected_plan => $plan,
             error => @$errors ? $errors->[0] : '',
             errors => $errors || [],
         );
     }
     
     $self->render_later;
+        
+    $self->on(finish => sub{
+        my $ctrl = shift;
+        warn "create stripe customer";
+        my $user = $self->stash->{new_user};
+        if ($user){
+            my $user_id = $user->{_id};
+            my $users_collection = $ctrl->db_users;
+            my $customer = $self->stripe->customers->create(
+                {
+                    plan => $user->{plan}{id},
+                    email => $user->{email},
+                    #metadata => { pdfu_id => $user_id },
+                },
+                sub{
+                    my ($client, $stripe_customer) = @_;
+                    warn "new stripe customer: ".Data::Dumper->Dumper([$stripe_customer,$user_id]);
+                    $users_collection->update(
+                        { _id => $user_id },
+                        #{ email => $stripe_customer->{email} },
+                        { '$set' => { stripe_id => $stripe_customer->{id} } },
+                        sub {},
+                    );
+                },
+            );
+        }
+    });
+    
     
     $self->db_users->create($data, sub{
         my ($err, $doc) = @_;
@@ -99,24 +135,38 @@ sub sign_up {
                 $err = '';
                 return $self->db_users->find_one({ email => $data->{email} }, sub{
                     my ($err, $doc) = @_;
+                    #$self->stash->{new_user} = $doc;
+                    #warn 'new_user: '.Data::Dumper->Dumper($doc);
+            
                     $self->send_password_key($doc) unless $err;
+                    
+                    $self->stash->{new_user} = $doc unless $doc->{stripe_id};
+                    
                     $self->render(
                         email => $data->{email},
                         name => $data->{firstname},
                         error => $err || '',
+                        selected_plan => $plan,
                     );
                 });
             }
         } else {
             $self->send_password_key($doc);
             $self->session->{user_id} = $doc->{_id};
+            $self->stash->{new_user} = $doc;
+            warn 'new_user: '.Data::Dumper->Dumper($doc);
+            
         }
         
         $self->render(
             email => $doc ? $doc->{email} : $email_addr,
             name => $doc ? $doc->{firstname} : $name,
             error => $err || '',
+            selected_plan => $plan,
         );
+        
+        return 0;
+        
     });
 	
 }
