@@ -70,10 +70,27 @@ sub find_all{
     Mojo::IOLoop->start unless Mojo::IOLoop->is_running;
 }
 
+
+=item
+
+    Args:
+        - hashref defining find filters
+        - hashref of update data
+        - callback
+
+    $callback->($collection, $err, $doc);
+
+=cut
+
 sub update{
-    my ($self, $query, $data, $callback) = @_;
+    my $self = shift;
+    my $query = shift;
+    my $data = shift;
+    my $callback = ref($_[-1]) eq 'CODE' ? pop : undef;
+    my $options = shift || {};
+    #my ($self, $query, $data, $callback) = @_;
     die 'Need a callback!' unless $callback;
-    $self->collection->update(($query, $data) => $callback);
+    $self->collection->update(($query, $data, $options) => $callback);
     Mojo::IOLoop->start unless Mojo::IOLoop->is_running;
 }
 

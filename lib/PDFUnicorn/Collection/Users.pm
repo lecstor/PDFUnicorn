@@ -4,6 +4,7 @@ use Moo;
 use Mango::BSON ':bson';
 #use Mojo::Util qw(md5_sum);
 use Time::HiRes 'time';
+use Session::Token;
 
 #use Email::Sender::Simple qw(sendmail);
 #use Email::Simple;
@@ -31,7 +32,6 @@ sub schemas{
             firstname => { type => 'string' },
             surname => { type => 'string' },
             timezone => { type => 'string' },
-            password_key => { type => 'string' },
             created => { type => 'datetime', bson => 'time' },
             modified => { type => 'datetime', bson => 'time' },
         }
@@ -49,6 +49,42 @@ sub set_password{
     );
 }
 
+
+sub refresh_password_key{
+    my ($self, $user, $callback) = @_;
+    $self->update(
+        { _id => $user->{_id} },
+        { 
+            password_key => {
+                key => Session::Token->new(length => 24)->get,
+                created => bson_time,
+                reads => [], # [bson_time]
+                uses => [], # [bson_time]
+            },
+        },
+        sub{
+            my ($collection, $err, $doc) = @_;
+            warn $err if $err;
+            $callback->($self, $err, $doc);
+        }
+    );
+}
+
+sub find_by_password_key{
+    my ($self, $key, $callback) = @_;
+    $self->find_one({'password_key.key' => $key }, sub{
+        my ($err, $doc) = @_;
+        if ($doc){
+            if ($doc->{password_key}{created} < DateTime->now - DateTime::Duration->new(days => 1)){
+                $self->refresh_password_key($doc, $callback);
+            } else {
+                $callback->($self, $err, $doc);
+            }
+        } else {
+            $callback->($self, $err);
+        }
+    });
+}
 
 sub check_password{
     my ($self, $user, $password) = @_;

@@ -109,14 +109,13 @@ sub sign_up {
                 {
                     plan => $user->{plan}{id},
                     email => $user->{email},
-                    #metadata => { pdfu_id => $user_id },
+                    #metadata => { pdfu_id => $user_id }, # this breaks it.
                 },
                 sub{
                     my ($client, $stripe_customer) = @_;
                     warn "new stripe customer: ".Data::Dumper->Dumper([$stripe_customer,$user_id]);
                     $users_collection->update(
                         { _id => $user_id },
-                        #{ email => $stripe_customer->{email} },
                         { '$set' => { stripe_id => $stripe_customer->{id} } },
                         sub {},
                     );
@@ -254,7 +253,9 @@ sub set_password_form{
 
     $self->render_later;
 	
-    my $user = $self->db_users->find_one({'password_key.key' => $code },
+	
+	$self->db_users->find_by_password_key($code, 
+    #$self->db_users->find_one({'password_key.key' => $code },
         sub {
             my ($err, $doc) = @_;
             # TODO: Error handling!
