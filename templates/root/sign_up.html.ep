@@ -23,7 +23,7 @@
 				<p class="lead">Sorry, you'll need to enter an email address at least..</p>
 				%= include 'site/sign_up_form'
 			% } elsif ($error eq 'bad_email'){
-				<p class="lead">Cmon, enter your real email address..</p>
+				<p class="lead">Please enter your real email address..</p>
 				%= include 'site/sign_up_form'
             % } elsif ($error eq 'show_form'){
                 %= include 'site/sign_up_form'
@@ -36,10 +36,10 @@
 					<%= $name %>, 
 				% }
 				thanks for your interest in PDFUnicorn. I've sent you an email with a link to set
-				your password. The link will be valid for 7 days so please set your password soon.
+				your password. The link will be valid for 24 hours so please set your password soon.
 				</p>
 				<p>
-					<a href="" class="btn btn-primary pull-right">Start making PDFs!</a>
+					<a href="/admin" class="btn btn-primary pull-right">Start making PDFs!</a>
 				</p>
 				<p class="lead text-muted">
 					If you have any thoughts/wants/hopes regarding PDFUnicorn you feel like sharing,
