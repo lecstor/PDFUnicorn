@@ -26,7 +26,20 @@ requirejs.config({
     }
 });
 
-require(['admin/apikeys'], function(apiKeys){
-    apiKeys.table.setElement($('#api-keys-table'));
-    apiKeys.table.render();
-});
+var path = location.pathname;
+console.log(path);
+
+if (path == '/admin/api-key'){
+    require(['admin/apikeys'], function(apiKeys){
+        apiKeys.table.setElement($('#api-keys-table'));
+        apiKeys.table.render();
+    });
+} else if(path == '/admin/billing') {
+    require(['admin/stripe'], function(stripe){
+        stripe.subscription.setElement($('#stripe-subscription'));
+        stripe.subscription.model.fetch({ success:
+            function(){ stripe.subscription.render(); }
+        });
+    });
+}
+
