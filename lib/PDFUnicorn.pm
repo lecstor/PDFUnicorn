@@ -96,25 +96,36 @@ sub startup {
     $self->helper(
         'send_password_key' => sub {
             my ($ctrl, $user) = @_;
-            my $original_format = $ctrl->stash->{format};
-            my $email_sum = md5_sum $user->{email};
-            my $host = $ctrl->req->url->to_abs->host;
-            my $port = $ctrl->req->url->port;
-            $host .= ":$port" if $port && $port != 80;
-            my $to = $user->{firstname} ? qq("$user->{firstname}" <$user->{email}>) : $user->{email};
-            $ctrl->stash->{key_url} = 
-                $host ."/set-password/". $user->{password_key}{key} ."/". $email_sum;
-            $ctrl->stash->{user_firstname} = $user->{firstname};
-            my $email = Email::Simple->create(
-                header => [
-                    To      => $to,
-                    From    => '"PDFUnicorn" <server@pdfunicorn.com>',
-                    Subject => "Set your password on PDFUnicorn",
-                ],
-                body => $ctrl->render('email/password_key', partial => 1, format => 'text')
-            );
-            sendmail($email);
-            $ctrl->stash->{format} = $original_format;
+            
+            my $callback = sub{
+                my ($err, $user) = @_;
+                my $original_format = $ctrl->stash->{format};
+                my $email_sum = md5_sum $user->{email};
+                my $host = $ctrl->req->url->to_abs->host;
+                my $port = $ctrl->req->url->port;
+                $host .= ":$port" if $port && $port != 80;
+                my $to = $user->{firstname} ? qq("$user->{firstname}" <$user->{email}>) : $user->{email};
+                $ctrl->stash->{key_url} = 
+                    $host ."/set-password/". $user->{password_key}{key} ."/". $email_sum;
+                $ctrl->stash->{user_firstname} = $user->{firstname};
+                my $email = Email::Simple->create(
+                    header => [
+                        To      => $to,
+                        From    => '"PDFUnicorn" <server@pdfunicorn.com>',
+                        Subject => "Set your password on PDFUnicorn",
+                    ],
+                    body => $ctrl->render('email/password_key', partial => 1, format => 'text')
+                );
+                sendmail($email);
+                $ctrl->stash->{format} = $original_format;
+            };
+            
+            if (DateTime->from_epoch(epoch => $user->{password_key}{created}->to_epoch) < DateTime->now - DateTime::Duration->new(days => 1)){
+                $ctrl->db_users->refresh_password_key($user, $callback);
+            } else {
+                $callback->(undef, $user);
+            }
+            
         }
     );
     
@@ -248,6 +259,8 @@ sub startup {
 	$admin->post('/get-pdf')->to('admin#get_pdf');
 	$admin->post('set-password')->to('admin#set_password');
 	
+    $admin->get('/stripe/customer')->to('admin-stripe-customer#find');
+    
     $admin->get('/rest/apikeys')->to('admin-rest-apikeys#find');
     $admin->put('/rest/apikeys/:key')->to('admin-rest-apikeys#set_active');
     $admin->delete('/rest/apikeys/:key')->to('admin-rest-apikeys#delete');
