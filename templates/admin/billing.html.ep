@@ -25,29 +25,19 @@
                         <h3 class="panel-title">Your Current Plan</h3>
                     </div>
                     <div class="panel-body" id="stripe-subscription">
-                        <%= $app_user->{plan}{name} %>
+                        Loading..
                     </div>
                 </div>            
             
-            
-            
-                <p class="pull-right visible-xs">
-                    <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
-                </p>
-                
-                <form action="" method="POST">
-                    <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                        data-key="<%= $config->{stripe}{public_api_key} %>"
-                        data-amount="<%= $app_user->{plan}{price} %>"
-                        data-name="PDFUnicorn"
-                        data-description="PDFUnicorn Subscription"
-                        data-panel-label="Subscribe to PDFUnicorn"
-                        data-billing-address="true"
-                        data-email="<%= $app_user->{email} %>"
-                        data-label="Activate Billing">
-                    </script>
-                </form>
-                
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Your Payment Details</h3>
+                    </div>
+                    <div class="panel-body" id="stripe-payment_details">
+                        Loading..
+                    </div>
+                </div>            
+
             </div>
         
         </div>
@@ -58,7 +48,28 @@
     <script id="stripe-subscription-tmpl" type="template">
         <table class="table table-striped table-hover">
             <tbody><tr><td>
-                plan name: {{subscription.plan.name}} amount: {{subscription.plan.amount}} start: {{subscription.start}}
+                {% if (subscription.status == 'trialing'){ %}
+                    <h4>Your subscription is currently in trial mode <small>ends {%= subscription.trial_end%}</h4>
+                {% } else if (subscription.status == 'active'){ %}
+                {% } else if (subscription.status == 'past_due'){ %}
+                    <h4>Payment is now due. Please add your credit card details below to avoid your subscription being cancelled.</h4>
+                {% } else if (subscription.status == 'unpaid'){ %}
+                    <h4>Payment is now due. Please add your credit card details below to avoid your subscription being cancelled.</h4>
+                {% } else if (subscription.status == 'canceled'){ %}
+                {% } %}
+                <p>You are on the {%= subscription.plan.name%} plan at ${%= subscription.plan.amount/100 %} per {%= subscription.plan.interval%}</p>
+            </td></tr></tbody>
+        </table>
+    </script>
+    
+    <script id="stripe-payment_details-tmpl" type="template">
+        <table class="table table-striped table-hover">
+            <tbody><tr><td>
+                {% if (default_card){ %}
+                    Update your credit card details <button id="stripeButton" class="btn btn-primary">Update Card</button>
+                {% } else { %}
+                    Add your credit card details <button id="stripeButton" class="btn btn-primary">Add Card</button>
+                {% } %}
             </td></tr></tbody>
         </table>
     </script>

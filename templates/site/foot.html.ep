@@ -1,2 +1,3 @@
 
+    <doc style="display: none" id="stripe-public_api_key"><%= $config->{stripe}{public_api_key} %></doc>
     <script src="/jsapp/require.js" data-main="/jsapp/main"></script>

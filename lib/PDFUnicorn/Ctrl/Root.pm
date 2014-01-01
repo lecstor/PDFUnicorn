@@ -78,8 +78,8 @@ sub sign_up {
         password_key => {
             key => $self->random_string(length => 24),
             created => bson_time,
-            reads => [], # [bson_time]
-            uses => [], # [bson_time]
+            reads => [],
+            uses => []
         },
         timezone => $timezone,
         active => bson_true,
