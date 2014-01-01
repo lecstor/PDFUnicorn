@@ -51,6 +51,7 @@ sub sign_up {
 	my $plan = $self->config->{plans}{$plan_id};
 	
 	warn "params: $name $email_addr $plan_id";
+	warn Data::Dumper->Dumper($self->config->{plans});
 	
 	foreach my $each (($name,$email_addr,$timezone)){
 	    next unless $each;
@@ -103,6 +104,7 @@ sub sign_up {
         warn "create stripe customer";
         my $user = $self->stash->{new_user};
         if ($user){
+            warn Data::Dumper->Dumper($user);
             my $user_id = $user->{_id};
             my $users_collection = $ctrl->db_users;
             my $customer = $self->stripe->customers->create(
@@ -254,17 +256,27 @@ sub set_password_form{
     $self->render_later;
 	
 	
-	$self->db_users->find_by_password_key($code, 
-    #$self->db_users->find_one({'password_key.key' => $code },
+	#$self->db_users->find_by_password_key($code, 
+    $self->db_users->find_one({'password_key.key' => $code },
         sub {
             my ($err, $doc) = @_;
             # TODO: Error handling!
             if ($doc){
-                my $user_email_hash = md5_sum($doc->{email});
-                if ($user_email_hash eq $email_hash){
-                    $self->session->{user_id} = $doc->{_id};
-                    $self->stash->{app_user} = $doc;
-                    return $self->render(error => '', user => $doc);
+                if (DateTime->from_epoch(epoch => $doc->{password_key}{created}->to_epoch) >= DateTime->now - DateTime::Duration->new(days => 1)){
+                    my $user_email_hash = md5_sum($doc->{email});
+                    if ($user_email_hash eq $email_hash){
+                        
+                        $self->session->{user_id} = $doc->{_id};
+                        $self->stash->{app_user} = $doc;
+                        return $self->render(error => '', user => $doc);
+                    }
+                } else {
+                    return $self->render(
+                        template => 'root/log_in',
+                        email => '',
+                        message => '',
+                        error => "Sorry, that account key has expired. Please enter your email address below and I'll send you a new account key.",
+                    );
                 }
             }
             $self->render(

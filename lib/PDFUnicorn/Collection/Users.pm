@@ -70,21 +70,23 @@ sub refresh_password_key{
     );
 }
 
-sub find_by_password_key{
-    my ($self, $key, $callback) = @_;
-    $self->find_one({'password_key.key' => $key }, sub{
-        my ($err, $doc) = @_;
-        if ($doc){
-            if ($doc->{password_key}{created} < DateTime->now - DateTime::Duration->new(days => 1)){
-                $self->refresh_password_key($doc, $callback);
-            } else {
-                $callback->($self, $err, $doc);
-            }
-        } else {
-            $callback->($self, $err);
-        }
-    });
-}
+#sub find_by_password_key{
+#    my ($self, $key, $callback) = @_;
+#    $self->find_one({'password_key.key' => $key },
+#    sub{
+#        my ($err, $doc) = @_;
+#        if ($doc){
+#            if (DateTime->from_epoch(epoch => $doc->{password_key}{created}->to_epoch) < DateTime->now - DateTime::Duration->new(days => 1)){
+#                # callback gets called without user doc as key was invalid
+#                $self->refresh_password_key($doc, sub{ my ($err, $doc) = @_; $callback->($err) });
+#            } else {
+#                $callback->($self, $err, $doc);
+#            }
+#        } else {
+#            $callback->($self, $err);
+#        }
+#    });
+#}
 
 sub check_password{
     my ($self, $user, $password) = @_;
