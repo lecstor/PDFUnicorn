@@ -45,8 +45,8 @@ if (path == '/admin/api-key'){
 } else if(path == '/admin/billing') {
 
     require(['jquery', 'admin/stripe'], function($, stripe){
-        stripe.payment_details.public_api_key = $('#stripe-public_api_key').val();
-        console.log(stripe.payment_details.public_api_key);
+        //stripe.payment_details.public_api_key = $('#stripe-public_api_key').text();
+        //stripe.payment_details['public_api_key'] = $('#stripe-public_api_key').text();
         stripe.customer_model.fetch({
             success: function(){
                 stripe.subscription.setElement($('#stripe-subscription'));

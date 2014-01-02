@@ -20,6 +20,9 @@ define(["layoutmanager","underscore", "moment", "stripe_checkout"], function(Lay
             data.subscription.current_period_end = moment.unix(data.subscription.current_period_end).format("ddd, Do MMM YYYY, h:mm:ssa");
             data.subscription.trial_start = moment.unix(data.subscription.trial_start).format("ddd, Do MMM YYYY, h:mm:ssa");
             data.subscription.trial_end = moment.unix(data.subscription.trial_end).format("ddd, Do MMM YYYY [at] ha");
+=            if (data.default_card){
+                data.default_card = _.find(data.cards.data, function(card){ return  card.id == data.default_card; });
+            }
             return data;
         }
     });
@@ -34,11 +37,24 @@ define(["layoutmanager","underscore", "moment", "stripe_checkout"], function(Lay
     var PaymentDetailsView = Backbone.Layout.extend({
         template: "#stripe-payment_details-tmpl",
         initialize: function(){
+            var View = this;
             this.handler = StripeCheckout.configure({
-                key: this.public_api_key,
+                key: $('#stripe-public_api_key').text(),
                 image: '/square-image.png',
                 token: function(token, args) {
-                  // Use the token to create the charge with a server-side script.
+                    // Use the token to the card on the customer's account.
+                    console.log(args);
+                    var update_model = new StripeModel();
+                    update_model.save(
+                        { id: 'customer', card: token.id },
+                        {
+                            success: function(model, response, options){
+                                View.model = model;
+                                View.render();
+                            },
+                            error: function(model, xhr, options){ console.log('card NOT stored successfully'); }
+                        }
+                    );
                 }
             });
 

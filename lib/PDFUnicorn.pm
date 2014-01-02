@@ -257,9 +257,10 @@ sub startup {
 	$admin->get('/api-key')->to('admin#apikey');
 	$admin->get('/billing')->to('admin#billing');
 	$admin->post('/get-pdf')->to('admin#get_pdf');
-	$admin->post('set-password')->to('admin#set_password');
+	$admin->post('/set-password')->to('admin#set_password');
 	
     $admin->get('/stripe/customer')->to('admin-stripe-customer#find');
+    $admin->put('/stripe/customer')->to('admin-stripe-customer#update');
     
     $admin->get('/rest/apikeys')->to('admin-rest-apikeys#find');
     $admin->put('/rest/apikeys/:key')->to('admin-rest-apikeys#set_active');

@@ -66,6 +66,10 @@
         <table class="table table-striped table-hover">
             <tbody><tr><td>
                 {% if (default_card){ %}
+                    <p>Name on card: {%= default_card.name %}</p>
+                    <p>Card type: {%= default_card.type %}</p>
+                    <p>Last 4 digits of card: {%= default_card.last4 %}</p>
+                    <p>Expires {%= default_card.exp_month %}/{%= default_card.exp_year %}</p>
                     Update your credit card details <button id="stripeButton" class="btn btn-primary">Update Card</button>
                 {% } else { %}
                     Add your credit card details <button id="stripeButton" class="btn btn-primary">Add Card</button>
