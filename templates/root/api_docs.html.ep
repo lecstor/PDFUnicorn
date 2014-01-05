@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>PDFUnicorn - API Documentation</title>
+	%= include 'site/head'
+	%= include 'mixpanel'
+  
+    <!-- record main page view -->
+  	<script type="text/javascript">mixpanel.track('view-api-documentation-page')</script>
+</head>
+
+<body>
+	%= include 'site/header'
+
+	<style>
+	.signup {
+		margin: 50px 0 0 0;
+	}
+	</style>
+
+    <div class="container">
+
+        %= include 'site/api_docs'
+
+    </div>
+
+    %= include 'site/foot'
+
+</body>
+</html>

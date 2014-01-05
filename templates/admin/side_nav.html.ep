@@ -4,6 +4,7 @@
 			    <a href="/admin/api-key" class="list-group-item">API-Key</a>
 			    <a href="/admin/billing" class="list-group-item">Billing</a>
 			    <a href="/admin?get-started" class="list-group-item">Get Started</a>
+                <a href="/docs/api" class="list-group-item">API Documentation</a>
 			</div>
         </div>    
  

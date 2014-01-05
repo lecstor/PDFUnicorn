@@ -1,0 +1,21 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Upload an Image</h3>
+    </div>
+    <div class="panel-body">
+        <h4>Request</h4>
+        <p>POST https://[API-KEY]:@api.pdfunicorn.com/v1/images</p>
+        <p>
+            Headers:
+            <table class="table"><tr><td>Content-Type</td><td>multipart/form-data</td></tr></table>
+        </p>
+        <p>Body:
+            <pre>
+    {
+        
+    }        
+</pre>
+        <h4>Response</h4>
+                
+    </div>
+</div>            
