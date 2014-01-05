@@ -18,8 +18,6 @@ sub create {
 	my $self = shift;
     my $upload = $self->req->upload('image');
     
-    warn Data::Dumper->Dumper($self->req);
-    
     if (!$upload){
         return $self->render(
             status => 422,
@@ -29,10 +27,6 @@ sub create {
     
     my $id = $self->req->param('id');
     my $name = $self->req->param('name') || $upload->filename;
-#    unless($name){
-#        my $dispo = $self->req->headers->content_disposition->[0][0];
-#        $name = $dispo =~ /filename="([^"]+)"/;
-#    }
     
     $name =~ s!^/+!!;
     $name =~ s!/+$!!;
