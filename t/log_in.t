@@ -35,7 +35,8 @@ $t->post_ok('/log-in', => form => { username => 'Jason', password => 'something'
 $t->post_ok('/sign-up', => form => {
     name => 'Jason',
     email => 'jason+1@lecstor.com',
-    time_zone => 'America/Chicago'
+    time_zone => 'America/Chicago',
+    selected_plan => 'small-1'
 })->status_is(200);
 
 $t->get_ok('/admin')->status_is(200);
@@ -67,32 +68,32 @@ $t->post_ok('/log-in', => form => { username => 'jason+1@lecstor.com', password 
 #done_testing();
 
 
-$t->post_ok('/sign-up', => form => { name => '', email => '    ', time_zone => 'America/Chicago' })
+$t->post_ok('/sign-up', => form => { name => '', email => '    ', time_zone => 'America/Chicago', selected_plan => 'small-1' })
     ->status_is(200)
     ->element_exists('input[name="name"]')
     ->element_exists('input[name="email"]')
     ->content_like(qr/enter your real email/);
     
-$t->post_ok('/sign-up', => form => { name => 'Jason', email => '', time_zone => 'America/Chicago' })
+$t->post_ok('/sign-up', => form => { name => 'Jason', email => '', time_zone => 'America/Chicago', selected_plan => 'small-1' })
     ->status_is(200)
     ->element_exists('input[name="name"]')
     ->element_exists('input[name="email"]')
     ->content_like(qr/enter an email/);
 
-$t->post_ok('/sign-up', => form => { name => 'Jason', email => 'cont@ai.ns space', time_zone => 'America/Chicago' })
+$t->post_ok('/sign-up', => form => { name => 'Jason', email => 'cont@ai.ns space', time_zone => 'America/Chicago', selected_plan => 'small-1' })
     ->status_is(200)
     ->element_exists('input[name="name"]')
     ->element_exists('input[name="email"]')
     ->content_like(qr/enter your real email/);
 
-$t->post_ok('/sign-up', => form => { email => 'jason@lecstor.com', time_zone => 'America/Chicago' })
+$t->post_ok('/sign-up', => form => { email => 'jason@lecstor.com', time_zone => 'America/Chicago', selected_plan => 'small-1' })
     ->status_is(200)
     ->element_exists_not('input[name="name"]')
     ->element_exists_not('input[name="email"]')
     ->content_like(qr/Hey,\s+thanks/)
     ->content_like(qr/jason\@lecstor\.com/);
     
-$t->post_ok('/sign-up', => form => { name => 'Jason', email => 'jason+1@lecstor.com', time_zone => 'America/Chicago' })
+$t->post_ok('/sign-up', => form => { name => 'Jason', email => 'jason+1@lecstor.com', time_zone => 'America/Chicago', selected_plan => 'small-1' })
     ->status_is(200)
     ->element_exists_not('input[name="name"]')
     ->element_exists_not('input[name="email"]')

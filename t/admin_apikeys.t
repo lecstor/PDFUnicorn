@@ -24,7 +24,7 @@ my $t = Test::Mojo->new('PDFUnicorn');
 $t->app->mango($mango);
 
 
-$t->post_ok('/sign-up', => form => { name => 'Jason', email => 'jason+1@lecstor.com', time_zone => 'America/Chicago' })
+$t->post_ok('/sign-up', => form => { name => 'Jason', email => 'jason+1@lecstor.com', time_zone => 'America/Chicago', selected_plan => 'small-1' })
     ->status_is(200);
 
 # no api-key exists, so one will be created
@@ -42,7 +42,7 @@ ok($api_key_data->{key}, 'key has key');
 ok($api_key_data->{owner}, 'key has owner');
 
 
-$t->post_ok('/sign-up', => form => { name => 'Jason', email => 'jason+2@lecstor.com', time_zone => 'America/Chicago' })
+$t->post_ok('/sign-up', => form => { name => 'Jason', email => 'jason+2@lecstor.com', time_zone => 'America/Chicago', selected_plan => 'small-1' })
     ->status_is(200);
 
 
