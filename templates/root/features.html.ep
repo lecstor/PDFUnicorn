@@ -1,12 +1,12 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>PDFUnicorn - pricing plans</title>
+    <title>PDFUnicorn - fetaures</title>
 	%= include 'site/head'
 	%= include 'mixpanel'
   
     <!-- record main page view -->
-  	<script type="text/javascript">mixpanel.track('view-pricing-page')</script>
+  	<script type="text/javascript">mixpanel.track('view-features-page')</script>
 </head>
 
 <body>

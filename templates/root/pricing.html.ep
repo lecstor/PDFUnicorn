@@ -32,7 +32,8 @@
 
 	  <div class="jumbotron clearfix">
 	  
-        %= include 'site/signup_prompt'
+        <h2 style="text-align: center">Try PDFUnicorn free for 14 days</h2>
+        <h3 style="text-align: center">No credit card required</h3>
 
         % foreach my $plan (@$plans){
             <div class="col-sm-3">

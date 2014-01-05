@@ -8,7 +8,9 @@
 </head>
 
 <body>
+
 	%= include 'site/header'
+	
 	<div class="container">
 		% if ($error){
 			<p class="text-danger lead"><%= $error %></p>
@@ -20,5 +22,6 @@
 	</div>
 	
     %= include 'site/foot'
+    
 </body>
 </html>

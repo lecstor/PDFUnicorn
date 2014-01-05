@@ -21,26 +21,28 @@
     <div class="container">
 
 	  	<div class="jumbotron clearfix">
+	  	    <h2>About</h2>
         	<div>
         		<p>Over the years I have been presented with the challenge of generating
-        		PDF documents from data on a server for invoices and packing slips.</p>
-        		<p>It's not a fun thing to do.</p>
+        		PDF documents from data on a server for invoices and packing slips.. It's
+        		really not as much fun as you would think.</p>
         		<p>I have googled the topic on more than one occasion and the solutions
-        		mostly boil down to creating a custom script which uses a PDF library or
-        		using <a href="http://latex-project.org/">Latex</a> or HTML and a PDF
-        		converter.</p>
-        		<p>Latex is possibly one way to go if you have the expertise.</p>
+        		mostly boil down to creating a custom script which uses a PDF library to
+        		write content to a PDF file or using Latex or HTML and a PDF
+        		converter to markup and generate the file. Latex is probably the way to go
+        		if you have the expertise.</p>
         		<p>Converting HTML to PDF is hard to get right, especially when it comes
         		to documents which span multiple pages. Having repeated headers and footers
-        		and spliting your content correctly is complex if possible at all.</p> 
+        		and splitting your content correctly is another complex challenge. PDFUnicorn
+        		is not a "web to PDF" converter.</p> 
         		<p>PDFUnicorn is my attempt to simplify the process of generating PDF
-        		documents to enable businesses to better serve their customers and
-        		add a bit of class to the documents they create.</p>
-        		<p>Ultimately I'd like to see SAAS and PAAS companies enable their clients
-        		to quickly and easily fully customise the invoices and other documents sent
-        		to their customers. Customisations could range from adding a logo or leagally
-        		required information, to complex item descriptions in invoices or customised
-        		item documentation or conditions.</p>
+        		documents to enable businesses to better serve their customers and to
+        		better represent their business.</p>
+        		<p>regards,</p>
+        		<p>
+                    Jason<br />
+                    jason@pdfunicorn.com
+                </p>
 	    	</div>
 		</div>
 		
@@ -50,8 +52,7 @@
 
     </div>
 
-    <script src="/lib/jquery/jquery.js"></script>
-    <script src="/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    %= include 'site/foot'
 
 </body>
 </html>
