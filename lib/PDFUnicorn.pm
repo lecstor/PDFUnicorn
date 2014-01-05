@@ -15,13 +15,15 @@ use PDFUnicorn::Collection::Images;
 use PDFUnicorn::Collection::APIKeys;
 use PDFUnicorn::Valid;
 
+use Try;
+
 use lib '../Mojolicious-Plugin-Stripe/lib';
 
 # This method will run once at server start
 sub startup {
     my $self = shift;
 
-	$self->secret('jonabel');
+	$self->secrets(['jonabel']);
 
     # Documentation browser under "/perldoc"
     $self->plugin('PODRenderer');
@@ -49,6 +51,10 @@ sub startup {
     # ensure indexes
     
     # db.fs.chunks.ensureIndex({files_id:1, n:1}, {unique: true});
+    
+    # this breaks api_documents.t
+    #$self->gridfs->chunks->ensure_index({ files_id => 1, n => 1 }, { unique => 1 });
+    
     $db->collection('users')->ensure_index({ email => 1}, { unique => 1 });
     $db->collection('users')->ensure_index({ 'password_key.key' => 1});
     
@@ -174,11 +180,14 @@ sub startup {
         my $token = $self->api_key;
         unless ($token){
             return $self->render(
-                json => { "status" => "nok", "error" => "Sorry, you need an authorisation header with your api key to use the API" },
+                json => {
+                    "status" => "nok",
+                    "error" => "Sorry, you need to use Basic Authentication with your PDFUnicorn API-Key as the username with no password to access the PDFUnicorn API"
+                },
                 status => 401
             );
         };
-              
+        
         # lookup owner and return id
         my $query = { key => $token };
 
@@ -186,7 +195,7 @@ sub startup {
             my ($err, $doc) = @_;
             unless ($doc){
                 return $self->render(
-                    json => { "status" => "nok", "error" => "Sorry, the api key you provided is invalid" },
+                    json => { "status" => "nok", "error" => "Sorry, the API-Key you provided is invalid" },
                     status => 401
                 );
             };
@@ -237,21 +246,22 @@ sub startup {
 	$r->get('/')->to('root#home');
 	$r->post('/')->to('root#get_pdf');
 	
-	$r->get('features')->name('features')->to('root#features');
-	$r->get('pricing')->name('pricing')->to('root#pricing');
-	$r->get('about')->name('about')->to('root#about');
+	$r->get('/features')->name('features')->to('root#features');
+	$r->get('/pricing')->name('pricing')->to('root#pricing');
+	$r->get('/about')->name('about')->to('root#about');
+    $r->get('/docs/api')->name('about')->to('root#api_docs');
 
-	$r->get('sign-up')->to('root#sign_up_form');
-	$r->post('sign-up')->to('root#sign_up');
+	$r->get('/sign-up')->to('root#sign_up_form');
+	$r->post('/sign-up')->to('root#sign_up');
 	
-	$r->get('log-in')->to('root#log_in_form');
-	$r->post('log-in')->to('root#log_in');
+	$r->get('/log-in')->to('root#log_in_form');
+	$r->post('/log-in')->to('root#log_in');
 	
-	$r->get('log-out')->to('root#log_out');
+	$r->get('/log-out')->to('root#log_out');
 	
 	#$r->get('/stripe/connect')->to('stripe#connect');
 	
-	$r->get('set-password/:code/:email')->to('root#set_password_form');
+	$r->get('/set-password/:code/:email')->to('root#set_password_form');
 	
 	$admin->get('/')->to('admin#dash');
 	$admin->get('/api-key')->to('admin#apikey');
@@ -275,6 +285,33 @@ sub startup {
 	$api->get('/v1/images')->to('api-images#find');
 	$api->get('/v1/images/:id')->to('api-images#find_one');
 	$api->delete('/v1/images/:id')->to('api-images#delete');
+	
+	if ($self->mode eq 'development'){
+	    # create a test account and api-key
+	    
+        my $data = {
+            email => 'tester@pdfunicorn.com',
+            firstname => 'Testy',
+            password_key => {
+                key => $self->random_string(length => 24),
+                created => bson_time,
+                reads => [],
+                uses => []
+            },
+            active => bson_true,
+            plan => 'small-1',
+        };
+        try{
+            my $user_oid = $self->db_users->collection->insert($data);
+            $self->db_apikeys->collection->insert({
+                owner => $user_oid,
+                key => 'testers-api-key',
+                name => 'our test key',
+                active => bson_true,
+                trashed => bson_false,
+            });
+        };                
+	}
 	
 }
 
