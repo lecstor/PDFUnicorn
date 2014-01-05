@@ -47,10 +47,10 @@ $t->post_ok('/sign-up', => form => { name => 'Jason', email => 'jason+2@lecstor.
 
 
 # no api-key exists, so one will be created
-$t->get_ok('/admin/api-key');
+$t->get_ok('/admin/api-key')->status_is(200);
 
 # api-key exists
-$t->get_ok('/admin/api-key');
+$t->get_ok('/admin/api-key')->status_is(200);
 
 
 done_testing();

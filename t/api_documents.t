@@ -27,7 +27,7 @@ $t->app->mango($mango);
 $t->app->config->{media_directory} = 't/media_directory';
 
 
-$t->post_ok('/sign-up', => form => { name => 'Jason', email => 'jason+1@lecstor.com', time_zone => 'America/Chicago' })
+$t->post_ok('/sign-up', => form => { name => 'Jason', email => 'jason+1@lecstor.com', time_zone => 'America/Chicago', selected_plan => 'small-1' })
     ->status_is(200);
 $t->get_ok('/admin/api-key');
 $t->get_ok('/admin/rest/apikeys');
@@ -56,18 +56,16 @@ $t->post_ok(
         source => '<doc><page>Test 2!<img src="cory_unicorn.jpeg" /></page></doc>'
     },
 )->status_is(200)
-    ->json_has( '/data/_id', "has _id" )
-    ->json_has( '/data/modified', "has modified" )
-    ->json_has( '/data/created', "has created" )
-    ->json_has( '/data/uri', "has uri" )
-    ->json_is( '/data/id' => 2, "correct id" )
-    ->json_is( '/data/owner' => $owner_id, "correct owner" )
-    ->json_is( '/data/source' => '<doc><page>Test 2!<img src="cory_unicorn.jpeg" /></page></doc>', "correct source" )
-    ->json_is( '/data/file' => undef, "file is undef" );
+    ->json_has( '/_id', "has _id" )
+    ->json_has( '/modified', "has modified" )
+    ->json_has( '/created', "has created" )
+    ->json_has( '/uri', "has uri" )
+    ->json_is( '/id' => 2, "correct id" )
+    ->json_is( '/owner' => $owner_id, "correct owner" )
+    ->json_is( '/source' => '<doc><page>Test 2!<img src="cory_unicorn.jpeg" /></page></doc>', "correct source" )
+    ->json_is( '/file' => undef, "file is undef" );
 
-#warn Data::Dumper->Dumper($t->tx->res);
-
-my $json = $t->tx->res->json->{data};
+my $json = $t->tx->res->json;
 is $json->{uri}, '/api/v1/documents/'.$json->{_id}, 'uri';
 
 my $doc_uri = $json->{uri};
@@ -95,15 +93,16 @@ $url = $t->ua->server->url->userinfo("$api_key:")->path($doc_uri);
 $t->get_ok(
     $url,
 )->status_is(200)
-    ->json_has( '/data/_id', "has _id" )
-    ->json_has( '/data/modified', "has modified" )
-    ->json_has( '/data/created', "has created" )
-    ->json_is( '/data/id' => 2, "correct id" )
-    ->json_is( '/data/uri' => $json->{uri}, "has uri" )
-    ->json_is( '/data/owner' => $owner_id, "correct owner" )
-    ->json_is( '/data/source' => '<doc><page>Test 2!<img src="cory_unicorn.jpeg" /></page></doc>', "correct source" )
-    #->json_is( '/data/file' => undef, "file is undef" );
-    ->json_has( '/data/file', "file oid is set" );
+    ->json_has( '/_id', "has _id" )
+    ->json_has( '/modified', "has modified" )
+    ->json_has( '/created', "has created" )
+    ->json_is( '/id' => 2, "correct id" )
+    ->json_is( '/uri' => $json->{uri}, "has uri" )
+    ->json_is( '/owner' => $owner_id, "correct owner" )
+    ->json_is( '/source' => '<doc><page>Test 2!<img src="cory_unicorn.jpeg" /></page></doc>', "correct source" )
+    #->json_is( '/file' => undef, "file is undef" );
+    ->json_has( '/file', "file oid is set" );
+
 
 
 # get document as PDF
@@ -114,6 +113,21 @@ $t->get_ok(
 
 ok($t->tx->res->body =~ /^%PDF/, 'doc is a PDF');
 
+
+# create document and get response as PDF
+
+$url = $t->ua->server->url->userinfo("$api_key:")->path('/api/v1/documents.binary');
+$t->post_ok(
+    $url,
+    json => {
+        id => 3,
+        source => '<doc><page>Test 3!<img src="cory_unicorn.jpeg" /></page></doc>'
+    },
+)->status_is(200);
+ok($t->tx->res->body =~ /^%PDF/, 'doc is a PDF');
+
+
+
 #warn $doc_uri;
 #warn $t->tx->res->body;
 
@@ -121,4 +135,11 @@ ok($t->tx->res->body =~ /^%PDF/, 'doc is a PDF');
 
 #$t->tx->res->content->asset->move_to('test_api_documents.pdf');
 
+Mojo::IOLoop->timer(1 => sub { Mojo::IOLoop->stop });
+Mojo::IOLoop->start;
+
 done_testing();
+__END__
+
+
+

@@ -72,7 +72,7 @@ Mojo::IOLoop->timer(3 => sub {
 
 #warn Dumper $users->find->all;
 
-Mojo::IOLoop->timer(6 => sub {
+Mojo::IOLoop->timer(3 => sub {
     $users->find_one(
         { username => 'jason+1@lecstor.com' },
         sub{

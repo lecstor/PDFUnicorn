@@ -29,7 +29,7 @@ $t->app->mango($mango);
 $t->app->config->{media_directory} = 't/media_directory';
 
 
-$t->post_ok('/sign-up', => form => { name => 'Jason', email => 'jason+1@lecstor.com', time_zone => 'America/Chicago' })
+$t->post_ok('/sign-up', => form => { name => 'Jason', email => 'jason+1@lecstor.com', time_zone => 'America/Chicago', selected_plan => 'small-1' })
     ->status_is(200);
 $t->get_ok('/admin/api-key');
 $t->get_ok('/admin/rest/apikeys');
@@ -49,15 +49,15 @@ $t->post_ok(
         name => '/another_cory_unicorn.jpeg',
     },
 )->status_is(200)
-    ->json_has( '/data/_id', "has _id" )
-    ->json_has( '/data/modified', "has modified" )
-    ->json_has( '/data/created', "has created" )
-    ->json_has( '/data/uri', "has uri" )
-    ->json_is( '/data/name' => "another_cory_unicorn.jpeg", "correct name" )
-    ->json_is( '/data/owner' => $owner_id, "correct owner" );
+    ->json_has( '/_id', "has _id" )
+    ->json_has( '/modified', "has modified" )
+    ->json_has( '/created', "has created" )
+    ->json_has( '/uri', "has uri" )
+    ->json_is( '/name' => "another_cory_unicorn.jpeg", "correct name" )
+    ->json_is( '/owner' => $owner_id, "correct owner" );
 
 
-my $json = $t->tx->res->json->{data};
+my $json = $t->tx->res->json;
 my $doc_uri = $json->{uri};
 
 is $doc_uri, '/api/v1/images/'.$json->{_id}, 'uri';
@@ -83,12 +83,12 @@ $url = $t->ua->server->url->userinfo("$api_key:")->path($doc_uri.'.meta');
 $t->get_ok(
     $url,
 )->status_is(200)
-    ->json_has( '/data/_id', "has _id" )
-    ->json_has( '/data/modified', "has modified" )
-    ->json_has( '/data/created', "has created" )
-    ->json_has( '/data/uri', "has uri" )
-    ->json_is( '/data/name' => "another_cory_unicorn.jpeg", "correct name" )
-    ->json_is( '/data/owner' => $owner_id, "correct owner" );
+    ->json_has( '/_id', "has _id" )
+    ->json_has( '/modified', "has modified" )
+    ->json_has( '/created', "has created" )
+    ->json_has( '/uri', "has uri" )
+    ->json_is( '/name' => "another_cory_unicorn.jpeg", "correct name" )
+    ->json_is( '/owner' => $owner_id, "correct owner" );
 
 
 # get raw image
