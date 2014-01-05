@@ -26,14 +26,14 @@ sub connect{
         my $tx = $ua->get('https://'.$response_data->{access_token}.':@api.stripe.com/v1/customers');
         my $customer_list = $tx->res->json->{data};
         my $customer = $customer_list->[0];
-        warn Dumper($customer);
+        #warn Dumper($customer);
         
         $tx = $ua->get(
             'https://'.$response_data->{access_token}.':@api.stripe.com/v1/invoices',
             form => { customer => $customer->{id} } 
         );
 
-        warn Dumper($tx->res->json);
+        #warn Dumper($tx->res->json);
         
     }
         
