@@ -34,6 +34,11 @@ sub about {
     $self->render();
 }
 
+sub api_docs {
+    my $self = shift;
+    $self->render();
+}
+
 sub sign_up_form {
 	my $self = shift;
 	my $plan = $self->param('plan');
@@ -49,9 +54,6 @@ sub sign_up {
 	my $timezone = $self->param('timezone');
 	my $email_length = length($email_addr);
 	my $plan = $self->config->{plans}{$plan_id};
-	
-	warn "params: $name $email_addr $plan_id";
-	warn Data::Dumper->Dumper($self->config->{plans});
 	
 	foreach my $each (($name,$email_addr,$timezone)){
 	    next unless $each;
@@ -101,10 +103,8 @@ sub sign_up {
         
     $self->on(finish => sub{
         my $ctrl = shift;
-        warn "create stripe customer";
         my $user = $self->stash->{new_user};
         if ($user){
-            warn Data::Dumper->Dumper($user);
             my $user_id = $user->{_id};
             my $users_collection = $ctrl->db_users;
             my $customer = $self->stripe->customers->create(
@@ -115,7 +115,6 @@ sub sign_up {
                 },
                 sub{
                     my ($client, $stripe_customer) = @_;
-                    warn "new stripe customer: ".Data::Dumper->Dumper([$stripe_customer,$user_id]);
                     $users_collection->update(
                         { _id => $user_id },
                         { '$set' => { stripe_id => $stripe_customer->{id} } },
@@ -136,8 +135,6 @@ sub sign_up {
                 $err = '';
                 return $self->db_users->find_one({ email => $data->{email} }, sub{
                     my ($err, $doc) = @_;
-                    #$self->stash->{new_user} = $doc;
-                    #warn 'new_user: '.Data::Dumper->Dumper($doc);
             
                     $self->send_password_key($doc) unless $err;
                     
@@ -155,8 +152,6 @@ sub sign_up {
             $self->send_password_key($doc);
             $self->session->{user_id} = $doc->{_id};
             $self->stash->{new_user} = $doc;
-            warn 'new_user: '.Data::Dumper->Dumper($doc);
-            
         }
         
         $self->render(
