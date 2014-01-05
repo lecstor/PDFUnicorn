@@ -4,7 +4,7 @@ use Mojo::Base 'PDFUnicorn::Ctrl::Api';
 use Mojo::JSON;
 use Mango::BSON ':bson';
 use Mojo::IOLoop;
-  
+
 sub collection{ shift->db_documents }
 
 sub uri{ 'documents' }
@@ -74,43 +74,56 @@ sub create {
         });
         
     } else {
-                
+        
         $self->on(finish => sub{
             my $c = shift;
             
             my $doc = $c->stash->{'pdfunicorn.doc'};
-            
+                        
             if (!$doc){ die "a flaming death.."; }
-            
+                        
             my $grid = PDF::Grid->new({
-                media_directory => $self->config->{media_directory}.'/'.$c->stash->{api_key_owner_id}.'/',
+                media_directory => $c->config->{media_directory}.'/'.$c->stash->{api_key_owner_id}.'/',
                 source => $doc->{source},
             });
             
             $grid->render_template;
             my $pdf_doc = $grid->producer->stringify();    
             $grid->producer->end;
-            my $gfs = $c->gridfs->prefix($c->stash->{api_key_owner_id});
-            my $oid = $gfs->writer->filename($doc->{name})->write($pdf_doc)->close;
             
-            # here we set the file oid in the document
-            my $opts = {
-                query => { id => $doc->{id} },
-                update => { '$set' => { file => $oid }},
-            };
-            $self->collection->find_and_modify($opts => sub {
-                my ($collection, $err, $doc) = @_;
-                # anything to do here?
-                # call a webhook?
+            my $gfs_writer = $c->gridfs->prefix($c->stash->{api_key_owner_id})->writer;
+            
+            $gfs_writer->filename($doc->{name});
+            $gfs_writer->write($pdf_doc, sub{
+                my ($writer, $err) = @_;
+                # TODO: check err
+                $writer->close(sub{
+                    my ($writer, $err, $oid) = @_;
+                    # TODO: check err
+                    
+                    # here we set the file oid in the document
+                    my $opts = {
+                        query => { id => $doc->{id} },
+                        update => { '$set' => { file => $oid }},
+                    };
+                    $c->collection->find_and_modify($opts => sub {
+                        my ($collection, $err, $doc) = @_;
+                        # anything to do here?
+                        # call a webhook?
+                    });
+                });
+                Mojo::IOLoop->start unless Mojo::IOLoop->is_running;
             });
+            Mojo::IOLoop->start unless Mojo::IOLoop->is_running;
+            
+            return;
         });
     
         $self->collection->create($data, sub{
             my ($err, $doc) = @_;
-            warn $err if $err;
             $doc->{uri} = "/api/v1/".$self->uri."/$doc->{_id}";
             $self->stash->{'pdfunicorn.doc'} = $doc;
-            $self->render( json => { status => 'ok', data => $doc } );
+            $self->render( json => $doc );
         });
     }
 
@@ -135,7 +148,7 @@ sub find_one {
                     return $self->render(data => $reader->slurp);
                 } else {
                     $doc->{uri} = "/api/v1/".$self->uri."/$doc->{_id}";
-                    return $self->render(json => { status => 'ok', data => $doc });
+                    return $self->render(json => $doc );
                 }
             }
         }
