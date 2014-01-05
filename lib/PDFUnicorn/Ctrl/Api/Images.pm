@@ -18,6 +18,8 @@ sub create {
 	my $self = shift;
     my $upload = $self->req->upload('image');
     
+    warn Data::Dumper->Dumper($self->req);
+    
     if (!$upload){
         return $self->render(
             status => 422,
@@ -26,7 +28,12 @@ sub create {
     }
     
     my $id = $self->req->param('id');
-    my $name = $self->req->param('name');
+    my $name = $self->req->param('name') || $upload->filename;
+#    unless($name){
+#        my $dispo = $self->req->headers->content_disposition->[0][0];
+#        $name = $dispo =~ /filename="([^"]+)"/;
+#    }
+    
     $name =~ s!^/+!!;
     $name =~ s!/+$!!;
     my $filename = uri_escape($name);
@@ -84,7 +91,7 @@ sub serve_doc{
         $self->rendered(200);
     } else {
         $doc->{uri} = "/api/v1/".$self->uri."/$doc->{_id}";
-        $self->render(json => { status => 'ok', data => $doc }) ;
+        $self->render(json => $doc ) ;
     }
 }
 
