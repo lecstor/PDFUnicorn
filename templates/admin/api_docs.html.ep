@@ -14,8 +14,16 @@
 
     <div class="container">
 
-        %= include 'site/api_docs'
-
+        <div class="row row-offcanvas row-offcanvas-left">
+        
+            %= include 'admin/side_nav'   
+        
+            <div class="col-xs-12 col-sm-9">
+		        %= include 'site/api_docs'
+            </div>
+        
+        </div>
+        
     </div>
 
     %= include 'site/foot'
