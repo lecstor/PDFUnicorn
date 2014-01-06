@@ -19,48 +19,62 @@
 	    	%= include 'admin/side_nav'   
 	    
 	    	<div class="col-xs-12 col-sm-9">
-                <p class="pull-right visible-xs">
-                    <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
-                </p>
                 
-                <h4>Your API Keys</h4>
+                <h4>Your API Key</h4>
                 
-                <div id="api-keys-table"></div>
+                % if ($error){
+                	% if ($error eq 'no_password'){
+	                	<p class="text-danger">You need to set your password to
+	                	access your api-key</p>
+	                	<p>Check your email for the subject "Set your password on
+	                	PDFUnicorn"</p>
+	                	<p>otherwise, click the send button below and I'll send
+	                	you an email with a link to set your password.</p>
+	            		<form action="/log-in" method="post" class="form-signin" role="form">
+							<input name="username" type="hidden" value="<%= $app_user->{email} %>">
+						    <button class="btn btn-lg btn-primary btn-block" type="submit">Send Account Key</button>
+						</form>
+	                % }
+				% } else {
+                	<div id="api-keys-table"></div>
+                % }
 	    	</div>
     	
     	</div>
     </div>
     
-    <script>
-        var PDFU = { apiKeys: JSON.parse('<%== $keys %>') };
-    </script>
-    
-    <script id="apikey-table-tmpl" type="template">
-        <table class="table table-striped table-hover">
-            <thead><th>Name</th><th>Key</th><th>Deactivate</th><th>Delete</th></thead>
-            <tbody class="apikey-table-body"></tbody>
-        </table>
-    </script>
-    
-    <script id="apikey-row-tmpl" type="template">
-        <tr class="apikey-row">
-            <td class="apikey-name">{{name}}</td>
-            <td class="apikey-key">{{key}}</td>
-            <td class="apikey-activate"></td>
-            <td class="apikey-delete"></td>
-        </tr>
-    </script>
-    
-    
-    <script id="deactivate-apikey-button" type="template">
-        <button type="button" class="btn btn-warning btn-xs deactivate-key">Deactivate</button>
-    </script>
-    <script id="reactivate-apikey-button" type="template">
-        <button type="button" class="btn btn-success btn-xs reactivate-key">Reactivate</button>
-    </script>
-    <script id="delete-apikey-button" type="template">
-        <button type="button" class="btn btn-danger btn-xs delete-key">Delete</button>
-    </script>
+    % if (!$error){
+	    <script>
+	        var PDFU = { apiKeys: JSON.parse('<%== $keys %>') };
+	    </script>
+	    
+	    <script id="apikey-table-tmpl" type="template">
+	        <table class="table table-striped table-hover">
+	            <thead><th>Name</th><th>Key</th><th>Deactivate</th><th>Refresh</th></thead>
+	            <tbody class="apikey-table-body"></tbody>
+	        </table>
+	    </script>
+	    
+	    <script id="apikey-row-tmpl" type="template">
+	        <tr class="apikey-row">
+	            <td class="apikey-name">{{name}}</td>
+	            <td class="apikey-key">{{key}}</td>
+	            <td class="apikey-activate"></td>
+	            <td class="apikey-delete"></td>
+	        </tr>
+	    </script>
+	    
+	    
+	    <script id="deactivate-apikey-button" type="template">
+	        <button type="button" class="btn btn-warning btn-xs deactivate-key">Deactivate</button>
+	    </script>
+	    <script id="reactivate-apikey-button" type="template">
+	        <button type="button" class="btn btn-success btn-xs reactivate-key">Reactivate</button>
+	    </script>
+	    <script id="delete-apikey-button" type="template">
+	        <button type="button" class="btn btn-danger btn-xs delete-key">Refresh</button>
+	    </script>
+    % }
     
     %= include 'site/foot'
 
