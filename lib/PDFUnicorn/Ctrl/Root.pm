@@ -198,31 +198,34 @@ sub log_in{
             my ($err, $doc) = @_;
             if ($doc){
                 if (!$password){
-                    # no password given
+                    # no password given - send email key
                     $self->send_password_key($doc);
                     return $self->render(
                         error => '',
                         message => 'I\'ve emailed you a link to reset your password.'
                     );
-                } elsif ($password && $doc->{password}){
+                } elsif ($doc->{password}){
                     if ($self->db_users->check_password($doc, $password)){
                         $self->session->{user_id} = $doc->{_id};
                         $self->redirect_to('/admin');
                         return;
                     } else {
+                        $self->res->code(401);
                         return $self->render(
                             error => 'Sorry, that password is incorrect',
                             message => '',
                         );
                     }
                 } else {
-                    # password given and document password exists
+                    # password given but no user password exists
+                    $self->res->code(401);
                     return $self->render(
                         error => 'You need a password key to access this account. Submit the log in form without a password and I\'ll send you one.',
                         message => ''
                     );
                 }
             } else {
+                $self->res->code(404);
                 return $self->render(
                     error => 'Sorry, we couldn\'t find an account for that email address.',
                     message => '',
