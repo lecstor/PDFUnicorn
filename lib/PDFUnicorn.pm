@@ -265,6 +265,7 @@ sub startup {
 	
 	$admin->get('/')->to('admin#dash');
 	$admin->get('/api-key')->to('admin#apikey');
+	$admin->get('/api-docs')->to('admin#api_docs');
 	$admin->get('/billing')->to('admin#billing');
 	$admin->post('/get-pdf')->to('admin#get_pdf');
 	$admin->post('/set-password')->to('admin#set_password');
@@ -286,18 +287,19 @@ sub startup {
 	$api->get('/v1/images/:id')->to('api-images#find_one');
 	$api->delete('/v1/images/:id')->to('api-images#delete');
 	
-	if ($self->mode eq 'development'){
+	if ($self->mode eq 'development' || $self->mode eq 'testing'){
 	    # create a test account and api-key
 	    
         my $data = {
             email => 'tester@pdfunicorn.com',
             firstname => 'Testy',
-            password_key => {
-                key => $self->random_string(length => 24),
-                created => bson_time,
-                reads => [],
-                uses => []
-            },
+#            password_key => {
+#                key => $self->random_string(length => 24),
+#                created => bson_time,
+#                reads => [],
+#                uses => []
+#            },
+            password => crypt('bogus', 'ab'),
             active => bson_true,
             plan => 'small-1',
         };
