@@ -19,6 +19,9 @@ requirejs.config({
     },
 
     shim: {
+        bootstrap: {
+            deps: ["jquery"],
+        },
         backbone: {
             deps: ["jquery", "underscore"],
             exports: "Backbone"
@@ -35,6 +38,11 @@ requirejs.config({
 var path = location.pathname;
 console.log(path);
 
+require(['jquery'], function($){
+    $('[data-toggle=offcanvas]').click(function() {
+        $('.row-offcanvas').toggleClass('active');
+    });
+});
 
 if (path == '/admin/api-key'){
 
