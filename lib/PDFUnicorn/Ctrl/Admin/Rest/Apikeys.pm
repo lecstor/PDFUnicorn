@@ -46,6 +46,11 @@ sub find{
     my ($self) = shift;
     my $user_id = $self->app_user_id;
     
+	unless($self->stash->{app_user}{password}){
+	    $self->res->code(401);
+	    return $self->render( json => { error => 'no_password' } );
+	}
+	
     $self->render_later;
     
     my $query = { owner => $user_id, trashed => bson_false };

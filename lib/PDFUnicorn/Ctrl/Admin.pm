@@ -27,6 +27,13 @@ sub apikey {
 	my $self = shift;
 	my $user_id = $self->stash->{app_user}{_id};
 	
+	$self->stash->{password_set} = 1;
+	
+	unless($self->stash->{app_user}{password}){
+	    $self->res->code(401);
+	    return $self->render( error => 'no_password', keys => [] );
+	}
+	
     $self->render_later;
     
     my $query = { owner => $user_id, trashed => bson_false };
@@ -35,7 +42,7 @@ sub apikey {
         my ($cursor, $err, $docs) = @_;
         my $json  = Mojo::JSON->new;
         if ($docs && @$docs){
-            $self->render( keys => $json->encode($docs) );
+            $self->render( keys => $json->encode($docs), error => '' );
         } else {
             $self->db_apikeys->create({
                 owner => $user_id,
@@ -45,7 +52,7 @@ sub apikey {
                 trashed => bson_false,
             }, sub {
                 my ($err, $doc) = @_;
-                $self->render( keys => $json->encode([$doc]));
+                $self->render( keys => $json->encode([$doc]), error => '' );
             });
         }
     }, { key => 1, owner => 1, _id => 0, name => 1, active => 1 });
@@ -59,6 +66,11 @@ sub billing {
 sub personal {
 	my $self = shift;
 	$self->render();
+}
+
+sub api_docs {
+    my $self = shift;
+    $self->render();
 }
 
 sub set_password{
