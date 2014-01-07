@@ -8,6 +8,8 @@ use Mojo::Util qw(b64_encode);
 use Mango;
 use Try;
 
+use PDFUnicorn;
+
 use Data::Dumper::Perltidy;
 
 BEGIN { $ENV{EMAIL_SENDER_TRANSPORT} = 'Test' }
@@ -22,13 +24,13 @@ try{ $users->drop }
 
 my $results;
 
-my $t = Test::Mojo->new('PDFUnicorn');
+my $t = Test::Mojo->new(PDFUnicorn->new( mode => 'testing' ));
 $t->app->mango($mango);
 $t->app->config->{media_directory} = 't/media_directory';
 
 
-$t->post_ok('/sign-up', => form => { name => 'Jason', email => 'jason+1@lecstor.com', time_zone => 'America/Chicago', selected_plan => 'small-1' })
-    ->status_is(200);
+$t->post_ok('/log-in', form => { username => 'tester@pdfunicorn.com', password => 'bogus' })
+    ->status_is(302);
 $t->get_ok('/admin/api-key');
 $t->get_ok('/admin/rest/apikeys');
 my $api_key_data = $t->tx->res->json->{data}[0];
@@ -52,21 +54,19 @@ $url = $t->ua->server->url->userinfo("$api_key:")->path('/api/v1/documents');
 $t->post_ok(
     $url,
     json => {
-        id => 2,
         source => '<doc><page>Test 2!<img src="cory_unicorn.jpeg" /></page></doc>'
     },
 )->status_is(200)
-    ->json_has( '/_id', "has _id" )
+    ->json_has( '/id', "has id" )
     ->json_has( '/modified', "has modified" )
     ->json_has( '/created', "has created" )
     ->json_has( '/uri', "has uri" )
-    ->json_is( '/id' => 2, "correct id" )
     ->json_is( '/owner' => $owner_id, "correct owner" )
     ->json_is( '/source' => '<doc><page>Test 2!<img src="cory_unicorn.jpeg" /></page></doc>', "correct source" )
     ->json_is( '/file' => undef, "file is undef" );
 
 my $json = $t->tx->res->json;
-is $json->{uri}, '/api/v1/documents/'.$json->{_id}, 'uri';
+is $json->{uri}, '/api/v1/documents/'.$json->{id}, 'uri';
 
 my $doc_uri = $json->{uri};
 
@@ -76,10 +76,9 @@ my $doc_uri = $json->{uri};
 $t->get_ok(
     $url,
 )->status_is(200)
-    ->json_has( '/data/0/_id', "has _id" )
+    ->json_has( '/data/0/id', "has id" )
     ->json_has( '/data/0/modified', "has modified" )
     ->json_has( '/data/0/created', "has created" )
-    ->json_is( '/data/0/id' => 2, "correct id" )
     ->json_is( '/data/0/uri' => $doc_uri, "has uri" )
     ->json_is( '/data/0/owner' => $owner_id, "correct owner" )
     ->json_is( '/data/0/source' => '<doc><page>Test 2!<img src="cory_unicorn.jpeg" /></page></doc>', "correct source" )
@@ -93,10 +92,9 @@ $url = $t->ua->server->url->userinfo("$api_key:")->path($doc_uri);
 $t->get_ok(
     $url,
 )->status_is(200)
-    ->json_has( '/_id', "has _id" )
+    ->json_has( '/id', "has id" )
     ->json_has( '/modified', "has modified" )
     ->json_has( '/created', "has created" )
-    ->json_is( '/id' => 2, "correct id" )
     ->json_is( '/uri' => $json->{uri}, "has uri" )
     ->json_is( '/owner' => $owner_id, "correct owner" )
     ->json_is( '/source' => '<doc><page>Test 2!<img src="cory_unicorn.jpeg" /></page></doc>', "correct source" )
@@ -119,10 +117,7 @@ ok($t->tx->res->body =~ /^%PDF/, 'doc is a PDF');
 $url = $t->ua->server->url->userinfo("$api_key:")->path('/api/v1/documents.binary');
 $t->post_ok(
     $url,
-    json => {
-        id => 3,
-        source => '<doc><page>Test 3!<img src="cory_unicorn.jpeg" /></page></doc>'
-    },
+    json => { source => '<doc><page>Test 3!<img src="cory_unicorn.jpeg" /></page></doc>' },
 )->status_is(200);
 ok($t->tx->res->body =~ /^%PDF/, 'doc is a PDF');
 

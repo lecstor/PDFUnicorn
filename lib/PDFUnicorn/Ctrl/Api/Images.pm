@@ -25,7 +25,7 @@ sub create {
         );
     }
     
-    my $id = $self->req->param('id');
+    #my $id = $self->req->param('id');
     my $name = $self->req->param('name') || $upload->filename;
     
     $name =~ s!^/+!!;
@@ -34,7 +34,6 @@ sub create {
 
     my $image_data = {
         name => $name,
-        id => $id,
         owner => $self->stash->{api_key_owner_id},
     };
         
@@ -85,6 +84,7 @@ sub serve_doc{
         $self->rendered(200);
     } else {
         $doc->{uri} = "/api/v1/".$self->uri."/$doc->{_id}";
+        $doc->{id} = delete $doc->{_id};
         $self->render(json => $doc ) ;
     }
 }

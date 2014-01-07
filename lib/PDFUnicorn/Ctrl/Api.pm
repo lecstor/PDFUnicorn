@@ -33,12 +33,14 @@ sub create {
     }
 
     $data->{owner} = $self->api_key;
-    $data->{id} = "$data->{id}";
+    #$data->{id} = "$data->{id}";
+    delete $data->{_id};
     
     $self->render_later;
     $self->collection->create($data, sub{
         my ($err, $doc) = @_;
         $doc->{uri} = "/api/v1/".$self->uri."/$doc->{_id}";
+        $doc->{id} = delete $doc->{_id};
         $self->render(json => { status => 'ok', data => $doc });
     });
     Mojo::IOLoop->start unless Mojo::IOLoop->is_running;
@@ -54,6 +56,8 @@ sub find {
         );
     }
     $query->{owner} = $self->stash->{api_key_owner_id};
+    delete $query->{_id};
+    delete $query->{id};
     
     $self->render_later;
         
@@ -61,6 +65,7 @@ sub find {
         my ($cursor, $err, $docs) = @_;
         foreach my $doc (@$docs){
             $doc->{uri} = "/api/v1/".$self->uri."/$doc->{_id}";
+            $doc->{id} = delete $doc->{_id};
         }
         $self->render(json => { status => 'ok', data => $docs });
     }, {});
@@ -78,6 +83,7 @@ sub find_one {
         if ($doc){
             if ($doc->{owner} eq $self->stash->{api_key_owner_id}){
                 $doc->{uri} = "/api/v1/".$self->uri."/$doc->{_id}";
+                $doc->{id} = delete $doc->{_id};    
                 return $self->render(json => { status => 'ok', data => $doc }) ;
             }
         }
@@ -98,8 +104,12 @@ sub update{
     }
 
     delete $data->{_id};
+    delete $data->{id};
+    
     $data->{owner} = $self->stash->{api_key_owner_id};
+    
     $self->render_later;
+    
     $self->collection->update(
         ( { _id => $id, owner => $self->$data->{owner} }, $data ) => sub {
             my ($collection, $err, $doc) = @_;
@@ -107,7 +117,8 @@ sub update{
                 warn $err;
                 $self->render_not_found;
             } else {
-                return $self->render(json => { status => 'ok' });
+                $doc->{id} = delete $doc->{_id};
+                return $self->render(json => $doc);
             }
         }
     );
@@ -116,16 +127,21 @@ sub update{
 sub archive{
 	my $self = shift;
 	my $id = $self->stash('id');
+	
+    $self->render_later;
+    
 	$self->collection->find_one(bson_oid $id, sub{
         my ($err, $doc) = @_;
         if ($doc){
             if ($doc->{owner} eq $self->stash->{api_key_owner_id}){
                 $doc->{archived} = bson_true;
                 # TODO: needs to be non-blocking..
-                $self->collection->update({ _id => bson_oid $id }, $doc);
-                return $self->render(json => { status => 'ok' });
+                $self->collection->update({ _id => bson_oid $id } => sub {
+                    my ($collection, $err, $doc) = @_;
+                    $doc->{id} = delete $doc->{_id};
+                    return $self->render(json => $doc);
+                });
             }
-            
         }
         $self->render_not_found;
 	});

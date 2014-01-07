@@ -33,7 +33,7 @@ sub create {
     if (my $errors = $self->invalidate($self->item_schema, $user_data)){
         return $self->render(
             status => 422,
-            json => { status => 'invalid_request', data => { errors => $errors } }
+            json => { object => 'invalid_request', errors => $errors }
         );
     }
     
@@ -46,8 +46,9 @@ sub create {
             $response->{ok} = 1;
             $self->send_password_key($doc);
             $self->session->{user} = $doc;
+            $doc->{id} = delete $doc->{_id};
         }
-        $self->render(json => $response);
+        $self->render(json => $doc);
     });
 
 }

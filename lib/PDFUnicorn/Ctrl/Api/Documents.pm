@@ -54,8 +54,10 @@ sub create {
 
     $data->{owner} = $self->stash->{api_key_owner_id};        
     $data->{file} = undef;
-    $data->{id} = "$data->{id}" if $data->{id};
-        
+    #$data->{id} = "$data->{id}" if $data->{id};
+    delete $data->{id};
+    delete $data->{_id};
+    
     if ($binary){
         
         $self->collection->create($data, sub{
@@ -127,7 +129,9 @@ sub create {
             my ($err, $doc) = @_;
             $doc->{uri} = "/api/v1/".$self->uri."/$doc->{_id}";
             $self->stash->{'pdfunicorn.doc'} = $doc;
-            $self->render( json => $doc );
+            my $tmp_doc = {%$doc};
+            $tmp_doc->{id} = delete $tmp_doc->{_id};
+            $self->render( json => $tmp_doc );
         });
     }
 
@@ -153,6 +157,7 @@ sub find_one {
                     return $self->render(data => $reader->slurp);
                 } else {
                     $doc->{uri} = "/api/v1/".$self->uri."/$doc->{_id}";
+                    $doc->{id} = delete $doc->{_id};
                     return $self->render(json => $doc );
                 }
             }

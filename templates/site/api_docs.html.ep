@@ -1,14 +1,62 @@
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h3 class="panel-title">Upload an Image</h3>
+        <h3 class="panel-title">Authentication</h3>
+    </div>
+    <div class="panel-body">
+		<p>
+			Authentication to the API occurs via <a href="http://en.wikipedia.org/wiki/Basic_access_authentication" target="_blank">HTTP Basic Auth</a>.
+			Provide your API key as the basic auth username. You do not need to provide a password.
+		</p>
+		<p>
+			All API requests must be made over HTTPS. Calls made over plain HTTP will fail. You must authenticate for all requests.
+    	</p>
+    </div>
+</div>            
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Create/Upload an Image</h3>
     </div>
     <div class="panel-body">
         <h4>Request</h4>
-        <p>POST https://[API-KEY]:@api.pdfunicorn.com/v1/images</p>
+        
+        <p>POST https://api.pdfunicorn.com/v1/images</p>        
         <p>
-            Headers:
-            <table class="table"><tr><td>Content-Type</td><td>multipart/form-data</td></tr></table>
+            <h4>Curl</h4>
+            <pre>
+$ curl https://api.pdfunicorn.com/v1/images \\
+ 	-F "image=@test.jpg" \\
+ 	-F "name=/test.jpg" \\
+    -H "Content-Type: multipart/form-data" \\
+    -X POST \\
+    -u sk_test_BQokikJOvBiI2HlWgH4olfQ2:
+	        </pre>
         </p>
+
+        <h4>Response</h4>
+            <pre>
+{
+    'created' => '1389048511.0901',
+    'owner' => '52cb32beb9efb70c36040000',
+    '_id' => '52cb32bfb9efb70c36070000',
+    'uri' => '/api/v1/images/52cb32bfb9efb70c36070000',
+    'name' => 'test.jpg',
+    'modified' => '1389048511.0901'
+};
+</pre>
+                
+    </div>
+</div>            
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Create a Document</h3>
+    </div>
+    <div class="panel-body">
+        <h4>Request</h4>
+        
+        <p>POST https://api.pdfunicorn.com/v1/documents</p>
+
         <p>Body:
             <pre>
     {

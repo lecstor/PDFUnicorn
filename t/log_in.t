@@ -55,7 +55,7 @@ $t->get_ok('/log-out')->status_is(302);
 #$t->get_ok('/app')->status_is(302);
 
 $t->post_ok('/log-in', => form => { username => 'jason+1@lecstor.com', password => 'wrong' })
-    ->status_is(200)
+    ->status_is(401)
     ->element_exists('input[name="username"]')
     ->element_exists('input[name="password"]')
     ->content_like(qr/that password is incorrect/);

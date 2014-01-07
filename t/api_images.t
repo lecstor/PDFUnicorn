@@ -7,6 +7,8 @@ use Mojo::IOLoop;
 use Mango;
 use Try;
 
+use PDFUnicorn;
+
 use Data::Dumper::Perltidy;
 
 # Disable IPv6, epoll and kqueue
@@ -24,13 +26,13 @@ try{ $users->drop }
 
 my $results;
 
-my $t = Test::Mojo->new('PDFUnicorn');
+my $t = Test::Mojo->new(PDFUnicorn->new( mode => 'testing' ));
 $t->app->mango($mango);
 $t->app->config->{media_directory} = 't/media_directory';
 
 
-$t->post_ok('/sign-up', => form => { name => 'Jason', email => 'jason+1@lecstor.com', time_zone => 'America/Chicago', selected_plan => 'small-1' })
-    ->status_is(200);
+$t->post_ok('/log-in', form => { username => 'tester@pdfunicorn.com', password => 'bogus' })
+    ->status_is(302);
 $t->get_ok('/admin/api-key');
 $t->get_ok('/admin/rest/apikeys');
 my $api_key_data = $t->tx->res->json->{data}[0];
@@ -49,10 +51,11 @@ $t->post_ok(
         name => '/another_cory_unicorn.jpeg',
     },
 )->status_is(200)
-    ->json_has( '/_id', "has _id" )
+    ->json_has( '/id', "has id" )
     ->json_has( '/modified', "has modified" )
     ->json_has( '/created', "has created" )
     ->json_has( '/uri', "has uri" )
+    ->json_hasnt( '/_id', "has no _id" )
     ->json_is( '/name' => "another_cory_unicorn.jpeg", "correct name" )
     ->json_is( '/owner' => $owner_id, "correct owner" );
 
@@ -60,22 +63,23 @@ $t->post_ok(
 my $json = $t->tx->res->json;
 my $doc_uri = $json->{uri};
 
-is $doc_uri, '/api/v1/images/'.$json->{_id}, 'uri';
+is $doc_uri, '/api/v1/images/'.$json->{id}, 'uri';
 
-
+warn Data::Dumper->Dumper($json);
 
 # list images
 
 $t->get_ok(
     $url,
 )->status_is(200)
-    ->json_has( '/data/0/_id', "has _id" )
+    ->json_has( '/data/0/id', "has id" )
     ->json_has( '/data/0/modified', "has modified" )
     ->json_has( '/data/0/created', "has created" )
     ->json_is( '/data/0/uri' => $doc_uri, "has uri" )
     ->json_is( '/data/0/name' => "another_cory_unicorn.jpeg", "correct name" )
     ->json_is( '/data/0/owner' => $owner_id, "correct owner" );
 
+warn 'resp: '. Data::Dumper->Dumper($t->tx->res->json);
 
 # get image meta data
 $url = $t->ua->server->url->userinfo("$api_key:")->path($doc_uri.'.meta');
@@ -83,7 +87,7 @@ $url = $t->ua->server->url->userinfo("$api_key:")->path($doc_uri.'.meta');
 $t->get_ok(
     $url,
 )->status_is(200)
-    ->json_has( '/_id', "has _id" )
+    ->json_has( '/id', "has id" )
     ->json_has( '/modified', "has modified" )
     ->json_has( '/created', "has created" )
     ->json_has( '/uri', "has uri" )
