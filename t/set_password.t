@@ -16,8 +16,6 @@ my $mango = Mango->new('mongodb://127.0.0.1/pdfunicorn_test');
 my $users = $mango->db->collection('users');
 try{ $users->drop }
 
-#$mango->db->collection('users')->drop;
-
 my $t = Test::Mojo->new('PDFUnicorn');
 $t->app->mango($mango);
 $users = $t->app->db_users;
@@ -33,60 +31,43 @@ $t->post_ok('/sign-up', => form => { name => 'Jason', email => 'jason+1@lecstor.
     ->content_like(qr/Hey,\s+Jason,\s+thanks/)
     ->content_like(qr/jason\+1\@lecstor\.com/);
 
+my @deliveries = Email::Sender::Simple->default_transport->deliveries;
+is(@deliveries, 1, 'one email delivered');
 
-Mojo::IOLoop->timer(3 => sub {
-    my @deliveries = Email::Sender::Simple->default_transport->deliveries;
-    is(@deliveries, 1, 'one email delivered');
-    
-    my ($code, $email_hash);
-    try{
-        my $body = $deliveries[0]->{email}->get_body;
-        ($code, $email_hash) = $body =~ /\/set-password\/(\w+)\/(\w+)/;
-        ok($code, 'got code');
-        ok($email_hash, 'got email hash');
-    }
-    
-    $t->get_ok('/set-password/'.$code.'/BOGUS_EMAIL_HASH')->status_is(200)
-        ->element_exists('input[name="username"]')
-        ->element_exists('input[name="password"]')
-        ->content_like(qr/key is invalid/)
-        ->content_like(qr/Log In/);
-    
-    $t->get_ok('/set-password/'.$code.'/'.$email_hash)->status_is(200)
-        ->element_exists('input[name="email"]')
-        ->element_exists('input[name="password"]')
-        ->content_like(qr/jason\+1\@lecstor\.com/)
-        ->content_like(qr/Set Password/);
-    
-    $t->post_ok('/admin/set-password', => form => { password => 'pass' })->status_is(302);
-    $t->header_like(Location => qr/\/$/);
-    
-    $t->get_ok('/set-password/BOGUS_CODE/'.$email_hash)->status_is(200)
-        ->element_exists('input[name="username"]')
-        ->element_exists('input[name="password"]')
-        ->content_like(qr/key is invalid/)
-        ->content_like(qr/Log In/);
-});
+my ($code, $email_hash);
+try{
+    my $body = $deliveries[0]->{email}->get_body;
+    ($code, $email_hash) = $body =~ /\/set-password\/(\w+)\/(\w+)/;
+    ok($code, 'got code');
+    ok($email_hash, 'got email hash');
+}
 
+$t->get_ok('/set-password/'.$code.'/BOGUS_EMAIL_HASH')->status_is(200)
+    ->element_exists('input[name="username"]')
+    ->element_exists('input[name="password"]')
+    ->content_like(qr/key is invalid/)
+    ->content_like(qr/Log In/);
 
+$t->get_ok('/set-password/'.$code.'/'.$email_hash)->status_is(200)
+    ->element_exists('input[name="email"]')
+    ->element_exists('input[name="password"]')
+    ->content_like(qr/jason\+1\@lecstor\.com/)
+    ->content_like(qr/Set Password/);
 
-#warn Dumper $users->find->all;
+$t->post_ok('/admin/set-password', => form => { password => 'pass' })->status_is(302);
+$t->header_like(Location => qr/\/admin$/);
 
-Mojo::IOLoop->timer(3 => sub {
-    $users->find_one(
-        { username => 'jason+1@lecstor.com' },
-        sub{
-            my ($err, $doc) = @_;
-            ok(!$err, 'no error');
-            ok($doc);
-            ok($doc->{password}, 'password: '.$doc->{password});
-            return;
-        }
-    );
-});
-    
+$t->get_ok('/set-password/BOGUS_CODE/'.$email_hash)->status_is(200)
+    ->element_exists('input[name="username"]')
+    ->element_exists('input[name="password"]')
+    ->content_like(qr/key is invalid/)
+    ->content_like(qr/Log In/);
 
-#warn Dumper $user;
+$t->get_ok('/log-out')->status_is(302);
+
+$t->post_ok('/log-in', => form => { username => 'jason+1@lecstor.com', password => 'pass' })
+    ->status_is(302);
+
 
 
 done_testing();
