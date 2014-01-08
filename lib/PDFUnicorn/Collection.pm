@@ -94,9 +94,9 @@ sub update{
 }
 
 
-sub archive{
+sub remove{
     my ($self, $doc, $sub) = @_;
-    $doc->{archived} = bson_true;    
+    $doc->{deleted} = bson_true;    
     $self->update({ _id => $doc->{_id} }, $doc, $sub);
 }
 

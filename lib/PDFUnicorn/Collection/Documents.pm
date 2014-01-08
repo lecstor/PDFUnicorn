@@ -32,13 +32,13 @@ sub schemas{
 
 =item archive
 
-mark document as archived and delete it's source property
+mark document as deleted and delete it's source property
 
 =cut
 
-sub archive{
+sub remove{
     my ($self, $doc, $sub) = @_;
-    $doc->{archived} = bson_true;
+    $doc->{deleted} = bson_true;
     delete $doc->{source};
     $self->update({ _id => $doc->{_id} }, $doc, $sub);
 }
