@@ -126,7 +126,9 @@ sub startup {
                 $ctrl->stash->{format} = $original_format;
             };
             
-            if (DateTime->from_epoch(epoch => $user->{password_key}{created}->to_epoch) < DateTime->now - DateTime::Duration->new(days => 1)){
+            # refresh the key if it is more than 12 hours old.
+            # refreshing invalidates the old key so we don't want to do it every time
+            if (DateTime->from_epoch(epoch => $user->{password_key}{created}->to_epoch) < DateTime->now - DateTime::Duration->new(minutes => $ctrl->config->{password_key}{expires}/2)){
                 $ctrl->db_users->refresh_password_key($user, $callback);
             } else {
                 $callback->(undef, $user);
@@ -174,7 +176,7 @@ sub startup {
 
     $r->namespaces(['PDFUnicorn::Ctrl']);
     
-    my $api = $r->bridge('/api')->to(cb => sub {
+    my $api = $r->bridge('/v1')->to(cb => sub {
         my $self = shift;
 
         my $token = $self->api_key;
@@ -277,15 +279,15 @@ sub startup {
     $admin->put('/rest/apikeys/:key')->to('admin-rest-apikeys#set_active');
     $admin->delete('/rest/apikeys/:key')->to('admin-rest-apikeys#delete');
 	
-	$api->post('/v1/documents')->to('api-documents#create');
-	$api->get('/v1/documents')->to('api-documents#find');
-	$api->get('/v1/documents/:id')->to('api-documents#find_one');
-	$api->delete('/v1/documents/:id')->to('api-documents#delete');
+	$api->post('/documents')->to('api-documents#create');
+	$api->get('/documents')->to('api-documents#find');
+	$api->get('/documents/:id')->to('api-documents#find_one');
+	$api->delete('/documents/:id')->to('api-documents#archive');
 	
-	$api->post('/v1/images')->to('api-images#create');
-	$api->get('/v1/images')->to('api-images#find');
-	$api->get('/v1/images/:id')->to('api-images#find_one');
-	$api->delete('/v1/images/:id')->to('api-images#delete');
+	$api->post('/images')->to('api-images#create');
+	$api->get('/images')->to('api-images#find');
+	$api->get('/images/:id')->to('api-images#find_one');
+	$api->delete('/images/:id')->to('api-images#delete');
 	
 	if ($self->mode eq 'development' || $self->mode eq 'testing'){
 	    # create a test account and api-key
