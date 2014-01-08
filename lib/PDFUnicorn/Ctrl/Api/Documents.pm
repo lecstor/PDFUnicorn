@@ -20,13 +20,13 @@ Returns document metadata if meta format is specified.
 May optionally include your internal id for the document.
 
 Req:
-    POST /api/v1/documents.binary
+    POST /v1/documents.binary
     { source: "<doc>Hello World!</doc>" }
 Res:
     Binary file
 
 Req:
-    POST /api/v1/documents
+    POST /v1/documents
     { source: "<doc>Hello World!</doc>", id: "mydocid" }
 Res:
     JSON: {
@@ -127,7 +127,7 @@ sub create {
     
         $self->collection->create($data, sub{
             my ($err, $doc) = @_;
-            $doc->{uri} = "/api/v1/".$self->uri."/$doc->{_id}";
+            $doc->{uri} = "/v1/".$self->uri."/$doc->{_id}";
             $self->stash->{'pdfunicorn.doc'} = $doc;
             my $tmp_doc = {%$doc};
             $tmp_doc->{id} = delete $tmp_doc->{_id};
@@ -146,17 +146,19 @@ sub find_one {
 	my $binary = 1 if $format && $format eq 'binary';
 	
     $self->render_later;
-    $self->collection->find_one({ _id => bson_oid $id }, sub{
+    $self->collection->find_one({ _id => bson_oid($id) }, sub{
         my ($err, $doc) = @_;
         if ($doc){
             if ($doc->{owner} eq $self->stash->{api_key_owner_id}){
                 if ($binary){
                     my $gfs = $self->gridfs->prefix($doc->{owner});
-                    my $reader = $gfs->reader->open($doc->{file});
                     $self->res->headers->content_type('applicaion/pdf');
-                    return $self->render(data => $reader->slurp);
+                    return $gfs->reader->open($doc->{file}, sub{
+                        my ($reader, $err) = @_;
+                        $self->render(data => $reader->slurp);
+                    });
                 } else {
-                    $doc->{uri} = "/api/v1/".$self->uri."/$doc->{_id}";
+                    $doc->{uri} = "/v1/".$self->uri."/$doc->{_id}";
                     $doc->{id} = delete $doc->{_id};
                     return $self->render(json => $doc );
                 }
