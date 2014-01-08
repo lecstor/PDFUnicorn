@@ -282,7 +282,7 @@ sub startup {
 	$api->post('/documents')->to('api-documents#create');
 	$api->get('/documents')->to('api-documents#find');
 	$api->get('/documents/:id')->to('api-documents#find_one');
-	$api->delete('/documents/:id')->to('api-documents#archive');
+	$api->delete('/documents/:id')->to('api-documents#remove');
 	
 	$api->post('/images')->to('api-images#create');
 	$api->get('/images')->to('api-images#find');

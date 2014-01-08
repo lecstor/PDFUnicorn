@@ -88,11 +88,16 @@ sub update{
     my $data = shift;
     my $callback = ref($_[-1]) eq 'CODE' ? pop : undef;
     my $options = shift || {};
-    #my ($self, $query, $data, $callback) = @_;
     die 'Need a callback!' unless $callback;
-    $self->collection->update(($query, $data, $options) => $callback);
+    $self->collection->update(($query, $data, $options), $callback);
     Mojo::IOLoop->start unless Mojo::IOLoop->is_running;
 }
 
+
+sub archive{
+    my ($self, $doc, $sub) = @_;
+    $doc->{archived} = bson_true;    
+    $self->update({ _id => $doc->{_id} }, $doc, $sub);
+}
 
 1;

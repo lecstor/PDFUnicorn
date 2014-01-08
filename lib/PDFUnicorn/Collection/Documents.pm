@@ -10,41 +10,38 @@ sub schemas{
             id => { type => 'string' },
             uri => { type => 'string' },
             type => { type => 'string' },
-            data => { type => 'object' },
+            #data => { type => 'object' },
+            #template => { type => 'string' },
             source => { type => 'string', required => 1 },
             created => { type => 'datetime', bson => 'time' },
-            modified => { type => 'datetime', bson => 'time' },
             public => { type => 'boolean', bson => 'bool' },
             owner => { type => 'string', bson => 'oid' },
-            images => { type => 'object' },
+            deleted => { type => 'boolean', bson => 'bool' },
             #_required => { or => [qw(source template)] }
         },
         'DocumentQuery', {
             id => { type => 'string' },
             type => { type => 'string' },
             created => { type => 'datetime', bson => 'time' },
-            modified => { type => 'datetime', bson => 'time' },
             public => { type => 'boolean', bson => 'bool' },
-            archived => { type => 'boolean', bson => 'bool' },
             owner => { type => 'string', bson => 'oid' },
+            deleted => { type => 'boolean', bson => 'bool' },
         }
     }
 }
 
-#sub create{
-#    my ($self, $data) = @_;
-#    
-#    # validate data here
-#    die 'missing_id' unless $data->{id};
-#    die 'missing_name' unless $data->{name};
-#    die 'missing_data' unless $data->{data};
-#    $data->{type} ||= 'source';
-#            
-#    my $oid = $self->collection->insert($data);
-#    
-#    return $self->find_one({ _id => $oid });
-#}
+=item archive
 
+mark document as archived and delete it's source property
+
+=cut
+
+sub archive{
+    my ($self, $doc, $sub) = @_;
+    $doc->{archived} = bson_true;
+    delete $doc->{source};
+    $self->update({ _id => $doc->{_id} }, $doc, $sub);
+}
 
 
 1;
