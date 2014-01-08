@@ -20,7 +20,7 @@ define(["layoutmanager","underscore", "moment", "stripe_checkout"], function(Lay
             data.subscription.current_period_end = moment.unix(data.subscription.current_period_end).format("ddd, Do MMM YYYY, h:mm:ssa");
             data.subscription.trial_start = moment.unix(data.subscription.trial_start).format("ddd, Do MMM YYYY, h:mm:ssa");
             data.subscription.trial_end = moment.unix(data.subscription.trial_end).format("ddd, Do MMM YYYY [at] ha");
-=            if (data.default_card){
+            if (data.default_card){
                 data.default_card = _.find(data.cards.data, function(card){ return  card.id == data.default_card; });
             }
             return data;

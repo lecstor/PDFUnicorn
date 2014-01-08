@@ -19,6 +19,8 @@
 	    	%= include 'admin/side_nav'   
 	    
 	    	<div class="col-xs-12 col-sm-9">
+                <h2>Get Started</h2>
+	    	
 				% my $user = session 'user';
 				% my $name = $user->{firstname} ? ' '.$user->{firstname} : '';
 	    		<p>Hi<%= $name %>, thanks for using PDFUnicorn!</p>

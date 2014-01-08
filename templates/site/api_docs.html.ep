@@ -1,3 +1,5 @@
+<h2>API Documentation</h2>
+
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title">Authentication</h3>
@@ -26,10 +28,10 @@
             <pre>
 $ curl https://api.pdfunicorn.com/v1/images \\
  	-F "image=@test.jpg" \\
- 	-F "name=/test.jpg" \\
+ 	-F "source=test.jpg" \\
     -H "Content-Type: multipart/form-data" \\
     -X POST \\
-    -u sk_test_BQokikJOvBiI2HlWgH4olfQ2:
+    -u 1e551787-903e-11e2-b2b6-0bbccb145af3:
 	        </pre>
         </p>
 
@@ -38,8 +40,8 @@ $ curl https://api.pdfunicorn.com/v1/images \\
 {
     'created' => '1389048511.0901',
     'owner' => '52cb32beb9efb70c36040000',
-    '_id' => '52cb32bfb9efb70c36070000',
-    'uri' => '/api/v1/images/52cb32bfb9efb70c36070000',
+    'id' => '52cb32bfb9efb70c36070000',
+    'uri' => '/v1/images/52cb32bfb9efb70c36070000',
     'name' => 'test.jpg',
     'modified' => '1389048511.0901'
 };
@@ -53,17 +55,40 @@ $ curl https://api.pdfunicorn.com/v1/images \\
         <h3 class="panel-title">Create a Document</h3>
     </div>
     <div class="panel-body">
+        <p>You create a document by posting your document source to the PDFUnicorn
+        server. By default the document's metadata will be returned immediately and
+        the PDF file will be created in the background and stored for retrieval.
+        The Document's metadata includes the url to be used to retrieve the file.</p>
+        <p>If you post to /v1/documents.binary the PDF file will be generated and
+        returned in the same request.</p>
+        <p>* Any required images must be uploaded to the PDFUnicorn server before
+        the document creation request is made.</p> 
         <h4>Request</h4>
         
         <p>POST https://api.pdfunicorn.com/v1/documents</p>
+        <p>POST https://api.pdfunicorn.com/v1/documents.binary</p>
 
-        <p>Body:
-            <pre>
-    {
-        
-    }        
+        <h4>Curl</h4>
+        <h3>Create a document</h3>
+        <p>A POST to /v1/documents will return the document's metadata</p>
+        <pre>
+$ curl https://api.pdfunicorn.com/v1/documents \\
+    -F 'source=&lt;doc&gt;&lt;page&gt;Hello World&lt;img src="unicorn.jpg" /&gt;&lt;/page&gt;&lt;/doc&gt;' \\
+    -X POST \\
+    -u 1e551787-903e-11e2-b2b6-0bbccb145af3:
 </pre>
+
         <h4>Response</h4>
+            <pre>
+{
+    'created' => '1389048511.0901',
+    'owner' => '52cb32beb9efb70c36040000',
+    'id' => '52cb32bfb9efb70c36070000',
+    'uri' => '/v1/documents/52cb32bfb9efb70c36070000',
+    'source' => '&lt;doc&gt;&lt;page&gt;Hello World&lt;img src="unicorn.jpeg" /&gt;&lt;/page&gt;&lt;/doc&gt;',
+    'modified' => '1389048511.0901'
+};
+</pre>
                 
     </div>
 </div>            

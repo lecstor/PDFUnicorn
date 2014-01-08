@@ -42,13 +42,13 @@ my $owner_id = $api_key_data->{owner};
 
 
 # create image
-my $url = $t->ua->server->url->userinfo("$api_key:")->path('/api/v1/images');
+my $url = $t->ua->server->url->userinfo("$api_key:")->path('/v1/images');
 
 $t->post_ok(
     $url,
     form => {
         image => { file => 't/media_directory/cory_unicorn.jpeg' },
-        name => '/another_cory_unicorn.jpeg',
+        src => '/unicorn.jpg',
     },
 )->status_is(200)
     ->json_has( '/id', "has id" )
@@ -56,16 +56,15 @@ $t->post_ok(
     ->json_has( '/created', "has created" )
     ->json_has( '/uri', "has uri" )
     ->json_hasnt( '/_id', "has no _id" )
-    ->json_is( '/name' => "another_cory_unicorn.jpeg", "correct name" )
+    ->json_is( '/src' => "unicorn.jpg", "correct src" )
     ->json_is( '/owner' => $owner_id, "correct owner" );
 
 
 my $json = $t->tx->res->json;
 my $doc_uri = $json->{uri};
 
-is $doc_uri, '/api/v1/images/'.$json->{id}, 'uri';
+is $doc_uri, '/v1/images/'.$json->{id}, 'uri';
 
-warn Data::Dumper->Dumper($json);
 
 # list images
 
@@ -76,10 +75,9 @@ $t->get_ok(
     ->json_has( '/data/0/modified', "has modified" )
     ->json_has( '/data/0/created', "has created" )
     ->json_is( '/data/0/uri' => $doc_uri, "has uri" )
-    ->json_is( '/data/0/name' => "another_cory_unicorn.jpeg", "correct name" )
+    ->json_is( '/data/0/src' => "unicorn.jpg", "correct src" )
     ->json_is( '/data/0/owner' => $owner_id, "correct owner" );
 
-warn 'resp: '. Data::Dumper->Dumper($t->tx->res->json);
 
 # get image meta data
 $url = $t->ua->server->url->userinfo("$api_key:")->path($doc_uri.'.meta');
@@ -91,7 +89,7 @@ $t->get_ok(
     ->json_has( '/modified', "has modified" )
     ->json_has( '/created', "has created" )
     ->json_has( '/uri', "has uri" )
-    ->json_is( '/name' => "another_cory_unicorn.jpeg", "correct name" )
+    ->json_is( '/src' => "unicorn.jpg", "correct src" )
     ->json_is( '/owner' => $owner_id, "correct owner" );
 
 
@@ -100,7 +98,7 @@ $url = $t->ua->server->url->userinfo("$api_key:")->path($doc_uri);
 
 $t->get_ok($url)->status_is(200);
 
-unlink('t/media_directory/1e551787-903e-11e2-b2b6-0bbccb145af3/another_cory_unicorn.jpeg');
+unlink('t/media_directory/1e551787-903e-11e2-b2b6-0bbccb145af3/unicorn.jpg');
 
 #warn $t->tx->res->body;
 

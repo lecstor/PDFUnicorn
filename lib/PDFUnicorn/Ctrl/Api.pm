@@ -39,7 +39,7 @@ sub create {
     $self->render_later;
     $self->collection->create($data, sub{
         my ($err, $doc) = @_;
-        $doc->{uri} = "/api/v1/".$self->uri."/$doc->{_id}";
+        $doc->{uri} = "/v1/".$self->uri."/$doc->{_id}";
         $doc->{id} = delete $doc->{_id};
         $self->render(json => { status => 'ok', data => $doc });
     });
@@ -64,7 +64,7 @@ sub find {
     $self->collection->find_all($query, sub{
         my ($cursor, $err, $docs) = @_;
         foreach my $doc (@$docs){
-            $doc->{uri} = "/api/v1/".$self->uri."/$doc->{_id}";
+            $doc->{uri} = "/v1/".$self->uri."/$doc->{_id}";
             $doc->{id} = delete $doc->{_id};
         }
         $self->render(json => { status => 'ok', data => $docs });
@@ -78,11 +78,11 @@ sub find_one {
     #return $self->render_not_found unless $id = $self->validate_type('oid', $id);
     
     $self->render_later;
-    $self->collection->find_one({ _id => bson_oid $id }, sub{
+    $self->collection->find_one({ _id => bson_oid($id) }, sub{
         my ($err, $doc) = @_;
         if ($doc){
             if ($doc->{owner} eq $self->stash->{api_key_owner_id}){
-                $doc->{uri} = "/api/v1/".$self->uri."/$doc->{_id}";
+                $doc->{uri} = "/v1/".$self->uri."/$doc->{_id}";
                 $doc->{id} = delete $doc->{_id};    
                 return $self->render(json => { status => 'ok', data => $doc }) ;
             }
@@ -99,7 +99,7 @@ sub update{
 
     if (my $errors = $self->invalidate($self->item_schema, $data)){
         return $self->render(
-            status => 422, json => { status => 'invalid_request', data => { errors => $errors } }
+            status => 422, json => { errors => $errors }
         );
     }
 
@@ -124,27 +124,25 @@ sub update{
     );
 }
 
-sub archive{
+sub remove{
 	my $self = shift;
 	my $id = $self->stash('id');
 	
     $self->render_later;
     
-	$self->collection->find_one(bson_oid $id, sub{
+	$self->collection->find_one(bson_oid($id), sub{
         my ($err, $doc) = @_;
         if ($doc){
             if ($doc->{owner} eq $self->stash->{api_key_owner_id}){
-                $doc->{archived} = bson_true;
-                # TODO: needs to be non-blocking..
-                $self->collection->update({ _id => bson_oid $id } => sub {
-                    my ($collection, $err, $doc) = @_;
+                return $self->collection->remove($doc, sub{
+                    my ($collection, $err, $mdoc) = @_;
                     $doc->{id} = delete $doc->{_id};
-                    return $self->render(json => $doc);
+                    $self->render(json => $doc);
                 });
             }
         }
         $self->render_not_found;
-	});
+    });
 }
 
 

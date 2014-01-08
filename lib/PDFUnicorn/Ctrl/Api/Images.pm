@@ -26,14 +26,14 @@ sub create {
     }
     
     #my $id = $self->req->param('id');
-    my $name = $self->req->param('name') || $upload->filename;
+    my $src = $self->req->param('src') || $upload->filename;
     
-    $name =~ s!^/+!!;
-    $name =~ s!/+$!!;
-    my $filename = uri_escape($name);
+    $src =~ s!^/+!!;
+    $src =~ s!/+$!!;
+    my $filename = uri_escape($src);
 
     my $image_data = {
-        name => $name,
+        src => $src,
         owner => $self->stash->{api_key_owner_id},
     };
         
@@ -59,7 +59,7 @@ sub find_one {
     return $self->render_not_found unless $id = $self->validate_type('oid', $id);
         
     $self->render_later;
-    $self->collection->find_one({ _id => bson_oid $id }, sub{
+    $self->collection->find_one({ _id => bson_oid($id) }, sub{
         my ($err, $doc) = @_;
         if ($doc){
             if ($doc->{owner} eq $self->stash->{api_key_owner_id}){
@@ -83,7 +83,7 @@ sub serve_doc{
         $self->res->content->asset(Mojo::Asset::File->new(path => $local_file_name));
         $self->rendered(200);
     } else {
-        $doc->{uri} = "/api/v1/".$self->uri."/$doc->{_id}";
+        $doc->{uri} = "/v1/".$self->uri."/$doc->{_id}";
         $doc->{id} = delete $doc->{_id};
         $self->render(json => $doc ) ;
     }

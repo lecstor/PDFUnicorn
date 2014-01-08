@@ -39,7 +39,7 @@ my $owner_id = $api_key_data->{owner};
 
 
 # create an image for our pdf
-my $url = $t->ua->server->url->userinfo("$api_key:")->path('/api/v1/images');
+my $url = $t->ua->server->url->userinfo("$api_key:")->path('/v1/images');
 $t->post_ok(
     $url,
     form => {
@@ -50,7 +50,7 @@ $t->post_ok(
 
 # create document
 
-$url = $t->ua->server->url->userinfo("$api_key:")->path('/api/v1/documents');
+$url = $t->ua->server->url->userinfo("$api_key:")->path('/v1/documents');
 $t->post_ok(
     $url,
     json => {
@@ -66,7 +66,7 @@ $t->post_ok(
     ->json_is( '/file' => undef, "file is undef" );
 
 my $json = $t->tx->res->json;
-is $json->{uri}, '/api/v1/documents/'.$json->{id}, 'uri';
+is $json->{uri}, '/v1/documents/'.$json->{id}, 'uri';
 
 my $doc_uri = $json->{uri};
 
@@ -112,26 +112,29 @@ $t->get_ok(
 ok($t->tx->res->body =~ /^%PDF/, 'doc is a PDF');
 
 
+# delete document
+
+$t->delete_ok(
+    $url,
+)->status_is(200)
+    ->json_hasnt('/source', 'source removed')
+    ->json_has('/deleted');
+
+
 # create document and get response as PDF
 
-$url = $t->ua->server->url->userinfo("$api_key:")->path('/api/v1/documents.binary');
+$url = $t->ua->server->url->userinfo("$api_key:")->path('/v1/documents.binary');
 $t->post_ok(
     $url,
     json => { source => '<doc><page>Test 3!<img src="cory_unicorn.jpeg" /></page></doc>' },
 )->status_is(200);
 ok($t->tx->res->body =~ /^%PDF/, 'doc is a PDF');
 
-
-
-#warn $doc_uri;
-#warn $t->tx->res->body;
-
 #$t->tx->res->content->asset->move_to('t/api_doc.pdf');
 
-#$t->tx->res->content->asset->move_to('test_api_documents.pdf');
 
-Mojo::IOLoop->timer(1 => sub { Mojo::IOLoop->stop });
-Mojo::IOLoop->start;
+#Mojo::IOLoop->timer(1 => sub { Mojo::IOLoop->stop });
+#Mojo::IOLoop->start;
 
 done_testing();
 __END__

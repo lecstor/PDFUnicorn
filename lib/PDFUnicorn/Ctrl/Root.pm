@@ -252,38 +252,53 @@ sub set_password_form{
     delete $self->stash->{email};
 
     $self->render_later;
-	
-	
-	#$self->db_users->find_by_password_key($code, 
     $self->db_users->find_one({'password_key.key' => $code },
         sub {
             my ($err, $doc) = @_;
-            # TODO: Error handling!
             if ($doc){
-                if (DateTime->from_epoch(epoch => $doc->{password_key}{created}->to_epoch) >= DateTime->now - DateTime::Duration->new(days => 1)){
-                    my $user_email_hash = md5_sum($doc->{email});
-                    if ($user_email_hash eq $email_hash){
-                        
-                        $self->session->{user_id} = $doc->{_id};
-                        $self->stash->{app_user} = $doc;
-                        return $self->render(error => '', user => $doc);
+                # TODO: Error handling!
+                my $key_created = DateTime->from_epoch(epoch => $doc->{password_key}{created}->to_epoch);
+                my $expires = DateTime::Duration->new(minutes => $self->config->{password_key}{expires});
+                my $not_before = DateTime->now - $expires;
+                                
+                if ($doc){
+                    if ($key_created >= $not_before){
+                        my $user_email_hash = md5_sum($doc->{email});
+                        if ($user_email_hash eq $email_hash){
+                            
+                            $self->session->{user_id} = $doc->{_id};
+                            $self->stash->{app_user} = $doc;
+                            return $self->render(error => '', user => $doc);
+                        }
+                    } else {
+                        $self->db_users->refresh_password_key($doc, sub{
+                            my ($collection, $err, $doc) = @_;
+                            $self->send_password_key($doc);
+                            return $self->render(
+                                template => 'root/log_in',
+                                email => '',
+                                message => '',
+                                error => "Sorry, that account key has expired. I have sent a new key to your email address.",
+                            );
+                        });
                     }
-                } else {
-                    return $self->render(
-                        template => 'root/log_in',
-                        email => '',
-                        message => '',
-                        error => "Sorry, that account key has expired. Please enter your email address below and I'll send you a new account key.",
-                    );
                 }
-            }
-            $self->render(
-                template => 'root/log_in',
-                email => '',
-                message => '',
-                error => "Sorry, that account key is invalid. Please enter your email address below and I'll send you a new account key.",
-            );
-            
+                $self->render(
+                    template => 'root/log_in',
+                    email => '',
+                    message => '',
+                    error => "Sorry, that account key is invalid. Please enter your email address below and I'll send you a new account key.",
+                );
+
+            } else {
+                $self->render(
+                    template => 'root/log_in',
+                    email => '',
+                    message => '',
+                    error => "Sorry, that account key is invalid. Please enter your email address below and I'll send you a new account key.",
+                );
+            }            
+                        
         }
     );
 
