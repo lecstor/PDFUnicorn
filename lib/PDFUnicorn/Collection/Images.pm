@@ -8,18 +8,18 @@ sub schemas{
     {
         'Image', {
             id => { type => 'string' },
-            name => { type => 'string', required => 1 },
+            src => { type => 'string', required => 1 },
             uri => { type => 'string', required => 1 },
             created => { type => 'datetime', bson => 'time' },
-            modified => { type => 'datetime', bson => 'time' },
+            stock => { type => 'boolean', bson => 'bool' },
             public => { type => 'boolean', bson => 'bool' },
             owner => { type => 'string', bson => 'oid' },
         },
         'ImageQuery', {
             id => { type => 'string' },
-            name => { type => 'string' },
+            src => { type => 'string' },
             created => { type => 'datetime', bson => 'time' },
-            modified => { type => 'datetime', bson => 'time' },
+            stock => { type => 'boolean', bson => 'bool' },
             public => { type => 'boolean', bson => 'bool' },
             owner => { type => 'string', bson => 'oid' },
         }
