@@ -56,12 +56,13 @@ sub create {
 sub find_one {
 	my $self = shift;
 	my $id = $self->stash('id');
-    return $self->render_not_found unless $id = $self->validate_type('oid', $id);
+    #return $self->render_not_found unless $id = $self->validate_type('oid', $id);
         
     $self->render_later;
     $self->collection->find_one({ _id => bson_oid($id) }, sub{
         my ($err, $doc) = @_;
         if ($doc){
+            warn "Found image";
             if ($doc->{owner} eq $self->stash->{api_key_owner_id}){
                 return $self->serve_doc($doc);
             }
@@ -76,9 +77,10 @@ sub serve_doc{
 	my $format = $self->stash('format');
     if ($format && $format eq 'binary'){
         my $media_base = $self->config->{media_directory}.'/'.$self->stash->{api_key_owner_id};
-        $self->res->headers->content_disposition('attachment; filename='.$doc->{name}.';');
-        my $local_file_name = $media_base.'/'.uri_escape($doc->{name});
-        my ($ext) = $doc->{name} =~ /\.([^.]+)$/;
+        $self->res->headers->content_disposition('attachment; filename='.$doc->{src}.';');
+        my $local_file_name = $media_base.'/'.uri_escape($doc->{src});
+        warn "image src: ".$doc->{src};
+        my ($ext) = $doc->{src} =~ /\.([^.]+)$/;
         $self->res->headers->content_type("image/$ext");
         $self->res->content->asset(Mojo::Asset::File->new(path => $local_file_name));
         $self->rendered(200);

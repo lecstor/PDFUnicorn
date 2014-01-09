@@ -27,5 +27,13 @@ sub schemas{
 }
 
 
+sub remove{
+    my ($self, $doc, $sub) = @_;
+    $doc->{deleted} = bson_true;
+    my $media_dir = $self->config->{media_directory};
+    unlink($media_dir.'/'.$doc->{owner}.'/'.$doc->{src});
+    $self->update({ _id => $doc->{_id} }, $doc, $sub);
+}
+
 
 1;

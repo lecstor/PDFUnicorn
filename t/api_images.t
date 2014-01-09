@@ -37,8 +37,6 @@ $t->get_ok('/admin/api-key');
 $t->get_ok('/admin/rest/apikeys');
 my $api_key_data = $t->tx->res->json->{data}[0];
 my $api_key = $api_key_data->{key};
-my $owner_id = $api_key_data->{owner};
-
 
 
 # create image
@@ -52,12 +50,11 @@ $t->post_ok(
     },
 )->status_is(200)
     ->json_has( '/id', "has id" )
-    ->json_has( '/modified', "has modified" )
     ->json_has( '/created', "has created" )
     ->json_has( '/uri', "has uri" )
     ->json_hasnt( '/_id', "has no _id" )
     ->json_is( '/src' => "unicorn.jpg", "correct src" )
-    ->json_is( '/owner' => $owner_id, "correct owner" );
+    ->json_has( '/owner', "has owner" );
 
 
 my $json = $t->tx->res->json;
@@ -72,7 +69,6 @@ $t->get_ok(
     $url,
 )->status_is(200)
     ->json_has( '/data/0/id', "has id" )
-    ->json_has( '/data/0/modified', "has modified" )
     ->json_has( '/data/0/created', "has created" )
     ->json_is( '/data/0/uri' => $doc_uri, "has uri" )
     ->json_is( '/data/0/src' => "unicorn.jpg", "correct src" )
@@ -80,25 +76,37 @@ $t->get_ok(
 
 
 # get image meta data
-$url = $t->ua->server->url->userinfo("$api_key:")->path($doc_uri.'.meta');
-
+$url = $t->ua->server->url->userinfo("$api_key:")->path($doc_uri);
 $t->get_ok(
     $url,
 )->status_is(200)
     ->json_has( '/id', "has id" )
-    ->json_has( '/modified', "has modified" )
     ->json_has( '/created', "has created" )
     ->json_has( '/uri', "has uri" )
     ->json_is( '/src' => "unicorn.jpg", "correct src" )
-    ->json_is( '/owner' => $owner_id, "correct owner" );
+    ->json_has( '/owner', "has owner" );
 
 
 # get raw image
-$url = $t->ua->server->url->userinfo("$api_key:")->path($doc_uri);
 
+$url = $t->ua->server->url->userinfo("$api_key:")->path($doc_uri.'.binary');
 $t->get_ok($url)->status_is(200);
 
-unlink('t/media_directory/1e551787-903e-11e2-b2b6-0bbccb145af3/unicorn.jpg');
+
+# delete image
+
+$url = $t->ua->server->url->userinfo("$api_key:")->path($doc_uri);
+$t->delete_ok(
+    $url,
+)->status_is(200)
+    ->json_has( '/id', "has id" )
+    ->json_has( '/created', "has created" )
+    ->json_hasnt( '/uri', "has uri" )
+    ->json_has( '/deleted', "has deleted" )
+    ->json_is( '/src' => "unicorn.jpg", "correct src" )
+    ->json_has( '/owner', "has owner" );
+
+#unlink('t/media_directory/1e551787-903e-11e2-b2b6-0bbccb145af3/unicorn.jpg');
 
 #warn $t->tx->res->body;
 

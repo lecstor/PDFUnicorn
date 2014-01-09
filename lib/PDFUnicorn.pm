@@ -92,6 +92,7 @@ sub startup {
         $self->helper(
             $name => sub {
                 my $coll = $class->new(
+                    config => $self->config,
                     collection => shift->mango->db->collection($helper->{collection})
                 );
                 return $coll;
@@ -223,7 +224,7 @@ sub startup {
             return;
         }
         
-        $self->app->db_users->find_one({ _id => bson_oid $user_id }, sub{
+        $self->app->db_users->find_one({ _id => bson_oid($user_id)}, sub{
             my ($err, $doc) = @_;
             
             if ($doc && $doc->{active}){
@@ -287,7 +288,7 @@ sub startup {
 	$api->post('/images')->to('api-images#create');
 	$api->get('/images')->to('api-images#find');
 	$api->get('/images/:id')->to('api-images#find_one');
-	$api->delete('/images/:id')->to('api-images#delete');
+	$api->delete('/images/:id')->to('api-images#remove');
 	
 	if ($self->mode eq 'development' || $self->mode eq 'testing'){
 	    # create a test account and api-key
@@ -295,25 +296,25 @@ sub startup {
         my $data = {
             email => 'tester@pdfunicorn.com',
             firstname => 'Testy',
-#            password_key => {
-#                key => $self->random_string(length => 24),
-#                created => bson_time,
-#                reads => [],
-#                uses => []
-#            },
             password => crypt('bogus', 'ab'),
             active => bson_true,
             plan => 'small-1',
         };
         try{
-            my $user_oid = $self->db_users->collection->insert($data);
-            $self->db_apikeys->collection->insert({
-                owner => $user_oid,
-                key => 'testers-api-key',
-                name => 'our test key',
-                active => bson_true,
-                trashed => bson_false,
+            my $delay = Mojo::IOLoop->delay;
+            my $end = $delay->begin;
+            $self->db_users->collection->insert($data => sub {
+                my ($collection, $err, $oid) = @_;
+                $self->db_apikeys->collection->insert({
+                    owner => $oid,
+                    key => 'testers-api-key',
+                    name => 'our test key',
+                    active => bson_true,
+                    trashed => bson_false,
+                });
+                $end->();
             });
+            $delay->wait;
         };                
 	}
 	

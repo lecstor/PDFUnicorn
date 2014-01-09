@@ -9,6 +9,10 @@ has collection => (
     is => 'ro',
 );
 
+has config => (
+    is => 'ro',
+);
+
 # sub schemas{}
 
 sub create{
@@ -16,7 +20,7 @@ sub create{
     die 'Need a callback!' unless $callback;
  
     $data->{created} = time; # note Time::HiRes 'time'
-    $data->{modified} = $data->{created};
+    #$data->{modified} = $data->{created};
         
     my $oid = $self->collection->insert($data => sub{
         my ($coll, $err, $oid) = @_;
@@ -43,23 +47,20 @@ sub create{
 
 sub find_and_modify{
     my ($self, $query, $callback) = @_;
+    die 'Need a callback!' unless $callback;
     $self->collection->find_and_modify($query, $callback);
     Mojo::IOLoop->start unless Mojo::IOLoop->is_running;
 }
 
 sub find_one{
     my ($self, $query, $callback) = @_;
-    if ($callback){
-        $self->collection->find_one($query => sub{
-            my ($coll, $err, $doc) = @_;
-            warn $err if $err;
-            $callback->($err, $doc);
-        });
-        Mojo::IOLoop->start unless Mojo::IOLoop->is_running;
-    } else {
-        return $self->collection->find_one($query);
-    }
-    
+    die 'Need a callback!' unless $callback;
+    $self->collection->find_one($query => sub{
+        my ($coll, $err, $doc) = @_;
+        warn $err if $err;
+        $callback->($err, $doc);
+    });
+    Mojo::IOLoop->start unless Mojo::IOLoop->is_running; 
 }
 
 sub find_all{
@@ -95,9 +96,10 @@ sub update{
 
 
 sub remove{
-    my ($self, $doc, $sub) = @_;
+    my ($self, $doc, $callback) = @_;
+    die 'Need a callback!' unless $callback;
     $doc->{deleted} = bson_true;    
-    $self->update({ _id => $doc->{_id} }, $doc, $sub);
+    $self->update({ _id => $doc->{_id} }, $doc, $callback);
 }
 
 1;

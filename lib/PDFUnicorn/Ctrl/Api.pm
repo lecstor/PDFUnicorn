@@ -31,6 +31,8 @@ sub create {
             json => { status => 'invalid_request', data => { errors => $errors } }
         );
     }
+    
+    warn 'image create data: '.Data::Dumper->Dumper($data);
 
     $data->{owner} = $self->api_key;
     #$data->{id} = "$data->{id}";
@@ -129,10 +131,12 @@ sub remove{
 	my $id = $self->stash('id');
 	
     $self->render_later;
+    warn "remove find image";
     
-	$self->collection->find_one(bson_oid($id), sub{
+	$self->collection->find_one({ _id => bson_oid($id) }, sub{
         my ($err, $doc) = @_;
         if ($doc){
+            warn "remove found image";
             if ($doc->{owner} eq $self->stash->{api_key_owner_id}){
                 return $self->collection->remove($doc, sub{
                     my ($collection, $err, $mdoc) = @_;

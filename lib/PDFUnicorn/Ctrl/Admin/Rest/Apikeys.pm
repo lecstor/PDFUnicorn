@@ -53,26 +53,30 @@ sub find{
 	
     $self->render_later;
     
-    my $query = { owner => $user_id, trashed => bson_false };
+    my $query = { owner => bson_oid($user_id), trashed => bson_false };
     
     $self->db_apikeys->find_all($query, sub{
         my ($cursor, $err, $docs) = @_;
-        my $json  = Mojo::JSON->new;
+        my $json = Mojo::JSON->new;
         if ($docs && @$docs){
             $self->render( json => { status => 'ok', data => $docs } );
         } else {
             $self->db_apikeys->create({
-                owner => $user_id,
+                owner => bson_oid($user_id),
                 key => Data::UUID->new->create_str,
                 name => 'the first one',
                 active => bson_true,
                 trashed => bson_false,
             }, sub {
                 my ($err, $doc) = @_;
+                delete $doc->{_id};
+                delete $doc->{created};
+                delete $doc->{owner};
+                delete $doc->{trashed};
                 $self->render( json => { status => 'ok', data => [$doc] } );
             });
         }
-    }, { key => 1, owner => 1, _id => 0, name => 1, active => 1 });
+    }, { key => 1, _id => 0, name => 1, active => 1 });
     
 }
 

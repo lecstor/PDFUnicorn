@@ -41,6 +41,7 @@ sub schemas{
 
 sub set_password{
     my ($self, $user_id, $password, $salt, $callback) = @_;
+    die 'Need a callback!' unless $callback;
     $password = crypt($password, $salt);        
     $self->update(
         { _id => $user_id },
@@ -52,6 +53,7 @@ sub set_password{
 
 sub refresh_password_key{
     my ($self, $user, $callback) = @_;
+    die 'Need a callback!' unless $callback;
     $self->update(
         { _id => $user->{_id} },
         { 

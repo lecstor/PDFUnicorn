@@ -35,7 +35,6 @@ $t->get_ok('/admin/api-key');
 $t->get_ok('/admin/rest/apikeys');
 my $api_key_data = $t->tx->res->json->{data}[0];
 my $api_key = $api_key_data->{key};
-my $owner_id = $api_key_data->{owner};
 
 
 # create an image for our pdf
@@ -58,10 +57,9 @@ $t->post_ok(
     },
 )->status_is(200)
     ->json_has( '/id', "has id" )
-    ->json_has( '/modified', "has modified" )
     ->json_has( '/created', "has created" )
     ->json_has( '/uri', "has uri" )
-    ->json_is( '/owner' => $owner_id, "correct owner" )
+    ->json_has( '/owner', "has owner" )
     ->json_is( '/source' => '<doc><page>Test 2!<img src="cory_unicorn.jpeg" /></page></doc>', "correct source" )
     ->json_is( '/file' => undef, "file is undef" );
 
@@ -77,10 +75,9 @@ $t->get_ok(
     $url,
 )->status_is(200)
     ->json_has( '/data/0/id', "has id" )
-    ->json_has( '/data/0/modified', "has modified" )
     ->json_has( '/data/0/created', "has created" )
     ->json_is( '/data/0/uri' => $doc_uri, "has uri" )
-    ->json_is( '/data/0/owner' => $owner_id, "correct owner" )
+    ->json_has( '/data/0/owner', "has owner" )
     ->json_is( '/data/0/source' => '<doc><page>Test 2!<img src="cory_unicorn.jpeg" /></page></doc>', "correct source" )
     #->json_is( '/data/0/file' => undef, "file is undef" );
     ->json_has( '/data/0/file', "file oid is set" );
@@ -93,10 +90,9 @@ $t->get_ok(
     $url,
 )->status_is(200)
     ->json_has( '/id', "has id" )
-    ->json_has( '/modified', "has modified" )
     ->json_has( '/created', "has created" )
     ->json_is( '/uri' => $json->{uri}, "has uri" )
-    ->json_is( '/owner' => $owner_id, "correct owner" )
+    ->json_has( '/owner', "has owner" )
     ->json_is( '/source' => '<doc><page>Test 2!<img src="cory_unicorn.jpeg" /></page></doc>', "correct source" )
     #->json_is( '/file' => undef, "file is undef" );
     ->json_has( '/file', "file oid is set" );
@@ -105,9 +101,7 @@ $t->get_ok(
 
 # get document as PDF
 
-$t->get_ok(
-    $url.'.binary',
-)->status_is(200);
+$t->get_ok($url.'.binary')->status_is(200);
 
 ok($t->tx->res->body =~ /^%PDF/, 'doc is a PDF');
 

@@ -37,10 +37,11 @@ mark document as deleted and delete it's source property
 =cut
 
 sub remove{
-    my ($self, $doc, $sub) = @_;
+    my ($self, $doc, $callback) = @_;
+    die 'Need a callback!' unless $callback;
     $doc->{deleted} = bson_true;
     delete $doc->{source};
-    $self->update({ _id => $doc->{_id} }, $doc, $sub);
+    $self->update({ _id => $doc->{_id} }, $doc, $callback);
 }
 
 

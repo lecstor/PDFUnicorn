@@ -37,20 +37,20 @@ $t->get_ok('/admin/rest/apikeys')->status_is(401);
 $t->post_ok('/log-in', form => { username => 'tester@pdfunicorn.com', password => 'bogus' })
     ->status_is(302);
 
-
-# no api-key exists, so one will be created
+# key already exists, no need to create
 $t->get_ok('/admin/rest/apikeys');
 my $api_key_data = $t->tx->res->json->{data}[0];
 ok($api_key_data, 'api-key exists');
 ok($api_key_data->{key}, 'key has key');
-ok($api_key_data->{owner}, 'key has owner');
 
-# key already exists, no need to create
+$t->delete_ok('/admin/rest/apikeys/'.$api_key_data->{key})->status_is(200);
+
+# no api-key exists, so one will be created
 $t->get_ok('/admin/rest/apikeys');
 $api_key_data = $t->tx->res->json->{data}[0];
 ok($api_key_data, 'api-key exists');
 ok($api_key_data->{key}, 'key has key');
-ok($api_key_data->{owner}, 'key has owner');
+
 
 
 
