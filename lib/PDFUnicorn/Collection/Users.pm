@@ -45,7 +45,7 @@ sub set_password{
     $password = crypt($password, $salt);        
     $self->update(
         { _id => $user_id },
-        { '$set' => { password => $password } },
+        { password => $password },
         $callback
     );
 }

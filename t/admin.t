@@ -26,33 +26,6 @@ $t->post_ok(
 )->status_is(200);
 ok($t->tx->res->body =~ /^%PDF/, 'doc is a PDF');
 
-$t->get_ok('/admin/rest/apikeys')
-    ->status_is(200)
-    ->json_has('/data', 'has data')
-    ->json_has('/data/0', 'has data/0')
-    ->json_has('/data/0/key', 'has key')
-    ->json_is('/data/0/key', 'testers-api-key', 'correct key')
-    ->json_is('/data/0/active', 1, 'is active');
-
-#warn Data::Dumper->Dumper($t->tx->res->json);
-
-my $json = $t->tx->res->json;
-my $key = $json->{data}[0]{key};
-
-$t->delete_ok('/admin/rest/apikeys/'.$key)->status_is(200);
-
-$t->get_ok('/admin/rest/apikeys')
-    ->status_is(200)
-    ->json_has('/data', 'has data')
-    ->json_has('/data/0', 'has data/0')
-    ->json_is('/data/0/active', 1, 'is active');
-
-#warn Data::Dumper->Dumper($t->tx->res->json);
-
-$json = $t->tx->res->json;
-my $newkey = $json->{data}[0]{key};
-
-ok($key ne $newkey, 'new key generated');
 
 
 

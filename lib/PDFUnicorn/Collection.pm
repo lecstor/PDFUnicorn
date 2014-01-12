@@ -45,10 +45,24 @@ sub create{
 #    }
 #}
 
+=item find_and_modify
+
+my $opts = {
+    query => { foo => 'bar' },
+    update => { '$set' => {foo => 'baz'} }
+};
+
+$collection->find_and_modify($opts => sub {
+  my ($collection, $err, $doc) = @_;
+  ...
+});
+
+=cut
+
 sub find_and_modify{
-    my ($self, $query, $callback) = @_;
+    my ($self, $query_update, $callback) = @_;
     die 'Need a callback!' unless $callback;
-    $self->collection->find_and_modify($query, $callback);
+    $self->collection->find_and_modify($query_update, $callback);
     Mojo::IOLoop->start unless Mojo::IOLoop->is_running;
 }
 
@@ -90,7 +104,10 @@ sub update{
     my $callback = ref($_[-1]) eq 'CODE' ? pop : undef;
     my $options = shift || {};
     die 'Need a callback!' unless $callback;
-    $self->collection->update(($query, $data, $options), $callback);
+    $self->collection->find_and_modify({
+        query => $query,
+        update => { '$set' => $data }
+    }, $callback);
     Mojo::IOLoop->start unless Mojo::IOLoop->is_running;
 }
 
@@ -98,8 +115,7 @@ sub update{
 sub remove{
     my ($self, $doc, $callback) = @_;
     die 'Need a callback!' unless $callback;
-    $doc->{deleted} = bson_true;    
-    $self->update({ _id => $doc->{_id} }, $doc, $callback);
+    $self->update({ _id => $doc->{_id} }, { deleted => bson_true }, $callback);
 }
 
 1;

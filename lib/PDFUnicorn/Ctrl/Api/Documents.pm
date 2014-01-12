@@ -43,7 +43,7 @@ sub create {
     if (my $errors = $self->invalidate($self->item_schema, $data)){
         return $self->render(
             status => 422,
-            json => { object => 'invalid_request', errors => $errors }
+            json => { status => 'invalid_request', errors => $errors }
         );
     }
 
@@ -54,6 +54,8 @@ sub create {
 
     $data->{owner} = $self->stash->{api_key_owner_id};        
     $data->{file} = undef;
+    $data->{deleted} = bson_false;
+    $data->{public} = bson_false;
     #$data->{id} = "$data->{id}" if $data->{id};
     delete $data->{id};
     delete $data->{_id};
@@ -82,7 +84,7 @@ sub create {
             
             my $doc = $c->stash->{'pdfunicorn.doc'};
                         
-            if (!$doc){ die "a flaming death.."; }
+            #if (!$doc){ die "a flaming death.."; }
                         
             my $grid = PDF::Grid->new({
                 media_directory => $c->config->{media_directory}.'/'.$c->stash->{api_key_owner_id}.'/',
@@ -118,9 +120,9 @@ sub create {
                         # call a webhook?
                     });
                 });
-                Mojo::IOLoop->start unless Mojo::IOLoop->is_running;
+                #Mojo::IOLoop->start unless Mojo::IOLoop->is_running; # not required?
             });
-            Mojo::IOLoop->start unless Mojo::IOLoop->is_running;
+            #Mojo::IOLoop->start unless Mojo::IOLoop->is_running; # not required?
             
             return;
         });
@@ -146,11 +148,18 @@ sub find_one {
 	my $binary = 1 if $format && $format eq 'binary';
 	
     $self->render_later;
-    $self->collection->find_one({ _id => bson_oid($id) }, sub{
+    $self->collection->find_one({ _id => bson_oid($id), deleted => bson_false }, sub{
         my ($err, $doc) = @_;
         if ($doc){
             if ($doc->{owner} eq $self->stash->{api_key_owner_id}){
                 if ($binary){
+                    unless ($doc->{file}){
+                        $self->res->headers->header("Retry-after" => 1);
+                        return $self->render(
+                            status => 503,
+                            json => {}
+                        );
+                    }
                     my $gfs = $self->gridfs->prefix($doc->{owner});
                     $self->res->headers->content_type('applicaion/pdf');
                     return $gfs->reader->open($doc->{file}, sub{

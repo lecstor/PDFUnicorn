@@ -1,1 +1,1 @@
-HARNESS_PERL_SWITCHES=-MDevel::Cover carton exec prove -lv t/
+HARNESS_PERL_SWITCHES=-MDevel::Cover=+ignore,local,+ignore,home carton exec prove -lv t/

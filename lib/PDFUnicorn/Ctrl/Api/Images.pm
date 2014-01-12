@@ -10,7 +10,7 @@ use URI::Escape;
 sub collection{ shift->db_images }
 
 sub uri{ 'images' }
-sub item_schema{ 'Image' }
+#sub item_schema{ 'Image' }
 sub query_schema{ 'ImageQuery' }
 
 
@@ -21,12 +21,13 @@ sub create {
     if (!$upload){
         return $self->render(
             status => 422,
-            json => { status => 'invalid_request', data => { errors => 'There was no image data in the upload request.' } }
+            json => { status => 'invalid_request', errors => ['There was no image data in the upload request.'] }
         );
     }
     
-    #my $id = $self->req->param('id');
-    my $src = $self->req->param('src') || $upload->filename;
+    my $stock = $self->req->param('stock');
+    my $src = $self->req->param('src');
+    $src = $upload->filename unless $src;
     
     $src =~ s!^/+!!;
     $src =~ s!/+$!!;
@@ -35,7 +36,17 @@ sub create {
     my $image_data = {
         src => $src,
         owner => $self->stash->{api_key_owner_id},
+        stock => $stock ? bson_true : bson_false,
+        deleted => bson_false,
+        public => bson_false,
     };
+
+#    if (my $errors = $self->invalidate($self->item_schema, $image_data)){
+#        return $self->render(
+#            status => 422,
+#            json => { status => 'invalid_request', errors => $errors }
+#        );
+#    }
         
     $self->render_later;
     
@@ -56,13 +67,12 @@ sub create {
 sub find_one {
 	my $self = shift;
 	my $id = $self->stash('id');
-    #return $self->render_not_found unless $id = $self->validate_type('oid', $id);
+    return $self->render_not_found unless $id = $self->validate_type('oid', $id);
         
     $self->render_later;
-    $self->collection->find_one({ _id => bson_oid($id) }, sub{
+    $self->collection->find_one({ _id => bson_oid($id), deleted => bson_false }, sub{
         my ($err, $doc) = @_;
         if ($doc){
-            warn "Found image";
             if ($doc->{owner} eq $self->stash->{api_key_owner_id}){
                 return $self->serve_doc($doc);
             }
@@ -75,11 +85,10 @@ sub find_one {
 sub serve_doc{
     my ($self, $doc) = @_;
 	my $format = $self->stash('format');
-    if ($format && $format eq 'binary'){
+    if ($format){ # && $format eq 'binary'){
         my $media_base = $self->config->{media_directory}.'/'.$self->stash->{api_key_owner_id};
         $self->res->headers->content_disposition('attachment; filename='.$doc->{src}.';');
         my $local_file_name = $media_base.'/'.uri_escape($doc->{src});
-        warn "image src: ".$doc->{src};
         my ($ext) = $doc->{src} =~ /\.([^.]+)$/;
         $self->res->headers->content_type("image/$ext");
         $self->res->content->asset(Mojo::Asset::File->new(path => $local_file_name));

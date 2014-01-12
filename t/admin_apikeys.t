@@ -37,19 +37,55 @@ $t->get_ok('/admin/rest/apikeys')->status_is(401);
 $t->post_ok('/log-in', form => { username => 'tester@pdfunicorn.com', password => 'bogus' })
     ->status_is(302);
 
-# key already exists, no need to create
-$t->get_ok('/admin/rest/apikeys');
-my $api_key_data = $t->tx->res->json->{data}[0];
-ok($api_key_data, 'api-key exists');
-ok($api_key_data->{key}, 'key has key');
 
-$t->delete_ok('/admin/rest/apikeys/'.$api_key_data->{key})->status_is(200);
+# REST API
 
-# no api-key exists, so one will be created
-$t->get_ok('/admin/rest/apikeys');
-$api_key_data = $t->tx->res->json->{data}[0];
-ok($api_key_data, 'api-key exists');
-ok($api_key_data->{key}, 'key has key');
+# get key
+
+$t->get_ok('/admin/rest/apikeys')
+    ->status_is(200)
+    ->json_has('/data', 'has data')
+    ->json_has('/data/0', 'has data/0')
+    ->json_has('/data/0/key', 'has key')
+    ->json_is('/data/0/key', 'testers-api-key', 'correct key')
+    ->json_is('/data/0/active', 1, 'is active');
+
+my $json = $t->tx->res->json;
+my $key = $json->{data}[0]{key};
+
+# delete key
+
+$t->delete_ok('/admin/rest/apikeys/'.$key)->status_is(200);
+
+# get new key
+
+$t->get_ok('/admin/rest/apikeys')
+    ->status_is(200)
+    ->json_has('/data', 'has data')
+    ->json_has('/data/0', 'has data/0')
+    ->json_is('/data/0/active', 1, 'is active');
+
+$json = $t->tx->res->json;
+my $newkey = $json->{data}[0]{key};
+
+ok($key ne $newkey, 'new key generated');
+
+$t->put_ok("/admin/rest/apikeys/$newkey", json => { active => 0 })
+    ->status_is(200)
+    ->json_is('/active', 0, 'is active');
+
+$t->put_ok("/admin/rest/apikeys/$newkey", json => { active => 1 })
+    ->status_is(200)
+    ->json_is('/active', 1, 'is active');
+
+
+$t->get_ok('/admin/api-key')
+    ->status_is(200);
+
+$t->delete_ok('/admin/rest/apikeys/'.$newkey)->status_is(200);
+
+$t->get_ok('/admin/api-key')
+    ->status_is(200);
 
 
 

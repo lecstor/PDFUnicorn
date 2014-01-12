@@ -117,7 +117,7 @@ sub sign_up {
                     my ($client, $stripe_customer) = @_;
                     $users_collection->update(
                         { _id => $user_id },
-                        { '$set' => { stripe_id => $stripe_customer->{id} } },
+                        { stripe_id => $stripe_customer->{id} },
                         sub {},
                     );
                 },
@@ -185,7 +185,7 @@ sub log_in{
         return $self->render(
             #template => 'root/sign_up_form',
             email => $username,
-            error => 'Please enter an email address',
+            error => 'Please enter the email address you signed up with',
             message => '',
         );
     }   
@@ -261,28 +261,26 @@ sub set_password_form{
                 my $expires = DateTime::Duration->new(minutes => $self->config->{password_key}{expires});
                 my $not_before = DateTime->now - $expires;
                                 
-                if ($doc){
-                    if ($key_created >= $not_before){
-                        my $user_email_hash = md5_sum($doc->{email});
-                        if ($user_email_hash eq $email_hash){
-                            
-                            $self->session->{user_id} = $doc->{_id};
-                            $self->stash->{app_user} = $doc;
-                            return $self->render(error => '', user => $doc);
-                        }
-                    } else {
-                        $self->db_users->refresh_password_key($doc, sub{
-                            my ($collection, $err, $doc) = @_;
-                            $self->send_password_key($doc);
-                            return $self->render(
-                                template => 'root/log_in',
-                                email => '',
-                                message => '',
-                                error => "Sorry, that account key has expired. I have sent a new key to your email address.",
-                            );
-                        });
+                if ($key_created >= $not_before){
+                    my $user_email_hash = md5_sum($doc->{email});
+                    if ($user_email_hash eq $email_hash){
+                        $self->session->{user_id} = $doc->{_id};
+                        $self->stash->{app_user} = $doc;
+                        return $self->render(error => '', user => $doc);
                     }
+                } else {
+                    $self->db_users->refresh_password_key($doc, sub{
+                        my ($collection, $err, $doc) = @_;
+                        $self->send_password_key($doc);
+                        return $self->render(
+                            template => 'root/log_in',
+                            email => '',
+                            message => '',
+                            error => "Sorry, that account key has expired. I have sent a new key to your email address.",
+                        );
+                    });
                 }
+                
                 $self->render(
                     template => 'root/log_in',
                     email => '',

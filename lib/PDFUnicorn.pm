@@ -44,6 +44,9 @@ sub startup {
     $self->helper('mango' => sub { shift->app->mango });
     $self->helper('gridfs' => sub { shift->app->gridfs });
 
+    # Wait for all operations to have reached at least 1 server
+    my $wait = $self->mango->w;
+
     my $db = $self->mango->db;
     
     $self->attr(gridfs => sub { $self->mango->db->gridfs });
@@ -63,7 +66,7 @@ sub startup {
         bson_doc(
             key => 1,
             owner => 1,
-            trashed => 1,
+            deleted => 1,
             name => 1,
             active => 1
         )
@@ -83,10 +86,8 @@ sub startup {
         my $class = $helper->{class};
         
         my $schemas = $class->schemas;
-        if ($schemas){
-            foreach my $name (keys %$schemas){
-                $validator->set_schema($name, $schemas->{$name});
-            }
+        foreach my $name (keys %$schemas){
+            $validator->set_schema($name, $schemas->{$name});
         }
         
         $self->helper(
@@ -110,7 +111,6 @@ sub startup {
                 my $email_sum = md5_sum $user->{email};
                 my $host = $ctrl->req->url->to_abs->host;
                 my $port = $ctrl->req->url->port;
-                $host .= ":$port" if $port && $port != 80;
                 my $to = $user->{firstname} ? qq("$user->{firstname}" <$user->{email}>) : $user->{email};
                 $ctrl->stash->{key_url} = 
                     $host ."/set-password/". $user->{password_key}{key} ."/". $email_sum;
@@ -277,7 +277,7 @@ sub startup {
     $admin->put('/stripe/customer')->to('admin-stripe-customer#update');
     
     $admin->get('/rest/apikeys')->to('admin-rest-apikeys#find');
-    $admin->put('/rest/apikeys/:key')->to('admin-rest-apikeys#set_active');
+    $admin->put('/rest/apikeys/:key')->to('admin-rest-apikeys#update');
     $admin->delete('/rest/apikeys/:key')->to('admin-rest-apikeys#delete');
 	
 	$api->post('/documents')->to('api-documents#create');
@@ -293,29 +293,31 @@ sub startup {
 	if ($self->mode eq 'development' || $self->mode eq 'testing'){
 	    # create a test account and api-key
 	    
-        my $data = {
-            email => 'tester@pdfunicorn.com',
-            firstname => 'Testy',
-            password => crypt('bogus', 'ab'),
-            active => bson_true,
-            plan => 'small-1',
-        };
-        try{
-            my $delay = Mojo::IOLoop->delay;
-            my $end = $delay->begin;
-            $self->db_users->collection->insert($data => sub {
-                my ($collection, $err, $oid) = @_;
-                $self->db_apikeys->collection->insert({
-                    owner => $oid,
-                    key => 'testers-api-key',
-                    name => 'our test key',
-                    active => bson_true,
-                    trashed => bson_false,
+        foreach my $id ('','2'){
+            my $data = {
+                email => "tester${id}\@pdfunicorn.com",
+                firstname => "Testy$id",
+                password => crypt('bogus', 'ab'),
+                active => bson_true,
+                plan => 'small-1',
+            };
+            try{
+                my $delay = Mojo::IOLoop->delay;
+                my $end = $delay->begin;
+                $self->db_users->collection->insert($data => sub {
+                    my ($collection, $err, $oid) = @_;
+                    $self->db_apikeys->collection->insert({
+                        owner => $oid,
+                        key => "tester${id}s-api-key",
+                        name => 'our test key',
+                        active => bson_true,
+                        deleted => bson_false,
+                    });
+                    $end->();
                 });
-                $end->();
-            });
-            $delay->wait;
-        };                
+                $delay->wait;
+            };                
+        }
 	}
 	
 }

@@ -47,8 +47,43 @@ $t->post_ok(
     },
 )->status_is(200);
 
-# create document
 
+# bad attr in query
+$url = $t->ua->server->url->userinfo("$api_key:")->path('/v1/documents');
+$t->get_ok(
+    $url, form => { blah => 1 }
+)->status_is(422)
+    ->json_is('/status', 'invalid_request')
+    ->json_is('/errors', ['Unexpected object attribute: "blah"']);
+
+
+# bad attr in create
+$url = $t->ua->server->url->userinfo("$api_key:")->path('/v1/documents');
+$t->post_ok(
+    $url, json => { blah => 1, source => '<doc></doc>' }
+)->status_is(422)
+    ->json_is('/status', 'invalid_request')
+    ->json_is('/errors', ['Unexpected object attribute: "blah"']);
+
+
+# bad attr in create
+$url = $t->ua->server->url->userinfo("$api_key:")->path('/v1/documents');
+$t->post_ok(
+    $url, json => { blah => 1 }
+)->status_is(422)
+    ->json_is('/status', 'invalid_request')
+    ->json_is('/errors', [
+        'Unexpected object attribute: "blah"',
+        'Document - Missing required attribute value: "source"'
+    ]);
+
+
+# bad oid format
+$url = $t->ua->server->url->userinfo("$api_key:")->path('/v1/documents/not-a-valid-oid');
+$t->get_ok($url)->status_is(404);
+
+
+# create document
 $url = $t->ua->server->url->userinfo("$api_key:")->path('/v1/documents');
 $t->post_ok(
     $url,
@@ -68,9 +103,12 @@ is $json->{uri}, '/v1/documents/'.$json->{id}, 'uri';
 
 my $doc_uri = $json->{uri};
 
+$url = $t->ua->server->url->userinfo("$api_key:")->path($doc_uri.'.binary');
+$t->get_ok($url)->status_is(503);
+
 
 # list documents
-
+$url = $t->ua->server->url->userinfo("$api_key:")->path('/v1/documents');
 $t->get_ok(
     $url,
 )->status_is(200)
@@ -98,21 +136,43 @@ $t->get_ok(
     ->json_has( '/file', "file oid is set" );
 
 
+$url = $t->ua->server->url->userinfo("$api_key:")->path($doc_uri.'.non_format');
+$t->get_ok($url)
+    ->status_is(200)
+    ->json_has( '/id', "has id" );
+    
 
 # get document as PDF
+$url = $t->ua->server->url->userinfo("$api_key:")->path($doc_uri);
+while(1){
+    $t->get_ok($url.'.binary');
+    if ($t->tx->res->code == 503){
+        my $retry = $t->tx->res->headers->to_hash->{'Retry-after'};
+        warn "503 retry after: $retry";
+        sleep($retry);
+        next;
+    }
+    is($t->tx->res->code, 200, 'got 200');
+    last;
+}
 
 $t->get_ok($url.'.binary')->status_is(200);
-
 ok($t->tx->res->body =~ /^%PDF/, 'doc is a PDF');
 
 
 # delete document
+$t->delete_ok($url)->status_is(200);
 
-$t->delete_ok(
-    $url,
-)->status_is(200)
-    ->json_hasnt('/source', 'source removed')
-    ->json_has('/deleted');
+# try to delete document again..
+$t->delete_ok($url)->status_is(404);
+
+$t->get_ok($url)->status_is(404);
+
+
+# access documents that doesn't exist
+$url = $t->ua->server->url->userinfo("$api_key:")->path('/v1/documents/52d14181b9efb754ae040000');
+$t->get_ok($url)->status_is(404);
+$t->delete_ok($url)->status_is(404);
 
 
 # create document and get response as PDF
@@ -125,6 +185,27 @@ $t->post_ok(
 ok($t->tx->res->body =~ /^%PDF/, 'doc is a PDF');
 
 #$t->tx->res->content->asset->move_to('t/api_doc.pdf');
+
+
+
+# create document
+$url = $t->ua->server->url->userinfo("$api_key:")->path('/v1/documents.non_format');
+$t->post_ok($url, json => { source => '<doc><page>Test</page></doc>' })
+    ->status_is(200)
+    ->json_has( '/id', "has id" );
+$doc_uri = $t->tx->res->json->{uri};
+
+# tester2 tries to access tester's images
+$t->post_ok('/log-in', form => { username => 'tester2@pdfunicorn.com', password => 'bogus' })
+    ->status_is(302);
+$t->get_ok('/admin/rest/apikeys');
+my $api_key2 = $t->tx->res->json->{data}[0]->{key};
+
+
+$url = $t->ua->server->url->userinfo("$api_key2:")->path($doc_uri);
+$t->get_ok($url)->status_is(404);
+$t->delete_ok($url)->status_is(404);
+
 
 
 #Mojo::IOLoop->timer(1 => sub { Mojo::IOLoop->stop });

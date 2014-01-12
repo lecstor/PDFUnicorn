@@ -8,21 +8,31 @@ use Data::UUID;
 use Try;
 
 
-sub set_active {
+sub update {
 	my $self = shift;
 	
 	my $data = $self->req->json();
 	
     $self->render_later;
+    
+    my $active = $data->{active} ? bson_true : bson_false;
 
 	$self->db_apikeys->update(
-	   { key => $self->stash->{'key'}, owner => $self->stash->{app_user}{_id} },
-	   { '$set' => { active => $data->{active} } },
-	   sub {
-	       my ($err, $doc) = @_;
-	       $self->render(json => { status => 'ok' });
-	   }
-	);
+	    { key => $self->stash->{'key'}, owner => $self->stash->{app_user}{_id} },
+	    { active => $active },
+	    sub {
+	        my ($coll, $err, $doc) = @_;
+	        return $self->db_apikeys->find_one({ _id => $doc->{_id} }, sub{
+	            my ($err, $doc) = @_;
+    	        #warn Data::Dumper->Dumper($doc);
+                delete $doc->{_id};
+                delete $doc->{created};
+                delete $doc->{owner};
+                delete $doc->{deleted};
+    	        $self->render(json => $doc);
+	        });
+	    }
+	 );
 }
 
 sub delete{
@@ -33,7 +43,7 @@ sub delete{
 
     $self->db_apikeys->update(
        { key => $self->stash->{'key'}, owner => $self->stash->{app_user}{_id} },
-       { '$set' => { trashed => bson_true, active => bson_false } },
+       { deleted => bson_true, active => bson_false },
        sub {
            my ($err, $doc) = @_;
            $self->render(json => { status => 'ok' });
@@ -53,12 +63,12 @@ sub find{
 	
     $self->render_later;
     
-    my $query = { owner => bson_oid($user_id), trashed => bson_false };
+    my $query = { owner => bson_oid($user_id), deleted => bson_false };
     
     $self->db_apikeys->find_all($query, sub{
         my ($cursor, $err, $docs) = @_;
         my $json = Mojo::JSON->new;
-        if ($docs && @$docs){
+        if (@$docs){
             $self->render( json => { status => 'ok', data => $docs } );
         } else {
             $self->db_apikeys->create({
@@ -66,13 +76,13 @@ sub find{
                 key => Data::UUID->new->create_str,
                 name => 'the first one',
                 active => bson_true,
-                trashed => bson_false,
+                deleted => bson_false,
             }, sub {
                 my ($err, $doc) = @_;
                 delete $doc->{_id};
                 delete $doc->{created};
                 delete $doc->{owner};
-                delete $doc->{trashed};
+                delete $doc->{deleted};
                 $self->render( json => { status => 'ok', data => [$doc] } );
             });
         }

@@ -36,12 +36,12 @@ sub apikey {
 	
     $self->render_later;
     
-    my $query = { owner => bson_oid($user_id), trashed => bson_false };
+    my $query = { owner => bson_oid($user_id), deleted => bson_false };
     
     $self->db_apikeys->find_all($query, sub{
         my ($cursor, $err, $docs) = @_;
         my $json  = Mojo::JSON->new;
-        if ($docs){
+        if (@$docs){
             $self->render( keys => $json->encode($docs), error => '' );
         } else {
             $self->db_apikeys->create({
@@ -49,7 +49,7 @@ sub apikey {
                 key => Data::UUID->new->create_str,
                 name => 'the first one',
                 active => bson_true,
-                trashed => bson_false,
+                deleted => bson_false,
             }, sub {
                 my ($err, $doc) = @_;
                 $self->render( keys => $json->encode([$doc]), error => '' );

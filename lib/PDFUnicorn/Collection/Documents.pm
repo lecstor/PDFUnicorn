@@ -15,7 +15,7 @@ sub schemas{
             source => { type => 'string', required => 1 },
             created => { type => 'datetime', bson => 'time' },
             public => { type => 'boolean', bson => 'bool' },
-            owner => { type => 'string', bson => 'oid' },
+            owner => { type => 'oid', bson => 'oid' },
             deleted => { type => 'boolean', bson => 'bool' },
             #_required => { or => [qw(source template)] }
         },
@@ -24,7 +24,7 @@ sub schemas{
             type => { type => 'string' },
             created => { type => 'datetime', bson => 'time' },
             public => { type => 'boolean', bson => 'bool' },
-            owner => { type => 'string', bson => 'oid' },
+            owner => { type => 'oid', bson => 'oid' },
             deleted => { type => 'boolean', bson => 'bool' },
         }
     }
@@ -39,9 +39,10 @@ mark document as deleted and delete it's source property
 sub remove{
     my ($self, $doc, $callback) = @_;
     die 'Need a callback!' unless $callback;
-    $doc->{deleted} = bson_true;
-    delete $doc->{source};
-    $self->update({ _id => $doc->{_id} }, $doc, $callback);
+    $self->update({ _id => $doc->{_id} }, {
+        deleted => bson_true,
+        source => '',
+    }, $callback);
 }
 
 
