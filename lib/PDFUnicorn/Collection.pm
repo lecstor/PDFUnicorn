@@ -19,7 +19,7 @@ sub create{
     my ($self, $data, $callback) = @_;
     die 'Need a callback!' unless $callback;
  
-    $data->{created} = time; # note Time::HiRes 'time'
+    $data->{created} = bson_time; # note Time::HiRes 'time'
     #$data->{modified} = $data->{created};
         
     my $oid = $self->collection->insert($data => sub{
