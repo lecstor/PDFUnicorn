@@ -48,6 +48,24 @@ $t->post_ok(
 )->status_is(200);
 
 
+# no api-key
+$url = $t->ua->server->url->path('/v1/documents');
+$t->get_ok($url)->status_is(401)
+    ->json_is('/status', 'missing_apikey');
+
+
+# empty api-key
+$url = $t->ua->server->url->userinfo(":")->path('/v1/documents');
+$t->get_ok($url)->status_is(401)
+    ->json_is('/status', 'missing_apikey');
+
+
+# bad api-key
+$url = $t->ua->server->url->userinfo("blah:")->path('/v1/documents');
+$t->get_ok($url)->status_is(401)
+    ->json_is('/status', 'invalid_apikey');
+
+
 # bad attr in query
 $url = $t->ua->server->url->userinfo("$api_key:")->path('/v1/documents');
 $t->get_ok(

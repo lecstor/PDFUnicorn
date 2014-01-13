@@ -52,22 +52,22 @@ sub set_password{
 
 
 sub refresh_password_key{
-    my ($self, $user, $callback) = @_;
+    my ($self, $ctrl, $user, $callback) = @_;
     die 'Need a callback!' unless $callback;
+    my $password_key = {
+        key => Session::Token->new(length => 24)->get,
+        created => bson_time,
+        reads => [], # [bson_time]
+        uses => [], # [bson_time]
+    };
     $self->update(
         { _id => $user->{_id} },
-        { 
-            password_key => {
-                key => Session::Token->new(length => 24)->get,
-                created => bson_time,
-                reads => [], # [bson_time]
-                uses => [], # [bson_time]
-            },
-        },
+        { password_key => $password_key },
         sub{
             my ($collection, $err, $doc) = @_;
             warn $err if $err;
-            $callback->($self, $err, $doc);
+            $doc->{password_key} = $password_key;
+            $callback->($err, $doc);
         }
     );
 }

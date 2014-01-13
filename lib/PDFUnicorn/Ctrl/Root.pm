@@ -63,7 +63,6 @@ sub sign_up {
 	
 	unless ($email_addr && $email_addr =~ /^.+\@[^.\s]+\.[^\s]+$/){
         return $self->render(
-            #template => 'root/sign_up_form',
             email => $email_addr,
             name => $name,
             selected_plan => $plan,
@@ -89,15 +88,15 @@ sub sign_up {
         plan => $plan,
     };
 
-    if (my $errors = $self->invalidate('User', $data)){
-        return $self->render(
-            email => $email_addr || '',
-            name => $name,
-            selected_plan => $plan,
-            error => @$errors ? $errors->[0] : '',
-            errors => $errors || [],
-        );
-    }
+#    if (my $errors = $self->invalidate('User', $data)){
+#        return $self->render(
+#            email => $email_addr || '',
+#            name => $name,
+#            selected_plan => $plan,
+#            error => @$errors ? $errors->[0] : '',
+#            errors => $errors || [],
+#        );
+#    }
     
     $self->render_later;
         
@@ -131,7 +130,7 @@ sub sign_up {
         
         if ($err){
             if ($err =~ /^E11000 duplicate key error/){
-                # clear the error and send a key
+                # clear the error and send an account key
                 $err = '';
                 return $self->db_users->find_one({ email => $data->{email} }, sub{
                     my ($err, $doc) = @_;
@@ -252,15 +251,16 @@ sub set_password_form{
     delete $self->stash->{email};
 
     $self->render_later;
+    
     $self->db_users->find_one({'password_key.key' => $code },
         sub {
             my ($err, $doc) = @_;
             if ($doc){
-                # TODO: Error handling!
-                my $key_created = DateTime->from_epoch(epoch => $doc->{password_key}{created}->to_epoch);
-                my $expires = DateTime::Duration->new(minutes => $self->config->{password_key}{expires});
-                my $not_before = DateTime->now - $expires;
-                                
+                # TODO: Error handling!                
+                my $key_created = $doc->{password_key}{created}->to_epoch;
+                my $expires_seconds = $self->config->{password_key}{expires} * 60;
+                my $not_before = bson_time->to_epoch - $expires_seconds;
+                
                 if ($key_created >= $not_before){
                     my $user_email_hash = md5_sum($doc->{email});
                     if ($user_email_hash eq $email_hash){
@@ -269,16 +269,13 @@ sub set_password_form{
                         return $self->render(error => '', user => $doc);
                     }
                 } else {
-                    $self->db_users->refresh_password_key($doc, sub{
-                        my ($collection, $err, $doc) = @_;
-                        $self->send_password_key($doc);
-                        return $self->render(
-                            template => 'root/log_in',
-                            email => '',
-                            message => '',
-                            error => "Sorry, that account key has expired. I have sent a new key to your email address.",
-                        );
-                    });
+                    $self->send_password_key($doc);
+                    return $self->render(
+                        template => 'root/log_in',
+                        email => '',
+                        message => '',
+                        error => "Sorry, that account key has expired. I have sent a new key to your email address.",
+                    );
                 }
                 
                 $self->render(

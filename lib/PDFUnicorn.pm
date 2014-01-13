@@ -105,12 +105,14 @@ sub startup {
         'send_password_key' => sub {
             my ($ctrl, $user) = @_;
             
+            my $host = $ctrl->req->url->to_abs->host;
+            
             my $callback = sub{
                 my ($err, $user) = @_;
                 my $original_format = $ctrl->stash->{format};
                 my $email_sum = md5_sum $user->{email};
-                my $host = $ctrl->req->url->to_abs->host;
-                my $port = $ctrl->req->url->port;
+                #my $host = $ctrl->req->url->to_abs->host;
+                #my $port = $ctrl->req->url->port;
                 my $to = $user->{firstname} ? qq("$user->{firstname}" <$user->{email}>) : $user->{email};
                 $ctrl->stash->{key_url} = 
                     $host ."/set-password/". $user->{password_key}{key} ."/". $email_sum;
@@ -127,10 +129,14 @@ sub startup {
                 $ctrl->stash->{format} = $original_format;
             };
             
-            # refresh the key if it is more than 12 hours old.
+            # refresh the key if it is more than half the expiry age..
             # refreshing invalidates the old key so we don't want to do it every time
-            if (DateTime->from_epoch(epoch => $user->{password_key}{created}->to_epoch) < DateTime->now - DateTime::Duration->new(minutes => $ctrl->config->{password_key}{expires}/2)){
-                $ctrl->db_users->refresh_password_key($user, $callback);
+            my $key_created = $user->{password_key}{created}->to_epoch;
+            my $expires_seconds = $ctrl->config->{password_key}{expires} * 60/2;
+            my $not_before = bson_time->to_epoch - $expires_seconds;
+            
+            if ($key_created < $not_before){
+                $ctrl->db_users->refresh_password_key($ctrl, $user, $callback);
             } else {
                 $callback->(undef, $user);
             }
@@ -164,7 +170,7 @@ sub startup {
 
             my $auth = $ctrl->req->url->to_abs->userinfo;
             if ($auth){
-                my ($token) = $auth =~ /^(.*):/;
+                my ($token) = $auth =~ /^(.+):/;
                 return $token;
             }
             return;            
@@ -182,13 +188,14 @@ sub startup {
 
         my $token = $self->api_key;
         unless ($token){
-            return $self->render(
+            $self->render(
                 json => {
-                    "status" => "nok",
-                    "error" => "Sorry, you need to use Basic Authentication with your PDFUnicorn API-Key as the username with no password to access the PDFUnicorn API"
+                    "status" => "missing_apikey",
+                    "errors" => ["Sorry, you need to use Basic Authentication with your PDFUnicorn API-Key as the username with no password to access the PDFUnicorn API"]
                 },
                 status => 401
             );
+            return;
         };
         
         # lookup owner and return id
@@ -198,7 +205,7 @@ sub startup {
             my ($err, $doc) = @_;
             unless ($doc){
                 return $self->render(
-                    json => { "status" => "nok", "error" => "Sorry, the API-Key you provided is invalid" },
+                    json => { "status" => "invalid_apikey", "error" => "Sorry, the API-Key you provided is invalid" },
                     status => 401
                 );
             };

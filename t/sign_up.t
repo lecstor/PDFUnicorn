@@ -5,6 +5,8 @@ use Test::Mojo;
 use Mango;
 use Try;
 
+use PDFUnicorn;
+
 use List::Util 'first';
 
 BEGIN { $ENV{EMAIL_SENDER_TRANSPORT} = 'Test' }
@@ -16,7 +18,7 @@ try{ $users->drop }
 
 #$mango->db->collection('users')->drop;
 
-my $t = Test::Mojo->new('PDFUnicorn');
+my $t = Test::Mojo->new(PDFUnicorn->new( mode => 'testing' ));
 $t->app->mango($mango);
 
 
@@ -30,11 +32,18 @@ $t->post_ok('/sign-up', => form => { name => 'Jason', email => '', time_zone => 
     ->element_exists('input[name="email"]')
     ->content_like(qr/enter an email/);
     
+# entered something 
 $t->post_ok('/sign-up', => form => { name => '', email => '    ', time_zone => 'America/Chicago', selected_plan => 'small-1' })
     ->status_is(200)
     ->element_exists('input[name="name"]')
     ->element_exists('input[name="email"]')
     ->content_like(qr/your real email/);
+
+# empty form
+$t->post_ok('/sign-up', => form => { name => '', email => '', time_zone => 'America/Chicago', selected_plan => 'small-1' })
+    ->status_is(200)
+    ->element_exists('input[name="name"]')
+    ->element_exists('input[name="email"]');
     
 $t->post_ok('/sign-up', => form => { name => 'Jason', email => '', time_zone => 'America/Chicago', selected_plan => 'small-1' })
     ->status_is(200)
@@ -62,8 +71,15 @@ $t->post_ok('/sign-up', => form => { name => 'Jason', email => 'jason-test2@lecs
     ->content_like(qr/Hey,\s+Jason,\s+thanks/)
     ->content_like(qr/jason-test2\@lecstor\.com/);
 
+$t->post_ok('/sign-up', => form => { name => 'Jason', email => 'jason-test2@lecstor.com', time_zone => 'America/Chicago', selected_plan => 'medium-1' })
+    ->status_is(200)
+    ->element_exists_not('input[name="name"]')
+    ->element_exists_not('input[name="email"]')
+    ->content_like(qr/Hey,\s+Jason,\s+thanks/)
+    ->content_like(qr/jason-test2\@lecstor\.com/);
+
 my @deliveries = Email::Sender::Simple->default_transport->deliveries;
-is(@deliveries, 2, 'delivered two emails');
+is(@deliveries, 3, 'delivered three emails');
 
 $t->app->helper('db_users' => 'ouch');
 $t->post_ok('/sign-up', => form => { email => 'jason@lecstor.com', time_zone => 'America/Chicago', selected_plan => 'medium-1' })
