@@ -34,6 +34,12 @@ $t->post_ok('/log-in', => form => { username => 'Jason', password => 'something'
     ->element_exists('input[name="password"]')
     ->content_like(qr/enter the email/);
 
+$t->post_ok('/log-in', => form => { username => '', password => 'something' })
+    ->status_is(200)
+    ->element_exists('input[name="username"]')
+    ->element_exists('input[name="password"]')
+    ->content_like(qr/enter the email/);
+
 $t->post_ok('/sign-up', => form => {
     name => 'Jason',
     email => 'jason+1@lecstor.com',

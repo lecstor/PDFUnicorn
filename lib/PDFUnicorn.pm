@@ -300,12 +300,12 @@ sub startup {
 	if ($self->mode eq 'development' || $self->mode eq 'testing'){
 	    # create a test account and api-key
 	    
-        foreach my $id ('','2'){
+        foreach my $id ('','2','3'){
             my $data = {
                 email => "tester${id}\@pdfunicorn.com",
                 firstname => "Testy$id",
                 password => crypt('bogus', 'ab'),
-                active => bson_true,
+                active => ($id && $id == 3) ? bson_false : bson_true,
                 plan => 'small-1',
             };
             try{
