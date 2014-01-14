@@ -15,11 +15,75 @@
     </div>
 </div>            
 
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Errors</h3>
+    </div>
+    <div class="panel-body">
+        <p>
+            As long as you get a response code of 200 all is well. If you get
+            something else then you've got an issue to handle. Call specific
+            error status codes are outlined in the documentation below.
+        </p>
+        <h4>Errors Overview</h4>
+        <table class="table">
+            <tr><th>Status Code</th><th>Status Name</th><th>Status Reason</th></tr>
+            <tr>
+                <td>401</td>
+                <td>access_denied</td>
+                <td>API key is invalid or missing</td>
+            </tr>
+            <tr>
+                <td>404</td>
+                <td>not_found</td>
+                <td>The resource you are trying to access does not exist or is
+                not available to you.</td>
+            </tr>
+            <tr>
+                <td>422</td>
+                <td>invalid_request</td>
+                <td>Your request data is incomplete or incorrect</td>
+            </tr>
+            <tr>
+                <td>503</td>
+                <td>retry_after</td>
+                <td>The PDF document is not ready for retrieval.
+                    <!-- p>Additionally a Retry-after header is returned with it's
+                    value as the number of seconds to wait before trying the
+                    request again.</p -->
+                </td>
+            </tr>
+        </table>
+        <h4>Example Response</h4>
+            <pre>
+Status-Code: 422
+{
+    'status' => 'invalid_request',
+    'errors' => ['There was no image data in the upload request.'],
+};
+</pre>
+    </div>
+</div>            
+
+
+
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title">Create/Upload an Image</h3>
     </div>
     <div class="panel-body">
+        <p>Accepted image types are: png, jpg, pnm, and tiff.</p>
+        <p>The image data field must be named "image".</p>
+        <p>A src field may be specified which should have the same value as
+        the src attribute in the image tags used in the document.</p>
+        <p>To ensure print quality, the dimensions of your images should be
+        about 1.5 times greater than you would use for screen display, so an
+        image that will span the width of an A4 PDF should be about 1,000 pixels
+        wide. At the same time, the file size of your PDF will grow in line
+        with the file size of the images in it so you don't want them any bigger
+        than they need to be.</p>  
         <h4>Request</h4>
         
         <p>POST https://api.pdfunicorn.com/v1/images</p>        
@@ -27,8 +91,8 @@
             <h4>Curl</h4>
             <pre>
 $ curl https://api.pdfunicorn.com/v1/images \\
- 	-F "image=@test.jpg" \\
- 	-F "source=test.jpg" \\
+ 	-F "image=@unicorn.jpg" \\
+ 	-F "src=unicorn.jpg" \\
     -H "Content-Type: multipart/form-data" \\
     -X POST \\
     -u 1e551787-903e-11e2-b2b6-0bbccb145af3:
@@ -46,9 +110,25 @@ $ curl https://api.pdfunicorn.com/v1/images \\
     'modified' => '1389048511.0901'
 };
 </pre>
-                
+    
+    <p><b>Document images are deleted 10 minutes after they are created.</b> To
+    create an image that you use repeatedly add the "stock" option to the create
+    call. Stock images are not deleted. You have a limited amount of space for your
+    stock images depending on the plan you are on.</p> 
+            <pre>
+$ curl https://api.pdfunicorn.com/v1/images \\
+    -F "image=@unicorn.jpg" \\
+    -F "src=unicorn.jpg" \\
+    -F "stock=1" \\
+    -H "Content-Type: multipart/form-data" \\
+    -X POST \\
+    -u 1e551787-903e-11e2-b2b6-0bbccb145af3:
+            </pre>
+    
     </div>
 </div>            
+
+
 
 <div class="panel panel-default">
     <div class="panel-heading">
@@ -58,9 +138,9 @@ $ curl https://api.pdfunicorn.com/v1/images \\
         <p>You create a document by posting your document source to the PDFUnicorn
         server. By default the document's metadata will be returned immediately and
         the PDF file will be created in the background and stored for retrieval.
-        The Document's metadata includes the url to be used to retrieve the file.</p>
-        <p>If you post to /v1/documents.binary the PDF file will be generated and
-        returned in the same request.</p>
+        The document's metadata includes the url to be used to retrieve the file.</p>
+        <p>If you add the extension ".binary" to the URL the PDF file will be generated
+        and returned in the same request.</p>
         <p>* Any required images must be uploaded to the PDFUnicorn server before
         the document creation request is made.</p> 
         <h4>Request</h4>
