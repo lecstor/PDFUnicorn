@@ -85,7 +85,7 @@ sub find_one {
 sub serve_doc{
     my ($self, $doc) = @_;
 	my $format = $self->stash('format');
-    if ($format){ # && $format eq 'binary'){
+    if ($format && $format eq 'img'){
         my $media_base = $self->config->{media_directory}.'/'.$self->stash->{api_key_owner_id};
         $self->res->headers->content_disposition('attachment; filename='.$doc->{src}.';');
         my $local_file_name = $media_base.'/'.uri_escape($doc->{src});

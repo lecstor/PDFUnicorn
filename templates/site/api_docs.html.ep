@@ -60,9 +60,9 @@
             <pre>
 Status-Code: 422
 {
-    'status' => 'invalid_request',
-    'errors' => ['There was no image data in the upload request.'],
-};
+    "status": "invalid_request",
+    "errors": ["There was no image data in the upload request."],
+}
 </pre>
     </div>
 </div>            
@@ -88,7 +88,6 @@ Status-Code: 422
         
         <p>POST https://api.pdfunicorn.com/v1/images</p>        
         <p>
-            <h4>Curl</h4>
             <pre>
 $ curl https://api.pdfunicorn.com/v1/images \\
  	-F "image=@unicorn.jpg" \\
@@ -102,19 +101,19 @@ $ curl https://api.pdfunicorn.com/v1/images \\
         <h4>Response</h4>
             <pre>
 {
-    'created' => '1389048511.0901',
-    'owner' => '52cb32beb9efb70c36040000',
-    'id' => '52cb32bfb9efb70c36070000',
-    'uri' => '/v1/images/52cb32bfb9efb70c36070000',
-    'name' => 'test.jpg',
-    'modified' => '1389048511.0901'
-};
+    "created": "1389048511.0901",
+    "owner": "52cb32beb9efb70c36040000",
+    "id": "52cb32bfb9efb70c36070000",
+    "uri": "/v1/images/52cb32bfb9efb70c36070000",
+    "name": "test.jpg",
+    "modified": "1389048511.0901'
+}
 </pre>
     
-    <p><b>Document images are deleted 10 minutes after they are created.</b> To
+    <p><b>Document images are deleted once the PDF document has been generated.</b> To
     create an image that you use repeatedly add the "stock" option to the create
-    call. Stock images are not deleted. You have a limited amount of space for your
-    stock images depending on the plan you are on.</p> 
+    call. Stock images are not deleted. The amount of space available for your
+    stock images depends on the plan you are on.</p> 
             <pre>
 $ curl https://api.pdfunicorn.com/v1/images \\
     -F "image=@unicorn.jpg" \\
@@ -129,6 +128,29 @@ $ curl https://api.pdfunicorn.com/v1/images \\
 </div>            
 
 
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Delete an Image</h3>
+    </div>
+    <div class="panel-body">
+        <h4>Request</h4>
+        
+        <p>DELETE https://api.pdfunicorn.com/v1/images/52cb32bfb9efb70c36070000</p>        
+        <p>
+            <pre>
+$ curl https://api.pdfunicorn.com/v1/images/52cb32bfb9efb70c36070000 \\
+    -X DELETE \\
+    -u 1e551787-903e-11e2-b2b6-0bbccb145af3:
+            </pre>
+        </p>
+
+        <h4>Response</h4>
+            <pre>
+Status-Code: 200
+</pre>
+        
+    </div>
+</div>            
 
 <div class="panel panel-default">
     <div class="panel-heading">
@@ -139,36 +161,112 @@ $ curl https://api.pdfunicorn.com/v1/images \\
         server. By default the document's metadata will be returned immediately and
         the PDF file will be created in the background and stored for retrieval.
         The document's metadata includes the url to be used to retrieve the file.</p>
-        <p>If you add the extension ".binary" to the URL the PDF file will be generated
-        and returned in the same request.</p>
+        <p>If you add the extension ".pdf" to the URL the PDF file will be generated
+        and returned in the same request and the document's file, source, and non-stock
+        images will be deleted from the PDFUnicorn.</p>
         <p>* Any required images must be uploaded to the PDFUnicorn server before
         the document creation request is made.</p> 
         <h4>Request</h4>
         
         <p>POST https://api.pdfunicorn.com/v1/documents</p>
-        <p>POST https://api.pdfunicorn.com/v1/documents.binary</p>
+        <p>POST https://api.pdfunicorn.com/v1/documents.pdf</p>
 
-        <h4>Curl</h4>
-        <h3>Create a document</h3>
-        <p>A POST to /v1/documents will return the document's metadata</p>
-        <pre>
+        <p>
+            <h3>Create a document</h3>
+            <p>A POST to /v1/documents will return the document's metadata</p>
+            <pre>
 $ curl https://api.pdfunicorn.com/v1/documents \\
-    -F 'source=&lt;doc&gt;&lt;page&gt;Hello World&lt;img src="unicorn.jpg" /&gt;&lt;/page&gt;&lt;/doc&gt;' \\
+    -F 'source=&lt;doc&gt;&lt;page&gt;Hello World&lt;img src=\"unicorn.jpg\" /&gt;&lt;/page&gt;&lt;/doc&gt;' \\
     -X POST \\
     -u 1e551787-903e-11e2-b2b6-0bbccb145af3:
 </pre>
-
+        </p>
+        
         <h4>Response</h4>
             <pre>
 {
-    'created' => '1389048511.0901',
-    'owner' => '52cb32beb9efb70c36040000',
-    'id' => '52cb32bfb9efb70c36070000',
-    'uri' => '/v1/documents/52cb32bfb9efb70c36070000',
-    'source' => '&lt;doc&gt;&lt;page&gt;Hello World&lt;img src="unicorn.jpeg" /&gt;&lt;/page&gt;&lt;/doc&gt;',
-    'modified' => '1389048511.0901'
-};
+    "created": "1389048511.0901",
+    "owner": "52cb32beb9efb70c36040000",
+    "id": "52cb32bfb9efb70c36070000",
+    "uri": "/v1/documents/52cb32bfb9efb70c36070000",
+    "source": "&lt;doc&gt;&lt;page&gt;Hello World&lt;img src="unicorn.jpeg" /&gt;&lt;/page&gt;&lt;/doc&gt;",
+    "modified": "1389048511.0901'
+}
 </pre>
                 
     </div>
 </div>            
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Fetch a Document</h3>
+    </div>
+    <div class="panel-body">
+        <p>If you have created a document for background generation you can fetch
+        the metadata for the document or the generated PDF file. Once the PDF file
+        has been fetched the file and it's source will be deleted from PDFUnicorn.
+        <h4>Request</h4>        
+        <p>GET https://api.pdfunicorn.com/v1/documents/52cb32bfb9efb70c36070000.pdf</p>        
+        <p>
+            <pre>
+$ curl https://api.pdfunicorn.com/v1/documents/52cb32bfb9efb70c36070000 \\
+    -u 1e551787-903e-11e2-b2b6-0bbccb145af3:
+            </pre>
+        </p>
+
+        <h4>Response</h4>
+            <pre>
+Status-Code: 200
+[PDF File]
+</pre>
+        
+        <h4>Request</h4>
+        <p>GET https://api.pdfunicorn.com/v1/documents/52cb32bfb9efb70c36070000</p>        
+        <p>
+            <pre>
+$ curl https://api.pdfunicorn.com/v1/documents/52cb32bfb9efb70c36070000 \\
+    -u 1e551787-903e-11e2-b2b6-0bbccb145af3:
+            </pre>
+        </p>
+
+        <h4>Response</h4>
+            <pre>
+Status-Code: 200
+{
+    "created": 1390047421754,
+    "public": false,
+    "source": "&lt;doc&gt;&lt;page&gt;Test 2!&lt;img src=\"unicorn.jpeg\" /&gt;&lt;/page&gt;&lt;/doc&gt;",
+    "uri": "/v1/documents/52da70bdb9efb743230b0000",
+    "id": "52da70bdb9efb743230b0000"
+}
+</pre>
+
+    </div>
+</div>            
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Delete a Document</h3>
+    </div>
+    <div class="panel-body">
+        <h4>Request</h4>
+        
+        <p>DELETE https://api.pdfunicorn.com/v1/documents/52cb32bfb9efb70c36070000</p>        
+        <p>
+            <pre>
+$ curl https://api.pdfunicorn.com/v1/documents/52cb32bfb9efb70c36070000 \\
+    -X DELETE \\
+    -u 1e551787-903e-11e2-b2b6-0bbccb145af3:
+            </pre>
+        </p>
+
+        <h4>Response</h4>
+            <pre>
+Status-Code: 200
+</pre>
+        
+    </div>
+</div>            
+

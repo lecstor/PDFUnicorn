@@ -124,7 +124,7 @@ $t->get_ok($url.'404')
     ->status_is(404);
 
 # get raw image
-$url = $t->ua->server->url->userinfo("$api_key:")->path($doc_uri.'.binary');
+$url = $t->ua->server->url->userinfo("$api_key:")->path($doc_uri.'.img');
 $t->get_ok($url)->status_is(200);
 
 # delete image

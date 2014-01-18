@@ -121,7 +121,7 @@ is $json->{uri}, '/v1/documents/'.$json->{id}, 'uri';
 
 my $doc_uri = $json->{uri};
 
-$url = $t->ua->server->url->userinfo("$api_key:")->path($doc_uri.'.binary');
+$url = $t->ua->server->url->userinfo("$api_key:")->path($doc_uri.'.pdf');
 $t->get_ok($url)->status_is(503);
 
 
@@ -148,10 +148,11 @@ $t->get_ok(
     ->json_has( '/id', "has id" )
     ->json_has( '/created', "has created" )
     ->json_is( '/uri' => $json->{uri}, "has uri" )
-    ->json_has( '/owner', "has owner" )
+    #->json_has( '/owner', "has owner" )
     ->json_is( '/source' => '<doc><page>Test 2!<img src="cory_unicorn.jpeg" /></page></doc>', "correct source" )
+    ;
     #->json_is( '/file' => undef, "file is undef" );
-    ->json_has( '/file', "file oid is set" );
+    #->json_has( '/file', "file oid is set" );
 
 
 $url = $t->ua->server->url->userinfo("$api_key:")->path($doc_uri.'.non_format');
@@ -163,7 +164,7 @@ $t->get_ok($url)
 # get document as PDF
 $url = $t->ua->server->url->userinfo("$api_key:")->path($doc_uri);
 while(1){
-    $t->get_ok($url.'.binary');
+    $t->get_ok($url.'.pdf');
     if ($t->tx->res->code == 503){
         my $retry = $t->tx->res->headers->to_hash->{'Retry-after'};
         warn "503 retry after: $retry";
@@ -174,7 +175,7 @@ while(1){
     last;
 }
 
-$t->get_ok($url.'.binary')->status_is(200);
+$t->get_ok($url.'.pdf')->status_is(200);
 ok($t->tx->res->body =~ /^%PDF/, 'doc is a PDF');
 
 
@@ -195,7 +196,7 @@ $t->delete_ok($url)->status_is(404);
 
 # create document and get response as PDF
 
-$url = $t->ua->server->url->userinfo("$api_key:")->path('/v1/documents.binary');
+$url = $t->ua->server->url->userinfo("$api_key:")->path('/v1/documents.pdf');
 $t->post_ok(
     $url,
     json => { source => '<doc><page>Test 3!<img src="cory_unicorn.jpeg" /></page></doc>' },

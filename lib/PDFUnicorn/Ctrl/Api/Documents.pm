@@ -20,10 +20,10 @@ Returns document metadata if meta format is specified.
 May optionally include your internal id for the document.
 
 Req:
-    POST /v1/documents.binary
+    POST /v1/documents.pdf
     { source: "<doc>Hello World!</doc>" }
 Res:
-    Binary file
+    PDF file
 
 Req:
     POST /v1/documents
@@ -48,7 +48,7 @@ sub create {
     }
 
 	my $format = $self->stash('format');
-	my $binary = 1 if $format && $format eq 'binary';
+	my $pdf = 1 if $format && $format eq 'pdf';
 	
     $self->render_later;
 
@@ -60,7 +60,7 @@ sub create {
     delete $data->{id};
     delete $data->{_id};
     
-    if ($binary){
+    if ($pdf){
         
         $self->collection->create($data, sub{
             my ($err, $doc) = @_;
@@ -145,14 +145,14 @@ sub find_one {
 	my $id = $self->stash('id');
     return $self->render_not_found unless $id = $self->validate_type('oid', $id);
 	my $format = $self->stash('format');
-	my $binary = 1 if $format && $format eq 'binary';
+	my $pdf = 1 if $format && $format eq 'pdf';
 	
     $self->render_later;
     $self->collection->find_one({ _id => bson_oid($id), deleted => bson_false }, sub{
         my ($err, $doc) = @_;
         if ($doc){
             if ($doc->{owner} eq $self->stash->{api_key_owner_id}){
-                if ($binary){
+                if ($pdf){
                     unless ($doc->{file}){
                         $self->res->headers->header("Retry-after" => 1);
                         return $self->render(
@@ -169,6 +169,9 @@ sub find_one {
                 } else {
                     $doc->{uri} = "/v1/".$self->uri."/$doc->{_id}";
                     $doc->{id} = delete $doc->{_id};
+                    delete $doc->{deleted};
+                    delete $doc->{file};
+                    delete $doc->{owner};
                     return $self->render(json => $doc );
                 }
             }
