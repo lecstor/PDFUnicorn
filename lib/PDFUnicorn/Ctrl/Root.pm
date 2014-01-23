@@ -39,6 +39,11 @@ sub api_docs {
     $self->render();
 }
 
+sub markup_docs {
+    my $self = shift;
+    $self->render();
+}
+
 sub sign_up_form {
 	my $self = shift;
 	my $plan = $self->param('plan');

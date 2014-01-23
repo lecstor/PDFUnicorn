@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>PDFUnicorn - Markup Documentation</title>
+	%= include 'site/head'
+	%= include 'mixpanel'
+  
+    <!-- record main page view -->
+  	<script type="text/javascript">mixpanel.track('view-markup-documentation-page')</script>
+</head>
+
+<body>
+	%= include 'site/header'
+
+    <div class="container">
+
+        %= include 'site/markup_docs'
+
+    </div>
+
+    %= include 'site/foot'
+
+</body>
+</html>

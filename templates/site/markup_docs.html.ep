@@ -1,0 +1,164 @@
+<h2>Markup Documentation</h2>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">doc</h3>
+    </div>
+    <div class="panel-body">
+        <p>Every document starts with a doc tag.</p>
+            <pre>
+&lt;doc&gt;&lt;/doc&gt;
+</pre>
+        <p>The doc tag can specify the page size as A4 (default) or A3. It can also specify the page orientation as landscape if required.</p>
+            <pre>
+&lt;doc size="A4" orientation="landscape"&gt;&lt;/doc&gt;
+</pre>
+    </div>
+</div>            
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">page</h3>
+    </div>
+    <div class="panel-body">
+        <p>Every document has at least one page tag.</p>
+        <p>Each page tag starts on a new page of the PDF document.</p>
+        <p>
+            A page will span several pages of the final document when it is too
+            long to fit on a single page.
+        </p>
+        <pre>
+&lt;doc&gt;
+    &lt;page&gt;&lt;/page&gt;
+&lt;/doc&gt;
+</pre>
+    </div>
+</div>            
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">row & section</h3>
+    </div>
+    <div class="panel-body">
+        <p>Pages contain rows or sections.</p>
+        <p>Rows contain cells arranged horizontally. Rows have a specified number
+        of columns and cells can span more than one column.</p>
+        <p>If the number of columns is not set then it is automatically set to
+        the number of cells & spans in the row.</p>
+        <p>
+            Sections allow groups of rows to have a border and repeatable headers.
+            Each page can only have one section and that section will span multiple
+            pages in the final PDF if it is too long to fit on a single page.
+        </p>
+            <pre>
+&lt;doc&gt;
+    &lt;page&gt;
+        &lt;row&gt;&lt;/row&gt;
+        &lt;row&gt;&lt;/row&gt;
+        &lt;section&gt;
+            &lt;row&gt;&lt;/row&gt;
+            &lt;row&gt;&lt;/row&gt;
+        &lt;/section&gt;
+    &lt;/page&gt;
+&lt;/doc&gt;
+</pre>
+    </div>
+</div>            
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">cell</h3>
+    </div>
+    <div class="panel-body">
+        <p>Cells contain text and images.</p>
+            <pre>
+&lt;doc&gt;
+    &lt;page&gt;
+        &lt;row&gt;
+            &lt;cell&gt;&lt;/cell&gt;
+            &lt;cell&gt;&lt;/cell&gt;
+        &lt;/row&gt;
+        &lt;row&gt;
+            &lt;cell&gt;&lt;/cell&gt;
+            &lt;cell&gt;&lt;/cell&gt;
+        &lt;/row&gt;
+        &lt;section&gt;
+            &lt;row&gt;
+                &lt;cell&gt;&lt;/cell&gt;
+                &lt;cell&gt;&lt;/cell&gt;
+            &lt;/row&gt;
+            &lt;row&gt;
+                &lt;cell&gt;&lt;/cell&gt;
+                &lt;cell&gt;&lt;/cell&gt;
+            &lt;/row&gt;
+        &lt;/section&gt;
+    &lt;/page&gt;
+&lt;/doc&gt;
+</pre>
+    </div>
+</div>            
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">text & image</h3>
+    </div>
+    <div class="panel-body">
+        <p>have a guess..</p>
+            <pre>
+&lt;doc&gt;
+    &lt;page&gt;
+        &lt;section&gt;
+            &lt;row&gt;
+                &lt;cell&gt;&lt;text&gt;Hello there,&lt;/text&gt;&lt;/cell&gt;
+                &lt;cell&gt;isn't this great!?&lt;/cell&gt;
+                &lt;cell&gt;&lt;image src="the/unicorn.jpg" /&gt;&lt;/cell&gt;
+            &lt;/row&gt;
+        &lt;/section&gt;
+    &lt;/page&gt;
+&lt;/doc&gt;
+</pre>
+    </div>
+</div>            
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">header</h3>
+    </div>
+    <div class="panel-body">
+        <p>Pages and sections can each have a header which will be repeated on each
+        page in the final PDF.</p>
+            <pre>
+&lt;doc&gt;
+    &lt;page&gt;
+        &lt;header&gt;
+            &lt;row&gt;
+                &lt;cell&gt;&lt;text&gt;Hello there,&lt;/text&gt;&lt;/cell&gt;
+                &lt;cell&gt;isn't this great!?&lt;/cell&gt;
+                &lt;cell&gt;&lt;image src="the/unicorn.jpg" /&gt;&lt;/cell&gt;
+            &lt;/row&gt;
+        &lt;/header&gt;
+        &lt;row&gt;
+            &lt;cell&gt;&lt;text&gt;Hello there,&lt;/text&gt;&lt;/cell&gt;
+            &lt;cell&gt;isn't this great!?&lt;/cell&gt;
+            &lt;cell&gt;&lt;image src="the/unicorn.jpg" /&gt;&lt;/cell&gt;
+        &lt;/row&gt;
+        &lt;section&gt;
+            &lt;header&gt;
+                &lt;row&gt;
+                    &lt;cell&gt;&lt;text&gt;Hello there,&lt;/text&gt;&lt;/cell&gt;
+                    &lt;cell&gt;isn't this great!?&lt;/cell&gt;
+                    &lt;cell&gt;&lt;image src="the/unicorn.jpg" /&gt;&lt;/cell&gt;
+                &lt;/row&gt;
+            &lt;/header&gt;
+            &lt;row&gt;
+                &lt;cell&gt;&lt;text&gt;Hello there,&lt;/text&gt;&lt;/cell&gt;
+                &lt;cell&gt;isn't this great!?&lt;/cell&gt;
+                &lt;cell&gt;&lt;image src="the/unicorn.jpg" /&gt;&lt;/cell&gt;
+            &lt;/row&gt;
+        &lt;/section&gt;
+    &lt;/page&gt;
+&lt;/doc&gt;
+</pre>
+    </div>
+</div>            
+

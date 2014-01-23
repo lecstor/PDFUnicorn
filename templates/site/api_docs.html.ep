@@ -5,13 +5,13 @@
         <h3 class="panel-title">Authentication</h3>
     </div>
     <div class="panel-body">
-		<p>
-			Authentication to the API occurs via <a href="http://en.wikipedia.org/wiki/Basic_access_authentication" target="_blank">HTTP Basic Auth</a>.
-			Provide your API key as the basic auth username. You do not need to provide a password.
-		</p>
-		<p>
-			All API requests must be made over HTTPS. Calls made over plain HTTP will fail. You must authenticate for all requests.
-    	</p>
+        <p>
+            Authentication to the API occurs via <a href="http://en.wikipedia.org/wiki/Basic_access_authentication" target="_blank">HTTP Basic Auth</a>.
+            Provide your API key as the basic auth username. You do not need to provide a password.
+        </p>
+        <p>
+            All API requests must be made over HTTPS. Calls made over plain HTTP will fail. You must authenticate for all requests.
+        </p>
     </div>
 </div>            
 
@@ -90,12 +90,12 @@ Status-Code: 422
         <p>
             <pre>
 $ curl https://api.pdfunicorn.com/v1/images \\
- 	-F "image=@unicorn.jpg" \\
- 	-F "src=unicorn.jpg" \\
+    -F "image=@unicorn.jpg" \\
+    -F "src=the/unicorn.jpg" \\
     -H "Content-Type: multipart/form-data" \\
     -X POST \\
     -u 1e551787-903e-11e2-b2b6-0bbccb145af3:
-	        </pre>
+            </pre>
         </p>
 
         <h4>Response</h4>
@@ -105,7 +105,7 @@ $ curl https://api.pdfunicorn.com/v1/images \\
     "owner": "52cb32beb9efb70c36040000",
     "id": "52cb32bfb9efb70c36070000",
     "uri": "/v1/images/52cb32bfb9efb70c36070000",
-    "name": "test.jpg",
+    "src": "the/unicorn.jpg",
     "modified": "1389048511.0901'
 }
 </pre>
@@ -117,7 +117,7 @@ $ curl https://api.pdfunicorn.com/v1/images \\
             <pre>
 $ curl https://api.pdfunicorn.com/v1/images \\
     -F "image=@unicorn.jpg" \\
-    -F "src=unicorn.jpg" \\
+    -F "src=the/unicorn.jpg" \\
     -F "stock=1" \\
     -H "Content-Type: multipart/form-data" \\
     -X POST \\
@@ -176,7 +176,7 @@ Status-Code: 200
             <p>A POST to /v1/documents will return the document's metadata</p>
             <pre>
 $ curl https://api.pdfunicorn.com/v1/documents \\
-    -F 'source=&lt;doc&gt;&lt;page&gt;Hello World&lt;img src=\"unicorn.jpg\" /&gt;&lt;/page&gt;&lt;/doc&gt;' \\
+    -F 'source=&lt;doc&gt;&lt;page&gt;Hello World&lt;img src=\"the/unicorn.jpg\" /&gt;&lt;/page&gt;&lt;/doc&gt;' \\
     -X POST \\
     -u 1e551787-903e-11e2-b2b6-0bbccb145af3:
 </pre>
@@ -189,7 +189,7 @@ $ curl https://api.pdfunicorn.com/v1/documents \\
     "owner": "52cb32beb9efb70c36040000",
     "id": "52cb32bfb9efb70c36070000",
     "uri": "/v1/documents/52cb32bfb9efb70c36070000",
-    "source": "&lt;doc&gt;&lt;page&gt;Hello World&lt;img src="unicorn.jpeg" /&gt;&lt;/page&gt;&lt;/doc&gt;",
+    "source": "&lt;doc&gt;&lt;page&gt;Hello World&lt;img src="the/unicorn.jpg" /&gt;&lt;/page&gt;&lt;/doc&gt;",
     "modified": "1389048511.0901'
 }
 </pre>
@@ -236,7 +236,7 @@ Status-Code: 200
 {
     "created": 1390047421754,
     "public": false,
-    "source": "&lt;doc&gt;&lt;page&gt;Test 2!&lt;img src=\"unicorn.jpeg\" /&gt;&lt;/page&gt;&lt;/doc&gt;",
+    "source": "&lt;doc&gt;&lt;page&gt;Test 2!&lt;img src=\"the/unicorn.jpg\" /&gt;&lt;/page&gt;&lt;/doc&gt;",
     "uri": "/v1/documents/52da70bdb9efb743230b0000",
     "id": "52da70bdb9efb743230b0000"
 }
@@ -269,4 +269,3 @@ Status-Code: 200
         
     </div>
 </div>            
-

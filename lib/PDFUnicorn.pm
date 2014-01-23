@@ -259,7 +259,8 @@ sub startup {
 	$r->get('/features')->name('features')->to('root#features');
 	$r->get('/pricing')->name('pricing')->to('root#pricing');
 	$r->get('/about')->name('about')->to('root#about');
-    $r->get('/docs/api')->name('about')->to('root#api_docs');
+    $r->get('/docs/api')->name('apidocs')->to('root#api_docs');
+    $r->get('/docs/markup')->name('markupdocs')->to('root#markup_docs');
 
 	$r->get('/sign-up')->to('root#sign_up_form');
 	$r->post('/sign-up')->to('root#sign_up');
