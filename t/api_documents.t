@@ -84,7 +84,7 @@ $t->post_ok(
     ->json_is('/errors', ['Unexpected object attribute: "blah"']);
 
 
-# bad attr in create
+# bad attr and missing attr in create
 $url = $t->ua->server->url->userinfo("$api_key:")->path('/v1/documents');
 $t->post_ok(
     $url, json => { blah => 1 }
@@ -92,6 +92,28 @@ $t->post_ok(
     ->json_is('/status', 'invalid_request')
     ->json_is('/errors', [
         'Unexpected object attribute: "blah"',
+        'Document - Missing required attribute value: "source"'
+    ]);
+
+
+# no attr in create
+$url = $t->ua->server->url->userinfo("$api_key:")->path('/v1/documents');
+$t->post_ok(
+    $url, json => {}
+)->status_is(422)
+    ->json_is('/status', 'invalid_request')
+    ->json_is('/errors', [
+        'Document - Missing required attribute value: "source"'
+    ]);
+
+
+# no json in create
+$url = $t->ua->server->url->userinfo("$api_key:")->path('/v1/documents');
+$t->post_ok(
+    $url
+)->status_is(422)
+    ->json_is('/status', 'invalid_request')
+    ->json_is('/errors', [
         'Document - Missing required attribute value: "source"'
     ]);
 
