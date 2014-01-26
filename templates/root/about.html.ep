@@ -24,7 +24,7 @@
 	  	    <h2>About</h2>
         	<div>
         		<p>Over the years I have been presented with the challenge of generating
-        		PDF documents from data on a server for invoices and packing slips.. It's
+        		PDF files from data for invoices and other documents.. It's
         		really not as much fun as you would think.</p>
         		<p>I have googled the topic on more than one occasion and the solutions
         		mostly boil down to creating a custom script which uses a PDF library to
@@ -33,7 +33,7 @@
         		if you have the expertise.</p>
         		<p>Converting HTML to PDF is hard to get right, especially when it comes
         		to documents which span multiple pages. Having repeated headers and footers
-        		and splitting your content correctly is another complex challenge. PDFUnicorn
+        		and splitting your content over multiple pages correctly is another complex challenge. PDFUnicorn
         		is not a "web to PDF" converter.</p> 
         		<p>PDFUnicorn is my attempt to simplify the process of generating PDF
         		documents to enable businesses to better serve their customers and to
