@@ -1,5 +1,8 @@
 <h2>Markup Documentation</h2>
-
+<p>
+    (just the tags are documented so far.. check out the
+    <a href="example">example document</a> for more..)
+</p>
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title">doc</h3>
@@ -162,3 +165,7 @@
     </div>
 </div>            
 
+
+<div class="signup">
+    %= include 'site/signup_prompt'
+</div>

@@ -269,3 +269,8 @@ Status-Code: 200
         
     </div>
 </div>            
+
+<div class="signup">
+    %= include 'site/signup_prompt'
+</div>
+

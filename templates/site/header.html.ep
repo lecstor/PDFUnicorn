@@ -7,7 +7,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" style="font-size: 25px" href="/">PDFUnicorn</a>
+            <a class="navbar-brand" style="font-size: 25px" href="/">PDFUnicorn <i>"Beta"</i></a>
             <!-- ul class="nav navbar-nav" style="width: 225px">
                 <a href="http://www.mystockvectors.com/" class="pull-left" style="padding: 0 10px 0 0" target="_blank" ><img src="/img/unicorn_48.png" title="The Unicorn. drawn by Cory Thoman. named by me." alt="[logo] The Unicorn. drawn by Cory Thoman. named by me."></a>
                 <a class="navbar-brand" style="font-size: 25px" href="/">PDFUnicorn</a>
@@ -26,6 +26,7 @@
                         <li><a href="/about">About</a></li>
                         <li><a href="/docs/api">API Documentation</a></li>
                         <li><a href="/docs/markup">Markup Documentation</a></li>
+                        <li><a href="/docs/example">Example/Starter Document</a></li>
                         <!-- li><a href="/blog">Blog</a></li -->
                     </ul>
                 </li>

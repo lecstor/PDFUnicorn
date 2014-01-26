@@ -16,9 +16,16 @@
         <div class="jumbotron">
         	<div class="row">
         		<div class="col-md-5">
-		      		<p>You need to generate PDF documents.</p>
-		      		<p>You want them to look good.</p>
-		      		<p>You want it to be "simple", if not "easy".</p>
+		      		<p>Generate your document source with your preferred HTML templating system.</p>
+		      		<p>Upload your images via our API.</p>
+		      		<p>Post your document source and retrieve your completed PDF file.</p>
+                    <p>It's that easy!</p>
+                    <p>
+                        Check out the documentation for our
+                        <a href="docs/api">API</a> and
+                        <a href="docs/markup">markup language</a> or an
+                        <a href="docs/example">example document</a>.
+                    </p>
         		</div>
         		<div class="col-md-7"><img src="/img/tax_invoice_snap.png"></div>
         	</div>
@@ -32,12 +39,13 @@
                     <p>PDFUnicorn is a PDF generator web service for businesses who need to generate custom
                     PDF files on demand. We use a custom HTML-like markup language designed for laying
                     out pageable documents in the simplest way possible.</p>
-                    <p></p>
-                    <p></p>
-                    <p></p>
                 </div>
         	</div>
         </div>
+    </div>
+    
+    <div class="signup">
+        %= include 'site/signup_prompt'
     </div>
     
     %= include 'site/foot'
