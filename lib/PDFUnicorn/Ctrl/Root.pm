@@ -44,6 +44,11 @@ sub markup_docs {
     $self->render();
 }
 
+sub example {
+    my $self = shift;
+    $self->render();
+}
+
 sub sign_up_form {
 	my $self = shift;
 	my $plan = $self->param('plan');

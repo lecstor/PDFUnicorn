@@ -73,6 +73,16 @@ sub api_docs {
     $self->render();
 }
 
+sub markup_docs {
+    my $self = shift;
+    $self->render();
+}
+
+sub example {
+    my $self = shift;
+    $self->render();
+}
+
 sub set_password{
     my $self = shift;
     my $password = $self->param('password');
