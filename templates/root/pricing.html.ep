@@ -32,7 +32,7 @@
 
 	  <div class="jumbotron clearfix">
 	  
-        <h2 style="text-align: center">Try PDFUnicorn free for 14 days</h2>
+        <h2 style="text-align: center">Try PDFUnicorn free for 30 days</h2>
         <h3 style="text-align: center">No credit card required</h3>
 
         % foreach my $plan (@$plans){

@@ -1,5 +1,7 @@
 % if (! session 'user_id'){
-            <h2 style="text-align: center">Try PDFUnicorn free for 14 days</h2>
+    <div>
+            <h2 style="text-align: center">Try PDFUnicorn free for 30 days</h2>
             <h3 style="text-align: center">No credit card required</h3>
-            <div style="text-align: center"><a href="/pricing" class="btn btn-primary btn-lg">Select a Plan</a></div>
+            <div style="text-align: center" class="select-plan"><a href="/pricing" class="btn btn-primary btn-lg">Select a Plan</a></div>
+    </div>
 % }
