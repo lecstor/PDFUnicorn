@@ -6,7 +6,7 @@
 	%= include 'mixpanel'
   
     <!-- record main page view -->
-  	<script type="text/javascript">mixpanel.track('view-apikey-page')</script>
+  	<script type="text/javascript">mixpanel.track('view-admin-apikey-page')</script>
 </head>
 
 <body>
