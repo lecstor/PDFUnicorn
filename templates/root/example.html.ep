@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>PDFUnicorn - Example/Starter Document</title>
+	%= include 'site/head'
+	%= include 'mixpanel'
+  
+    <!-- record main page view -->
+  	<script type="text/javascript">mixpanel.track('view-example-documentation-page')</script>
+</head>
+
+<body>
+	%= include 'site/header'
+
+    <div class="container">
+
+        %= include 'site/example'
+
+    </div>
+
+    %= include 'site/foot'
+
+</body>
+</html>
