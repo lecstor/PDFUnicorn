@@ -43,9 +43,9 @@
                         <h3 style="text-align: center"><%= $plan->{name} %></h3>
                         <h2 style="text-align: center">$<%= $plan->{price} %>/month</h2>
                         <div style="text-align: center"><%= $plan->{units} %> units/month</div>
-                        <div style="text-align: center">
+                        <!-- div style="text-align: center">
                             <button type="submit" class="btn btn-primary btn-lg">Start <%= $plan->{name} %> free trial</button>
-                        </div>
+                        </div -->
                     </form>         
                 </div>
             </div>
