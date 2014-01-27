@@ -86,10 +86,10 @@ Status-Code: 422
         than they need to be.</p>  
         <h4>Request</h4>
         
-        <p>POST https://api.pdfunicorn.com/v1/images</p>        
+        <p>POST https://pdfunicorn.com/v1/images</p>        
         <p>
             <pre>
-$ curl https://api.pdfunicorn.com/v1/images \\
+$ curl https://pdfunicorn.com/v1/images \\
     -F "image=@unicorn.jpg" \\
     -F "src=the/unicorn.jpg" \\
     -H "Content-Type: multipart/form-data" \\
@@ -115,7 +115,7 @@ $ curl https://api.pdfunicorn.com/v1/images \\
     call. Stock images are not deleted. The amount of space available for your
     stock images depends on the plan you are on.</p> 
             <pre>
-$ curl https://api.pdfunicorn.com/v1/images \\
+$ curl https://pdfunicorn.com/v1/images \\
     -F "image=@unicorn.jpg" \\
     -F "src=the/unicorn.jpg" \\
     -F "stock=1" \\
@@ -135,10 +135,10 @@ $ curl https://api.pdfunicorn.com/v1/images \\
     <div class="panel-body">
         <h4>Request</h4>
         
-        <p>DELETE https://api.pdfunicorn.com/v1/images/52cb32bfb9efb70c36070000</p>        
+        <p>DELETE https://pdfunicorn.com/v1/images/52cb32bfb9efb70c36070000</p>        
         <p>
             <pre>
-$ curl https://api.pdfunicorn.com/v1/images/52cb32bfb9efb70c36070000 \\
+$ curl https://pdfunicorn.com/v1/images/52cb32bfb9efb70c36070000 \\
     -X DELETE \\
     -u 1e551787-903e-11e2-b2b6-0bbccb145af3:
             </pre>
@@ -168,14 +168,14 @@ Status-Code: 200
         the document creation request is made.</p> 
         <h4>Request</h4>
         
-        <p>POST https://api.pdfunicorn.com/v1/documents</p>
-        <p>POST https://api.pdfunicorn.com/v1/documents.pdf</p>
+        <p>POST https://pdfunicorn.com/v1/documents</p>
+        <p>POST https://pdfunicorn.com/v1/documents.pdf</p>
 
         <p>
             <h3>Create a document</h3>
             <p>A POST to /v1/documents will return the document's metadata</p>
             <pre>
-$ curl https://api.pdfunicorn.com/v1/documents \\
+$ curl https://pdfunicorn.com/v1/documents \\
     -F 'source=&lt;doc&gt;&lt;page&gt;Hello World&lt;img src=\"the/unicorn.jpg\" /&gt;&lt;/page&gt;&lt;/doc&gt;' \\
     -X POST \\
     -u 1e551787-903e-11e2-b2b6-0bbccb145af3:
@@ -207,10 +207,10 @@ $ curl https://api.pdfunicorn.com/v1/documents \\
         the metadata for the document or the generated PDF file. Once the PDF file
         has been fetched the file and it's source will be deleted from PDFUnicorn.
         <h4>Request</h4>        
-        <p>GET https://api.pdfunicorn.com/v1/documents/52cb32bfb9efb70c36070000.pdf</p>        
+        <p>GET https://pdfunicorn.com/v1/documents/52cb32bfb9efb70c36070000.pdf</p>        
         <p>
             <pre>
-$ curl https://api.pdfunicorn.com/v1/documents/52cb32bfb9efb70c36070000 \\
+$ curl https://pdfunicorn.com/v1/documents/52cb32bfb9efb70c36070000 \\
     -u 1e551787-903e-11e2-b2b6-0bbccb145af3:
             </pre>
         </p>
@@ -222,10 +222,10 @@ Status-Code: 200
 </pre>
         
         <h4>Request</h4>
-        <p>GET https://api.pdfunicorn.com/v1/documents/52cb32bfb9efb70c36070000</p>        
+        <p>GET https://pdfunicorn.com/v1/documents/52cb32bfb9efb70c36070000</p>        
         <p>
             <pre>
-$ curl https://api.pdfunicorn.com/v1/documents/52cb32bfb9efb70c36070000 \\
+$ curl https://pdfunicorn.com/v1/documents/52cb32bfb9efb70c36070000 \\
     -u 1e551787-903e-11e2-b2b6-0bbccb145af3:
             </pre>
         </p>
@@ -253,10 +253,10 @@ Status-Code: 200
     <div class="panel-body">
         <h4>Request</h4>
         
-        <p>DELETE https://api.pdfunicorn.com/v1/documents/52cb32bfb9efb70c36070000</p>        
+        <p>DELETE https://pdfunicorn.com/v1/documents/52cb32bfb9efb70c36070000</p>        
         <p>
             <pre>
-$ curl https://api.pdfunicorn.com/v1/documents/52cb32bfb9efb70c36070000 \\
+$ curl https://pdfunicorn.com/v1/documents/52cb32bfb9efb70c36070000 \\
     -X DELETE \\
     -u 1e551787-903e-11e2-b2b6-0bbccb145af3:
             </pre>
