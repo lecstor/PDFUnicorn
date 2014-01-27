@@ -5,13 +5,14 @@
 # apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10
 # aptitude update
 # aptitude upgrade
-# aptitude install mongodb-10gen make gcc git shorewall libexpat1-dev libssl-dev
+# aptitude install mongodb-10gen make gcc git shorewall libexpat1-dev libssl-dev exim4-daemon-light mailutils
 
 
 # apt-get install --reinstall exim4-base
 # touch /var/log/exim4/mainlog
 # https://library.linode.com/getting-started#sph_ubuntu-debian
 # chown 101:103 /var/log/exim4/mainlog
+# https://library.linode.com/email/exim/send-only-mta-debian-6-squeeze
 
 
 #### Linode Longview Client ####
