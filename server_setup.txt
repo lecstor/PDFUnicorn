@@ -8,6 +8,12 @@
 # aptitude install mongodb-10gen make gcc git shorewall libexpat1-dev libssl-dev
 
 
+# apt-get install --reinstall exim4-base
+# touch /var/log/exim4/mainlog
+# https://library.linode.com/getting-started#sph_ubuntu-debian
+# chown 101:103 /var/log/exim4/mainlog
+
+
 #### Linode Longview Client ####
 # curl -s https://lv.linode.com/z3IJ | sudo bash
 
