@@ -5,7 +5,7 @@
 # apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10
 # aptitude update
 # aptitude upgrade
-# aptitude install mongodb-10gen make gcc git shorewall
+# aptitude install mongodb-10gen make gcc git shorewall libexpat1-dev libssl-dev
 
 
 #### Linode Longview Client ####
@@ -99,7 +99,7 @@ server {
   listen 80;
   server_name localhost;
   location / {
-    proxy_pass http://pdfunicorn.com;
+    proxy_pass http://pdfunicorn;
     proxy_http_version 1.1;
     proxy_set_header Upgrade $http_upgrade;
     proxy_set_header Connection "upgrade";
