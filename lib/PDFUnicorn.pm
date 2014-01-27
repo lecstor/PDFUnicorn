@@ -20,11 +20,11 @@ use Try;
 
 use lib '../Mojolicious-Plugin-Stripe/lib';
 
-# Forward error messages to the application log
-Mojo::IOLoop->singleton->reactor->on(error => sub {
-  my ($reactor, $err) = @_;
-  app->log->error($err);
-});
+## Forward error messages to the application log
+#Mojo::IOLoop->singleton->reactor->on(error => sub {
+#  my ($reactor, $err) = @_;
+#  app->log->error($err);
+#});
 
 # This method will run once at server start
 sub startup {
