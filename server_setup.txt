@@ -7,6 +7,11 @@
 # aptitude upgrade
 # aptitude install mongodb-10gen make gcc git shorewall
 
+
+#### Linode Longview Client ####
+# curl -s https://lv.linode.com/z3IJ | sudo bash
+
+
 # cat /var/log/mongodb/mongodb.log
 
 ## http://docs.mongodb.org/manual/tutorial/enable-authentication/
@@ -85,5 +90,10 @@ $ perlbrew install perl-5.18.2
 $ perlbrew switch perl-5.18.2
 $ perlbrew lib create pdfunicorn
 $ perlbrew switch perl-5.18.2@pdfunicorn
+
+$ perlbrew install-cpanm
+$ cpanm Carton
+$ cd PDFUnicorn
+$ carton install
 
 
