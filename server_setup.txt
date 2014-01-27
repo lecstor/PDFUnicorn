@@ -62,6 +62,7 @@ PasswordAuthentication no
 # chmod 400 /etc/ssl/localcerts/pdfunicorn.com.key
 
 
+
 #### SSH Key for Github access #####
 # su edoc747
 
@@ -76,7 +77,42 @@ $ git clone git@github.com:lecstor/Mojolicious-Plugin-Stripe.git
 $ git clone git@github.com:lecstor/PDF-Grid.git
 
 
+#### NGINX ####
+
+## http://nginx.org/en/pgp_keys.html
+## http://wiki.nginx.org/Install#Official_Debian.2FUbuntu_packages
+## http://wiki.nginx.org/Configuration
+## http://blog.martinfjordvald.com/2010/07/nginx-primer/
+
+# exit
+# cd PDFUnicorn
+# echo 'deb http://nginx.org/packages/debian/ wheezy nginx' > /etc/apt/sources.list.d/nginx.list
+# echo 'deb-src http://nginx.org/packages/debian/ wheezy nginx' >> /etc/apt/sources.list.d/nginx.list
+# apt-key add nginx_signing.key
+# aptitude update
+# aptitude install nginx
+
+upstream pdfunicorn {
+  server 127.0.0.1:8080;
+}
+server {
+  listen 80;
+  server_name localhost;
+  location / {
+    proxy_pass http://pdfunicorn.com;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "upgrade";
+    proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-HTTPS 0;
+  }
+}
+
+
 #### Custom Perl Install ####
+
+# su edoc747
 
 $ curl -L http://install.perlbrew.pl | bash
 $ echo 'source ~/perl5/perlbrew/etc/bashrc' >> ~/.bashrc
