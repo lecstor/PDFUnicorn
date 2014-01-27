@@ -20,9 +20,23 @@
 
     <div class="container">
 
-	  	<div class="jumbotron clearfix">
-	  	    <h2>About</h2>
-        	<div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">All About PDFUnicorn</h3>
+            </div>
+            <div class="panel-body">
+                <p>PDFUnicorn runs on servers provided by <a href="http://linode.com">Linode</a>.</p>
+                <p>Payments and secure credit card storage is handled by <a href="https://stripe.com">Stripe</a>.
+                <p>All API interaction with the server is secured with SSL.</p>
+            </div>
+        </div>            
+            
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">About the Founder</h2>
+            </div>
+            <div class="panel-body">
         		<p>Over the years I have been presented with the challenge of generating
         		PDF files from data for invoices and other documents.. It's
         		really not as much fun as you would think.</p>
@@ -40,8 +54,9 @@
         		better represent their business.</p>
         		<p>regards,</p>
         		<p>
-                    Jason<br />
-                    jason@pdfunicorn.com
+                    Jason Galea<br />
+                    ("lecstor" on the interwebs)<br />
+                    Email me at jason@pdfunicorn.com
                 </p>
 	    	</div>
 		</div>
