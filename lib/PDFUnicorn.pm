@@ -4,6 +4,7 @@ use Mojo::Base 'Mojolicious';
 use Mango;
 use Mango::BSON ':bson';
 use Mojo::Util qw(md5_sum);
+use Mojo::IOLoop;
 
 use Email::Sender::Simple qw(sendmail);
 use Email::Simple;
@@ -18,6 +19,12 @@ use PDFUnicorn::Valid;
 use Try;
 
 use lib '../Mojolicious-Plugin-Stripe/lib';
+
+# Forward error messages to the application log
+Mojo::IOLoop->singleton->reactor->on(error => sub {
+  my ($reactor, $err) = @_;
+  app->log->error($err);
+});
 
 # This method will run once at server start
 sub startup {
