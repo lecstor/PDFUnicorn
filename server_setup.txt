@@ -1,0 +1,89 @@
+
+## http://docs.mongodb.org/manual/tutorial/install-mongodb-on-debian/
+
+# echo 'deb http://downloads-distro.mongodb.org/repo/debian-sysvinit dist 10gen' > /etc/apt/sources.list.d/mongodb.list
+# apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10
+# aptitude update
+# aptitude upgrade
+# aptitude install mongodb-10gen make gcc git shorewall
+
+# cat /var/log/mongodb/mongodb.log
+
+## http://docs.mongodb.org/manual/tutorial/enable-authentication/
+## http://docs.mongodb.org/manual/tutorial/add-user-administrator/
+# mongo
+> use admin
+> db.addUser( { user: "<username>",
+              pwd: "<password>",
+              roles: [ "userAdmin" ] } )
+> use pdfunicorn
+> db.addUser( { user: "<username>",
+              pwd: "<password>",
+              roles: [ "readWrite","dbAdmin" ] } )
+
+# adduser edoc747
+
+# mkdir -p /pdf_unicorn/images
+# chown -R edoc747:edoc747 /pdf_unicorn/
+
+# su edoc747
+# cd ~
+# mkdir .ssh
+
+
+### Lock down server ####
+
+## http://www.shorewall.net/standalone.htm
+## http://docs.mongodb.org/manual/tutorial/configure-linux-iptables-firewall/
+
+## https://library.linode.com/security/basics
+## from local machine
+$ scp ~/.ssh/id_rsa.pub edoc747@106.187.36.169:/home/edoc747/.ssh/uploaded_key.pub
+$ ssh edoc747@106.187.36.169 "cat ~/.ssh/uploaded_key.pub >> ~/.ssh/authorized_keys"
+
+# vi /etc/ssh/sshd_config
+PermitRootLogin no
+PasswordAuthentication no
+
+# /etc/init.d/ssh restart
+
+
+#### SSL Certificate ####
+
+## https://library.linode.com/security/ssl-certificates/commercial
+# mkdir /etc/ssl/localcerts
+# cd /etc/ssl/localcerts
+# openssl req -new -nodes -days 365 -newkey rsa:2048 -keyout pdfunicorn.com.key -out pdfunicorn.com.csr
+# chmod 400 /etc/ssl/localcerts/pdfunicorn.com.key
+
+
+#### SSH Key for Github access #####
+# su edoc747
+
+# https://help.github.com/articles/generating-ssh-keys
+$ cd ~/.ssh
+$ ssh-keygen -t rsa -C "edoc747@pdfunicorn.com"
+$ cat id_rsa.pub
+## add key to github
+
+$ git clone git@github.com:lecstor/PDFUnicorn.git
+$ git clone git@github.com:lecstor/Mojolicious-Plugin-Stripe.git
+$ git clone git@github.com:lecstor/PDF-Grid.git
+
+
+#### Custom Perl Install ####
+
+$ curl -L http://install.perlbrew.pl | bash
+$ echo 'source ~/perl5/perlbrew/etc/bashrc' >> ~/.bashrc
+$ exit
+
+# su edoc747
+
+$ curl -L http://install.perlbrew.pl | bash
+$ perlbrew available
+$ perlbrew install perl-5.18.2
+$ perlbrew switch perl-5.18.2
+$ perlbrew lib create pdfunicorn
+$ perlbrew switch perl-5.18.2@pdfunicorn
+
+
