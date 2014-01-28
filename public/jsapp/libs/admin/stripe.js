@@ -71,12 +71,13 @@ define(["layoutmanager","underscore", "moment", "stripe_checkout"], function(Lay
             var model = this.model.toJSON();
             var plan = model.subscription.plan;
             this.handler.open({
-                name: 'PDFUnicorn',
-                "panelLabel": "Subscribe to PDFUnicorn",
-                "billingAddress": true,
+                name: "PDFUnicorn",
+                panelLabel: "Subscribe to PDFUnicorn",
+                billingAddress: true,
                 email: model.email,
                 description: plan.name + ' plan @ $' + plan.amount/100 + "/" + plan.interval,
                 amount: plan.amount,
+                currency: 'AUD',
             });
             e.preventDefault();
         }
