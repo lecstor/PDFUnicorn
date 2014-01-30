@@ -16,12 +16,15 @@ sub query_schema{ 'ImageQuery' }
 
 sub create {
 	my $self = shift;
-    my $upload = $self->req->upload('image');
+    my $upload = $self->req->upload('file');
+    
+    # 'image" deprecated, use "file"
+    $upload = $self->req->upload('image') unless $upload;
     
     if (!$upload){
         return $self->render(
             status => 422,
-            json => { status => 'invalid_request', errors => ['There was no image data in the upload request.'] }
+            json => { status => 'invalid_request', errors => ['There was no file data in the upload request.'] }
         );
     }
     
