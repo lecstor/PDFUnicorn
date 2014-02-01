@@ -2,6 +2,23 @@
 
 <div class="panel panel-default">
     <div class="panel-heading">
+        <h3 class="panel-title">Client Libraries</h3>
+    </div>
+    <div class="panel-body">
+        <p>
+            There are curently basic client libraries available on Github for interacting with the API for Perl and Python..
+        </p>
+        <p>
+            <a href="https://github.com/pdfunicorn/Net-PDFUnicorn">Perl "reference" PDFUnicorm client library</a><br />
+            <a href="https://github.com/pdfunicorn/pdfunicorn-python">Python PDFUnicorm client library</a><br />
+        </p>
+    </div>
+</div>
+
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">
         <h3 class="panel-title">Authentication</h3>
     </div>
     <div class="panel-body">
