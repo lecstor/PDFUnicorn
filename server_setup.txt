@@ -170,3 +170,18 @@ $ cd PDFUnicorn
 $ carton install
 
 
+#### goaccess server log analyzer
+# https://github.com/allinurl/goaccess
+
+# aptitude install libncurses5-dev libncursesw5-dev libglib2.0-dev libgeoip-dev geoip-database
+# usermod -a -G adm edoc747
+
+$ wget http://downloads.sourceforge.net/project/goaccess/0.7/goaccess-0.7.tar.gz
+$ tar -xzvf goaccess-0.7.tar.gz
+$ cd goaccess-0.7/
+$ ./configure --enable-geoip --enable-utf8
+$ make
+# make install
+
+$ goaccess -f /var/log/nginx/access.log
+
