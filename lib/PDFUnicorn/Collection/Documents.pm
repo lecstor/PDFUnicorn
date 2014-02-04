@@ -12,6 +12,7 @@ sub schemas{
             type => { type => 'string' },
             data => { type => 'object' },
             template => { type => 'string' },
+            template_id => { type => 'oid', bson => 'oid' },
             source => { type => 'string' },
             created => { type => 'datetime', bson => 'time' },
             public => { type => 'boolean', bson => 'bool' },

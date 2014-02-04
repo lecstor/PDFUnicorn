@@ -5,7 +5,7 @@ use Mojo::JSON;
 use Mango::BSON ':bson';
 use Mojo::IOLoop;
 
-sub collection{ shift->db_documents }
+sub collection{ shift->db_templates }
 
 sub uri{ 'templates' }
 sub item_schema{ 'Template' }

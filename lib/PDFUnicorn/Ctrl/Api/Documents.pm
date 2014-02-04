@@ -65,16 +65,64 @@ sub create {
         $self->collection->create($data, sub{
             my ($err, $doc) = @_;
             
-            my $grid = PDF::Grid->new({
-                media_directory => $self->config->{media_directory}.'/'.$self->stash->{api_key_owner_id}.'/',
-                source => $doc->{source},
-            });
+            if ($doc->{source}){
+                # we have the source so render it
+                my $grid = PDF::Grid->new({
+                    media_directory => $self->config->{media_directory}.'/'.$self->stash->{api_key_owner_id}.'/',
+                    source => $doc->{source},
+                });
+                $grid->render;
+                my $pdf_doc = $grid->producer->stringify();    
+                $grid->producer->end;
+                $self->render( data => $pdf_doc );
+                
+            } elsif ($doc->{template}){
+                # we have the template, so render it, then render source                
+                my $source = $self->alloy->render($doc->{template}, $doc->{data} || {});
+                my $grid = PDF::Grid->new({
+                    media_directory => $self->config->{media_directory}.'/'.$self->stash->{api_key_owner_id}.'/',
+                    source => $source,
+                });
+                $grid->render;
+                my $pdf_doc = $grid->producer->stringify();    
+                $grid->producer->end;
+                $self->render( data => $pdf_doc );
+                
+            } elsif ($doc->{template_id}){
+                # need to fetch the template, then render it & render source
+                
+                # stash doc to keep it in scope
+                $self->stash->{'pdfunicorn.doc'} = $doc;
+                
+                $self->render_later; # ?
+                
+                my $delay = Mojo::IOLoop::Delay->new;
+                $delay->steps(
+                #Mojo::IOLoop->delay(
+                    sub{
+                        my $delay = shift;
+                        my $id = $self->stash->{'pdfunicorn.doc'}{template_id};
+                        $self->db_templates->find_one(
+                            { _id => bson_oid($id), deleted => bson_false },
+                            $delay->begin
+                        );
+                    },
+                    sub {
+                        my ($delay, $template) = @_;
+                        my $source = $self->alloy->render($template->{source}, $self->stash->{'pdfunicorn.doc'}{data} || {});
+                        my $grid = PDF::Grid->new({
+                            media_directory => $self->config->{media_directory}.'/'.$self->stash->{api_key_owner_id}.'/',
+                            source => $source,
+                        });
+                        $grid->render;
+                        my $pdf_doc = $grid->producer->stringify();    
+                        $grid->producer->end;
+                        $self->render( data => $pdf_doc );            
+                    }
+                );
+                $delay->wait unless Mojo::IOLoop->is_running;
+            }
             
-            $grid->render_template;
-            my $pdf_doc = $grid->producer->stringify();    
-            $grid->producer->end;
-
-            $self->render( data => $pdf_doc );
         });
         
     } else {
@@ -91,7 +139,7 @@ sub create {
                 source => $doc->{source},
             });
             
-            $grid->render_template;
+            $grid->render;
             my $pdf_doc = $grid->producer->stringify();    
             $grid->producer->end;
                         
