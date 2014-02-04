@@ -2,9 +2,9 @@ use Mojo::Base -strict;
 
 use Test::More;
 use Test::Mojo;
-use Mojo::Asset::File;
-use Mojo::IOLoop;
-use Mojo::Util qw(b64_encode);
+#use Mojo::Asset::File;
+#use Mojo::IOLoop;
+#use Mojo::Util qw(b64_encode);
 use Mango;
 use Try;
 

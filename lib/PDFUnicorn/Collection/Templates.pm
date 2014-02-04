@@ -1,4 +1,4 @@
-package PDFUnicorn::Collection::Documents;
+package PDFUnicorn::Collection::Templates;
 use base 'PDFUnicorn::Collection';
 use Mango::BSON ':bson';
 use Mojo::Util qw(md5_sum);
@@ -6,20 +6,20 @@ use Mojo::Util qw(md5_sum);
 
 sub schemas{
     {
-        'Document', {
+        'Template', {
             id => { type => 'string' },
             uri => { type => 'string' },
             type => { type => 'string' },
-            data => { type => 'object' },
-            template => { type => 'string' },
-            source => { type => 'string' },
+            #data => { type => 'object' },
+            #template => { type => 'string' },
+            source => { type => 'string', required => 1 },
             created => { type => 'datetime', bson => 'time' },
             public => { type => 'boolean', bson => 'bool' },
             owner => { type => 'oid', bson => 'oid' },
             deleted => { type => 'boolean', bson => 'bool' },
             #_required => { or => [qw(source template)] }
         },
-        'DocumentQuery', {
+        'TemplateQuery', {
             id => { type => 'string' },
             type => { type => 'string' },
             created => { type => 'datetime', bson => 'time' },
@@ -32,7 +32,7 @@ sub schemas{
 
 =item archive
 
-mark document as deleted and delete it's source property
+mark template as deleted and delete it's source property
 
 =cut
 

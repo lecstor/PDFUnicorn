@@ -14,6 +14,21 @@ DISTRIBUTIONS
       Scalar::Util 0
       strict 0
       warnings 0
+  Class-Accessor-0.34
+    pathname: K/KA/KASEI/Class-Accessor-0.34.tar.gz
+    provides:
+      Class::Accessor 0.34
+      Class::Accessor::Fast 0.34
+      Class::Accessor::Faster 0.34
+    requirements:
+      ExtUtils::MakeMaker 0
+      base 1.01
+  Class-Data-Inheritable-0.08
+    pathname: T/TM/TMTM/Class-Data-Inheritable-0.08.tar.gz
+    provides:
+      Class::Data::Inheritable 0.08
+    requirements:
+      ExtUtils::MakeMaker 0
   Class-Load-0.20
     pathname: D/DR/DROLSKY/Class-Load-0.20.tar.gz
     provides:
@@ -1149,6 +1164,25 @@ DISTRIBUTIONS
       overload 0
       strict 0
       warnings 0
+  Digest-HMAC-1.03
+    pathname: G/GA/GAAS/Digest-HMAC-1.03.tar.gz
+    provides:
+      Digest::HMAC 1.03
+      Digest::HMAC_MD5 1.01
+      Digest::HMAC_SHA1 1.03
+    requirements:
+      Digest::MD5 2
+      Digest::SHA 1
+      ExtUtils::MakeMaker 0
+      perl 5.004
+  Digest-SHA1-2.13
+    pathname: G/GA/GAAS/Digest-SHA1-2.13.tar.gz
+    provides:
+      Digest::SHA1 2.13
+    requirements:
+      Digest::base 1.00
+      ExtUtils::MakeMaker 0
+      perl 5.004
   Dist-CheckConflicts-0.09
     pathname: D/DO/DOY/Dist-CheckConflicts-0.09.tar.gz
     provides:
@@ -1676,6 +1710,18 @@ DISTRIBUTIONS
     requirements:
       ExtUtils::MakeMaker 0
       perl 5.006002
+  LWP-Protocol-https-6.04
+    pathname: G/GA/GAAS/LWP-Protocol-https-6.04.tar.gz
+    provides:
+      LWP::Protocol::https 6.04
+      LWP::Protocol::https::Socket 6.04
+    requirements:
+      ExtUtils::MakeMaker 0
+      IO::Socket::SSL 1.54
+      LWP::UserAgent 6.04
+      Mozilla::CA 20110101
+      Net::HTTPS 6
+      perl 5.008001
   List-AllUtils-0.07
     pathname: D/DR/DROLSKY/List-AllUtils-0.07.tar.gz
     provides:
@@ -2001,6 +2047,24 @@ DISTRIBUTIONS
       Session::Token 1.007
       Test::More 0
       perl 5.010001
+  Mojolicious-Plugin-Web-Auth-0.07
+    pathname: H/HA/HAYAJO/Mojolicious-Plugin-Web-Auth-0.07.tar.gz
+    provides:
+      Mojolicious::Plugin::Web::Auth 0.07
+      Mojolicious::Plugin::Web::Auth::Base undef
+      Mojolicious::Plugin::Web::Auth::OAuth undef
+      Mojolicious::Plugin::Web::Auth::Site::Dropbox undef
+      Mojolicious::Plugin::Web::Auth::Site::Facebook undef
+      Mojolicious::Plugin::Web::Auth::Site::Github undef
+      Mojolicious::Plugin::Web::Auth::Site::Google undef
+      Mojolicious::Plugin::Web::Auth::Site::Instagram undef
+      Mojolicious::Plugin::Web::Auth::Site::Twitter undef
+    requirements:
+      IO::Socket::SSL 1.77
+      Module::Build::Tiny 0.030
+      Mojolicious 3.02
+      Net::OAuth 0.28
+      perl 5.008005
   Moo-1.004000
     pathname: H/HA/HAARG/Moo-1.004000.tar.gz
     provides:
@@ -2043,6 +2107,14 @@ DISTRIBUTIONS
       Moo 0.09101
       Test::Fatal 0.003
       Test::More 0.96
+  Mozilla-CA-20130114
+    pathname: A/AB/ABH/Mozilla-CA-20130114.tar.gz
+    provides:
+      Mozilla::CA 20130114
+    requirements:
+      ExtUtils::MakeMaker 0
+      Test 0
+      perl 5.006
   Net-HTTP-6.06
     pathname: G/GA/GAAS/Net-HTTP-6.06.tar.gz
     provides:
@@ -2057,6 +2129,44 @@ DISTRIBUTIONS
       IO::Select 0
       IO::Socket::INET 0
       perl 5.006002
+  Net-OAuth-0.28
+    pathname: K/KG/KGRENNAN/Net-OAuth-0.28.tar.gz
+    provides:
+      Net::OAuth 0.28
+      Net::OAuth::AccessToken undef
+      Net::OAuth::AccessTokenRequest undef
+      Net::OAuth::AccessTokenResponse undef
+      Net::OAuth::Client undef
+      Net::OAuth::ConsumerRequest undef
+      Net::OAuth::Message undef
+      Net::OAuth::ProtectedResourceRequest undef
+      Net::OAuth::Request 0.28
+      Net::OAuth::RequestTokenRequest undef
+      Net::OAuth::RequestTokenResponse undef
+      Net::OAuth::Response undef
+      Net::OAuth::SignatureMethod::HMAC_SHA1 undef
+      Net::OAuth::SignatureMethod::HMAC_SHA256 undef
+      Net::OAuth::SignatureMethod::PLAINTEXT undef
+      Net::OAuth::SignatureMethod::RSA_SHA1 undef
+      Net::OAuth::UserAuthRequest undef
+      Net::OAuth::UserAuthResponse undef
+      Net::OAuth::V1_0A::AccessTokenRequest undef
+      Net::OAuth::V1_0A::RequestTokenRequest undef
+      Net::OAuth::V1_0A::RequestTokenResponse undef
+      Net::OAuth::V1_0A::UserAuthResponse undef
+      Net::OAuth::XauthAccessTokenRequest undef
+      Net::OAuth::YahooAccessTokenRefreshRequest undef
+    requirements:
+      Class::Accessor 0.31
+      Class::Data::Inheritable 0.06
+      Digest::HMAC_SHA1 1.01
+      Digest::SHA 5.47
+      Digest::SHA1 2.12
+      Encode 2.35
+      LWP::UserAgent 1
+      Test::More 0.66
+      Test::Warn 0.21
+      URI::Escape 3.28
   Net-SSLeay-1.55
     pathname: M/MI/MIKEM/Net-SSLeay-1.55.tar.gz
     provides:
@@ -2352,6 +2462,29 @@ DISTRIBUTIONS
       constant 0
       strict 0
       warnings 0
+  Template-Alloy-1.020
+    pathname: R/RH/RHANDOM/Template-Alloy-1.020.tar.gz
+    provides:
+      Template::Alloy 1.020
+      Template::Alloy::Compile undef
+      Template::Alloy::Context undef
+      Template::Alloy::EvalPerlHandle undef
+      Template::Alloy::Exception undef
+      Template::Alloy::HTE undef
+      Template::Alloy::Iterator undef
+      Template::Alloy::Operator undef
+      Template::Alloy::Parse undef
+      Template::Alloy::Perl undef
+      Template::Alloy::Play undef
+      Template::Alloy::Stream undef
+      Template::Alloy::TT undef
+      Template::Alloy::Tmpl undef
+      Template::Alloy::VMethod undef
+      Template::Alloy::Velocity undef
+      Template::Alloy::_ContextStash undef
+    requirements:
+      Digest::MD5 1
+      ExtUtils::MakeMaker 0
   Test-Deep-0.110
     pathname: R/RJ/RJBS/Test-Deep-0.110.tar.gz
     provides:

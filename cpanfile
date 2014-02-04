@@ -11,6 +11,7 @@ requires 'Moo';
 requires 'Time::HiRes';
 requires 'Try';
 requires 'Data::UUID';
+requires 'Template::Alloy';
 
 # helpers for Mojo::IOLoop
 requires 'EV', '>= 4';

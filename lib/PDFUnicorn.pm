@@ -12,9 +12,11 @@ use Email::Simple::Creator;
 
 use PDFUnicorn::Collection::Users;
 use PDFUnicorn::Collection::Documents;
+use PDFUnicorn::Collection::Templates;
 use PDFUnicorn::Collection::Images;
 use PDFUnicorn::Collection::APIKeys;
 use PDFUnicorn::Valid;
+use PDFUnicorn::Template::Alloy;
 
 use Try;
 
@@ -51,6 +53,9 @@ sub startup {
     $self->helper('mango' => sub { shift->app->mango });
     $self->helper('gridfs' => sub { shift->app->gridfs });
 
+    $self->attr(alloy => sub { PDFUnicorn::Template::Alloy->new });
+    $self->helper('alloy' => sub { shift->app->alloy });
+    
     # Wait for all operations to have reached at least 1 server
     my $wait = $self->mango->w;
 
@@ -84,6 +89,7 @@ sub startup {
     my $helpers = [
         { name => 'db_users', class => 'PDFUnicorn::Collection::Users', collection => 'users' },
         { name => 'db_documents', class => 'PDFUnicorn::Collection::Documents', collection => 'documents' },
+        { name => 'db_templates', class => 'PDFUnicorn::Collection::Templates', collection => 'templates' },
         { name => 'db_images', class => 'PDFUnicorn::Collection::Images', collection => 'images' },
         { name => 'db_apikeys', class => 'PDFUnicorn::Collection::APIKeys', collection => 'apikeys' },
     ];
@@ -303,6 +309,11 @@ sub startup {
 	$api->get('/documents/:id')->to('api-documents#find_one');
 	$api->delete('/documents/:id')->to('api-documents#remove');
 	
+    $api->post('/templates')->to('api-templates#create');
+    $api->get('/templates')->to('api-templates#find');
+    $api->get('/templates/:id')->to('api-templates#find_one');
+    $api->delete('/templates/:id')->to('api-templates#remove');
+    
 	$api->post('/images')->to('api-images#create');
 	$api->get('/images')->to('api-images#find');
 	$api->get('/images/:id')->to('api-images#find_one');
