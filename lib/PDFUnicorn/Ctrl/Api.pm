@@ -32,8 +32,6 @@ sub create {
         );
     }
     
-    warn 'create data: '.Data::Dumper->Dumper($data);
-
     $data->{owner} = $self->stash->{api_key_owner_id};
     $data->{deleted} = bson_false;
     $data->{public} = bson_false;

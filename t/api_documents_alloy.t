@@ -80,6 +80,32 @@ $t->post_ok(
 )->status_is(200);
 ok($t->tx->res->body =~ /^%PDF/, 'doc is a PDF');
 
-#warn Data::Dumper->Dumper($t->tx->res->json);
+
+# create document with template id and get response as metadata
+$url = $t->ua->server->url->userinfo("$api_key:")->path('/v1/documents');
+$t->post_ok(
+    $url,
+    json => {
+        data => { image => "cory_unicorn.jpeg" },
+        template_id => $template_id
+    },
+)->status_is(200);
+
+my $json = $t->tx->res->json;
+
+# get document as PDF
+$url = $t->ua->server->url->userinfo("$api_key:")->path($json->{uri});
+while(1){
+    $t->get_ok($url.'.pdf');
+    if ($t->tx->res->code == 503){
+        my $retry = $t->tx->res->headers->to_hash->{'Retry-after'};
+        warn "503 retry after: $retry";
+        sleep($retry);
+        next;
+    }
+    is($t->tx->res->code, 200, 'got 200');
+    last;
+}
+
 
 done_testing();
