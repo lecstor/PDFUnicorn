@@ -43,10 +43,14 @@ sub create {
     if (my $errors = $self->invalidate($self->item_schema, $data)){
         return $self->render(
             status => 422,
-            json => { status => 'invalid_request', errors => $errors }
+            json => {
+                type => 'invalid_request',
+                message => "Invalid Request Error",
+                errors => $errors
+            }
         );
     }
-
+    
 	my $format = $self->stash('format');
 	my $pdf = 1 if $format && $format eq 'pdf';
 	
@@ -100,8 +104,19 @@ sub create {
                     $delayed_find_one,
                     sub {
                         my ($delay, $template) = @_;
-                        my $source = $self->alloy->render($template->{source}, $self->stash->{'pdfunicorn.doc'}{data} || {});
-                        $self->render( data => $self->stash->{pdf_renderer}->($self, $source) );
+                        if ($template){
+                            my $source = $self->alloy->render($template->{source}, $self->stash->{'pdfunicorn.doc'}{data} || {});
+                            $self->render( data => $self->stash->{pdf_renderer}->($self, $source) );
+                        } else {
+                            $self->render(
+                                status => 422,
+                                json => {
+                                    type => 'invalid_request',
+                                    message => "Invalid Request Error",
+                                    errors => ['The requested document template was not found']
+                                }
+                            );
+                        }
                     }
                 );
                 $delay->wait unless Mojo::IOLoop->is_running;
@@ -158,13 +173,34 @@ sub create {
                     $c->stash->{delayed_find_one},
                     sub {
                         my ($delay, $template) = @_;
-                        my $source = $c->alloy->render($template->{source}, $c->stash->{'pdfunicorn.doc'}{data} || {});
-                        #$c->render( data => $c->stash->{pdf_renderer}->($c, $source) );
-                        $c->stash->{pdf_writer}->(
-                            $c,
-                            $c->stash->{'pdfunicorn.doc'},
-                            $c->stash->{pdf_renderer}->($c, $source)
-                        );
+                        if ($template){
+                            my $source = $c->alloy->render($template->{source}, $c->stash->{'pdfunicorn.doc'}{data} || {});
+                            #$c->render( data => $c->stash->{pdf_renderer}->($c, $source) );
+                            $c->stash->{pdf_writer}->(
+                                $c,
+                                $c->stash->{'pdfunicorn.doc'},
+                                $c->stash->{pdf_renderer}->($c, $source)
+                            );
+                        } else {
+                            # here we set an error in the document
+                            my $opts = {
+                                query => { _id => $c->stash->{'pdfunicorn.doc'}->{_id} },
+                                update => {
+                                    '$set' => {
+                                        render_error => {
+                                            type => 'invalid_request',
+                                            message => "Invalid Request Error",
+                                            errors => ['The requested document template was not found']
+                                        }
+                                    }
+                                },
+                            };
+                            $self->collection->find_and_modify($opts => sub {
+                                my ($collection, $err, $doc) = @_;
+                                # anything to do here?
+                                # call a webhook?
+                            });
+                        }
                     }
                 );
                 $delay->wait unless Mojo::IOLoop->is_running;
@@ -199,11 +235,18 @@ sub find_one {
             if ($doc->{owner} eq $self->stash->{api_key_owner_id}){
                 if ($pdf){
                     unless ($doc->{file}){
-                        $self->res->headers->header("Retry-after" => 1);
-                        return $self->render(
-                            status => 503,
-                            json => {}
-                        );
+                        if (my $err = $doc->{render_error}){
+                            return $self->render(
+                                status => 422,
+                                json => $err
+                            );
+                        } else {
+                            $self->res->headers->header("Retry-after" => 1);
+                            return $self->render(
+                                status => 503,
+                                json => {}
+                            );
+                        }
                     }
                     my $gfs = $self->gridfs->prefix($doc->{owner});
                     $self->res->headers->content_type('applicaion/pdf');
