@@ -51,19 +51,19 @@ $t->post_ok(
 # no api-key
 $url = $t->ua->server->url->path('/v1/documents');
 $t->get_ok($url)->status_is(401)
-    ->json_is('/status', 'missing_apikey');
+    ->json_is('/type', 'missing_apikey');
 
 
 # empty api-key
 $url = $t->ua->server->url->userinfo(":")->path('/v1/documents');
 $t->get_ok($url)->status_is(401)
-    ->json_is('/status', 'missing_apikey');
+    ->json_is('/type', 'missing_apikey');
 
 
 # bad api-key
 $url = $t->ua->server->url->userinfo("blah:")->path('/v1/documents');
 $t->get_ok($url)->status_is(401)
-    ->json_is('/status', 'invalid_apikey');
+    ->json_is('/type', 'invalid_apikey');
 
 
 # bad attr in query
@@ -71,7 +71,7 @@ $url = $t->ua->server->url->userinfo("$api_key:")->path('/v1/documents');
 $t->get_ok(
     $url, form => { blah => 1 }
 )->status_is(422)
-    ->json_is('/status', 'invalid_request')
+    ->json_is('/type', 'invalid_request')
     ->json_is('/errors', ['Unexpected object attribute: "blah"']);
 
 
@@ -80,7 +80,7 @@ $url = $t->ua->server->url->userinfo("$api_key:")->path('/v1/documents');
 $t->post_ok(
     $url, json => { blah => 1, source => '<doc></doc>' }
 )->status_is(422)
-    ->json_is('/status', 'invalid_request')
+    ->json_is('/type', 'invalid_request')
     ->json_is('/errors', ['Unexpected object attribute: "blah"']);
 
 
@@ -89,10 +89,10 @@ $url = $t->ua->server->url->userinfo("$api_key:")->path('/v1/documents');
 $t->post_ok(
     $url, json => { blah => 1 }
 )->status_is(422)
-    ->json_is('/status', 'invalid_request')
+    ->json_is('/type', 'invalid_request')
     ->json_is('/errors', [
+        'Require attribute, one of: source, template, template_id',
         'Unexpected object attribute: "blah"',
-        'Document - Missing required attribute value: "source"'
     ]);
 
 
@@ -101,9 +101,9 @@ $url = $t->ua->server->url->userinfo("$api_key:")->path('/v1/documents');
 $t->post_ok(
     $url, json => {}
 )->status_is(422)
-    ->json_is('/status', 'invalid_request')
+    ->json_is('/type', 'invalid_request')
     ->json_is('/errors', [
-        'Document - Missing required attribute value: "source"'
+        'Require attribute, one of: source, template, template_id',
     ]);
 
 
@@ -112,9 +112,9 @@ $url = $t->ua->server->url->userinfo("$api_key:")->path('/v1/documents');
 $t->post_ok(
     $url
 )->status_is(422)
-    ->json_is('/status', 'invalid_request')
+    ->json_is('/type', 'invalid_request')
     ->json_is('/errors', [
-        'Document - Missing required attribute value: "source"'
+        'Require attribute, one of: source, template, template_id',
     ]);
 
 
