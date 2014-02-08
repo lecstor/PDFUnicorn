@@ -85,8 +85,8 @@ my $doc_uri2 = $json->{uri};
 # forget to send image
 $t->post_ok($url, form => { src => '/unicorn2.jpg' })
     ->status_is(422)
-    ->json_is('/status' => 'invalid_request')
-    ->json_is('/errors/0' => 'There was no image data in the upload request.');
+    ->json_is('/type' => 'invalid_request')
+    ->json_is('/errors/0' => 'There was no file data in the upload request.');
 
 
 
