@@ -13,12 +13,13 @@ sub schemas{
             data => { type => 'object' },
             template => { type => 'string' },
             template_id => { type => 'oid', bson => 'oid' },
+            render_error => { type => 'object' },
             source => { type => 'string' },
             created => { type => 'datetime', bson => 'time' },
             public => { type => 'boolean', bson => 'bool' },
             owner => { type => 'oid', bson => 'oid' },
             deleted => { type => 'boolean', bson => 'bool' },
-            #_required => { or => [qw(source template)] }
+            _required => { or => [qw(source template template_id)] }
         },
         'DocumentQuery', {
             id => { type => 'string' },
