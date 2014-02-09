@@ -6,7 +6,11 @@
 	%= include 'mixpanel'
   
     <!-- record main page view -->
-  	<script type="text/javascript">mixpanel.track('view-pricing-page')</script>
+    % if (current_route 'pricing') {
+  	     <script type="text/javascript">mixpanel.track('view-pricing-page')</script>
+    % } else {
+         <script type="text/javascript">mixpanel.track('view-annual-pricing-page')</script>
+    % }
 </head>
 
 <body>
@@ -29,29 +33,62 @@
 	</style>
 
     <div class="container">
-
+      
 	  <div class="jumbotron clearfix">
 	  
-        <h2 style="text-align: center">Try PDFUnicorn free for 30 days</h2>
-        <h3 style="text-align: center">No credit card required</h3>
-
+	    % if (current_route 'pricing') {
+            <h2 style="text-align: center">Try PDFUnicorn free for 14 days</h2>
+            <h3 style="text-align: center">No credit card required</h3>
+        % } else {
+            <h2 style="text-align: center">
+                Template creation is included free with all annual subscriptions. 
+            </h2>
+            <h3 style="text-align: center">Get pixel perfect PDF documents based on your designs.</h3>
+        % }
+        <div class="row">
         % foreach my $plan (@$plans){
-            <div class="col-sm-3">
+            <div class="col-sm-12 col-md-3">
                 <div class="pdfu-plan" <%== $plan->{recommended} ? 'style="background-color: #E0FFE0"' : '' %>>
                     <form action="/sign-up" method="post">
                         <input type="hidden" name="selected_plan" value="<%= $plan->{id} %>" />
                         <h3 style="text-align: center"><%= $plan->{name} %></h3>
-                        <h2 style="text-align: center">$<%= $plan->{price} %>/month</h2>
-                        <div style="text-align: center"><%= $plan->{units} %> units/month</div>
+                        <h2 style="text-align: center">$<%= $plan->{price} %>/<%= $plan->{term} %></h2>
+                        <div style="text-align: center"><%= $plan->{templates} %> templates</div>
+                        <div style="text-align: center"><%= $plan->{units} %> pages/month</div>
                         <div style="text-align: center">
-                            <button type="submit" class="btn btn-primary btn-lg">Start <%= $plan->{name} %> free trial</button>
+                            % if (current_route 'pricing') {
+                                <button type="submit" class="btn btn-primary btn-lg">Start Free Trial</button>
+                            % } else {
+                                <button type="submit" class="btn btn-primary btn-lg">Sign Up</button>
+                            % }
                         </div>
                     </form>         
                 </div>
             </div>
         % }
-        
-	    <h4 class="text-success" style="text-align: center; margin: 40px 0 0 0">a unit is a page of a PDF document or an image in a page</h4>
+            <div class="col-sm-12 col-md-3">
+                <div class="pdfu-plan">
+                        <h3 style="text-align: center">Enterprise</h3>
+                        <h2 style="text-align: center">Ask</h2>
+                        <div style="text-align: center">Templates as Required</div>
+                        <div style="text-align: center">Pages as Required</div>
+                        <div style="text-align: center">
+                            <a class="btn btn-primary btn-lg" href="mailto:jason@pdfunicorn.com?subject=PDFUnicorn%20Enterprise%20Pricing">Contact Me</a>
+                        </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row" style="text-align: center">
+            % if (current_route 'pricing') {
+                <a class="btn btn-primary" href="/pricing/annual">Annual Subscriptions</a>
+                Template creation is included free with all annual subscriptions.
+            % } else {
+                <a class="btn btn-primary" href="/pricing">Monthly Subscriptions</a>
+            % }
+        </div>
+                
       </div>
     </div>
 

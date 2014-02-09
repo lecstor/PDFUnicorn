@@ -26,7 +26,12 @@ sub features {
 
 sub pricing {
 	my $self = shift;
-    $self->render( plans => [sort { $a->{price} <=> $b->{price} } values(%{$self->config->{plans}})] );
+    $self->render( plans => [sort { $a->{templates} <=> $b->{templates} } values(%{$self->config->{plans}})] );
+}
+
+sub annual_pricing {
+    my $self = shift;
+    $self->render( template => 'root/pricing', plans => [sort { $a->{templates} <=> $b->{templates} } values(%{$self->config->{annual_plans}})] );
 }
 
 sub about {
@@ -58,14 +63,15 @@ sub sign_up_form {
 sub sign_up {
 	my $self = shift;
 
-	my $name = $self->param('name');
+    my $firstname = $self->param('firstname');
+	my $surname = $self->param('surname');
 	my $email_addr = $self->param('email');
     my $plan_id = $self->param('selected_plan');
 	my $timezone = $self->param('timezone');
 	my $email_length = length($email_addr);
-	my $plan = $self->config->{plans}{$plan_id};
+	my $plan = $self->config->{plans}{$plan_id} || $self->config->{annual_plans}{$plan_id};
 	
-	foreach my $each (($name,$email_addr,$timezone)){
+	foreach my $each (($firstname,$surname,$email_addr,$timezone)){
 	    next unless $each;
 	    $each =~ s/^\s+//;
 	    $each =~ s/\s+$//;
@@ -74,9 +80,10 @@ sub sign_up {
 	unless ($email_addr && $email_addr =~ /^.+\@[^.\s]+\.[^\s]+$/){
         return $self->render(
             email => $email_addr,
-            name => $name,
+            firstname => $firstname,
+            surname => $surname,
             selected_plan => $plan,
-            error => $email_length ? 'bad_email' : ($name ? 'missing_email' : 'show_form'),
+            error => $email_length ? 'bad_email' : ($firstname ? 'missing_email' : 'show_form'),
         );
 	}	
 	
@@ -85,7 +92,8 @@ sub sign_up {
 	
 	my $data = {
         email => $email_addr,
-        firstname => $name,
+        firstname => $firstname,
+        surname => $surname,
         password_key => {
             key => $self->random_string(length => 24),
             created => bson_time,
@@ -151,7 +159,8 @@ sub sign_up {
                     
                     $self->render(
                         email => $data->{email},
-                        name => $data->{firstname},
+                        firstname => $data->{firstname},
+                        surname => $data->{surname},
                         error => $err || '',
                         selected_plan => $plan,
                     );
@@ -165,7 +174,8 @@ sub sign_up {
         
         $self->render(
             email => $doc ? $doc->{email} : $email_addr,
-            name => $doc ? $doc->{firstname} : $name,
+            firstname => $doc ? $doc->{firstname} : $firstname,
+            surname => $doc ? $doc->{surname} : $surname,
             error => $err || '',
             selected_plan => $plan,
         );

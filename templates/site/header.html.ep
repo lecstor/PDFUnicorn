@@ -9,7 +9,7 @@
             </button>
             <ul class="nav navbar-nav">
                 <li><a href="/" style="padding: 0 10px 0 0" target="_blank" ><img src="/img/pdfunicorn_logo.png" title="The Unicorn" alt="[logo] The Unicorn"></a></li>
-                <li><a class="navbar-brand" style="font-size: 25px" href="/">PDFUnicorn <i>Beta</i></a></li>
+                <li><a class="navbar-brand" style="font-size: 25px" href="/">PDFUnicorn</a></li>
             </ul>
         </div>
         <div class="navbar-collapse collapse">
