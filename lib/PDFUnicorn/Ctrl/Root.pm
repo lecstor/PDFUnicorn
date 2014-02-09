@@ -57,7 +57,7 @@ sub example {
 sub sign_up_form {
 	my $self = shift;
 	my $plan = $self->param('plan');
-    $self->render(name => '', email => '', error => '', selected_plan => $plan);
+    $self->render(firstname => '', surname => '', email => '', error => '', selected_plan => $plan);
 }
 
 sub sign_up {

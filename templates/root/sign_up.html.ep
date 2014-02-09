@@ -32,8 +32,8 @@
                 %= include 'site/sign_up_form'
             % } else {
 				<p class="lead">Hey, 
-				% if ($name){
-					<%= $name %>, 
+				% if ($firstname){
+					<%= $firstname %>, 
 				% }
 				thanks for your interest in PDFUnicorn. I've sent you an email with a link to set
 				your password. 

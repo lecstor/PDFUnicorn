@@ -24,9 +24,9 @@ $t->get_ok('/')->status_is(200)->content_like(qr/PDFUnicorn/i);
 
 $t->post_ok('/admin/set-password', => form => { password => 'pass' })->status_is(401);
     
-$t->post_ok('/sign-up', => form => { name => 'Jason', email => 'jason+1@lecstor.com', time_zone => 'America/Chicago', selected_plan => 'small-1' })
+$t->post_ok('/sign-up', => form => { firstname => 'Jason', email => 'jason+1@lecstor.com', time_zone => 'America/Chicago', selected_plan => 'small-1' })
     ->status_is(200)
-    ->element_exists_not('input[name="name"]')
+    ->element_exists_not('input[name="firstname"]')
     ->element_exists_not('input[name="email"]')
     ->content_like(qr/Hey,\s+Jason,\s+thanks/)
     ->content_like(qr/jason\+1\@lecstor\.com/);
