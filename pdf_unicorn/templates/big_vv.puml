@@ -1,0 +1,104 @@
+<doc size="A4">
+    <style>
+        text:
+            font-face: Helvetica
+            font-size: 10
+            font-lead: 12
+        page:
+            margin: 5
+            padding: 0
+            border: 0
+            border-color: #C3C3C3
+        row:
+            columns: 12
+            margin: 0
+            padding: 0
+            border: 0
+        cell:
+            margin: 0
+            padding: 5
+            border: 1
+            border-color: #C3C3C3
+        class:
+            naked:
+                margin: 0
+                padding: 0
+                border: 0
+            chubby:
+                padding: 5
+            distant:
+                margin: 5
+            no-border:
+                border: 0
+            large:
+                font-size: 12
+            header:
+                background-color: #B0DFDF
+            columns2:
+                columns: 2
+            center:
+                align: center
+            right:
+                align: right
+    </style>
+    <page>
+        <row>
+            <cell span="1" class="no-border">
+                <img src="stock/unicorn_125.png" />
+            </cell>
+            <cell span="6" class="no-border">
+                <text class="large">PDF Unicorn</text>
+            </cell>
+            <cell span="5" class="no-border">
+                Hi [% customer.name %],
+                Full payment of your order has been successfully processed and your Tax invoice is below.
+            </cell>
+        </row>
+        <row>
+            <cell span="7" class="no-border">
+                <text class="large">Tax Invoice: Online Order #[% order.number %]</text>
+            </cell>
+            <cell span="5" class="no-border"></cell>
+        </row>
+        <row class="naked header columns2">
+            <cell>
+                <text class="large">Invoice Details</text>
+            </cell>
+            <cell></cell>
+        </row>
+        <row class="columns2">
+            <cell data="order">
+                <text align="center">Order Date: [% date %]</text>
+                <text class="right">Order Number: [% number %]</text>
+            </cell>
+            <cell>
+                Tax Invoice Date: [% order.tax_invoice_date %]
+                Date Reprinted: [% order.reprinted_date %]
+            </cell>
+        </row>
+        <row class="columns2">
+            <cell>
+                <text class="large">Billing Details</text>
+            </cell>
+            <cell>
+                <text class="large">Delivery Details</text>
+            </cell>
+        </row>
+        <row class="columns2">
+            <cell><text>
+                [% billing.name %]
+                [% billing.street %]
+                [% billing.suburb %]
+                [% billing.state %]
+                [% billing.country %]
+            </text></cell>
+            <cell>
+                [% delivery.name %]
+                [% delivery.street %]
+                [% delivery.suburb %]
+                [% delivery.state %]
+                [% delivery.country %]
+            </cell>
+        </row>
+    </page>
+</doc>

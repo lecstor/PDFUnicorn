@@ -107,7 +107,7 @@ sub get_pdf{
         source => $source,
     });
     
-    $grid->render_template;
+    $grid->render;
     my $pdf_doc = $grid->producer->stringify();    
     $grid->producer->end;
             

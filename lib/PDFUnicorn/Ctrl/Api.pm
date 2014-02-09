@@ -22,31 +22,31 @@ All calls to the API must use a secure (https) connection.
 =cut
 
 
-#sub create {
-#	my $self = shift;
-#    my $data = $self->req->json();
-#    if (my $errors = $self->invalidate($self->item_schema, $data)){
-#        return $self->render(
-#            status => 422,
-#            json => { status => 'invalid_request', data => { errors => $errors } }
-#        );
-#    }
-#    
-#    warn 'image create data: '.Data::Dumper->Dumper($data);
-#
-#    $data->{owner} = $self->api_key;
-#    #$data->{id} = "$data->{id}";
-#    delete $data->{_id};
-#    
-#    $self->render_later;
-#    $self->collection->create($data, sub{
-#        my ($err, $doc) = @_;
-#        $doc->{uri} = "/v1/".$self->uri."/$doc->{_id}";
-#        $doc->{id} = delete $doc->{_id};
-#        $self->render(json => { status => 'ok', data => $doc });
-#    });
-#    Mojo::IOLoop->start unless Mojo::IOLoop->is_running;
-#}
+sub create {
+	my $self = shift;
+    my $data = $self->req->json();
+    if (my $errors = $self->invalidate($self->item_schema, $data)){
+        return $self->render(
+            status => 422,
+            json => { type => 'invalid_request', data => { errors => $errors } }
+        );
+    }
+    
+    $data->{owner} = $self->stash->{api_key_owner_id};
+    $data->{deleted} = bson_false;
+    $data->{public} = bson_false;
+    delete $data->{id};
+    delete $data->{_id};
+    
+    $self->render_later;
+    $self->collection->create($data, sub{
+        my ($err, $doc) = @_;
+        $doc->{uri} = "/v1/".$self->uri."/$doc->{_id}";
+        $doc->{id} = delete $doc->{_id};
+        $self->render(json => $doc);
+    });
+    Mojo::IOLoop->start unless Mojo::IOLoop->is_running;
+}
 
 sub find {
 	my $self = shift;
@@ -54,7 +54,7 @@ sub find {
     if (my $errors = $self->invalidate($self->query_schema, $query)){
         return $self->render(
             status => 422,
-            json => { status => 'invalid_request', errors => $errors }
+            json => { type => 'invalid_request', errors => $errors }
         );
     }
     $query->{owner} = $self->stash->{api_key_owner_id};
@@ -69,29 +69,29 @@ sub find {
             $doc->{uri} = "/v1/".$self->uri."/$doc->{_id}";
             $doc->{id} = delete $doc->{_id};
         }
-        $self->render(json => { status => 'ok', data => $docs });
+        $self->render(json => { data => $docs });
     }, {});
     
 }
 
-#sub find_one {
-#	my $self = shift;
-#	my $id = $self->stash('id');
-#    #return $self->render_not_found unless $id = $self->validate_type('oid', $id);
-#    
-#    $self->render_later;
-#    $self->collection->find_one({ _id => bson_oid($id) }, sub{
-#        my ($err, $doc) = @_;
-#        if ($doc){
-#            if ($doc->{owner} eq $self->stash->{api_key_owner_id}){
-#                $doc->{uri} = "/v1/".$self->uri."/$doc->{_id}";
-#                $doc->{id} = delete $doc->{_id};    
-#                return $self->render(json => { status => 'ok', data => $doc }) ;
-#            }
-#        }
-#        $self->render_not_found;
-#    });
-#}
+sub find_one {
+	my $self = shift;
+	my $id = $self->stash('id');
+    #return $self->render_not_found unless $id = $self->validate_type('oid', $id);
+    
+    $self->render_later;
+    $self->collection->find_one({ _id => bson_oid($id), deleted => bson_false }, sub{
+        my ($err, $doc) = @_;
+        if ($doc){
+            if ($doc->{owner} eq $self->stash->{api_key_owner_id}){
+                $doc->{uri} = "/v1/".$self->uri."/$doc->{_id}";
+                $doc->{id} = delete $doc->{_id};    
+                return $self->render(json => $doc) ;
+            }
+        }
+        $self->render_not_found;
+    });
+}
 
 #sub update{
 #	my $self = shift;

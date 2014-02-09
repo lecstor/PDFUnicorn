@@ -24,7 +24,7 @@ sub create {
     if (!$upload){
         return $self->render(
             status => 422,
-            json => { status => 'invalid_request', errors => ['There was no file data in the upload request.'] }
+            json => { type => 'invalid_request', errors => ['There was no file data in the upload request.'] }
         );
     }
     
@@ -47,7 +47,7 @@ sub create {
 #    if (my $errors = $self->invalidate($self->item_schema, $image_data)){
 #        return $self->render(
 #            status => 422,
-#            json => { status => 'invalid_request', errors => $errors }
+#            json => { type => 'invalid_request', errors => $errors }
 #        );
 #    }
         

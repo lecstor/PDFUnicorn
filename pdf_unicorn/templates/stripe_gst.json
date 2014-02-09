@@ -1,0 +1,84 @@
+{
+    business => {
+        name => "PDFUnicorn",
+        abn => "XX XXX XXX XXX",
+        address => [
+            "123 Tester St",
+            "Aregion",
+            "Astate",
+            "Acountry",
+        ]
+    },
+    customer => {
+        tz_offset => "600",
+        address => [
+            "123 Tester St",
+            "Aregion",
+            "Astate",
+            "Acountry",
+        ],
+        tax_name => 'GST',
+        tax_percent => '10',
+    },
+    invoice => {
+      "date": 1391259209,
+      "id": "in_103Pt32ehWbn3XkfLrbALXnG",
+      "period_start": 1390049484,
+      "period_end": 1391259084,
+      "lines": {
+        "data": [
+          {
+            "id": "sub_3QeMM1zSqx7YbV",
+            "object": "line_item",
+            "type": "subscription",
+            "livemode": true,
+            "amount": 0,
+            "currency": "aud",
+            "proration": false,
+            "period": {
+              "start": 1391435190,
+              "end": 1392041913
+            },
+            "quantity": 1,
+            "plan": {
+              "interval": "month",
+              "name": "Small",
+              "created": 1388149320,
+              "amount": 1900,
+              "currency": "aud",
+              "id": "small-1",
+              "object": "plan",
+              "livemode": false,
+              "interval_count": 1,
+              "trial_period_days": 14,
+              "metadata": {
+              }
+            },
+            "description": null,
+            "metadata": null
+          }
+        ],
+        "count": 1,
+        "object": "list",
+        "url": "/v1/invoices/in_103Pt32ehWbn3XkfLrbALXnG/lines"
+      },
+      "subtotal": 4900,
+      "total": 4900,
+      "customer": "cus_3O2Iz1bsAUDNEx",
+      "object": "invoice",
+      "attempted": true,
+      "closed": false,
+      "paid": false,
+      "livemode": false,
+      "attempt_count": 1,
+      "amount_due": 4900,
+      "currency": "aud",
+      "starting_balance": 0,
+      "ending_balance": 0,
+      "next_payment_attempt": 1391522104,
+      "charge": null,
+      "discount": null,
+      "application_fee": null,
+      "subscription": "sub_3Kdr0PrpicFPdW"
+    }
+}
