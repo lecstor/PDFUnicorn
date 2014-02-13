@@ -33,7 +33,7 @@
         <div class="jumbotron">
         	<div class="row">
                 <div class="col-md-3">
-                    <a href="http://www.mystockvectors.com/" target="_blank" ><img src="/img/unicorn_200.png"></a>
+                    <img src="/img/pdfunicorn_logo_200.png" title="The Unicorn" alt="[logo] The Unicorn">
                 </div>
                 <div class="col-md-9">
                     <p>PDFUnicorn is a PDF generator web service for businesses who need to generate custom
