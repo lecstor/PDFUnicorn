@@ -16,7 +16,7 @@ sub new{
 sub render{
     my ($self, $template, $data) = @_;
     my $out = '';
-    $self->{alloy}->process(\$template, $data, \$out);
+    $self->{alloy}->process(\$template, $data, \$out) || die $self->{alloy}->error;
     return $out;
 }
 
