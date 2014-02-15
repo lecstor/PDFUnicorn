@@ -1,11 +1,20 @@
 
+
+aptitude install make gcc git shorewall libexpat1-dev libssl-dev exim4-daemon-light mailutils
+
+aptitude install unifont ttf-dejavu
+# http://dejavu-fonts.org/wiki/Main_Page
+# http://www.tug.dk/FontCatalogue/dejavusans/
+# http://www.tug.dk/FontCatalogue/dejavusans/dejavusans.pdf
+# http://www.tug.dk/FontCatalogue/dejavusans/dejavusans.pdf
+
 ## http://docs.mongodb.org/manual/tutorial/install-mongodb-on-debian/
 
 # echo 'deb http://downloads-distro.mongodb.org/repo/debian-sysvinit dist 10gen' > /etc/apt/sources.list.d/mongodb.list
 # apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10
 # aptitude update
 # aptitude upgrade
-# aptitude install mongodb-10gen make gcc git shorewall libexpat1-dev libssl-dev exim4-daemon-light mailutils
+# aptitude install mongodb-10gen
 
 
 # apt-get install --reinstall exim4-base
