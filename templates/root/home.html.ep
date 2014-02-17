@@ -30,7 +30,7 @@
         		<div class="col-md-7">
         		  <img src="/img/tax_invoice_snap.png"><br />
         		  <br />
-        		  <a href="/playground" class="pull-right btn btn-primary btn-lg">Click to Try It Now!</a>
+        		  <a href="/playground" class="pull-right btn btn-primary btn-lg">Try It Now in the Playground!</a>
         		</div>
         	</div>
         </div>
