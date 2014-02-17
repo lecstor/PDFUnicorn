@@ -1,0 +1,28 @@
+{
+    "time": <%= $time %>,
+    "tz": "+1000",
+    "title": "PDFUnicorn",
+    "logo": "pdfunicorn_logo_1067.jpg",
+    "header_text": "Make your invoices and quotes stand out from the crowd.",
+    "customer": {
+        "firstname": "Jenny"
+    },
+    "subtotal": "654.05",
+    "tax": "45.67",
+    "shipping": "23.45",
+    "total": "701.10",
+    "items": [
+        { "desc": "Pillow Pets Rainbow Unicorn", "qty": 1, "price": "24.99", "total": "24.99",
+          "options": "Colour: Rainbow, Size: 45cm" },
+        { "desc": "Despicable Me Agnes Fluffy Unicorn", "qty": 3, "price": "24.99", "total": "74.97",
+          "options": "Colour: White, Size 62cm" },
+        { "desc": "Unicorn Inflatable Pool Toy", "qty": 1, "price": "25.96", "total": "25.96",
+          "options": "Colour: Blue, Size: 50cm" },
+        { "desc": "Ty Beanie Boos Pink Unicorn", "qty": 2, "price": "13.45", "total": "26.90",
+          "options": "Highly Collectable Beanie Boos Are made from Silky Soft Material and are irresistibly cute!" },
+        { "desc": "Sing A Long Sparkle Unicorn", "qty": 1, "price": "32.00", "total": "32.00",
+          "options": "She can sing a song! Ideal Christmas gift for your kid, 27.5cm height, with 3 colours available." },
+        { "desc": "My little pony", "qty": 3, "price": "19.95", "total": "59.85",
+          "options": "Body: Pink, Hair: Blue, Eyes: Green" }
+    ]
+}

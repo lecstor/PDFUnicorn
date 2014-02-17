@@ -280,6 +280,8 @@ sub startup {
     $r->get('/docs/api')->name('apidocs')->to('root#api_docs');
     $r->get('/docs/markup')->name('markupdocs')->to('root#markup_docs');
     $r->get('/docs/example')->name('example')->to('root#example');
+    $r->get('/playground')->name('playground')->to('root#playground_form');
+    $r->post('/playground')->name('playground')->to('root#playground');
 
 	$r->get('/sign-up')->to('root#sign_up_form');
 	$r->post('/sign-up')->to('root#sign_up');

@@ -1,0 +1,102 @@
+<doc size="a5">
+    <style>
+        page:
+            padding: 10
+        class:
+            header:
+                align: center
+                font-face: Helvetica-Bold
+            para:
+                padding: 5
+    </style>
+    <page>
+        <row><text align="center" font-size="40">[% title %]</text></row>
+        <footer><cell><img src="[% logo %]" /></cell></footer>
+    </page>
+    <page>
+        <header margin="5">
+            <row columns="3">
+                <cell border="1" border-radius="5" padding="5"><img src="[% logo %]" /></cell>
+                <cell span="2" padding="5">
+                    <row><text align="center" font-size="20">[% title %]</text></row>
+                    <row><text align="center">[% header_text %]</text></row>
+                </cell>
+            </row>
+        </header>
+        <row>
+            <cell padding="10">
+                The main page layout can have a header and a footer. A section
+                of the page can be used to contain a list which may span several
+                pages of output and have a header of it's own.
+            </cell>
+        </row>
+        <section border="1" padding="5" margin="5">
+            <header>
+                <row columns="5">
+                    <cell span="2"><text class="header">Description</text></cell>
+                    <cell><text class="header">Qty</text></cell>
+                    <cell><text class="header">Price</text></cell>
+                    <cell><text class="header">Total</text></cell>
+                </row>
+            </header>
+            [% FOR item IN items %]
+                <row>
+                    <cell>
+                        <row columns="5">
+                            <cell span="2">[% item.desc %]</cell>
+                            <cell><text align="center">[% item.qty %]</text></cell>
+                            <cell><text align="right">$[% item.price %]</text></cell>
+                            <cell><text align="right">$[% item.total %]</text></cell>
+                        </row>
+                        <row>[% item.options %]</row>
+                    </cell>
+                </row>
+            [% END %]
+            <row columns="5">
+                <cell span="3"></cell>
+                <cell><text align="right">Subtotal</text></cell>
+                <cell><text align="right">$[% subtotal %]</text></cell>
+            </row>
+        </section>
+        <row padding="5" margin="5">
+            <cell>
+                <row columns="5">
+                    <cell span="3"></cell>
+                    <cell><text align="right">Tax</text></cell>
+                    <cell><text align="right">$[% tax %]</text></cell>
+                </row>
+                <row columns="5">
+                    <cell span="3"></cell>
+                    <cell><text align="right">Shipping</text></cell>
+                    <cell><text align="right">$[% shipping %]</text></cell>
+                </row>
+                <row columns="5">
+                    <cell span="3"></cell>
+                    <cell><text align="right">Total</text></cell>
+                    <cell><text align="right">$[% total %]</text></cell>
+                </row>
+            </cell>
+        </row>
+        <row>
+            <cell>
+                <row class="para">Hey [% customer.firstname %], thanks for using PDFUnicorn.</row>
+                <row class="para">
+                    <cell>
+                        As a long time customer I'd like to offer you
+                        <text font-face="HelveticaBold">3 months free</text> per year for
+                        signing up for our annual plan. That'll save you 25% over the monthly
+                        charges you're currently paying.[n]Shoot me an email at jason@pdfunicorn.com
+                        and I'll get you set up right away!
+                    </cell>
+                </row>
+                <row class="para">Thanks again, Jason</row>
+            </cell>
+        </row>
+        <footer>
+            <row columns="3">
+                pdfunicorn.com
+                <cell span="2"><text align="right">[% epoch(time, { "tz": tz, "strf": '%c' }) %]</text></cell>
+            </row>
+        </footer>
+    </page>
+</doc>

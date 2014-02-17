@@ -27,7 +27,11 @@
                         <a href="docs/example">example document</a>.
                     </p>
         		</div>
-        		<div class="col-md-7"><img src="/img/tax_invoice_snap.png"></div>
+        		<div class="col-md-7">
+        		  <img src="/img/tax_invoice_snap.png"><br />
+        		  <br />
+        		  <a href="/playground" class="pull-right btn btn-primary btn-lg">Click to Try It Now!</a>
+        		</div>
         	</div>
         </div>
         <div class="jumbotron">
