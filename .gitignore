@@ -6,7 +6,6 @@ public/cory_unicorn.jpeg
 /*.pdf
 local/
 /.includepath
-/pdf_unicorn/images/*
 /fonts_available.yaml
 /cover_db
 /node_modules
