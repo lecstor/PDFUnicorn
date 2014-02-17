@@ -6,7 +6,7 @@
     %= include 'mixpanel'
   
     <!-- record main page view -->
-    <script type="text/javascript">mixpanel.track('view-tryit-page')</script>
+    <script type="text/javascript">mixpanel.track('view-playground-page')</script>
 </head>
 
 <body>
@@ -45,7 +45,7 @@
                 </div>
                 <div class="row" style="margin-top: 20px">
                     <p class="col-xs-12">
-                        <button type="submit" class="btn btn-lg btn-primary pull-right">Generate PDF!</button>
+                        <button type="submit" onclick="mixpanel.track('generate-playground-pdf')" class="btn btn-lg btn-primary pull-right">Generate PDF!</button>
                         <span class="pull-right">
                             This will open the PDF in a new window or tab in your browser.<br />
                             Close it and return to this page to edit some more..
