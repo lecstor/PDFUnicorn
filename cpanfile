@@ -12,6 +12,9 @@ requires 'Time::HiRes';
 requires 'Try';
 requires 'Data::UUID';
 requires 'Template::Alloy';
+requires 'JSON::XS', '< 3.0';
+requires 'JSON';
+
 
 # helpers for Mojo::IOLoop
 requires 'EV', '>= 4';
@@ -25,14 +28,11 @@ on 'test' => sub {
 };
 
 
-# PDF::Grid requires
-requires 'Moo';
+# PDF::Grid requires extra
 requires 'Clone';
 requires 'Hash::Merge';
-requires 'JSON';
 requires 'List::AllUtils';
 requires 'PDF::API2';
-requires 'Try';
 requires 'XML::Parser';
 requires 'YAML';
 requires 'YAML::Syck';
