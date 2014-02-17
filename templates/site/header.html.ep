@@ -7,10 +7,11 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <ul class="nav navbar-nav">
+            <a href="/" style="padding: 0 10px 0 0" target="_blank" ><img src="/img/pdfunicorn_logo_with_text.png" title="PDFUnicorn" alt="[logo] PDFUnicorn"></a>
+            <!-- ul class="nav navbar-nav">
                 <li><a href="/" style="padding: 0 10px 0 0" target="_blank" ><img src="/img/pdfunicorn_logo_50.png" title="The Unicorn" alt="[logo] The Unicorn"></a></li>
                 <li><a class="navbar-brand" style="font-size: 25px" href="/">PDFUnicorn</a></li>
-            </ul>
+            </ul -->
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
@@ -24,10 +25,10 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">More <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li><a href="/about">About/Contact</a></li>
+                        <li><a href="/playground">The Playground</a></li>
                         <li><a href="/docs/api">API Documentation</a></li>
                         <li><a href="/docs/markup">Markup Documentation</a></li>
                         <li><a href="/docs/example">Example/Starter Document</a></li>
-                        <!-- li><a href="/blog">Blog</a></li -->
                     </ul>
                 </li>
             </ul>
