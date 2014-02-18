@@ -15,6 +15,7 @@ use PDFUnicorn::Collection::Documents;
 use PDFUnicorn::Collection::Templates;
 use PDFUnicorn::Collection::Images;
 use PDFUnicorn::Collection::APIKeys;
+use PDFUnicorn::Collection::StripeClients;
 use PDFUnicorn::Valid;
 use PDFUnicorn::Template::Alloy;
 
@@ -92,6 +93,7 @@ sub startup {
         { name => 'db_templates', class => 'PDFUnicorn::Collection::Templates', collection => 'templates' },
         { name => 'db_images', class => 'PDFUnicorn::Collection::Images', collection => 'images' },
         { name => 'db_apikeys', class => 'PDFUnicorn::Collection::APIKeys', collection => 'apikeys' },
+        { name => 'db_stripe_clients', class => 'PDFUnicorn::Collection::StripeClients', collection => 'stripe_clients' },
     ];
     
     for my $helper (@$helpers){
@@ -306,6 +308,9 @@ sub startup {
 	
     $admin->get('/stripe/customer')->to('admin-stripe-customer#find');
     $admin->put('/stripe/customer')->to('admin-stripe-customer#update');
+    
+    $admin->get('/stripe/connect')->to('admin-stripe-connect#setup');
+    $admin->get('/stripe/connect/authorise')->to('admin-stripe-connect#authorise');
     
     $admin->get('/rest/apikeys')->to('admin-rest-apikeys#find');
     $admin->put('/rest/apikeys/:key')->to('admin-rest-apikeys#update');

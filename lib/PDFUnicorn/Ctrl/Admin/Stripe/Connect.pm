@@ -1,13 +1,23 @@
-package PDFUnicorn::Ctrl::Stripe;
+package PDFUnicorn::Ctrl::Admin::Stripe::Connect;
 use Mojo::Base 'Mojolicious::Controller';
+use Mango::BSON ':bson';
 
 use Mojo::UserAgent;
 use Data::Dumper ('Dumper');
 
 
-sub connect{
-   	my $self = shift;
-	my $code = $self->param('code');
+=header Connect to customer Stripe account
+
+=cut
+
+sub setup{
+    my $self = shift;
+    $self->render();
+}
+
+sub authorise{
+    my $self = shift;
+    my $code = $self->param('code');
     
     my $ua = Mojo::UserAgent->new;
     my $tx = $ua->post(
@@ -19,23 +29,46 @@ sub connect{
         }
     );
 
-    my $response_data = $tx->res->json;
-    if ($response_data->{error}){
-        warn $response_data->{error}.': '.$response_data->{error_description};
+    my $data = $tx->res->json;
+    if ($data->{error}){
+        warn $data->{error}.': '.$data->{error_description};
+        $self->render( error => $data->{error_description} );
     } else {
-        my $tx = $ua->get('https://'.$response_data->{access_token}.':@api.stripe.com/v1/customers');
-        my $customer_list = $tx->res->json->{data};
-        my $customer = $customer_list->[0];
-        #warn Dumper($customer);
-        
-        $tx = $ua->get(
-            'https://'.$response_data->{access_token}.':@api.stripe.com/v1/invoices',
-            form => { customer => $customer->{id} } 
-        );
+        my $stripe_client = {
+            owner => $self->stash->{app_user}{_id},
+            access_token => $data->{access_token},
+            refresh_token => $data->{refresh_token},
+            stripe_publishable_key => $data->{stripe_publishable_key},
+            stripe_user_id => $data->{stripe_user_id},
+            token_type => $data->{token_type},
+            scope => $data->{scope},
+            livemode => $data->{livemode} eq 'true' ? bson_true : bson_false,
+        };
 
-        #warn Dumper($tx->res->json);
+        $self->render_later;
+        
+        $self->db_stripe_clients->create($stripe_client, sub{
+            my ($err, $doc) = @_;
+            $self->render( ok => 1 );
+        });
         
     }
+
+}
+    
+#        my $tx = $ua->get('https://'.$response_data->{access_token}.':@api.stripe.com/v1/customers');
+#        my $customer_list = $tx->res->json->{data};
+#        my $customer = $customer_list->[0];
+#        #warn Dumper($customer);
+#        
+#        $tx = $ua->get(
+#            'https://'.$response_data->{access_token}.':@api.stripe.com/v1/invoices',
+#            form => { customer => $customer->{id} } 
+#        );
+#
+#        #warn Dumper($tx->res->json);
+#        
+#    }
         
         #$VAR1 = {
         #          'scope' => 'read_only',
@@ -138,8 +171,5 @@ sub connect{
         #};
 
 
-    
-    $self->render();
-}
 
 1;
