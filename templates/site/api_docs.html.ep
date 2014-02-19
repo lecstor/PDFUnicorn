@@ -171,10 +171,60 @@ Status-Code: 200
 
 <div class="panel panel-default">
     <div class="panel-heading">
+        <h3 class="panel-title">Create a Template</h3>
+    </div>
+    <div class="panel-body">
+        <p>
+            By creating document templates on the PDFUnicorn server you can then
+            use the templates to generate documents by posting the data to be
+            inserted into the templates.
+        </p> 
+        <h4>Request</h4>
+        
+        <p>POST https://pdfunicorn.com/v1/templates</p>
+
+        <p>
+            <h3>Create a template</h3>
+            <p>
+                A POST to /v1/templates will return the document's metadata
+                containing:
+                <ul>
+                    <li>id - the template's id which is used as the template_id
+                    when creating a document</li>
+                    <li>source - the posted source</li>
+                    <li>uri - the template's URI</li>
+                    <li>created - seconds since the epoch when the template was
+                    created</li>
+                </ul>
+            </p>
+            <pre>
+$ curl https://pdfunicorn.com/v1/templates \\
+    -F 'source=&lt;doc&gt;&lt;page&gt;[% some_text %]&lt;img src=\"[% image_path %]\" /&gt;&lt;/page&gt;&lt;/doc&gt;' \\
+    -X POST \\
+    -u 1e551787-903e-11e2-b2b6-0bbccb145af3:
+</pre>
+        </p>
+        
+        <h4>Response</h4>
+            <pre>
+{
+    "created": "1389048511.0901",
+    "id": "52cb32bfb9efb70c36070000",
+    "uri": "/v1/templates/52cb32bfb9efb70c36070000",
+    "source": "source=&lt;doc&gt;&lt;page&gt;[% some_text %]&lt;img src=\"[% image_path %]\" /&gt;&lt;/page&gt;&lt;/doc&gt;",
+}
+</pre>
+                
+    </div>
+</div>            
+
+<div class="panel panel-default">
+    <div class="panel-heading">
         <h3 class="panel-title">Create a Document</h3>
     </div>
     <div class="panel-body">
-        <p>You create a document by posting your document source to the PDFUnicorn
+        <p>You can create a document by posting your document source or the data to
+        fill a template and the template's id to the PDFUnicorn
         server. By default the document's metadata will be returned immediately and
         the PDF file will be created in the background and stored for retrieval.
         The document's metadata includes the url to be used to retrieve the file.</p>
@@ -189,7 +239,7 @@ Status-Code: 200
         <p>POST https://pdfunicorn.com/v1/documents.pdf</p>
 
         <p>
-            <h3>Create a document</h3>
+            <h3>Create a document from source</h3>
             <p>A POST to /v1/documents will return the document's metadata</p>
             <pre>
 $ curl https://pdfunicorn.com/v1/documents \\
@@ -203,11 +253,30 @@ $ curl https://pdfunicorn.com/v1/documents \\
             <pre>
 {
     "created": "1389048511.0901",
-    "owner": "52cb32beb9efb70c36040000",
     "id": "52cb32bfb9efb70c36070000",
     "uri": "/v1/documents/52cb32bfb9efb70c36070000",
     "source": "&lt;doc&gt;&lt;page&gt;Hello World&lt;img src="the/unicorn.jpg" /&gt;&lt;/page&gt;&lt;/doc&gt;",
-    "modified": "1389048511.0901'
+}
+</pre>
+
+        <p>
+            <h3>Create a document from a template</h3>
+            <p>A POST to /v1/documents will return the document's metadata</p>
+            <pre>
+$ curl https://pdfunicorn.com/v1/documents \\
+    -F 'data={"some_text": "Hello World", "image_path": "the/unicorn.jpg" }&amp;template_id=52cb32bfb9efb70c36070000' \\
+    -X POST \\
+    -u 1e551787-903e-11e2-b2b6-0bbccb145af3:
+</pre>
+        </p>
+        
+        <h4>Response</h4>
+            <pre>
+{
+    "created": "1389048511.0901",
+    "id": "52cb32bfb9efb70c36070000",
+    "uri": "/v1/documents/52cb32bfb9efb70c36070000",
+    "source": "&lt;doc&gt;&lt;page&gt;Hello World&lt;img src="the/unicorn.jpg" /&gt;&lt;/page&gt;&lt;/doc&gt;",
 }
 </pre>
                 
