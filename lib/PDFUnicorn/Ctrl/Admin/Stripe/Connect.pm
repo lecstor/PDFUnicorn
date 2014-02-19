@@ -23,7 +23,7 @@ sub authorise{
     my $tx = $ua->post(
         'https://connect.stripe.com/oauth/token'
         => form => {
-            client_secret => 'sk_test_HKPw1c2FnyHyUk0wGOPmzCMy', # test secret key
+            client_secret => $self->config->{stripe}{secret_api_key},
             code => $code,
             grant_type => 'authorization_code',
         }
