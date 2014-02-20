@@ -37,7 +37,7 @@
 	  <div class="jumbotron clearfix">
 	  
 	    % if (current_route 'pricing') {
-            <h2 style="text-align: center">Try PDFUnicorn free for 14 days</h2>
+            <h2 style="text-align: center">Try PDFUnicorn free for 30 days</h2>
             <h3 style="text-align: center">No credit card required</h3>
         % } else {
             <h2 style="text-align: center">
@@ -66,7 +66,7 @@
                 </div>
             </div>
         % }
-            <div class="col-sm-12 col-md-3">
+            <!-- div class="col-sm-12 col-md-3">
                 <div class="pdfu-plan">
                         <h3 style="text-align: center">Enterprise</h3>
                         <h2 style="text-align: center">Ask</h2>
@@ -76,7 +76,7 @@
                             <a class="btn btn-primary btn-lg" href="mailto:jason@pdfunicorn.com?subject=PDFUnicorn%20Enterprise%20Pricing">Contact Me</a>
                         </div>
                 </div>
-            </div>
+            </div -->
 
         </div>
 
