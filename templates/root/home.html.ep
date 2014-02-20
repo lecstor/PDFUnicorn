@@ -57,22 +57,22 @@
             </div>
         </div>
         
-        <div class="jumbotron">
+        <div class="signup">
+            %= include 'site/signup_prompt'
+        </div>
+        
+        <div class="well">
         	<div class="row">
                 <div class="col-md-3">
                     <img src="/img/pdfunicorn_logo_200.png" title="The Unicorn" alt="[logo] The Unicorn">
                 </div>
                 <div class="col-md-9">
-                    <p>PDFUnicorn is a PDF creation web service for businesses who need to generate custom
+                    <p class="lead">PDFUnicorn is a PDF creation web service for businesses who need to generate custom
                     PDF files on demand. We use a custom HTML-like markup language designed for laying
                     out pageable documents in the simplest way possible.</p>
                 </div>
         	</div>
         </div>
-    </div>
-    
-    <div class="signup">
-        %= include 'site/signup_prompt'
     </div>
     
     %= include 'site/foot'
