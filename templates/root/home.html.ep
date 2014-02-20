@@ -17,16 +17,17 @@
         	<div class="row">
         		<div class="col-md-6">
         		    <p>
-        		        So you need to generate custom designed PDF files for you
+        		        So you need to create custom designed PDF files for you
         		        invoice, quotes, estimates, or receipts?
         		    </p>
         		    <p>
                         PDFUnicorn allows you to design your own templates in our
                         user friendly markup language and render those templates
-                        as PDF files with your data on demand.</p>
+                        to create PDF files with your data on demand.</p>
                     <p style="text-align: center">
                         <br />
-                        <a href="/playground" class="btn btn-primary btn-lg">Try our interactive demo now</a>
+                        Our demo playground allows you to simulate the API process manually.<br />
+                        <a href="/playground" class="btn btn-primary btn-lg">Create a PDF now!</a>
                     </p>
         		</div>
         		<div class="col-md-6">
@@ -62,7 +63,7 @@
                     <img src="/img/pdfunicorn_logo_200.png" title="The Unicorn" alt="[logo] The Unicorn">
                 </div>
                 <div class="col-md-9">
-                    <p>PDFUnicorn is a PDF generator web service for businesses who need to generate custom
+                    <p>PDFUnicorn is a PDF creation web service for businesses who need to generate custom
                     PDF files on demand. We use a custom HTML-like markup language designed for laying
                     out pageable documents in the simplest way possible.</p>
                 </div>
