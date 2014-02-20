@@ -41,8 +41,8 @@
                     <p class="lead">
                         Using our simple API you can:
                         <ul>
-                            <li>Upload you logo and other images at print quality resolutions.</li>
-                            <li>Upload your templates which can automatically handle paging and headers.</li>
+                            <li>Upload your logo and other images at print quality resolutions.</li>
+                            <li>Upload your templates which can automatically handle paging and repeated headers.</li>
                             <li>Send your data to our server and get back pixel perfect PDF documents to send to your clients.</li>
                         </ul>
                     </p>
