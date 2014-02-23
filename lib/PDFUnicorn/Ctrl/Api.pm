@@ -28,7 +28,11 @@ sub create {
     if (my $errors = $self->invalidate($self->item_schema, $data)){
         return $self->render(
             status => 422,
-            json => { type => 'invalid_request', data => { errors => $errors } }
+            json => {
+                type => 'invalid_request',
+                message => 'Invalid parameters in request',
+                errors => $errors,
+            }
         );
     }
     
@@ -54,7 +58,11 @@ sub find {
     if (my $errors = $self->invalidate($self->query_schema, $query)){
         return $self->render(
             status => 422,
-            json => { type => 'invalid_request', errors => $errors }
+            json => {
+                type => 'invalid_request',
+                message => 'Invalid parameters in request',
+                errors => $errors,
+            }
         );
     }
     $query->{owner} = $self->stash->{api_key_owner_id};

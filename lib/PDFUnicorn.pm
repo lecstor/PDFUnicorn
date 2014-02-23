@@ -203,9 +203,8 @@ sub startup {
         unless ($token){
             $self->render(
                 json => {
-                    "type" => "missing_apikey",
-                    "message" => "Authentication Error",
-                    "errors" => ["Sorry, you need to use Basic Authentication with your PDFUnicorn API-Key as the username with no password to access the PDFUnicorn API"]
+                    "type" => "invalid_request",
+                    "message" => "No API key provided",
                 },
                 status => 401
             );
@@ -220,9 +219,9 @@ sub startup {
             unless ($doc){
                 return $self->render(
                     json => {
-                        "type" => "invalid_apikey",
-                        "message" => "Authentication Error",
-                        "errors" => ["Sorry, the API-Key you provided is invalid"] },
+                        "type" => "invalid_request",
+                        "message" => "Invalid API key provided",
+                    },
                     status => 401
                 );
             };

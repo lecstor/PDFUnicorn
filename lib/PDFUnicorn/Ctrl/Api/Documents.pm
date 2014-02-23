@@ -45,7 +45,7 @@ sub create {
             status => 422,
             json => {
                 type => 'invalid_request',
-                message => "Invalid Request Error",
+                message => 'Invalid parameters in request',
                 errors => $errors
             }
         );
