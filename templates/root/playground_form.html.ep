@@ -55,7 +55,11 @@
             </form>
         % }
     </div>
-
+    
+    <div class="signup">
+        %= include 'site/signup_prompt'
+    </div>
+    
     %= include 'site/foot'
 
 </body>

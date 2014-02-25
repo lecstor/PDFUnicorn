@@ -28,7 +28,6 @@
                         <li><a href="/playground">The Playground</a></li>
                         <li><a href="/docs/api">API Documentation</a></li>
                         <li><a href="/docs/markup">Markup Documentation</a></li>
-                        <li><a href="/docs/example">Example/Starter Document</a></li>
                     </ul>
                 </li>
             </ul>

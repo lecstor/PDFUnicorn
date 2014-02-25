@@ -1,169 +1,302 @@
-<h2>Markup Documentation</h2>
-<p>
-    (just the tags are documented so far.. check out the
-    <a href="example">example document</a> for more..)
-</p>
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h3 class="panel-title">doc</h3>
-    </div>
-    <div class="panel-body">
-        <p>Every document starts with a doc tag.</p>
-            <pre>
-&lt;doc&gt;&lt;/doc&gt;
-</pre>
-        <p>The doc tag can specify the page size as A4 (default) or A3. It can also specify the page orientation as landscape if required.</p>
-            <pre>
-&lt;doc size="A4" orientation="landscape"&gt;&lt;/doc&gt;
-</pre>
-    </div>
-</div>            
+<h2>PUML - the PDFUnicorn Markup Language</h2>
 
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h3 class="panel-title">page</h3>
+        <h1 class="panel-title">Layout</h1>
     </div>
     <div class="panel-body">
-        <p>Every document has at least one page tag.</p>
-        <p>Each page tag starts on a new page of the PDF document.</p>
-        <p>
-            A page will span several pages of the final document when it is too
-            long to fit on a single page.
-        </p>
-        <pre>
-&lt;doc&gt;
-    &lt;page&gt;&lt;/page&gt;
+        The PUML consists of 7 elements used for layout:
+        <dl class="dl-horizontal">
+            <dt>doc</dt><dd>The doc element contains the complate document and sets the page size of the document.</dd>
+            <dt>page</dt><dd>Each page element begins on a new page of the document but may span several rendered pages including a repeating header and footer.</dd>
+            <dt>section</dt><dd>Section elements can be used within a page element to provide a container for pageable content and can have their own repeating header.</dd>
+            <dt>header</dt><dd>Each page and section element may contain a single header element which is repeated on each rendered page.</dd>
+            <dt>footer</dt><dd>Each page element may contain a single footer element which is repeated at the bottom of each rendered page.</dd>
+            <dt>row</dt><dd>Row elements span the width of it's parent and contains one or more cells.</dd>
+            <dt>cell</dt><dd>Cell elements contain rows or content elements.</dd>
+        </dl>
+        2 elements for content:
+        <dl class="dl-horizontal">
+            <dt>text</dt><dd>contains.. text! for standard text output lone text does not need to be contained in a text element.</dd>
+            <dt>img</dt><dd>inserts an image into the document</dd>
+        </dl>
+        and a style element:
+        <dl class="dl-horizontal">
+            <dt>style</dt><dd>Set default style for elements or define style classes.</dd>
+        </dl>
+        
+        <div class="panel panel-default">
+            <div class="panel-heading"><b>&lt;doc&gt;</b></div>
+            <div class="panel-body">
+                <p>The doc element contains the complate document and sets the page size of the document.</p>
+                <table class="table">
+                    <thead><tr><th colspan="2" class="text-muted">Attributes</th></tr></thead>
+                    <tbody>
+                        <tr><th>size</th><td>Set the page size of the document as A4, B5, etc</td></tr>
+                        <tr><th>orientation</th><td>Set orientation to landscape if required, otherwise defaults to portrait</td></tr>
+                    </tbody>
+                </table>
+                <p>Example:</p>
+<pre>
+&lt;doc size="a4" orientation="landscape"&gt;
+    &lt;style&gt;...&lt;/style&gt;
+    &lt;page&gt;...&lt;/page&gt;
 &lt;/doc&gt;
 </pre>
-    </div>
-</div>            
-
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h3 class="panel-title">row & section</h3>
-    </div>
-    <div class="panel-body">
-        <p>Pages contain rows or sections.</p>
-        <p>Rows contain cells arranged horizontally. Rows have a specified number
-        of columns and cells can span more than one column.</p>
-        <p>If the number of columns is not set then it is automatically set to
-        the number of cells & spans in the row.</p>
-        <p>
-            Sections allow groups of rows to have a border and repeatable headers.
-            Each page can only have one section and that section will span multiple
-            pages in the final PDF if it is too long to fit on a single page.
-        </p>
-            <pre>
+            </div>
+        </div>        
+        
+        <div class="panel panel-default">
+            <div class="panel-heading"><b>&lt;style&gt;</b></div>
+            <div class="panel-body">
+                <p>
+                    The style element is a different kind of element. It can be
+                    used to set default styles for the standard elements and to
+                    define classes which can be used on those elements.
+                </p>
+                <p>
+                    The style element must be located in the main doc element.
+                <p>Example:</p>
+<pre>
 &lt;doc&gt;
-    &lt;page&gt;
-        &lt;row&gt;&lt;/row&gt;
-        &lt;row&gt;&lt;/row&gt;
-        &lt;section&gt;
-            &lt;row&gt;&lt;/row&gt;
-            &lt;row&gt;&lt;/row&gt;
-        &lt;/section&gt;
-    &lt;/page&gt;
-&lt;/doc&gt;
-</pre>
-    </div>
-</div>            
-
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h3 class="panel-title">cell</h3>
-    </div>
-    <div class="panel-body">
-        <p>Cells contain text and images.</p>
-            <pre>
-&lt;doc&gt;
+    &lt;style&gt;
+        page:
+            margin: 10
+            border: 1
+            border-radius: 10
+        row:
+            margin: 5
+        cell:
+            margin: 5
+        class:
+            heading:
+                align: center
+                font-face: HelveticaBold
+                font-size: 18
+    &lt;/style&gt;
     &lt;page&gt;
         &lt;row&gt;
-            &lt;cell&gt;&lt;/cell&gt;
-            &lt;cell&gt;&lt;/cell&gt;
+            &lt;cell&gt;
+                &lt;text class="heading"&gt;Some text&lt;/text&gt;
+            &lt;/cell&gt;
         &lt;/row&gt;
-        &lt;row&gt;
-            &lt;cell&gt;&lt;/cell&gt;
-            &lt;cell&gt;&lt;/cell&gt;
-        &lt;/row&gt;
-        &lt;section&gt;
-            &lt;row&gt;
-                &lt;cell&gt;&lt;/cell&gt;
-                &lt;cell&gt;&lt;/cell&gt;
-            &lt;/row&gt;
-            &lt;row&gt;
-                &lt;cell&gt;&lt;/cell&gt;
-                &lt;cell&gt;&lt;/cell&gt;
-            &lt;/row&gt;
-        &lt;/section&gt;
     &lt;/page&gt;
 &lt;/doc&gt;
 </pre>
-    </div>
-</div>            
+            </div>
+        </div>        
+        
+        <div class="panel panel-default">
+            <div class="panel-heading"><b>&lt;page&gt;</b></div>
+            <div class="panel-body">
+                <p>Every document requires least one page element.</p>
+                <p>Each page element starts on a new page of the rendered document.</p>
+                <p>Each page element may contain one header element and one footer element which are repeated on each rendered page.</p>
+                <p>The rows in a page element may span several rendered pages.</p>
+                <table class="table">
+                    <thead><tr><th colspan="2" class="text-muted">Attributes</th></tr></thead>
+                    <tbody>
+                        <tr><th>border</th><td>Display the border (1px only).</td></tr>
+                        <tr><th>border-color</th><td>Set the color of the border.</td></tr>
+                        <tr><th>border-radius</th><td>Display rounded corners.</td></tr>
+                        <tr><th>padding</th><td>Add padding inside the borders of the page.</td></tr>
+                        <tr><th>margin</th><td>Add a margin outside the borders of the page.</td></tr>
+                    </tbody>
+                </table>
+                <p>Example:</p>
+<pre>
+&lt;page&gt;
+    &lt;header&gt;...&lt;/header&gt;
+    &lt;row&gt;...&lt;/row&gt;
+    &lt;row&gt;...&lt;/row&gt;
+    &lt;section&gt;...&lt;/section&gt;
+    &lt;row&gt;...&lt;/row&gt;
+    &lt;row&gt;...&lt;/row&gt;
+    &lt;footer&gt;...&lt;/footer&gt;
+&lt;/page&gt;
+</pre>
+            </div>
+        </div>        
+        
+        <div class="panel panel-default">
+            <div class="panel-heading"><b>&lt;section&gt;</b></div>
+            <div class="panel-body">
+                <p>A page elemement may contain one or more section elements.</p>
+                <p>Each section element may contain one header element which is repeated on each rendered page.</p>
+                <p>The rows in a section element may span several rendered pages.</p>
+                <table class="table">
+                    <thead><tr><th colspan="2" class="text-muted">Attributes</th></tr></thead>
+                    <tbody>
+                        <tr><th>border</th><td>Display the border (1px only).</td></tr>
+                        <tr><th>border-color</th><td>Set the color of the border.</td></tr>
+                        <tr><th>border-radius</th><td>Display rounded corners.</td></tr>
+                        <tr><th>padding</th><td>Add padding inside the borders of the section.</td></tr>
+                        <tr><th>margin</th><td>Add a margin outside the borders of the section.</td></tr>
+                    </tbody>
+                </table>
+                <p>Example:</p>
+<pre>
+&lt;section&gt;
+    &lt;header&gt;...&lt;/header&gt;
+    &lt;row&gt;...&lt;/row&gt;
+    &lt;row&gt;...&lt;/row&gt;
+&lt;/section&gt;
+</pre>
+            </div>
+        </div>        
 
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h3 class="panel-title">text & image</h3>
-    </div>
-    <div class="panel-body">
-        <p>have a guess..</p>
-            <pre>
-&lt;doc&gt;
-    &lt;page&gt;
-        &lt;section&gt;
-            &lt;row&gt;
-                &lt;cell&gt;&lt;text&gt;Hello there,&lt;/text&gt;&lt;/cell&gt;
-                &lt;cell&gt;isn't this great!?&lt;/cell&gt;
-                &lt;cell&gt;&lt;image src="the/unicorn.jpg" /&gt;&lt;/cell&gt;
-            &lt;/row&gt;
-        &lt;/section&gt;
-    &lt;/page&gt;
-&lt;/doc&gt;
+        <div class="panel panel-default">
+            <div class="panel-heading"><b>&lt;header&gt;</b></div>
+            <div class="panel-body">
+                <p>Each page and section element may contain a single header element.</p>
+                <p>A header element contains one or more row elements and is repeated on each rendered page.</p>
+                <table class="table">
+                    <thead><tr><th colspan="2" class="text-muted">Attributes</th></tr></thead>
+                    <tbody>
+                        <tr><th>border</th><td>Display the border (1px only).</td></tr>
+                        <tr><th>border-color</th><td>Set the color of the border.</td></tr>
+                        <tr><th>border-radius</th><td>Display rounded corners.</td></tr>
+                        <tr><th>padding</th><td>Add padding inside the borders of the header.</td></tr>
+                        <tr><th>margin</th><td>Add a margin outside the borders of the header.</td></tr>
+                    </tbody>
+                </table>
+                <p>Example:</p>
+<pre>
+&lt;header&gt;
+    &lt;row&gt;...&lt;/row&gt;
+    &lt;row&gt;...&lt;/row&gt;
+&lt;/header&gt;
 </pre>
-    </div>
-</div>            
+            </div>
+        </div>        
+        
+        <div class="panel panel-default">
+            <div class="panel-heading"><b>&lt;footer&gt;</b></div>
+            <div class="panel-body">
+                <p>Each page element may contain a single footer element.</p>
+                <p>A footer element contains one or more row elements and is repeated at the bottom of each rendered page.</p>
+                <table class="table">
+                    <thead><tr><th colspan="2" class="text-muted">Attributes</th></tr></thead>
+                    <tbody>
+                        <tr><th>border</th><td>Display the border (1px only).</td></tr>
+                        <tr><th>border-color</th><td>Set the color of the border.</td></tr>
+                        <tr><th>border-radius</th><td>Display rounded corners.</td></tr>
+                        <tr><th>padding</th><td>Add padding inside the borders of the header.</td></tr>
+                        <tr><th>margin</th><td>Add a margin outside the borders of the header.</td></tr>
+                    </tbody>
+                </table>
+                <p>Example:</p>
+<pre>
+&lt;footer&gt;
+    &lt;row&gt;...&lt;/row&gt;
+    &lt;row&gt;...&lt;/row&gt;
+&lt;/footer&gt;
+</pre>
+            </div>
+        </div>        
+        
+        <div class="panel panel-default">
+            <div class="panel-heading"><b>&lt;row&gt;</b></div>
+            <div class="panel-body">
+                <p>Row elements span the width of it's parent and contains one or more cells.</p>
+                <p>Row elements are always rendered on a single page.</p>
+                <p>A row element contains one or more cell elements aligned horizontally.</p>
+                <table class="table">
+                    <thead><tr><th colspan="2" class="text-muted">Attributes</th></tr></thead>
+                    <tbody>
+                        <tr><th>columns</th><td>Set the number of columns in the row. Defaults to the number of cells in the row if not defined.</td></tr>
+                        <tr><th>border</th><td>Display the border (1px only).</td></tr>
+                        <tr><th>border-color</th><td>Set the color of the border.</td></tr>
+                        <tr><th>border-radius</th><td>Display rounded corners.</td></tr>
+                        <tr><th>padding</th><td>Add padding inside the borders of the row.</td></tr>
+                        <tr><th>margin</th><td>Add a margin outside the borders of the row.</td></tr>
+                    </tbody>
+                </table>
+                <p>Example:</p>
+<pre>
+&lt;row columns="3"&gt;
+    &lt;cell span="3"&gt;...&lt;/cell&gt;
+    &lt;cell&gt;...&lt;/cell&gt;
+&lt;/row&gt;
+</pre>
+            </div>
+        </div>        
+        
+        <div class="panel panel-default">
+            <div class="panel-heading"><b>&lt;cell&gt;</b></div>
+            <div class="panel-body">
+                <p>Cell elements may contain rows or content elements.</p>
+                <p>A cell may span one or more row columns.</p>
+                <table class="table">
+                    <thead><tr><th colspan="2" class="text-muted">Attributes</th></tr></thead>
+                    <tbody>
+                        <tr><th>span</th><td>Set the number of row columns to consume.</td></tr>
+                        <tr><th>border</th><td>Display the border (1px only).</td></tr>
+                        <tr><th>border-color</th><td>Set the color of the border.</td></tr>
+                        <tr><th>border-radius</th><td>Display rounded corners.</td></tr>
+                        <tr><th>padding</th><td>Add padding inside the borders of the cell.</td></tr>
+                        <tr><th>margin</th><td>Add a margin outside the borders of the cell.</td></tr>
+                    </tbody>
+                </table>
+                <p>Example:</p>
+<pre>
+&lt;cell span="3" border="1" border-radius="5"&gt;
+    Some text in a cell
+&lt;/cell&gt;
+</pre>
+            </div>
+        </div>        
+        
+        <div class="panel panel-default">
+            <div class="panel-heading"><b>&lt;text&gt;</b></div>
+            <div class="panel-body">
+                <p>Text may be included on it's own, or in a text element for layout and styling purposes.</p>
+                <table class="table">
+                    <thead><tr><th colspan="2" class="text-muted">Attributes</th></tr></thead>
+                    <tbody>
+                        <tr><th>font-face</th><td>Set the font</td></tr>
+                        <tr><th>font-size</th><td>Set font size.</td></tr>
+                        <tr><th>font-color</th><td>Set font color.</td></tr>
+                        <tr><th>align</th><td>Align the text as centered or pulled to the right.</td></tr>
+                    </tbody>
+                </table>
+                <p>Example:</p>
+<pre>
+&lt;text align="center" font-size="20" font-color="blue" font-face="HelveticaBold"&gt;
+    Some text in a cell
+&lt;/text&gt;
+</pre>
+            </div>
+        </div>        
+        
+        <div class="panel panel-default">
+            <div class="panel-heading"><b>&lt;img&gt;</b></div>
+            <div class="panel-body">
+                <p>
+                    Images will be displayed at the maximum size made available
+                    by their parent element. The image will not be reduced in size,
+                    so using an image twice the size of it's parent element will be
+                    print quality resolution.
+                </p>
+                <p>
+                    JPG images are recommended as they are much faster to render than
+                    the alternative PNG images.
+                </p>
+                <table class="table">
+                    <thead><tr><th colspan="2" class="text-muted">Attributes</th></tr></thead>
+                    <tbody>
+                        <tr><th>src</th><td>The path to the image in the PDFUnicorn account. Remote sources are not supported.</td></tr>
+                    </tbody>
+                </table>
+                <p>Example:</p>
+<pre>
+&lt;img src="path/to/image.jpg" /&gt;
+</pre>
+            </div>
+        </div>        
 
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h3 class="panel-title">header</h3>
     </div>
-    <div class="panel-body">
-        <p>Pages and sections can each have a header which will be repeated on each
-        page in the final PDF.</p>
-            <pre>
-&lt;doc&gt;
-    &lt;page&gt;
-        &lt;header&gt;
-            &lt;row&gt;
-                &lt;cell&gt;&lt;text&gt;Hello there,&lt;/text&gt;&lt;/cell&gt;
-                &lt;cell&gt;isn't this great!?&lt;/cell&gt;
-                &lt;cell&gt;&lt;image src="the/unicorn.jpg" /&gt;&lt;/cell&gt;
-            &lt;/row&gt;
-        &lt;/header&gt;
-        &lt;row&gt;
-            &lt;cell&gt;&lt;text&gt;Hello there,&lt;/text&gt;&lt;/cell&gt;
-            &lt;cell&gt;isn't this great!?&lt;/cell&gt;
-            &lt;cell&gt;&lt;image src="the/unicorn.jpg" /&gt;&lt;/cell&gt;
-        &lt;/row&gt;
-        &lt;section&gt;
-            &lt;header&gt;
-                &lt;row&gt;
-                    &lt;cell&gt;&lt;text&gt;Hello there,&lt;/text&gt;&lt;/cell&gt;
-                    &lt;cell&gt;isn't this great!?&lt;/cell&gt;
-                    &lt;cell&gt;&lt;image src="the/unicorn.jpg" /&gt;&lt;/cell&gt;
-                &lt;/row&gt;
-            &lt;/header&gt;
-            &lt;row&gt;
-                &lt;cell&gt;&lt;text&gt;Hello there,&lt;/text&gt;&lt;/cell&gt;
-                &lt;cell&gt;isn't this great!?&lt;/cell&gt;
-                &lt;cell&gt;&lt;image src="the/unicorn.jpg" /&gt;&lt;/cell&gt;
-            &lt;/row&gt;
-        &lt;/section&gt;
-    &lt;/page&gt;
-&lt;/doc&gt;
-</pre>
-    </div>
-</div>            
+</div>
 
 
 <div class="signup">

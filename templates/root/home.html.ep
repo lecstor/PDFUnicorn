@@ -15,41 +15,63 @@
     <div class="container">
         <div class="jumbotron">
         	<div class="row">
-        		<div class="col-md-5">
-		      		<p>Generate your document source with your preferred HTML templating system.</p>
-		      		<p>Upload your images via our API.</p>
-		      		<p>Post your document source and retrieve your completed PDF file.</p>
-                    <p>It's that easy!</p>
-                    <p>
-                        Check out the documentation for our
-                        <a href="docs/api">API</a> and
-                        <a href="docs/markup">markup language</a> or an
-                        <a href="docs/example">example document</a>.
+        		<div class="col-md-6">
+        		    <p>
+        		        So you need to create custom designed PDF files for you
+        		        invoice, quotes, estimates, or receipts?
+        		    </p>
+        		    <p>
+                        PDFUnicorn allows you to design your own templates in our
+                        user friendly markup language and render those templates
+                        to create PDF files with your data on demand.</p>
+                    <p style="text-align: center">
+                        <br />
+                        Our demo playground allows you to simulate the API process manually.<br />
+                        <a href="/playground" class="btn btn-primary btn-lg">Create a PDF now!</a>
                     </p>
         		</div>
-        		<div class="col-md-7">
+        		<div class="col-md-6">
         		  <img src="/img/tax_invoice_snap.png"><br />
-        		  <br />
-        		  <a href="/playground" class="pull-right btn btn-primary btn-lg">Try It Now in the Playground!</a>
         		</div>
         	</div>
         </div>
-        <div class="jumbotron">
+        
+        <div class="well">
+            <div class="row">
+                <div class="col-md-12">
+                    <p class="lead">
+                        Using our simple API you can:
+                        <ul>
+                            <li>Upload your logo and other images at print quality resolutions.</li>
+                            <li>Upload your templates which can automatically handle paging and repeated headers.</li>
+                            <li>Send your data to our server and get back pixel perfect PDF documents to send to your clients.</li>
+                        </ul>
+                    </p>
+                    <p class="lead">
+                        Check out the documentation for our
+                        <a href="docs/api">API</a> and
+                        <a href="docs/markup">markup language</a>.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="signup">
+            %= include 'site/signup_prompt'
+        </div>
+        
+        <div class="well">
         	<div class="row">
                 <div class="col-md-3">
                     <img src="/img/pdfunicorn_logo_200.png" title="The Unicorn" alt="[logo] The Unicorn">
                 </div>
                 <div class="col-md-9">
-                    <p>PDFUnicorn is a PDF generator web service for businesses who need to generate custom
+                    <p class="lead">PDFUnicorn is a PDF creation web service for businesses who need to generate custom
                     PDF files on demand. We use a custom HTML-like markup language designed for laying
                     out pageable documents in the simplest way possible.</p>
                 </div>
         	</div>
         </div>
-    </div>
-    
-    <div class="signup">
-        %= include 'site/signup_prompt'
     </div>
     
     %= include 'site/foot'

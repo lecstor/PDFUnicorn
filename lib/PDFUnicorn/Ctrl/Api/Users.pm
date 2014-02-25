@@ -33,7 +33,11 @@ sub create {
     if (my $errors = $self->invalidate($self->item_schema, $user_data)){
         return $self->render(
             status => 422,
-            json => { object => 'invalid_request', errors => $errors }
+            json => {
+                type => 'invalid_request',
+                message => 'Invalid parameters in request',
+                errors => $errors,
+            }
         );
     }
     

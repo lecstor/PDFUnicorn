@@ -9,8 +9,8 @@
     % }
     <p>
         You have selected the <%= $selected_plan->{name} %> plan giving you
-        <%= $selected_plan->{units} %> units per month
-        for just $<%= $selected_plan->{price} %> per <%= $selected_plan->{term} %>.
+        <%= $selected_plan->{units} %> pages 
+        for just $<%= $selected_plan->{price} %> per <%= $selected_plan->{term} %>.<br />
         (includes GST for Australian customers)
     </p>
     <input name="firstname" type="text" class="form-control" placeholder="Your first name" value="<%= $firstname %>" required autofocus>

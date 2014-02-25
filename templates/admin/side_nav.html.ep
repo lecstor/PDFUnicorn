@@ -4,7 +4,7 @@
 	    <a href="/admin?get-started" class="list-group-item <%= current_route('admin') ? 'active' : '' %>">Get Started</a>
         <a href="/admin/markup-docs" class="list-group-item <%= current_route('markupdocs') ? 'active' : '' %>">Markup Documentation</a>
         <a href="/admin/api-docs" class="list-group-item <%= current_route('apidocs') ? 'active' : '' %>">API Documentation</a>
-        <a href="/admin/example" class="list-group-item <%= current_route('example') ? 'active' : '' %>">Example/Starter Document</a>
+        <!-- a href="/admin/example" class="list-group-item <%= current_route('example') ? 'active' : '' %>">Example/Starter Document</a -->
 	    <a href="/admin/api-key" class="list-group-item <%= current_route('apikey') ? 'active' : '' %>">API Key</a>
 	    <a href="/admin/billing" class="list-group-item <%= current_route('billing') ? 'active' : '' %>">Billing</a>
 	</div>

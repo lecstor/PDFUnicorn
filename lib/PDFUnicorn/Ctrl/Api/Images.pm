@@ -24,7 +24,11 @@ sub create {
     if (!$upload){
         return $self->render(
             status => 422,
-            json => { type => 'invalid_request', errors => ['There was no file data in the upload request.'] }
+            json => {
+                type => 'invalid_request',
+                message => 'Invalid parameters in request',
+                errors => ['There was no file data in the upload request.']
+            }
         );
     }
     
