@@ -291,6 +291,8 @@ sub startup {
 	
 	$r->get('/log-out')->to('root#log_out');
 	
+    $r->get('/invoice-maker')->name('invoice_creator')->to('invoice_creator#home');
+
 	#$r->get('/stripe/connect')->to('stripe#connect');
 	
 	$r->get('/set-password/:code/:email')->to('root#set_password_form');
