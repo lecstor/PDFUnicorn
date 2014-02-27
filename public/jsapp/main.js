@@ -44,6 +44,10 @@ require(['jquery'], function($){
     });
 });
 
+require(['bootstrap'], function(){
+    $('[data-toggle=tooltip]').tooltip();
+});
+
 if (path == '/admin/api-key'){
 
     require(['admin/apikeys'], function(apiKeys){

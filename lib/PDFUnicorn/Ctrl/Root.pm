@@ -24,6 +24,11 @@ sub features {
     $self->render();
 }
 
+sub contact {
+    my $self = shift;
+    $self->render();
+}
+
 sub pricing {
 	my $self = shift;
     $self->render( plans => [sort { $a->{templates} <=> $b->{templates} } values(%{$self->config->{plans}})] );

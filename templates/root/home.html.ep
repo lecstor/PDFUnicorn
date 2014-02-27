@@ -31,7 +31,7 @@
                     </p>
         		</div>
         		<div class="col-md-6">
-        		  <img src="/img/tax_invoice_snap.png"><br />
+        		  <img class="img-responsive center-block" src="/img/tax_invoice_snap.png"><br />
         		</div>
         	</div>
         </div>

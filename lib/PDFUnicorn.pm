@@ -273,6 +273,7 @@ sub startup {
 	$r->post('/')->to('root#get_pdf');
 	
 	$r->get('/features')->name('features')->to('root#features');
+    $r->get('/contact')->name('contact')->to('root#contact');
 	$r->get('/pricing')->name('pricing')->to('root#pricing');
     $r->get('/pricing/annual')->name('annual_pricing')->to('root#annual_pricing');
 	$r->get('/about')->name('about')->to('root#about');
