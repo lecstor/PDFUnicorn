@@ -23,10 +23,12 @@
         		    <p>
                         PDFUnicorn allows you to design your own templates in our
                         user friendly markup language and render those templates
-                        to create PDF files with your data on demand.</p>
+                        to create PDF files with your data on demand.
+                    </p>
                     <p style="text-align: center">
-                        <br />
                         Our demo playground allows you to simulate the API process manually.<br />
+                    </p>
+                    <p style="text-align: center">
                         <a href="/playground" class="btn btn-primary btn-lg">Create a PDF now!</a>
                     </p>
         		</div>
