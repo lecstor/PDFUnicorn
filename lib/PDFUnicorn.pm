@@ -292,6 +292,7 @@ sub startup {
 	$r->get('/log-out')->to('root#log_out');
 	
     $r->get('/invoice-maker')->name('invoice_creator')->to('invoice_creator#home');
+    $r->post('/invoice-maker-pdf')->name('invoice_creator_pdf')->to('invoice_creator#pdf');
 
 	#$r->get('/stripe/connect')->to('stripe#connect');
 	

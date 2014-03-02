@@ -1,43 +1,188 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>PDFUnicorn - online PDF generator</title>
+    <title>PDFUnicorn - free online invoice maker</title>
 	%= include 'site/head'
 	%= include 'mixpanel'
   
     <!-- record main page view -->
-  	<script type="text/javascript">mixpanel.track('view-home-page')</script>
+  	<script type="text/javascript">mixpanel.track('view-invoice-maker-page')</script>
 </head>
 
 <body>
 	%= include 'site/header'
 
     <div class="container">
-        <h1>Online Invoice Maker</h1>
+        <h1>Free Online Invoice Maker</h1>
         
-        <form role="form">
+        <form action="/invoice-maker-pdf" method="post" role="form" target="_blank">
+
             <div class="row">
-                <div class="col-xs-12 col-md-8">
-                    <label for="invoice_sender">Invoice Sender</label>
-                    <textarea class="form-control" rows="5" name="invoice_sender"></textarea>
+                <div class="col-xs-12 col-md-12 well">
+                    <!-- item list -->
+                                        
+                    <label for="item_desc_1">Invoice Items</label>
+                    
+                    <div id="invoice-item-list">
+                        <div class="row list-item">
+                             <div class="col-xs-12 col-sm-12 col-md-4">
+                                <textarea class="form-control" name="item_desc_0" placeholder="Item Description"></textarea>
+                             </div>
+                             <div class="col-xs-12 col-sm-3 col-md-2">
+                                <input class="form-control" type="number" name="item_qty_0" placeholder="Quantity" />
+                             </div>
+                             <div class="col-xs-12 col-sm-3 col-md-2">
+                                <div class="input-group">
+                                    <span class="input-group-addon">$</span>
+                                    <input class="form-control" type="text" name="item_price_0" placeholder="Price" />
+                                </div>
+                             </div>
+                             <div class="col-xs-12 col-sm-3 col-md-2">
+                                <div class="input-group">
+                                    <span class="input-group-addon">$</span>
+                                    <input class="form-control" type="text" name="item_tax_0" placeholder="Tax" />
+                                </div>
+                             </div>
+                             <div class="col-xs-12 col-sm-3 col-md-2">
+                                <div class="input-group">
+                                    <span class="input-group-addon">$</span>
+                                    <input class="form-control" type="text" name="item_total_0" placeholder="Total" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="add_item_row" class="row">
+                        <div class="col-xs-12">
+                            <a id="add_item_button" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-plus-sign"></span> Add Another Item Row</a>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-xs-12 col-md-4">
-                    Logo
+                
+                <div class="col-xs-12 col-md-12 well">
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label for="invoice_subtotal">Items Total</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">$</span>
+                                <input type="text" class="form-control" name="invoice_subtotal" />
+                            </div>                    
+                            <span class="help-block">Add up the item totals</span>
+                        </div>                    
+                    
+                        <div class="col-md-3">
+                            <label for="invoice_tax_name">Tax Name</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="invoice_tax_name" />
+                            </div>
+                            <span class="help-block">The name of the tax applied (optional)</span>
+                        </div>         
+                                   
+                        <div class="col-md-3">
+                            <label for="invoice_tax_subtotal">Tax Amount</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">$</span>
+                                <input type="text" class="form-control" name="invoice_tax_subtotal" />
+                            </div>
+                            <span class="help-block">The amount of tax applied (optional)</span>
+                        </div>                    
+                        
+                        <div class="col-md-3">
+                            <label for="invoice_total">Total</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">$</span>
+                                <input type="text" class="form-control" name="invoice_total" />
+                            </div>
+                            <span class="help-block">The total amount payable</span>
+                        </div>                    
+                        
+                    </div>
+
+                    
                 </div>
             </div>
+
+
+
+    
+                
+                <div class="row">
+                    <div class="col-xs-12 col-md-8 well">
+                        
             
-            <div class="row">
-                <div class="col-xs-12 col-md-8">
-                    <label for="invoice_recipient">Invoice Recipient</label>
-                    <textarea class="form-control" rows="5" name="invoice_recipient"></textarea>
-                </div>
-                <div class="col-xs-12 col-md-4">
-                    <label for="invoice_number">Invoice Number</label>
-                    <input type="number" class="form-control" placeholder="Text input" name="invoice_number" />
-                    <label for="invoice_date">Invoice Date</label>
-                    %# add picker https://github.com/Eonasdan/bootstrap-datetimepicker
-                    <input type="date" class="form-control" placeholder="Text input" name="invoice_date" />
-                </div>
+                        <div class="row">
+                            <p class="col-xs-12 col-md-8">
+                                <label for="invoice_number">Document Title</label>
+                                <input type="text" class="form-control" value="Tax Invoice" name="invoice_title" />
+                            </p>
+                        </div>
+                        
+                        <div class="row">
+                            <p class="col-xs-12 col-md-6">
+                                <label for="invoice_number">Company Tax ID Name</label>
+                                <input type="text" class="form-control" placeholder="eg ABN (optional)" name="invoice_tax_id_name" />
+                            </p>
+                            <p class="col-xs-12 col-md-6">
+                                <label for="invoice_number">Company Tax ID</label>
+                                <input type="text" class="form-control" placeholder="Tax ID (optional)" name="invoice_tax_id" />
+                            </p>
+                        </div>
+
+                        <div class="row">
+                            <p class="col-xs-12 col-md-6">
+                                <label for="invoice_sender">Invoice Sender</label>
+                                <textarea class="form-control" rows="4" name="invoice_sender" placeholder="Your company name and address"></textarea>
+                            </p>
+                            <p class="col-xs-12 col-md-6">
+                                <label for="invoice_recipient">Invoice Recipient</label>
+                                <textarea class="form-control" rows="4" name="invoice_recipient" placeholder="Your customer's name and address"></textarea>
+                            </p>
+                        </div>
+                            
+                        <p>
+                            <label for="invoice_head">Message Top</label>
+                            <textarea class="form-control" rows="3" name="invoice_head" placeholder="A message to the customer to display above the invoice items"></textarea>
+                        </p>
+                        
+                        <p>
+                            <label for="invoice_foot">Message Bottom</label>
+                            <textarea class="form-control" rows="3" name="invoice_foot" placeholder="A message to the customer to display below the invoice items"></textarea>
+                        </p>
+    
+                    </div>
+    
+                    <div class="col-xs-12 col-sm-6 col-md-4 well">
+                        <!-- div>
+                            Logo
+                        </div -->
+                        <p>
+                            <label for="invoice_number">Invoice Number:</label>
+                            <input type="number" class="form-control" placeholder="Invoice number" name="invoice_number" />
+                        </p>
+                        
+                        <p>
+                            <label for="invoice_date">Invoice Date</label>
+                            <input type="date" class="form-control" name="invoice_date" />
+                        </p>
+                        
+                        <p>
+                            <label for="invoice_date">Payment Due</label>
+                            <input type="date" class="form-control" name="payment_due_date" />
+                        </p>
+                        
+                        <p>
+                            <label for="invoice_date">Purchase Order</label>
+                            <input type="text" class="form-control" name="purchase_order" />
+                        </p>
+                    </div>
+                    
+                    <div class="col-xs-12 col-sm-6 col-md-4">
+                        <div style="margin-top: 20px" class="well">
+                            <button style="margin-bottom:20px" data-toggle="tooltip" data-placement="bottom" title="This will open in a new window or tab in your browser." type="submit" onclick="mixpanel.track('view-invoice-pdf')" class="btn btn-lg btn-primary center-block" name="mode" value="view">View PDF Invoice</button>
+                            <button style="margin-top:20px" data-toggle="tooltip" data-placement="bottom" type="submit" onclick="mixpanel.track('save-invoice-pdf')" class="btn btn-lg btn-primary center-block" name="mode" value="dload">Download PDF Invoice</button>
+                        </div>
+                    </div>
             </div>
             
         </form>        
@@ -45,6 +190,33 @@
     </div>
     
     %= include 'site/foot'
+    
+    <script id="item-row-tmpl" type="template">
+         <div class="col-xs-12 col-sm-12 col-md-4">
+            <textarea class="form-control" name="item_desc_{{item_number}}" placeholder="Item Description"></textarea>
+         </div>
+         <div class="col-xs-12 col-sm-3 col-md-2">
+            <input class="form-control" type="number" name="item_qty_{{item_number}}" placeholder="Quantity" />
+         </div>
+         <div class="col-xs-12 col-sm-3 col-md-2">
+            <div class="input-group">
+                <span class="input-group-addon">$</span>
+                <input class="form-control" type="text" name="item_price_{{item_number}}" placeholder="Price" />
+            </div>
+         </div>
+         <div class="col-xs-12 col-sm-3 col-md-2">
+            <div class="input-group">
+                <span class="input-group-addon">$</span>
+                <input class="form-control" type="text" name="item_tax_{{item_number}}" placeholder="Tax" />
+            </div>
+         </div>
+         <div class="col-xs-12 col-sm-3 col-md-2">
+            <div class="input-group">
+                <span class="input-group-addon">$</span>
+                <input class="form-control" type="text" name="item_total_{{item_number}}" placeholder="Total" />
+            </div>
+        </div>
+    </script>
 
 </body>
 </html>

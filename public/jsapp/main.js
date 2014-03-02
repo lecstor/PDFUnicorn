@@ -16,6 +16,7 @@ requirejs.config({
         "moment": "/lib/moment.min",
         "app": "libs",
         "admin": 'libs/admin',
+        "invoice": 'libs/invoice',
     },
 
     shim: {
@@ -72,5 +73,8 @@ if (path == '/admin/api-key'){
 
     });
 
+} else if (path == '/invoice-maker'){
+    require(['invoice/maker'], function(maker){
+    });
 }
 

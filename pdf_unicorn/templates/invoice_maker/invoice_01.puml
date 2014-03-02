@@ -1,0 +1,114 @@
+<doc size="A4">
+    <style>
+        row:
+            columns: 8
+        cell:
+            margin: 0
+            padding: 0
+            border: 0
+        class:
+            value:
+                align: right
+            total_label:
+                align: right
+            header:
+                align: center
+                font-face: Helvetica-Bold
+                font-size: 10
+            overdue:
+                font-color: red
+                border-color: red
+            total-amount:
+                font-face: Helvetica-Bold
+                align: right
+            busname:
+                font-face: Courier10Pitch
+                font-size: 30
+                font-lead: 26
+    </style>
+    <page>
+        <header border="1" border-radius="10" margin="5" padding="5">
+            <row columns="10">
+                <cell>
+                    <img src="" />
+                </cell>
+                <cell></cell>
+                <cell span="8" padding="10">
+                    <text class="busname">[% business.name %]</text>
+                    [% IF business.abn %]ABN: [% business.abn %][% END %]
+                </cell>
+            </row>
+        </header>
+        
+        <row border="1" border-radius="10" margin="5" padding="10" columns="16">
+            <cell><text align="right">To:</text></cell>
+            <cell span="10" padding="10">
+                [% FOR line IN invoice.recipient %]
+                    [% line %][n]
+                [% END %]
+            </cell>
+            <cell span="5">
+                <text align="right">Date: [% invoice.date %]</text>
+            </cell>
+        </row>
+        
+        <section border="1" border-radius="10" margin="5" padding="5">
+            <header>
+                <row>
+                    <cell span="3"><text class="header">Description</text></cell>
+                    <cell><text class="header">Qty</text></cell>
+                    <cell>
+                        <text class="header">
+                            Unit Price
+                            (ex GST)
+                        </text>
+                    </cell>
+                    <cell><text class="header">
+                        Subtotal
+                        (ex GST)
+                    </text></cell>
+                    <cell><text class="header">GST Amount</text></cell>
+                    <cell><text class="header">
+                        Amount Payable
+                        (inc GST)
+                    </text></cell>
+                </row>
+            </header>
+
+            [% FOR line IN items %]
+                <row>
+                    <cell span="3">[% line.desc %]</cell>
+                    <cell><text>[% line.qty %]</text></cell>
+                    <cell><text>[% line.price %]</text></cell>
+                    <cell><text>[% line.tax %]</text></cell>
+                    <cell><text>[% line.total %]</text></cell>
+                </row>
+            [% END %]
+
+            <row>
+                <cell span="3"><text class="total-amount">Totals</text></cell>
+                <cell></cell>
+                <cell></cell>
+                <cell><text class="total-amount">[% invoice.currency.uc %]$[% invoice.total %]</text></cell>
+            </row>
+        
+            <row columns="1"><cell>
+                <row>
+                    <cell span="7"><text class="total_label">TOTAL (ex [% invoice.tax_name %])</text></cell>
+                    <cell span="1"><text class="total-amount">$[% invoice.sub_total %]</text></cell>
+                </row>
+                <row>
+                    <cell span="7"><text class="total_label">TOTAL GST AMOUNT PAYABLE</text></cell>
+                    <cell span="1"><text class="total-amount">$[% invoice.tax_amount %]</text></cell>
+                </row>
+                <row>
+                    <cell span="7"><text class="total_label overdue" font-face="Helvetica-Bold">TOTAL AMOUNT PAYABLE (inc GST)</text></cell>
+                    <cell span="1"><text class="total-amount overdue">[% invoice.currency.uc %]$[% invoice.total %]</text></cell>
+                </row>
+            </cell></row>
+        </section>
+        <footer>
+            <row columns="1">pdfunicorn.com</row>
+        </footer>
+    </page>
+</doc>

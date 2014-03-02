@@ -62,6 +62,9 @@ body {
 footer {
   padding: 30px 0;
 }
+#invoice-item-list .row {
+  margin: 0 0 10px 0;
+}
 /*
  * Off Canvas
  * --------------------------------------------------
