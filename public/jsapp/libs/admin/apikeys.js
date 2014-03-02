@@ -2,6 +2,10 @@ define(["layoutmanager","underscore"], function(Layout, _) {
     // Configure globally.
     Layout.configure({ manage: true });
 
+    _.templateSettings = {
+        interpolate: /\{\{(.+?)\}\}/g
+    };
+
     var DeactiveButtonView = Backbone.Layout.extend({
         template: "#deactivate-apikey-button",
         events: { 'click button': 'clicked' },
@@ -26,10 +30,6 @@ define(["layoutmanager","underscore"], function(Layout, _) {
             this.trigger('click');
         }
     });
-
-    _.templateSettings = {
-        interpolate: /\{\{(.+?)\}\}/g
-    };
 
     var RowView = Backbone.Layout.extend({
         el: false,
