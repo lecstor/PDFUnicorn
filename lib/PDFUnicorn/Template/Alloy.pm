@@ -7,7 +7,9 @@ use Data::Dumper;
 sub new{
     my ($class) = @_;
     
-    my $alloy = Template::Alloy->new();
+    my $alloy = Template::Alloy->new(
+        INCLUDE_PATH => ['pdf_unicorn/templates'],
+    );
     my $self = bless { alloy => $alloy }, $class;
     $self->add_vmethods();
     return $self;   
@@ -16,7 +18,8 @@ sub new{
 sub render{
     my ($self, $template, $data) = @_;
     my $out = '';
-    $self->{alloy}->process(\$template, $data, \$out) || die $self->{alloy}->error;
+    $template = \$template if $template =~ /<doc/;
+    $self->{alloy}->process($template, $data, \$out) || die $self->{alloy}->error;
     return $out;
 }
 
