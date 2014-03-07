@@ -7,7 +7,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a href="/" style="padding: 0 10px 0 0" target="_blank" ><img src="/img/pdfunicorn_logo_with_text.png" title="PDFUnicorn" alt="[logo] PDFUnicorn"></a>
+            <a href="/" style="padding: 0 30px 0 0" target="_blank" ><img src="/img/pdfunicorn_logo_with_text_white.png" title="PDFUnicorn" alt="[logo] PDFUnicorn"></a>
             <!-- ul class="nav navbar-nav">
                 <li><a href="/" style="padding: 0 10px 0 0" target="_blank" ><img src="/img/pdfunicorn_logo_50.png" title="The Unicorn" alt="[logo] The Unicorn"></a></li>
                 <li><a class="navbar-brand" style="font-size: 25px" href="/">PDFUnicorn</a></li>
@@ -16,14 +16,14 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <!-- li <%=  current_route 'features' ? 'class="active"' : '' %>><a href="/features">Features</a></li -->
-                <li data-toggle="tooltip" data-placement="bottom" title="Our Plans" <%=  current_route 'pricing' ? 'class="active"' : current_route 'annual_pricing' ? 'class="active"' : '' %>><a href="/pricing">Pricing</a></li>
-                <li data-toggle="tooltip" data-placement="bottom" title="Play with a demo" <%=  current_route 'playground' ? 'class="active"' : '' %>><a href="/playground">Play</a></li>
+                <li data-toggle="tooltip" data-placement="bottom" title="Play with a demo" <%=  current_route 'playground' ? 'class="active"' : '' %>><a href="/playground">Demo</a></li>
                 <li data-toggle="tooltip" data-placement="bottom" title="API Documentation" <%=  current_route 'apidocs' ? 'class="active"' : '' %>><a href="/docs/api">API</a></li>
                 <li data-toggle="tooltip" data-placement="bottom" title="PUML Documentation" <%=  current_route 'markupdocs' ? 'class="active"' : '' %>><a href="/docs/markup">Markup</a></li>
+                <li data-toggle="tooltip" data-placement="bottom" title="Our Plans" <%=  current_route 'pricing' ? 'class="active"' : current_route 'annual_pricing' ? 'class="active"' : '' %>><a href="/pricing">Pricing</a></li>
                 <li data-toggle="tooltip" data-placement="bottom" title="30 Day Free Trial"><a href="/pricing">Try</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                    <li data-toggle="tooltip" data-placement="bottom" title="Contact Me" ><a href="/contact">
+                    <li data-toggle="tooltip" data-placement="bottom" title="Contact the person behind the horse.." ><a href="/contact">
                         <span class="glyphicon glyphicon-envelope">
                     </a></li>
               	% if (session 'user_id'){
