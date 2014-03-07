@@ -50,11 +50,12 @@ sub pdf{
             date => $params->{invoice_date},
             payment_due_date => $params->{payment_due_date},
             currency => $params->{currency},
-            total => $params->{total},
+            total => $params->{invoice_total},
             sub_total => $params->{invoice_subtotal},
             tax_amount => $params->{invoice_tax_subtotal},
             tax_name => $params->{tax_name},
             purchase_order => $params->{tax_name},
+            title => $params->{invoice_title},
         },
         items => $items,
     };
