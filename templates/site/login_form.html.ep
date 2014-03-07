@@ -1,8 +1,11 @@
 
-<form action="/log-in" method="post" class="form-signin" role="form">
-    <h2 class="form-signin-heading">Log In</h2>
+<h2 class="form-signin-heading">Log In</h2>
+<form action="/log-in" method="post" class="form-signin form-login" role="form">
+    <label for="username">Email Address</label>
     <input name="username" type="email" class="form-control" placeholder="Email address" required autofocus>
+    <label for="password">Password</label>
     <input name="password" type="password" class="form-control" placeholder="Password">
+    <label>Button</label>
     <button class="btn btn-lg btn-primary btn-block" type="submit">Log In</button>
     <p class="help-block">Leave your password blank if you don't remember it and I'll send you an account key via email.</p>
 </form>

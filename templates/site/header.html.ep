@@ -20,7 +20,6 @@
                 <li data-toggle="tooltip" data-placement="bottom" title="API Documentation" <%=  current_route 'apidocs' ? 'class="active"' : '' %>><a href="/docs/api">API</a></li>
                 <li data-toggle="tooltip" data-placement="bottom" title="PUML Documentation" <%=  current_route 'markupdocs' ? 'class="active"' : '' %>><a href="/docs/markup">Markup</a></li>
                 <li data-toggle="tooltip" data-placement="bottom" title="Our Plans" <%=  current_route 'pricing' ? 'class="active"' : current_route 'annual_pricing' ? 'class="active"' : '' %>><a href="/pricing">Pricing</a></li>
-                <li data-toggle="tooltip" data-placement="bottom" title="30 Day Free Trial"><a href="/pricing">Try</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                     <li data-toggle="tooltip" data-placement="bottom" title="Contact the person behind the horse.." ><a href="/contact">

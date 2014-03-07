@@ -40,6 +40,13 @@ body {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+.form-login input[type="email"] {
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+.form-login input[type="password"] {
+  margin-bottom: 10px;
+}
 .signup {
   padding-bottom: 50px;
 }
