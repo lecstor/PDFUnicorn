@@ -1,7 +1,13 @@
 <doc size="A4">
     <style>
+        page:
+            margin: 0
+            padding: 0
+            border: 0
         row:
-            columns: 8
+            margin: 0
+            padding: 0
+            border: 0
         cell:
             margin: 0
             padding: 0
@@ -11,7 +17,7 @@
                 align: right
             total_label:
                 align: right
-            header:
+            heading:
                 align: center
                 font-face: Helvetica-Bold
                 font-size: 10
@@ -23,69 +29,74 @@
                 align: right
             busname:
                 font-face: Courier10Pitch
-                font-size: 30
+                font-size: 32
+                font-lead: 36
+                align: right
+            title:
+                font-size: 24
                 font-lead: 26
+                align: right
     </style>
     <page>
-        <header border="1" border-radius="10" margin="5" padding="5">
-            <row columns="10">
+        <header margin="5" padding="5">
+            <row>
                 <cell>
                     <img src="" />
                 </cell>
                 <cell></cell>
                 <cell span="8" padding="10">
-                    <text class="busname">[% business.name %]</text>
-                    [% IF business.abn %]ABN: [% business.abn %][% END %]
+                    [% IF invoice.title %]<row><cell><text class="title">[% invoice.title %]</text></cell></row>[% END %]
+                    <row><cell><text class="busname">[% invoice.sender_name %]</text></cell></row>
+                    [% IF invoice.sender_abn %]<row><cell><text>ABN: [% invoice.sender_abn %]</text></cell></row>[% END %]
                 </cell>
             </row>
         </header>
         
-        <row border="1" border-radius="10" margin="5" padding="10" columns="16">
+        <row margin="5" padding="10" columns="16">
             <cell><text align="right">To:</text></cell>
             <cell span="10" padding="10">
-                [% FOR line IN invoice.recipient %]
-                    [% line %][n]
-                [% END %]
+                <row><cell><text font-face="HelveticaBold">[% invoice.recipient_name %][n]</text></cell></row>
+                <row><cell>
+            [%- FOR line IN invoice.recipient_address %]
+[% line %][n]
+[% END -%]
+                </cell></row>
             </cell>
             <cell span="5">
                 <text align="right">Date: [% invoice.date %]</text>
             </cell>
         </row>
         
-        <section border="1" border-radius="10" margin="5" padding="5">
+        <section border="1" border-radius="10" margin="10" padding="10">
             <header>
                 <row>
-                    <cell span="3"><text class="header">Description</text></cell>
-                    <cell><text class="header">Qty</text></cell>
+                    <cell span="4"><text class="heading">Description</text></cell>
+                    <cell><text class="heading">Qty</text></cell>
                     <cell>
-                        <text class="header">
-                            Unit Price
+                        <text class="heading">
+                            Unit Price[n]
                             (ex GST)
                         </text>
                     </cell>
-                    <cell><text class="header">
-                        Subtotal
-                        (ex GST)
-                    </text></cell>
-                    <cell><text class="header">GST Amount</text></cell>
-                    <cell><text class="header">
-                        Amount Payable
+                    <cell><text class="heading">GST Amount</text></cell>
+                    <cell><text class="heading">
+                        Amt Payable[n]
                         (inc GST)
                     </text></cell>
                 </row>
             </header>
 
             [% FOR line IN items %]
-                <row>
-                    <cell span="3">[% line.desc %]</cell>
-                    <cell><text>[% line.qty %]</text></cell>
-                    <cell><text>[% line.price %]</text></cell>
-                    <cell><text>[% line.tax %]</text></cell>
-                    <cell><text>[% line.total %]</text></cell>
+                <row padding="5 0 0 0" margin="0 0 5 0" border="0 0 1 0" border-color="#CCCCCC">
+                    <cell padding="0 0 0 5" span="4">[% line.desc %]</cell>
+                    <cell><text align="right">[% line.qty %]</text></cell>
+                    <cell ><text align="right">$[% line.price %]</text></cell>
+                    <cell ><text align="right">$[% line.tax %]</text></cell>
+                    <cell ><text align="right">$[% line.total %]</text></cell>
                 </row>
             [% END %]
 
-            <row>
+            <row columns="6">
                 <cell span="3"><text class="total-amount">Totals</text></cell>
                 <cell></cell>
                 <cell></cell>
@@ -93,17 +104,17 @@
             </row>
         
             <row columns="1"><cell>
-                <row>
+                <row columns="8">
                     <cell span="7"><text class="total_label">TOTAL (ex [% invoice.tax_name %])</text></cell>
-                    <cell span="1"><text class="total-amount">$[% invoice.sub_total %]</text></cell>
+                    <cell><text class="total-amount">$[% invoice.sub_total %]</text></cell>
                 </row>
-                <row>
+                <row columns="8">
                     <cell span="7"><text class="total_label">TOTAL GST AMOUNT PAYABLE</text></cell>
-                    <cell span="1"><text class="total-amount">$[% invoice.tax_amount %]</text></cell>
+                    <cell><text class="total-amount">$[% invoice.tax_amount %]</text></cell>
                 </row>
-                <row>
-                    <cell span="7"><text class="total_label overdue" font-face="Helvetica-Bold">TOTAL AMOUNT PAYABLE (inc GST)</text></cell>
-                    <cell span="1"><text class="total-amount overdue">[% invoice.currency.uc %]$[% invoice.total %]</text></cell>
+                <row columns="8">
+                    <cell span="7"><text class="total_label" font-face="Helvetica-Bold">TOTAL AMOUNT PAYABLE (inc GST)</text></cell>
+                    <cell><text class="total-amount">[% invoice.currency.uc %]$[% invoice.total %]</text></cell>
                 </row>
             </cell></row>
         </section>
