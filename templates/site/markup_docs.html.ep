@@ -26,6 +26,19 @@
         <dl class="dl-horizontal">
             <dt>style</dt><dd>Set default style for elements or define style classes.</dd>
         </dl>
+        Attributes can be allied to some tags:
+        Borders, padding, and margins may be added to page, header, section, row, and cell tags:
+        <dl class="dl-horizontal">
+            <dt>border</dt><dd>1 for on, 0 for off. (off by default)</dd>
+            <dt>border-color</dt><dd>color name or hexadecimal value</dd>
+            <dt>border-radius</dt><dd>radius in pixels or the corners of the border (rounded corners)</dd>
+        </dl>
+        padding and margin attributes may be set with a single number or with multiple space separated numbers.
+        <dl class="dl-horizontal">
+            <dt>Single Integer</dt><dd>sets all sides to the value specified</dd>
+            <dt>Two Integers</dt><dd>first sets top and bottom, second sets left and right</dd>
+            <dt>Four Integers</dt><dd>first sets top, second sets right, third sets bottom, fourth sets left.</dd>
+        </dl>
         
         <div class="panel panel-default">
             <div class="panel-heading"><b>&lt;doc&gt;</b></div>
@@ -66,8 +79,10 @@
             border-radius: 10
         row:
             margin: 5
+            padding: 5
         cell:
-            margin: 5
+            margin: 5 3 5 3
+            padding: 5 3
         class:
             heading:
                 align: center
