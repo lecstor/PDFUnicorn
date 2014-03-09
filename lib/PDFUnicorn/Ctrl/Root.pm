@@ -353,7 +353,7 @@ sub playground{
         #warn $err->as_string;
         #warn $data_json;
         my $message;
-        eval{ $message = $err->as_string; }
+        eval{ $message = $err->as_string; };
         if ($@){
             $message = $err->to_string;
         }
