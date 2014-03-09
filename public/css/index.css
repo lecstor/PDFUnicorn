@@ -2,6 +2,11 @@ body {
   padding-top: 70px;
 }
 /* http://getbootstrap.com/examples/signin/ */
+pre {
+  padding: 0;
+  background-color: none;
+  border: 0px;
+}
 .form-signin {
   max-width: 330px;
   padding: 15px;
