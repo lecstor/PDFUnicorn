@@ -18,8 +18,11 @@ sub new{
 sub render{
     my ($self, $template, $data) = @_;
     my $out = '';
-    $template = \$template if $template =~ /<doc/;
-    $self->{alloy}->process($template, $data, \$out) || die $self->{alloy}->error;
+    if ($template =~ /<doc/){
+        $self->{alloy}->process(\$template, $data, \$out) || die $self->{alloy}->error;
+    } else {
+        $self->{alloy}->process($template, $data, \$out) || die $self->{alloy}->error;
+    }
     return $out;
 }
 
@@ -39,6 +42,19 @@ sub add_vmethods{
             );
             
             return $self->format_datetime($dt, $options);
+        },
+        date => sub{
+            my ($value, $options) = @_;
+            if ($value =~ /(\d{4})-(\d{2})-(\d{2})/){
+                my ($year, $month, $day) = ($1, $2, $3);
+                my $dt = DateTime->new(
+                    year => $year,
+                    month => $month,
+                    day => $day
+                );
+                warn $dt;
+                return $self->format_datetime($dt, $options);
+            }
         }
     );
 
