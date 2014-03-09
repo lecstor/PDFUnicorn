@@ -350,9 +350,13 @@ sub playground{
     my $source = eval{ $self->alloy->render($template, $data) };
     if (my $err = $@){
         # Template::Exception
-        warn $err->as_string;
-        warn $data_json;
-        my $message = $err->as_string;
+        #warn $err->as_string;
+        #warn $data_json;
+        my $message;
+        eval{ $message = $err->as_string; }
+        if ($@){
+            $message = $err->to_string;
+        }
         $message =~ s/.*\s\-\s//;
         return $self->render(
             template => 'root/playground_form',
