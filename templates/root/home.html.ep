@@ -14,27 +14,54 @@
 
     <div class="container">
         <div class="jumbotron">
+            <div class="row">
+                <div class="col-xs-12">
+                    <p>At it's core, PDFUnicorn is a web service for making PDF files.</p>
+                    
+                    <p>PDF files can be created directly from source documents, or from data
+                    applied to custom templates.</p>
+                    
+                    <p>The markup language is intentionally simple to allow you to start creating
+                    templates and documents as quickly and easily as possible.</p>
+                    
+                    <p>Document content is securely sent from your server to ours enabling private
+                    customer text and images to be included without allowing remote access to your
+                    server and content.</p>
+                    
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+
+                    <p>Document images can be uploaded at print quality resolutions to create the
+                    best looking documents possible.</p>
+                    
+                    <p>This is not a html2pdf conversion service, it is designed as a simple, reliable
+                    way to create multi-page documents with content repeated on each page where
+                    required.</p>
+                    
+                </div>
+                
+                <div class="col-md-6">
+                
+                  <img class="img-responsive center-block" src="/img/tax_invoice_snap.png"><br />
+                  
+                </div>
+            </div>
+        </div>
+
+        <div class="well">
         	<div class="row">
-        		<div class="col-md-6">
-        		    <p>
-        		        So you need to create custom designed PDF files for your
-        		        invoices, quotes, estimates, or receipts?
-        		    </p>
-        		    <p>
-                        PDFUnicorn allows you to design your own templates in our
-                        user friendly markup language and render those templates
-                        to create PDF files with your data on demand.
-                    </p>
-                    <p style="text-align: center">
-                        Our demo playground allows you to simulate the API process manually.<br />
-                    </p>
-                    <p style="text-align: center">
-                        <a href="/playground" class="btn btn-primary btn-lg">Create a PDF now!</a>
+        		<div class="col-md-8">
+                    <p class="lead">
+                        You can try out creating a pdf by combining JSON data and a PUML template
+                        in our online demonstration.
                     </p>
         		</div>
-        		<div class="col-md-6">
-        		  <img class="img-responsive center-block" src="/img/tax_invoice_snap.png"><br />
-        		</div>
+                <div class="col-md-4">
+                    <a href="/playground" class="btn btn-primary btn-lg">Create a PDF now!</a>
+                </div>
         	</div>
         </div>
         
