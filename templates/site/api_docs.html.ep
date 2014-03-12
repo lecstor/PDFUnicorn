@@ -109,13 +109,13 @@
         <h4>Request</h4>
         
         <p>POST https://pdfunicorn.com/v1/images</p>        
-        <p>
+        <p>        
             <pre><code class="language-bash">$ curl https://pdfunicorn.com/v1/images \\
     -F "image=@unicorn.jpg" \\
     -F "src=the/unicorn.jpg" \\
     -H "Content-Type: multipart/form-data" \\
     -X POST \\
-    -u 1e551787-903e-11e2-b2b6-0bbccb145af3:
+    -u [YourApiKey]:
 </code></pre>
         </p>
 
@@ -140,7 +140,7 @@
     -F "stock=1" \\
     -H "Content-Type: multipart/form-data" \\
     -X POST \\
-    -u 1e551787-903e-11e2-b2b6-0bbccb145af3:
+    -u [YourApiKey]:
 </code></pre>
     
     </div>
@@ -158,7 +158,7 @@
         <p>
             <pre><code class="language-bash">$ curl https://pdfunicorn.com/v1/images/52cb32bfb9efb70c36070000 \\
     -X DELETE \\
-    -u 1e551787-903e-11e2-b2b6-0bbccb145af3:
+    -u [YourApiKey]:
 </code></pre>
         </p>
 
@@ -198,18 +198,21 @@
                 </ul>
             </p>
             <pre><code class="language-bash">$ curl https://pdfunicorn.com/v1/templates \\
-    -F 'source=&lt;doc&gt;&lt;page&gt;[% some_text %]&lt;img src=\"[% image_path %]\" /&gt;&lt;/page&gt;&lt;/doc&gt;' \\
+    -d '{"source": "&lt;doc&gt;&lt;page&gt;[% some_text %]&lt;/page&gt;&lt;/doc&gt;", "name": "hello-world" }' \\
     -X POST \\
-    -u 1e551787-903e-11e2-b2b6-0bbccb145af3:
+    -u [YourApiKey]:
 </code></pre>
         </p>
         
         <h4>Response</h4>
             <pre><code>{
-    "created": "1389048511.0901",
+    "name": "hello-world",
+    "created": 1394631592988,
+    "owner": "52caa7b4b9efb777cc050000",
     "id": "52cb32bfb9efb70c36070000",
     "uri": "/v1/templates/52cb32bfb9efb70c36070000",
-    "source": "source=&lt;doc&gt;&lt;page&gt;[% some_text %]&lt;img src=\"[% image_path %]\" /&gt;&lt;/page&gt;&lt;/doc&gt;",
+    "source": "source=&lt;doc&gt;&lt;page&gt;[% some_text %]&lt;/page&gt;&lt;/doc&gt;",
+    "public": false,
 }
 </code></pre>
                 
@@ -240,9 +243,9 @@
             <h3>Create a document from source</h3>
             <p>A POST to /v1/documents will return the document's metadata</p>
             <pre><code class="language-bash">$ curl https://pdfunicorn.com/v1/documents \\
-    -F 'source=&lt;doc&gt;&lt;page&gt;Hello World&lt;img src="the/unicorn.jpg" /&gt;&lt;/page&gt;&lt;/doc&gt;' \\
+    -d '{"source": "&lt;doc&gt;&lt;page&gt;Hello World&lt;img src=\"the/unicorn.jpg\" /&gt;&lt;/page&gt;&lt;/doc&gt;"} \\
     -X POST \\
-    -u 1e551787-903e-11e2-b2b6-0bbccb145af3:
+    -u [YourApiKey]:
 </code></pre>
         </p>
         
@@ -259,9 +262,9 @@
             <h3>Create a document from a template</h3>
             <p>A POST to /v1/documents will return the document's metadata</p>
             <pre><code class="language-bash">$ curl https://pdfunicorn.com/v1/documents \\
-    -F 'data={"some_text": "Hello World", "image_path": "the/unicorn.jpg" }&amp;template_id=52cb32bfb9efb70c36070000' \\
+    -d '{"data": {"some_text": "Hello World", "image_path": "the/unicorn.jpg" }, "template_id": "52cb32bfb9efb70c36070000" }' \\
     -X POST \\
-    -u 1e551787-903e-11e2-b2b6-0bbccb145af3:
+    -u [YourApiKey]:
 </code></pre>
         </p>
         
@@ -290,7 +293,7 @@
         <p>GET https://pdfunicorn.com/v1/documents/52cb32bfb9efb70c36070000.pdf</p>        
         <p>
             <pre><code class="language-bash">$ curl https://pdfunicorn.com/v1/documents/52cb32bfb9efb70c36070000 \\
-    -u 1e551787-903e-11e2-b2b6-0bbccb145af3:
+    -u [YourApiKey]:
 </code></pre>
         </p>
 
@@ -303,7 +306,7 @@
         <p>GET https://pdfunicorn.com/v1/documents/52cb32bfb9efb70c36070000</p>        
         <p>
             <pre><code class="language-bash">$ curl https://pdfunicorn.com/v1/documents/52cb32bfb9efb70c36070000 \\
-    -u 1e551787-903e-11e2-b2b6-0bbccb145af3:
+    -u [YourApiKey]:
 </code></pre>
         </p>
 
@@ -333,7 +336,7 @@
         <p>
             <pre><code class="language-bash">$ curl https://pdfunicorn.com/v1/documents/52cb32bfb9efb70c36070000 \\
     -X DELETE \\
-    -u 1e551787-903e-11e2-b2b6-0bbccb145af3:
+    -u [YourApiKey]:
 </code></pre>
         </p>
 
