@@ -43,6 +43,10 @@ sub add_vmethods{
             
             return $self->format_datetime($dt, $options);
         },
+    );
+    
+    $self->{alloy}->define_vmethod(
+        'text',
         date => sub{
             my ($value, $options) = @_;
             if ($value =~ /(\d{4})-(\d{2})-(\d{2})/){
@@ -52,7 +56,6 @@ sub add_vmethods{
                     month => $month,
                     day => $day
                 );
-                warn $dt;
                 return $self->format_datetime($dt, $options);
             }
         }
