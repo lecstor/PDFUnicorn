@@ -21,7 +21,7 @@ $t->post_ok('/log-in', form => { username => 'tester3@pdfunicorn.com', password 
 
 $t->post_ok(
     '/admin/get-pdf',
-    form => { source => '<doc><page>Test the Playground</page></doc>' },
+    form => { source => '<doc><page>Test the Demo</page></doc>' },
 )->status_is(401);
 
 # active user
@@ -30,7 +30,7 @@ $t->post_ok('/log-in', form => { username => 'tester@pdfunicorn.com', password =
 
 $t->post_ok(
     '/admin/get-pdf',
-    form => { source => '<doc><page>Test the Playground</page></doc>' },
+    form => { source => '<doc><page>Test the Demo</page></doc>' },
 )->status_is(200);
 ok($t->tx->res->body =~ /^%PDF/, 'doc is a PDF');
 
@@ -40,7 +40,7 @@ try{ $users->drop }
 
 $t->post_ok(
     '/admin/get-pdf',
-    form => { source => '<doc><page>Test the Playground</page></doc>' },
+    form => { source => '<doc><page>Test the Demo</page></doc>' },
 )->status_is(401);
 
 
