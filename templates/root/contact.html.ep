@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>PDFUnicorn - fetaures</title>
+    <title>PDFUnicorn - Contact</title>
 	%= include 'site/head'
 	%= include 'mixpanel'
   
@@ -15,7 +15,7 @@
     <div class="container">
 
 	    <div class="jumbotron clearfix">
-        <h2>Contact Me</h2>
+            <h2>Contact Me</h2>
 	        <div>
 	           <p>Have a question or a suggestion? I'd love to hear from you!</p>
 	           <p>
@@ -27,6 +27,17 @@
 	           </p>
 	       	</div>
         </div>
+        <div class="well">
+	       	<div>
+                <h3>Lecstor Pty Ltd</h3>
+                ACN 150 921 074<br />
+                <br />
+                Kewarra Beach<br />
+                Queensland 4879<br />
+                Australia<br />
+            </div>	       	
+        </div>
+    </div>
     
     %= include 'site/foot'
 
