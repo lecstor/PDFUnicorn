@@ -102,7 +102,7 @@
                     </p>
         		</div>
                 <div class="col-md-4">
-                    <a href="/playground" class="btn btn-primary btn-lg">Create a PDF now!</a>
+                    <a href="/demo" class="btn btn-primary btn-lg">Create a PDF now!</a>
                 </div>
         	</div>
             <div class="row">

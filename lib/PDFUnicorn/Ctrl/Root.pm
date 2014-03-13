@@ -324,12 +324,12 @@ sub set_password_form{
 
 }
 
-sub playground_form{
+sub demo_form{
     my $self = shift;
     $self->render(error => '', time => time);
 }
 
-sub playground{
+sub demo{
     my $self = shift;
     my $data_json = $self->param('data');
     my $template = $self->param('template');
@@ -341,7 +341,7 @@ sub playground{
         my $message = $err->message;
         $message =~ s/\s+at [\w_\-\/.]+PDFUnicorn.*//;
         return $self->render(
-            template => 'root/playground_form',
+            template => 'root/demo_form',
             error => 'Data Error: '.$message,
             time => time
         );
@@ -359,7 +359,7 @@ sub playground{
         }
         $message =~ s/.*\s\-\s//;
         return $self->render(
-            template => 'root/playground_form',
+            template => 'root/demo_form',
             error => 'Template Error: '.$message,
             time => time
         );
@@ -382,7 +382,7 @@ sub playground{
         my $message = $err->message;
         $message =~ s/\s+at \/.*//;
         return $self->render(
-            template => 'root/playground_form',
+            template => 'root/demo_form',
             error => $message,
             time => time
         );
