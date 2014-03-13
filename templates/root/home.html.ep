@@ -38,8 +38,7 @@
                     best looking documents possible.</p>
                     
                     <p>This is not a html2pdf conversion service, it is designed as a simple, reliable
-                    way to create multi-page documents with content repeated on each page where
-                    required.</p>
+                    way to create multi-page documents.</p>
                     
                 </div>
                 
@@ -52,11 +51,54 @@
         </div>
 
         <div class="well">
+            <h3>Why?</h3>
+            <p>Over the years I have been presented with the challenge of creating custom solutions for generating
+            PDF files from data for invoices, packing slips, and assorted other documents.. It's
+            really not as much fun as you would think.. ;)</p>
+            <p>
+                The solutions available include:
+                <ul>
+                    <li>develop a custom solution using one of a few popular PDF libraries</li>
+                    <li>use Latex to design documents and generate them in PDF format</li>
+                    <li>use an HTML-to-PDF program</li>
+                </ul>
+            </p>
+            <p>
+                Latex is probably the way to go if you have the expertise.
+                It gives you full control of the generated documents and allows you to take
+                advantage of most of the features available to the PDF format.
+            </p> 
+            <p>
+                Converting HTML to PDF is hard to get right, especially when it comes to documents
+                which span multiple pages. HTML was designed to display single pages of varying size.
+                It has no concept of pages limited to a set size or having to split up content and
+                repeat sections of it across multiple pages.
+            </p> 
+            <p>
+                PDFUnicorn is my attempt to simplify the process of generating PDF documents and to
+                save you the time and costs associated with creating and maintaining your own solution.
+            </p>
+        </div>
+
+        <div class="well">
+            <h3>Why would you want to use PDFUnicorn?</h3>
+            <img class="pull-right" src="/img/pdfunicorn_logo_200.png" title="The Unicorn" alt="[logo] The Unicorn">
+            <p>I want to build a solution to solve your PDF generation problems. I want to keep it as simple
+            as possible to use while allowing you to create the documents you need, the way you want them.</p>
+            <p>I have a long list of features I could implement, but I want to hear from you, so I'm not just
+            creating another overly complicated solution to what should be a simple problem.</p>
+            <p>PDFUnicorn is not built on someone else's PDF generator. I can improve and modify any and all
+            of the layout features that turn markup into documents.</p>
+            <p>So let me know what you need and I will do my best to turn that into a reality and let you get
+            on with running your business. <a href="/contact">Contact Me</a> any time, I'd love to hear from you.</p>  
+        </div>
+
+        <div class="well">
         	<div class="row">
         		<div class="col-md-8">
                     <p class="lead">
-                        You can try out creating a pdf by combining JSON data and a PUML template
-                        in our online demonstration.
+                        You can create a PDF by combining JSON data and a PUML template
+                        using our online demonstration.
                     </p>
         		</div>
                 <div class="col-md-4">
@@ -64,7 +106,7 @@
                 </div>
         	</div>
         </div>
-        
+
         <div class="well">
             <div class="row">
                 <div class="col-md-12">
@@ -96,7 +138,7 @@
                 </div>
                 <div class="col-md-9">
                     <p class="lead">PDFUnicorn is a PDF creation web service for businesses who need to generate custom
-                    PDF files on demand. We use a custom HTML-like markup language designed for laying
+                    PDF files on demand. We use a simple HTML-like markup language designed for laying
                     out pageable documents in the simplest way possible.</p>
                 </div>
         	</div>
