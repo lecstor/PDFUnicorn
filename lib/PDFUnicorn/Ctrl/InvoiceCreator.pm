@@ -79,8 +79,6 @@ sub pdf{
         );
     }
     
-    warn "SOURCE: $source";
-
     my $grid = PDF::Grid->new({
         media_directory => 'pdf_unicorn/images', #$self->config->{media_directory}.'/tryit/',
         #media_directory => 'pdf_unicorn/images/tester', #$self->config->{media_directory}.'/tryit/',
@@ -93,7 +91,7 @@ sub pdf{
         my $message = $err->message;
         $message =~ s/\s+at \/.*//;
         return $self->render(
-            template => 'root/playground_form',
+            template => 'invoice_creator/home',
             error => $message,
             time => time
         );
@@ -104,9 +102,9 @@ sub pdf{
             
     $self->res->headers->content_type("application/pdf");
     if ($params->{mode} eq 'view'){
-        $self->res->headers->content_disposition('inline; filename=pdfunicorn.com-tryit.pdf;');
+        $self->res->headers->content_disposition('inline; filename=pdfunicorn.com-demo.pdf;');
     } else {
-        $self->res->headers->content_disposition('attachment; filename=pdfunicorn.com-tryit.pdf;');
+        $self->res->headers->content_disposition('attachment; filename=pdfunicorn.com-demo.pdf;');
     }
     $self->render( data => $pdf_doc );
 
