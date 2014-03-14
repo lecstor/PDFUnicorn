@@ -18,10 +18,24 @@
         
 	    	%= include 'admin/side_nav'   
 	    
-	    	<div class="col-xs-12 col-sm-9">
-                <h2>Dashboard</h2>
-	    		<p>Hi, and thanks again for using PDFUnicorn!</p>
-	    	</div>
+            <div class="col-xs-12 col-sm-8 col-md-9">
+                <p class="visible-xs">
+                    <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
+                </p>
+        
+                <div class="row">
+        	    	<div class="">
+                        <h2>Dashboard</h2>
+        	    		<p>Hi, and thanks again for using PDFUnicorn!</p>
+        	    	</div>
+                    <div class="">
+                      <h2>Nuts!</h2>
+                      <p>So, without this content to fill things out this page implodes when viewed on a phone..</p>
+                      <p>It would appear we need enough content to make it larger than the toggled menu..</p>
+                    </div><!--/span-->
+
+                </div>
+            </div>
     	
     	</div>
     </div>

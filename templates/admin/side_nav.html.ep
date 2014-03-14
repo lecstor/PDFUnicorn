@@ -1,4 +1,4 @@
-<div class="col-xs-6 col-sm-3 sidebar-offcanvas" style="padding-left: 0" id="sidebar" role="navigation">
+<div class="col-xs-12 col-sm-4 col-md-3 sidebar-offcanvas" style="padding-left: 0" id="sidebar" role="navigation">
 	<div class="list-group">
 	    <a href="/admin" class="list-group-item <%= current_route('') ? 'active' : '' %>">Dashboard</a>
 	    <a href="/admin?get-started" class="list-group-item <%= current_route('admin') ? 'active' : '' %>">Get Started</a>
@@ -9,6 +9,3 @@
 	    <a href="/admin/billing" class="list-group-item <%= current_route('billing') ? 'active' : '' %>">Billing</a>
 	</div>
 </div>    
-<p class="visible-xs">
-    <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
-</p>

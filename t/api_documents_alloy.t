@@ -63,6 +63,7 @@ $url = $t->ua->server->url->userinfo("$api_key:")->path('/v1/templates');
 $t->post_ok(
     $url,
     json => {
+        name => 'Test 2', 
         source => '<doc><page>Test 2!<img src="[% image %]" /></page></doc>'
     },
 )->status_is(200);

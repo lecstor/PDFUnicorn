@@ -1,3 +1,9 @@
+<!-- link rel="stylesheet" href="/lib/highlight/styles/arta.css" -->
+
+<!-- link rel="stylesheet" href="/lib/highlight/styles/ir_black.css" -->
+<link rel="stylesheet" href="/lib/highlight/styles/mono-blue.css">
+
+
 <h2>API Documentation</h2>
 
 <div class="panel panel-default">
@@ -74,13 +80,12 @@
             </tr>
         </table>
         <h4>Example Response</h4>
-            <pre>
-Status-Code: 422
+            <pre><code>Status-Code: 422
 {
     "status": "invalid_request",
     "errors": ["There was no image data in the upload request."],
 }
-</pre>
+</code></pre>
     </div>
 </div>            
 
@@ -104,20 +109,18 @@ Status-Code: 422
         <h4>Request</h4>
         
         <p>POST https://pdfunicorn.com/v1/images</p>        
-        <p>
-            <pre>
-$ curl https://pdfunicorn.com/v1/images \\
+        <p>        
+            <pre><code class="language-bash">$ curl https://pdfunicorn.com/v1/images \\
     -F "image=@unicorn.jpg" \\
     -F "src=the/unicorn.jpg" \\
     -H "Content-Type: multipart/form-data" \\
     -X POST \\
-    -u 1e551787-903e-11e2-b2b6-0bbccb145af3:
-            </pre>
+    -u [YourApiKey]:
+</code></pre>
         </p>
 
         <h4>Response</h4>
-            <pre>
-{
+            <pre><code>{
     "created": "1389048511.0901",
     "owner": "52cb32beb9efb70c36040000",
     "id": "52cb32bfb9efb70c36070000",
@@ -125,21 +128,20 @@ $ curl https://pdfunicorn.com/v1/images \\
     "src": "the/unicorn.jpg",
     "modified": "1389048511.0901'
 }
-</pre>
+</code></pre>
     
     <p><b>Document images are deleted once the PDF document has been generated.</b> To
     create an image that you use repeatedly add the "stock" option to the create
     call. Stock images are not deleted. The amount of space available for your
     stock images depends on the plan you are on.</p> 
-            <pre>
-$ curl https://pdfunicorn.com/v1/images \\
+            <pre><code class="language-bash">$ curl https://pdfunicorn.com/v1/images \\
     -F "image=@unicorn.jpg" \\
     -F "src=the/unicorn.jpg" \\
     -F "stock=1" \\
     -H "Content-Type: multipart/form-data" \\
     -X POST \\
-    -u 1e551787-903e-11e2-b2b6-0bbccb145af3:
-            </pre>
+    -u [YourApiKey]:
+</code></pre>
     
     </div>
 </div>            
@@ -154,17 +156,15 @@ $ curl https://pdfunicorn.com/v1/images \\
         
         <p>DELETE https://pdfunicorn.com/v1/images/52cb32bfb9efb70c36070000</p>        
         <p>
-            <pre>
-$ curl https://pdfunicorn.com/v1/images/52cb32bfb9efb70c36070000 \\
+            <pre><code class="language-bash">$ curl https://pdfunicorn.com/v1/images/52cb32bfb9efb70c36070000 \\
     -X DELETE \\
-    -u 1e551787-903e-11e2-b2b6-0bbccb145af3:
-            </pre>
+    -u [YourApiKey]:
+</code></pre>
         </p>
 
         <h4>Response</h4>
-            <pre>
-Status-Code: 200
-</pre>
+            <pre><code>Status-Code: 200
+</code></pre>
         
     </div>
 </div>            
@@ -197,23 +197,24 @@ Status-Code: 200
                     created</li>
                 </ul>
             </p>
-            <pre>
-$ curl https://pdfunicorn.com/v1/templates \\
-    -F 'source=&lt;doc&gt;&lt;page&gt;[% some_text %]&lt;img src=\"[% image_path %]\" /&gt;&lt;/page&gt;&lt;/doc&gt;' \\
+            <pre><code class="language-bash">$ curl https://pdfunicorn.com/v1/templates \\
+    -d '{"source": "&lt;doc&gt;&lt;page&gt;[% some_text %]&lt;/page&gt;&lt;/doc&gt;", "name": "hello-world" }' \\
     -X POST \\
-    -u 1e551787-903e-11e2-b2b6-0bbccb145af3:
-</pre>
+    -u [YourApiKey]:
+</code></pre>
         </p>
         
         <h4>Response</h4>
-            <pre>
-{
-    "created": "1389048511.0901",
+            <pre><code>{
+    "name": "hello-world",
+    "created": 1394631592988,
+    "owner": "52caa7b4b9efb777cc050000",
     "id": "52cb32bfb9efb70c36070000",
     "uri": "/v1/templates/52cb32bfb9efb70c36070000",
-    "source": "source=&lt;doc&gt;&lt;page&gt;[% some_text %]&lt;img src=\"[% image_path %]\" /&gt;&lt;/page&gt;&lt;/doc&gt;",
+    "source": "source=&lt;doc&gt;&lt;page&gt;[% some_text %]&lt;/page&gt;&lt;/doc&gt;",
+    "public": false,
 }
-</pre>
+</code></pre>
                 
     </div>
 </div>            
@@ -241,44 +242,40 @@ $ curl https://pdfunicorn.com/v1/templates \\
         <p>
             <h3>Create a document from source</h3>
             <p>A POST to /v1/documents will return the document's metadata</p>
-            <pre>
-$ curl https://pdfunicorn.com/v1/documents \\
-    -F 'source=&lt;doc&gt;&lt;page&gt;Hello World&lt;img src=\"the/unicorn.jpg\" /&gt;&lt;/page&gt;&lt;/doc&gt;' \\
+            <pre><code class="language-bash">$ curl https://pdfunicorn.com/v1/documents \\
+    -d '{"source": "&lt;doc&gt;&lt;page&gt;Hello World&lt;img src=\"the/unicorn.jpg\" /&gt;&lt;/page&gt;&lt;/doc&gt;"} \\
     -X POST \\
-    -u 1e551787-903e-11e2-b2b6-0bbccb145af3:
-</pre>
+    -u [YourApiKey]:
+</code></pre>
         </p>
         
         <h4>Response</h4>
-            <pre>
-{
+            <pre><code>{
     "created": "1389048511.0901",
     "id": "52cb32bfb9efb70c36070000",
     "uri": "/v1/documents/52cb32bfb9efb70c36070000",
-    "source": "&lt;doc&gt;&lt;page&gt;Hello World&lt;img src="the/unicorn.jpg" /&gt;&lt;/page&gt;&lt;/doc&gt;",
+    "source": "&lt;doc&gt;&lt;page&gt;Hello World&lt;img src=\"the/unicorn.jpg\" /&gt;&lt;/page&gt;&lt;/doc&gt;",
 }
-</pre>
+</code></pre>
 
         <p>
             <h3>Create a document from a template</h3>
             <p>A POST to /v1/documents will return the document's metadata</p>
-            <pre>
-$ curl https://pdfunicorn.com/v1/documents \\
-    -F 'data={"some_text": "Hello World", "image_path": "the/unicorn.jpg" }&amp;template_id=52cb32bfb9efb70c36070000' \\
+            <pre><code class="language-bash">$ curl https://pdfunicorn.com/v1/documents \\
+    -d '{"data": {"some_text": "Hello World", "image_path": "the/unicorn.jpg" }, "template_id": "52cb32bfb9efb70c36070000" }' \\
     -X POST \\
-    -u 1e551787-903e-11e2-b2b6-0bbccb145af3:
-</pre>
+    -u [YourApiKey]:
+</code></pre>
         </p>
         
         <h4>Response</h4>
-            <pre>
-{
+            <pre><code>{
     "created": "1389048511.0901",
     "id": "52cb32bfb9efb70c36070000",
     "uri": "/v1/documents/52cb32bfb9efb70c36070000",
     "source": "&lt;doc&gt;&lt;page&gt;Hello World&lt;img src="the/unicorn.jpg" /&gt;&lt;/page&gt;&lt;/doc&gt;",
 }
-</pre>
+</code></pre>
                 
     </div>
 </div>            
@@ -295,30 +292,26 @@ $ curl https://pdfunicorn.com/v1/documents \\
         <h4>Request</h4>        
         <p>GET https://pdfunicorn.com/v1/documents/52cb32bfb9efb70c36070000.pdf</p>        
         <p>
-            <pre>
-$ curl https://pdfunicorn.com/v1/documents/52cb32bfb9efb70c36070000 \\
-    -u 1e551787-903e-11e2-b2b6-0bbccb145af3:
-            </pre>
+            <pre><code class="language-bash">$ curl https://pdfunicorn.com/v1/documents/52cb32bfb9efb70c36070000 \\
+    -u [YourApiKey]:
+</code></pre>
         </p>
 
         <h4>Response</h4>
-            <pre>
-Status-Code: 200
+            <pre><code>Status-Code: 200
 [PDF File]
-</pre>
+</code></pre>
         
         <h4>Request</h4>
         <p>GET https://pdfunicorn.com/v1/documents/52cb32bfb9efb70c36070000</p>        
         <p>
-            <pre>
-$ curl https://pdfunicorn.com/v1/documents/52cb32bfb9efb70c36070000 \\
-    -u 1e551787-903e-11e2-b2b6-0bbccb145af3:
-            </pre>
+            <pre><code class="language-bash">$ curl https://pdfunicorn.com/v1/documents/52cb32bfb9efb70c36070000 \\
+    -u [YourApiKey]:
+</code></pre>
         </p>
 
         <h4>Response</h4>
-            <pre>
-Status-Code: 200
+            <pre><code>Status-Code: 200
 {
     "created": 1390047421754,
     "public": false,
@@ -326,7 +319,7 @@ Status-Code: 200
     "uri": "/v1/documents/52da70bdb9efb743230b0000",
     "id": "52da70bdb9efb743230b0000"
 }
-</pre>
+</code></pre>
 
     </div>
 </div>            
@@ -341,17 +334,15 @@ Status-Code: 200
         
         <p>DELETE https://pdfunicorn.com/v1/documents/52cb32bfb9efb70c36070000</p>        
         <p>
-            <pre>
-$ curl https://pdfunicorn.com/v1/documents/52cb32bfb9efb70c36070000 \\
+            <pre><code class="language-bash">$ curl https://pdfunicorn.com/v1/documents/52cb32bfb9efb70c36070000 \\
     -X DELETE \\
-    -u 1e551787-903e-11e2-b2b6-0bbccb145af3:
-            </pre>
+    -u [YourApiKey]:
+</code></pre>
         </p>
 
         <h4>Response</h4>
-            <pre>
-Status-Code: 200
-</pre>
+            <pre><code>Status-Code: 200
+</code></pre>
         
     </div>
 </div>            
@@ -359,4 +350,7 @@ Status-Code: 200
 <div class="signup">
     %= include 'site/signup_prompt'
 </div>
+
+<script src="/lib/highlight/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 

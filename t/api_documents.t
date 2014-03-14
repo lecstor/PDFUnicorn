@@ -51,19 +51,19 @@ $t->post_ok(
 # no api-key
 $url = $t->ua->server->url->path('/v1/documents');
 $t->get_ok($url)->status_is(401)
-    ->json_is('/type', 'missing_apikey');
+    ->json_is('/type', 'invalid_request');
 
 
 # empty api-key
 $url = $t->ua->server->url->userinfo(":")->path('/v1/documents');
 $t->get_ok($url)->status_is(401)
-    ->json_is('/type', 'missing_apikey');
+    ->json_is('/type', 'invalid_request');
 
 
 # bad api-key
 $url = $t->ua->server->url->userinfo("blah:")->path('/v1/documents');
 $t->get_ok($url)->status_is(401)
-    ->json_is('/type', 'invalid_apikey');
+    ->json_is('/type', 'invalid_request');
 
 
 # bad attr in query

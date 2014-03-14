@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="/lib/highlight/styles/mono-blue.css">
+
 <h2>PUML - the PDFUnicorn Markup Language</h2>
 
 <div class="panel panel-default">
@@ -24,6 +26,19 @@
         <dl class="dl-horizontal">
             <dt>style</dt><dd>Set default style for elements or define style classes.</dd>
         </dl>
+        Attributes can be allied to some tags:
+        Borders, padding, and margins may be added to page, header, section, row, and cell tags:
+        <dl class="dl-horizontal">
+            <dt>border</dt><dd>1 for on, 0 for off. (off by default)</dd>
+            <dt>border-color</dt><dd>color name or hexadecimal value</dd>
+            <dt>border-radius</dt><dd>radius in pixels or the corners of the border (rounded corners)</dd>
+        </dl>
+        padding and margin attributes may be set with a single number or with multiple space separated numbers.
+        <dl class="dl-horizontal">
+            <dt>Single Integer</dt><dd>sets all sides to the value specified</dd>
+            <dt>Two Integers</dt><dd>first sets top and bottom, second sets left and right</dd>
+            <dt>Four Integers</dt><dd>first sets top, second sets right, third sets bottom, fourth sets left.</dd>
+        </dl>
         
         <div class="panel panel-default">
             <div class="panel-heading"><b>&lt;doc&gt;</b></div>
@@ -37,12 +52,11 @@
                     </tbody>
                 </table>
                 <p>Example:</p>
-<pre>
-&lt;doc size="a4" orientation="landscape"&gt;
+<pre><code>&lt;doc size="a4" orientation="landscape"&gt;
     &lt;style&gt;...&lt;/style&gt;
     &lt;page&gt;...&lt;/page&gt;
 &lt;/doc&gt;
-</pre>
+</code></pre>
             </div>
         </div>        
         
@@ -57,8 +71,7 @@
                 <p>
                     The style element must be located in the main doc element.
                 <p>Example:</p>
-<pre>
-&lt;doc&gt;
+<pre><code>&lt;doc&gt;
     &lt;style&gt;
         page:
             margin: 10
@@ -66,8 +79,10 @@
             border-radius: 10
         row:
             margin: 5
+            padding: 5
         cell:
-            margin: 5
+            margin: 5 3 5 3
+            padding: 5 3
         class:
             heading:
                 align: center
@@ -82,7 +97,7 @@
         &lt;/row&gt;
     &lt;/page&gt;
 &lt;/doc&gt;
-</pre>
+</code></pre>
             </div>
         </div>        
         
@@ -104,8 +119,7 @@
                     </tbody>
                 </table>
                 <p>Example:</p>
-<pre>
-&lt;page&gt;
+<pre><code>&lt;page&gt;
     &lt;header&gt;...&lt;/header&gt;
     &lt;row&gt;...&lt;/row&gt;
     &lt;row&gt;...&lt;/row&gt;
@@ -114,7 +128,7 @@
     &lt;row&gt;...&lt;/row&gt;
     &lt;footer&gt;...&lt;/footer&gt;
 &lt;/page&gt;
-</pre>
+</code></pre>
             </div>
         </div>        
         
@@ -135,13 +149,12 @@
                     </tbody>
                 </table>
                 <p>Example:</p>
-<pre>
-&lt;section&gt;
+<pre><code>&lt;section&gt;
     &lt;header&gt;...&lt;/header&gt;
     &lt;row&gt;...&lt;/row&gt;
     &lt;row&gt;...&lt;/row&gt;
 &lt;/section&gt;
-</pre>
+</code></pre>
             </div>
         </div>        
 
@@ -161,12 +174,11 @@
                     </tbody>
                 </table>
                 <p>Example:</p>
-<pre>
-&lt;header&gt;
+<pre><code>&lt;header&gt;
     &lt;row&gt;...&lt;/row&gt;
     &lt;row&gt;...&lt;/row&gt;
 &lt;/header&gt;
-</pre>
+</code></pre>
             </div>
         </div>        
         
@@ -186,12 +198,11 @@
                     </tbody>
                 </table>
                 <p>Example:</p>
-<pre>
-&lt;footer&gt;
+<pre><code>&lt;footer&gt;
     &lt;row&gt;...&lt;/row&gt;
     &lt;row&gt;...&lt;/row&gt;
 &lt;/footer&gt;
-</pre>
+</code></pre>
             </div>
         </div>        
         
@@ -213,12 +224,11 @@
                     </tbody>
                 </table>
                 <p>Example:</p>
-<pre>
-&lt;row columns="3"&gt;
+<pre><code>&lt;row columns="3"&gt;
     &lt;cell span="3"&gt;...&lt;/cell&gt;
     &lt;cell&gt;...&lt;/cell&gt;
 &lt;/row&gt;
-</pre>
+</code></pre>
             </div>
         </div>        
         
@@ -239,11 +249,10 @@
                     </tbody>
                 </table>
                 <p>Example:</p>
-<pre>
-&lt;cell span="3" border="1" border-radius="5"&gt;
+<pre><code>&lt;cell span="3" border="1" border-radius="5"&gt;
     Some text in a cell
 &lt;/cell&gt;
-</pre>
+</code></pre>
             </div>
         </div>        
         
@@ -261,11 +270,10 @@
                     </tbody>
                 </table>
                 <p>Example:</p>
-<pre>
-&lt;text align="center" font-size="20" font-color="blue" font-face="HelveticaBold"&gt;
+<pre><code>&lt;text align="center" font-size="20" font-color="blue" font-face="HelveticaBold"&gt;
     Some text in a cell
 &lt;/text&gt;
-</pre>
+</code></pre>
             </div>
         </div>        
         
@@ -289,9 +297,8 @@
                     </tbody>
                 </table>
                 <p>Example:</p>
-<pre>
-&lt;img src="path/to/image.jpg" /&gt;
-</pre>
+<pre><code>&lt;img src="path/to/image.jpg" /&gt;
+</code></pre>
             </div>
         </div>        
 
@@ -302,3 +309,7 @@
 <div class="signup">
     %= include 'site/signup_prompt'
 </div>
+
+<script src="/lib/highlight/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+

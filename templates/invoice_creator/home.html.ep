@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>PDFUnicorn - free online invoice maker</title>
+	%= include 'site/head'
+	%= include 'mixpanel'
+  
+    <!-- record main page view -->
+  	<script type="text/javascript">mixpanel.track('view-invoice-maker-page')</script>
+</head>
+
+<body>
+	%= include 'site/header'
+
+    <div class="container">
+        <h1>Free Online Invoice Maker</h1>
+        
+        <form action="/invoice-maker-pdf" method="post" role="form" target="_blank">
+
+            <div class="row">
+                <div class="col-xs-12 col-md-12 well">
+                    <!-- item list -->
+                                        
+                    <label for="item_desc_1">Invoice Items</label>
+                    
+                    <div id="invoice-item-list">
+                        <div class="row list-item">
+                             <div class="col-xs-12 col-sm-12 col-md-4">
+                                <label for="item_desc_0">Item Description</label>
+                                <textarea class="form-control" name="item_desc_0" placeholder="Item Description"></textarea>
+                             </div>
+                             <div class="col-xs-12 col-sm-3 col-md-2">
+                                <label for="item_qty_0">Quantity</label>
+                                <input class="form-control" type="number" name="item_qty_0" placeholder="Quantity" />
+                             </div>
+                             <div class="col-xs-12 col-sm-3 col-md-2">
+                                <label for="item_price_0">Price</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon">$</span>
+                                    <input class="form-control" type="text" name="item_price_0" placeholder="Price" />
+                                </div>
+                             </div>
+                             <div class="col-xs-12 col-sm-3 col-md-2">
+                                <label for="item_tax_0">Tax</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon">$</span>
+                                    <input class="form-control" type="text" name="item_tax_0" placeholder="Tax" />
+                                </div>
+                             </div>
+                             <div class="col-xs-12 col-sm-3 col-md-2">
+                                <label for="item_total_0">Total</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon">$</span>
+                                    <input class="form-control" type="text" name="item_total_0" placeholder="Total" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="add_item_row" class="row">
+                        <div class="col-xs-12">
+                            <a id="add_item_button" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-plus-sign"></span> Add Another Item Row</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-xs-12 col-md-12 well">
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label for="invoice_subtotal">Items Total</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">$</span>
+                                <input type="text" class="form-control" name="invoice_subtotal" />
+                            </div>                    
+                            <span class="help-block">Add up the item totals</span>
+                        </div>                    
+                    
+                        <div class="col-md-3">
+                            <label for="invoice_tax_name">Label for Tax Amount</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="invoice_tax_name" value="Tax"/>
+                            </div>
+                            <span class="help-block">The name of the tax applied (optional)</span>
+                        </div>         
+                                   
+                        <div class="col-md-3">
+                            <label for="invoice_tax_subtotal">Tax Amount</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">$</span>
+                                <input type="text" class="form-control" name="invoice_tax_subtotal" />
+                            </div>
+                            <span class="help-block">The amount of tax applied (optional)</span>
+                        </div>                    
+                        
+                        <div class="col-md-3">
+                            <label for="invoice_total">Total</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">$</span>
+                                <input type="text" class="form-control" name="invoice_total" />
+                            </div>
+                            <span class="help-block">The total amount payable</span>
+                        </div>                    
+                        
+                    </div>
+
+                    
+                </div>
+            </div>
+
+
+
+    
+                
+            <div class="row">
+                <div class="col-xs-12 col-md-8 well">
+                    
+        
+                    <div class="row">
+                        <p class="col-xs-12 col-md-6">
+                            <label for="invoice_number">Document Title</label>
+                            <input type="text" class="form-control" value="Tax Invoice" name="invoice_title" />
+                        </p>
+                    </div>
+                    
+                    <div class="row">
+                        <p class="col-xs-12 col-md-6">
+                            <label for="invoice_sender">Invoice Sender</label>
+                            <textarea class="form-control" rows="4" name="invoice_sender" placeholder="Your company name, address, contact details"></textarea>
+                        </p>
+                        <p class="col-xs-12 col-md-6">
+                            <label for="invoice_recipient">Invoice Recipient</label>
+                            <textarea class="form-control" rows="4" name="invoice_recipient" placeholder="Your customer's name and address"></textarea>
+                        </p>
+                    </div>
+                    
+                    <p>
+                        <a style="width:400px;" class="btn btn-primary" data-toggle="collapse" data-target="#tax-ids-collapse"><span class="glyphicon glyphicon-cog"></span> Add sender and/or recipient tax identification numbers</a>
+                    </p>
+                    <div id="tax-ids-collapse" class="collapse">
+                        <div class="row">
+                            <p class="col-xs-12 col-md-6">
+                                <label for="invoice_tax_id_name">Label for Tax IDs</label>
+                                <input type="text" class="form-control" placeholder="eg ABN, VAT, EIN" name="invoice_tax_id_name" />
+                            </p>
+                        </div>
+                        <div class="row">
+                            <p class="col-xs-12 col-md-6">
+                                <label for="invoice_sender_tax_id">Sender Tax ID</label>
+                                <input type="text" class="form-control" placeholder="Sender's tax identification number" name="invoice_sender_tax_id" />
+                            </p>
+                            <p class="col-xs-12 col-md-6">
+                                <label for="invoice_recipient_tax_id">Recipient Tax ID</label>
+                                <input type="text" class="form-control" placeholder="Recipient's tax identification number" name="invoice_recipient_tax_id" />
+                            </p>
+                        </div>
+                    </div>
+
+                    <p>
+                        <a style="width:400px;" class="btn btn-primary" data-toggle="collapse" data-target="#top-message-collapse"><span class="glyphicon glyphicon-cog"></span> Add a message above the invoice items</a>
+                    </p>
+                    <div id="top-message-collapse" class="collapse">
+                        <div class="row">
+                            <p class="col-xs-12 col-md-9">
+                                <label for="invoice_head">Message Top</label>
+                                <textarea class="form-control" rows="3" name="invoice_head" placeholder="A message to the customer to display above the invoice items"></textarea>
+                            </p>
+                        </div>
+                    </div>
+                                            
+                    <p>
+                        <a style="width:400px;" class="btn btn-primary" data-toggle="collapse" data-target="#bottom-message-collapse"><span class="glyphicon glyphicon-cog"></span> Add a message below the invoice items totals</a>
+                    </p>
+                    <div id="bottom-message-collapse" class="collapse">
+                        <div class="row">
+                            <p class="col-xs-12 col-md-9">
+                                <label for="invoice_foot">Message Bottom</label>
+                                <textarea class="form-control" rows="3" name="invoice_foot" placeholder="A message to the customer to display below the invoice items"></textarea>
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-xs-12 col-sm-6 col-md-4">
+                    <div class="well">
+                        <!-- div>
+                            Logo
+                        </div -->
+                        <p>
+                            <label for="invoice_number">Invoice Number:</label>
+                            <input type="number" class="form-control" placeholder="Invoice number" name="invoice_number" />
+                        </p>
+
+                        <p>
+                            <label for="customer_reference">Customer Reference:</label>
+                            <input type="number" class="form-control" placeholder="Customer Reference" name="customer_reference" />
+                        </p>
+                        
+                        <p>
+                            <label for="invoice_date">Invoice Date</label>
+                            <input type="date" class="form-control" name="invoice_date" />
+                        </p>
+                        
+                        <p>
+                            <label for="invoice_date">Payment Due</label>
+                            <input type="date" class="form-control" name="invoice_payment_due_date" />
+                        </p>
+                        
+                        <p>
+                            <label for="invoice_date">Purchase Order Number</label>
+                            <input type="text" class="form-control" name="invoice_purchase_order" />
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="col-xs-12 col-sm-6 col-md-4 pull-right">
+                    <div style="margin-top: 20px" class="well">
+                        <button style="margin-bottom:20px" data-toggle="tooltip" data-placement="bottom" title="This will open in a new window or tab in your browser." type="submit" onclick="mixpanel.track('view-invoice-pdf')" class="btn btn-lg btn-primary center-block" name="mode" value="view">View PDF Invoice</button>
+                        <button style="margin-top:20px" data-toggle="tooltip" data-placement="bottom" type="submit" onclick="mixpanel.track('save-invoice-pdf')" class="btn btn-lg btn-primary center-block" name="mode" value="dload">Download PDF Invoice</button>
+                    </div>
+                </div>
+            </div>
+            
+        </form>        
+            
+    </div>
+    
+    %= include 'site/foot'
+    
+    <script id="item-row-tmpl" type="template">
+         <div class="col-xs-12 col-sm-12 col-md-4">
+            <textarea class="form-control" name="item_desc_{{item_number}}" placeholder="Item Description"></textarea>
+         </div>
+         <div class="col-xs-12 col-sm-3 col-md-2">
+            <input class="form-control" type="number" name="item_qty_{{item_number}}" placeholder="Quantity" />
+         </div>
+         <div class="col-xs-12 col-sm-3 col-md-2">
+            <div class="input-group">
+                <span class="input-group-addon">$</span>
+                <input class="form-control" type="text" name="item_price_{{item_number}}" placeholder="Price" />
+            </div>
+         </div>
+         <div class="col-xs-12 col-sm-3 col-md-2">
+            <div class="input-group">
+                <span class="input-group-addon">$</span>
+                <input class="form-control" type="text" name="item_tax_{{item_number}}" placeholder="Tax" />
+            </div>
+         </div>
+         <div class="col-xs-12 col-sm-3 col-md-2">
+            <div class="input-group">
+                <span class="input-group-addon">$</span>
+                <input class="form-control" type="text" name="item_total_{{item_number}}" placeholder="Total" />
+            </div>
+        </div>
+    </script>
+
+</body>
+</html>

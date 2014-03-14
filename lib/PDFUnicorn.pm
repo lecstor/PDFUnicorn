@@ -275,14 +275,15 @@ sub startup {
 	$r->post('/')->to('root#get_pdf');
 	
 	$r->get('/features')->name('features')->to('root#features');
+    $r->get('/contact')->name('contact')->to('root#contact');
 	$r->get('/pricing')->name('pricing')->to('root#pricing');
     $r->get('/pricing/annual')->name('annual_pricing')->to('root#annual_pricing');
 	$r->get('/about')->name('about')->to('root#about');
     $r->get('/docs/api')->name('apidocs')->to('root#api_docs');
     $r->get('/docs/markup')->name('markupdocs')->to('root#markup_docs');
     $r->get('/docs/example')->name('example')->to('root#example');
-    $r->get('/playground')->name('playground')->to('root#playground_form');
-    $r->post('/playground')->name('playground')->to('root#playground');
+    $r->get('/demo')->name('demo')->to('root#demo_form');
+    $r->post('/demo')->name('demo')->to('root#demo');
 
 	$r->get('/sign-up')->to('root#sign_up_form');
 	$r->post('/sign-up')->to('root#sign_up');
@@ -292,6 +293,9 @@ sub startup {
 	
 	$r->get('/log-out')->to('root#log_out');
 	
+    $r->get('/invoice-maker')->name('invoice_creator')->to('invoice_creator#home');
+    $r->post('/invoice-maker-pdf')->name('invoice_creator_pdf')->to('invoice_creator#pdf');
+
 	#$r->get('/stripe/connect')->to('stripe#connect');
 	
 	$r->get('/set-password/:code/:email')->to('root#set_password_form');

@@ -42,6 +42,7 @@ my $url = $t->ua->server->url->userinfo("$api_key:")->path('/v1/templates');
 $t->post_ok(
     $url,
     json => {
+        name => 'Test 2', 
         source => '<doc><page>Test 2!<img src="[% image %]" /></page></doc>'
     },
 )->status_is(200)
@@ -49,6 +50,7 @@ $t->post_ok(
     ->json_has( '/created', "has created" )
     ->json_has( '/uri', "has uri" )
     ->json_has( '/owner', "has owner" )
+    ->json_has( '/name', "Test 2" )
     ->json_is( '/source' => '<doc><page>Test 2!<img src="[% image %]" /></page></doc>', "correct source" )
     ->json_is( '/file' => undef, "file is undef" );
 

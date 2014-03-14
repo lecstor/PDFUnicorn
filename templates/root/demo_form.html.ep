@@ -1,12 +1,12 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>PDFUnicorn - playground</title>
+    <title>PDFUnicorn - Demo</title>
     %= include 'site/head'
     %= include 'mixpanel'
   
     <!-- record main page view -->
-    <script type="text/javascript">mixpanel.track('view-playground-page')</script>
+    <script type="text/javascript">mixpanel.track('view-demo-page')</script>
 </head>
 
 <body>
@@ -16,36 +16,36 @@
         % if ($error){
             <div class="alert alert-danger"><%= $error %></div>
             <div>
-                You can close this browser tab (or maybe window) and go back to the playground form.
+                You can close this browser tab (or maybe window) and go back to the demo form.
             </div>
         % } else {
-            <h2>The Playground</h2>
+            <h2>Demonstration UI</h2>
             <div style="max-width: 600px">
                 <p>The most common usage of PDFUnicorn involves uploading images
                 and templates and then sending data along with a template id to
                 render your PDF files.</p>
-                <p>In the playground you can simulate the results of this process
+                <p>In the demo you can simulate the results of this process
                 (not including images) by submitting data and a template to be
                 rendered as a PDF file.</p>
             </div>
-            <form action="/playground" method="post" target="_blank">
+            <form action="/demo" method="post" target="_blank">
                 <div class="row">
                     <div class="col-md-6 col-xs-12">
                         <p><strong>Some JSON data:</strong></p>
                         <textarea name="data" class="col-xs-12" style="height: 400px">
-%= include 'playground_data'
+%= include 'demo_data'
                         </textarea>
                     </div>
                     <div class="col-md-6 col-xs-12">
                         <p><strong>A template:</strong></p>
                         <textarea name="template" class="col-xs-12" style="height: 400px">
-%= include 'playground_tmpl'
+%= include 'demo_tmpl'
                         </textarea>
                     </div>
                 </div>
                 <div class="row" style="margin-top: 20px">
                     <p class="col-xs-12">
-                        <button type="submit" onclick="mixpanel.track('generate-playground-pdf')" class="btn btn-lg btn-primary pull-right">Generate PDF!</button>
+                        <button type="submit" onclick="mixpanel.track('generate-demo-pdf')" class="btn btn-lg btn-primary pull-right">Generate PDF!</button>
                         <span class="pull-right">
                             This will open the PDF in a new window or tab in your browser.<br />
                             Close it and return to this page to edit some more..

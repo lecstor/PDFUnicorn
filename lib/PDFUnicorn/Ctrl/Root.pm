@@ -24,6 +24,11 @@ sub features {
     $self->render();
 }
 
+sub contact {
+    my $self = shift;
+    $self->render();
+}
+
 sub pricing {
 	my $self = shift;
     $self->render( plans => [sort { $a->{templates} <=> $b->{templates} } values(%{$self->config->{plans}})] );
@@ -319,12 +324,12 @@ sub set_password_form{
 
 }
 
-sub playground_form{
+sub demo_form{
     my $self = shift;
     $self->render(error => '', time => time);
 }
 
-sub playground{
+sub demo{
     my $self = shift;
     my $data_json = $self->param('data');
     my $template = $self->param('template');
@@ -336,7 +341,7 @@ sub playground{
         my $message = $err->message;
         $message =~ s/\s+at [\w_\-\/.]+PDFUnicorn.*//;
         return $self->render(
-            template => 'root/playground_form',
+            template => 'root/demo_form',
             error => 'Data Error: '.$message,
             time => time
         );
@@ -345,12 +350,16 @@ sub playground{
     my $source = eval{ $self->alloy->render($template, $data) };
     if (my $err = $@){
         # Template::Exception
-        warn $err->as_string;
-        warn $data_json;
-        my $message = $err->as_string;
+        #warn $err->as_string;
+        #warn $data_json;
+        my $message;
+        eval{ $message = $err->as_string; };
+        if ($@){
+            $message = $err->to_string;
+        }
         $message =~ s/.*\s\-\s//;
         return $self->render(
-            template => 'root/playground_form',
+            template => 'root/demo_form',
             error => 'Template Error: '.$message,
             time => time
         );
@@ -373,7 +382,7 @@ sub playground{
         my $message = $err->message;
         $message =~ s/\s+at \/.*//;
         return $self->render(
-            template => 'root/playground_form',
+            template => 'root/demo_form',
             error => $message,
             time => time
         );

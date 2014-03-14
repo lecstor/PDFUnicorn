@@ -14,28 +14,104 @@
 
     <div class="container">
         <div class="jumbotron">
+            <div class="row">
+                <div class="col-xs-12">
+                    <p>At it's core, PDFUnicorn is a web service for making PDF files.</p>
+                    
+                    <p>PDF files can be created directly from source documents, or from data
+                    applied to custom templates.</p>
+                    
+                    <p>The markup language is intentionally simple to allow you to start creating
+                    templates and documents as quickly and easily as possible.</p>
+                    
+                    <p>Document content is securely sent from your server to ours enabling private
+                    customer text and images to be included without allowing remote access to your
+                    server and content.</p>
+                    
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+
+                    <p>Document images can be uploaded at print quality resolutions to create the
+                    best looking documents possible.</p>
+                    
+                    <p>This is not a html2pdf conversion service, it is designed as a simple, reliable
+                    way to create multi-page documents.</p>
+                    
+                </div>
+                
+                <div class="col-md-6">
+                
+                  <img class="img-responsive center-block" src="/img/tax_invoice_snap.png"><br />
+                  
+                </div>
+            </div>
+        </div>
+
+        <div class="well">
+            <h3>Why?</h3>
+            <p>Over the years I have been presented with the challenge of creating custom solutions for generating
+            PDF files from data for invoices, packing slips, and assorted other documents.. It's
+            really not as much fun as you would think.. ;)</p>
+            <p>
+                The solutions available include:
+                <ul>
+                    <li>develop a custom solution using one of a few popular PDF libraries</li>
+                    <li>use Latex to design documents and generate them in PDF format</li>
+                    <li>use an HTML-to-PDF program</li>
+                </ul>
+            </p>
+            <p>
+                Latex is probably the way to go if you have the expertise.
+                It gives you full control of the generated documents and allows you to take
+                advantage of most of the features available to the PDF format.
+            </p> 
+            <p>
+                Converting HTML to PDF is hard to get right, especially when it comes to documents
+                which span multiple pages. HTML was designed to display single pages of varying size.
+                It has no concept of pages limited to a set size or having to split up content and
+                repeat sections of it across multiple pages.
+            </p> 
+            <p>
+                PDFUnicorn is my attempt to simplify the process of generating PDF documents and to
+                save you the time and costs associated with creating and maintaining your own solution.
+            </p>
+        </div>
+
+        <div class="well">
+            <h3>Why would you want to use PDFUnicorn?</h3>
+            <img class="pull-right" src="/img/pdfunicorn_logo_200.png" title="The Unicorn" alt="[logo] The Unicorn">
+            <p>I want to build a solution to solve your PDF generation problems. I want to keep it as simple
+            as possible to use while allowing you to create the documents you need, the way you want them.</p>
+            <p>I have a long list of features I could implement, but I want to hear from you, so I'm not just
+            creating another overly complicated solution to what should be a simple problem.</p>
+            <p>PDFUnicorn is not built on someone else's PDF generator. I can improve and modify any and all
+            of the layout features that turn markup into documents.</p>
+            <p>So let me know what you need and I will do my best to turn that into a reality and let you get
+            on with running your business. <a href="/contact">Contact Me</a> any time, I'd love to hear from you.</p>  
+        </div>
+
+        <div class="well">
         	<div class="row">
-        		<div class="col-md-6">
-        		    <p>
-        		        So you need to create custom designed PDF files for you
-        		        invoice, quotes, estimates, or receipts?
-        		    </p>
-        		    <p>
-                        PDFUnicorn allows you to design your own templates in our
-                        user friendly markup language and render those templates
-                        to create PDF files with your data on demand.</p>
-                    <p style="text-align: center">
-                        <br />
-                        Our demo playground allows you to simulate the API process manually.<br />
-                        <a href="/playground" class="btn btn-primary btn-lg">Create a PDF now!</a>
+        		<div class="col-md-8">
+                    <p class="lead">
+                        You can create a PDF by combining JSON data and a PUML template
+                        using our online demonstration.
                     </p>
         		</div>
-        		<div class="col-md-6">
-        		  <img src="/img/tax_invoice_snap.png"><br />
-        		</div>
+                <div class="col-md-4">
+                    <a href="/demo" class="btn btn-primary btn-lg">Create a PDF now!</a>
+                </div>
         	</div>
+            <div class="row">
+                <div class="col-md-12">
+                    <p class="lead">Or try our <a href="/invoice-maker">free online invoice creator</a>.</p>
+                </div>
+            </div>
         </div>
-        
+
         <div class="well">
             <div class="row">
                 <div class="col-md-12">
@@ -67,7 +143,7 @@
                 </div>
                 <div class="col-md-9">
                     <p class="lead">PDFUnicorn is a PDF creation web service for businesses who need to generate custom
-                    PDF files on demand. We use a custom HTML-like markup language designed for laying
+                    PDF files on demand. We use a simple HTML-like markup language designed for laying
                     out pageable documents in the simplest way possible.</p>
                 </div>
         	</div>
