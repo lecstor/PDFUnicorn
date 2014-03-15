@@ -52,13 +52,24 @@
                 {% if (subscription.status == 'trialing'){ %}
                     <h4>Your subscription is currently in trial mode <small>ends {%= subscription.trial_end%}</h4>
                 {% } else if (subscription.status == 'active'){ %}
+                    <h4>Thanks for using PDFUnicorn!</h4>
                 {% } else if (subscription.status == 'past_due'){ %}
-                    <h4>Payment is now due. Please add your credit card details below to avoid your subscription being cancelled.</h4>
+                    <h4>Payment is now past due.</h4>
+                    {% if (default_card){ %}
+                        <p>Payment will be attempted automatically within 3 days.</p>
+                    {% } else { %}
+                        <p>Please add your credit card details below to avoid your subscription being cancelled.</p>
+                    {% } %}
                 {% } else if (subscription.status == 'unpaid'){ %}
-                    <h4>Payment is now due. Please add your credit card details below to avoid your subscription being cancelled.</h4>
+                    {% if (default_card){ %}
+                        <p>Payment will be attempted automatically within 3 days.</p>
+                    {% } else { %}
+                        <p>Please add your credit card details below to avoid your subscription being cancelled.</p>
+                    {% } %}
                 {% } else if (subscription.status == 'canceled'){ %}
                 {% } %}
                 <p>You are on the {%= subscription.plan.name%} plan at ${%= subscription.plan.amount/100 %} per {%= subscription.plan.interval%}</p>
+                <p>Subscription Status: {%= subscription.status %}</p>
             </td></tr></tbody>
         </table>
     </script>
@@ -69,7 +80,7 @@
                 {% if (default_card){ %}
                     <p>Name on card: {%= default_card.name %}</p>
                     <p>Card type: {%= default_card.type %}</p>
-                    <p>Last 4 digits of card: {%= default_card.last4 %}</p>
+                    <p>The last 4 digits of your card are "{%= default_card.last4 %}"</p>
                     <p>Expires {%= default_card.exp_month %}/{%= default_card.exp_year %}</p>
                     Update your credit card details <button id="stripeButton" class="btn btn-primary">Update Card</button>
                 {% } else { %}
