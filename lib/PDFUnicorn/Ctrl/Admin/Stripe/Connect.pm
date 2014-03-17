@@ -10,9 +10,19 @@ use Data::Dumper ('Dumper');
 
 =cut
 
-sub setup{
+sub index{
     my $self = shift;
-    $self->render();
+    
+    $self->render_later;
+        
+    $self->db_stripe_clients->find_one({ owner => $self->stash->{app_user}{_id} }, sub{
+        my ($err, $doc) = @_;
+        
+        $self->stash->{connected} = $doc ? 1 : 0;
+            
+        $self->render();
+    });
+    
 }
 
 sub authorise{

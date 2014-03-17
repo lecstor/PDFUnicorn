@@ -74,7 +74,22 @@ if (path == '/admin/api-key'){
     });
 
 } else if (path == '/invoice-maker'){
-    require(['invoice/maker'], function(maker){
+
+    require(['invoice/maker']);
+
+} else if (path == '/admin/stripe/connect'){
+
+    require(['jquery', 'admin/stripe_connect/invoices'], function($, invoices){
+        invoices.collection.fetch({ "success": function(collection, response, options){ console.log(collection.toJSON()) } });
     });
+
+// [Object]
+//   0: Object
+//     error: Object
+//       message: "Expired API key provided: sk_test_************************.  Application access may have been revoked."
+//       type: "invalid_request_error"
+
 }
+
+
 
