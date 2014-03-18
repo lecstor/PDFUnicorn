@@ -57,12 +57,12 @@ sub list{
             
             my $invoices = $stripe->invoices->list(
                 sub{
-                    my ($client, $data) = @_;
-                    $self->render( json => $data );
+                    my ($client, $status, $data) = @_;
+                    $self->render( json => $data, status => $status );
                 },
                 $options
             );
-
+            
         }
     });
 
