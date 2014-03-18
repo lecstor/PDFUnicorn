@@ -21,19 +21,37 @@
 	    	<div class="col-xs-12 col-sm-9">
                 <h2>Stripe Connect</h2>
                 
-                % if ($connected){
-                    <p>Your PDFUnicorn and Stripe accounts are connected.</p>
+                <div id="account-connected">
+                % if ($stripe_client){
+                    % if ($stripe_client->{livemode}){
+                        <p>Your PDFUnicorn account and <b>live</b> Stripe account are connected.</p>
+                    % } else {
+                        <p>Your PDFUnicorn account and <b>test</b> Stripe account are connected.</p>
+                        <p><a href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=<%= config->{stripe}{client_id} %>">Connect with your <b>live</b> Stripe account</a></p>
+                    % }                    
                 % } else {
-    	    		<p><a href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=<%= config->{stripe}{client_id} %>">Connect with Stripe</a></p>
-                    <p><a href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=<%= config->{stripe}{test_client_id} %>">Connect with Stripe Test</a></p>
+                    <p>Your PDFUnicorn account is not connected to a Stripe account.</p>
+    	    		<p><a href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=<%= config->{stripe}{client_id} %>">Connect with your <b>live</b> Stripe account</a></p>
+                    <p><a href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=<%= config->{stripe}{test_client_id} %>">Connect with your <b>test</b> Stripe account</a></p>
                 % }
-                
-	    	</div>
+                </div>
+            </div>
     	
     	</div>
     </div>
     
     %= include 'site/foot'
+
+    <div style="display: none" id="connected-test">
+        <p>Your PDFUnicorn account and <b>test</b> Stripe account are connected.</p>
+        <p><a href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=<%= config->{stripe}{client_id} %>">Connect with your live Stripe account</a></p>
+    </div>
+
+    <div style="display: none" id="connected-not">
+        <p>Your PDFUnicorn account is not connected to a Stripe account.</p>
+        <p><a href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=<%= config->{stripe}{client_id} %>">Connect with your <b>live</b> Stripe account</a></p>
+        <p><a href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=<%= config->{stripe}{test_client_id} %>">Connect with your <b>test</b> Stripe account</a></p>
+    </div>
 
 </body>
 </html>
