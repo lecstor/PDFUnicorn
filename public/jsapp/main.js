@@ -80,7 +80,17 @@ if (path == '/admin/api-key'){
 } else if (path == '/admin/stripe/connect'){
 
     require(['jquery', 'admin/stripe_connect/invoices'], function($, invoices){
-        invoices.collection.fetch({ "success": function(collection, response, options){ console.log(collection.toJSON()) } });
+        invoices.collection.fetch({
+            "success": function(collection, response, options){ console.log(collection.toJSON()); },
+            "error": function(collection, response, options){
+                console.log(response);
+                if (response.status == 401){
+                    if (response.responseJSON.error && response.responseJSON.error.type == 'invalid_request_error'){
+                        $('#account-connected').html($('#connected-not').html());
+                    }
+                }
+            }
+        });
     });
 
 // [Object]
