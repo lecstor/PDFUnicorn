@@ -18,7 +18,8 @@ sub index{
     $self->db_stripe_clients->find_one({ owner => $self->stash->{app_user}{_id} }, sub{
         my ($err, $doc) = @_;
         
-        $self->stash->{connected} = $doc ? 1 : 0;
+        # stash the user's client doc if they are a stripe connect client
+        $self->stash->{stripe_client} = $doc;
             
         $self->render();
     });
