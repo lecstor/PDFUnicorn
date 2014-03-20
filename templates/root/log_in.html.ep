@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>PDFUnicorn - Log In</title>
+    <title>PDFU - Log In</title>
 	%= include 'site/head'
 	%= include 'mixpanel'
   	<script type="text/javascript">mixpanel.track('view-login-page')</script>

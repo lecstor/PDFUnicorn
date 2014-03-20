@@ -1,7 +1,9 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>PDFUnicorn - Demo</title>
+    <title>PDFU - PDF Creation Demonstration</title>
+    <meta name="description" content="A demonstration of generating a PDF from a template and data with PDFUnicorn" />
+    
     %= include 'site/head'
     %= include 'mixpanel'
   

@@ -1,7 +1,9 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>PDFUnicorn - Contact</title>
+    <title>PDFU - Contact Jason</title>
+    <meta name="description" content="Contact details for Jason at PDFUnicorn" />
+    
 	%= include 'site/head'
 	%= include 'mixpanel'
   

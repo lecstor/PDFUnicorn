@@ -15,7 +15,6 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <!-- li <%=  current_route 'features' ? 'class="active"' : '' %>><a href="/features">Features</a></li -->
                 <li data-toggle="tooltip" data-placement="bottom" title="Play with a demo" <%=  current_route 'demo' ? 'class="active"' : '' %>><a href="/demo">Demo</a></li>
                 <li data-toggle="tooltip" data-placement="bottom" title="API Documentation" <%=  current_route 'apidocs' ? 'class="active"' : '' %>><a href="/docs/api">API</a></li>
                 <li data-toggle="tooltip" data-placement="bottom" title="PUML Documentation" <%=  current_route 'markupdocs' ? 'class="active"' : '' %>><a href="/docs/markup">Markup</a></li>

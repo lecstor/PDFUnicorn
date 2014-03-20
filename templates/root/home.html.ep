@@ -1,7 +1,9 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>PDFUnicorn - online PDF generator</title>
+    <title>PDFUnicorn - create PDFs with our simple API</title>
+    <meta name="description" content="A web service for creating PDF files from templates and data via a simple API" />
+    
 	%= include 'site/head'
 	%= include 'mixpanel'
   

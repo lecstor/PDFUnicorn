@@ -1,7 +1,9 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>PDFUnicorn - pricing plans</title>
+    <title>PDFU - pricing plans</title>
+    <meta name="description" content="Pricing plans for PDFUnicorn" />
+
 	%= include 'site/head'
 	%= include 'mixpanel'
   
