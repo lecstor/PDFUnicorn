@@ -12,11 +12,14 @@ use Data::Dumper ('Dumper');
 
 sub index{
     my $self = shift;
+    $self->stash->{error} = undef;
     
     $self->render_later;
         
     $self->db_stripe_clients->find_one({ owner => $self->stash->{app_user}{_id} }, sub{
         my ($err, $doc) = @_;
+        
+        $self->app->log->debug($doc || 'no doc');
         
         # stash the user's client doc if they are a stripe connect client
         $self->stash->{stripe_client} = $doc;
@@ -26,8 +29,24 @@ sub index{
     
 }
 
+# https://stripe.com/docs/connect/oauth
 sub authorise{
     my $self = shift;
+    $self->stash->{error} = undef;
+    $self->stash->{stripe_client} = undef;
+    
+    $self->stash->{template} = 'admin/stripe/connect/index';
+    
+    my $error = $self->param('error');
+    
+    if ($error){
+        $self->app->log->debug($error);
+        # error=access_denied&error_description=The%20user%20denied%20your%20request
+        #my $description = $self->param('error_description');
+
+        return $self->render;
+    }
+    
     my $code = $self->param('code');
     
     my $ua = Mojo::UserAgent->new;
@@ -42,27 +61,34 @@ sub authorise{
 
     my $data = $tx->res->json;
     if ($data->{error}){
-        warn $data->{error}.': '.$data->{error_description};
+        $self->app->log->debug($data->{error}.': '.$data->{error_description});
         $self->render( error => $data->{error_description} );
     } else {
-        my $stripe_client = {
-            owner => $self->stash->{app_user}{_id},
-            access_token => $data->{access_token},
-            refresh_token => $data->{refresh_token},
-            stripe_publishable_key => $data->{stripe_publishable_key},
-            stripe_user_id => $data->{stripe_user_id},
-            token_type => $data->{token_type},
-            scope => $data->{scope},
-            livemode => $data->{livemode} eq 'true' ? bson_true : bson_false,
-        };
-
+        
         $self->render_later;
         
-        $self->db_stripe_clients->create($stripe_client, sub{
-            my ($err, $doc) = @_;
-            $self->render( ok => 1 );
+        $data->{livemode} = $data->{livemode} eq 'true' ? bson_true : bson_false, 
+        my $opts = {
+            query => { owner => $self->stash->{app_user}{_id} },
+            update => { '$set' => $data },
+        };
+                
+        $self->db_stripe_clients->find_and_modify( $opts => sub{
+            my ($coll, $err, $doc) = @_;
+            $self->app->log->debug($err) if $err;
+            if ($doc){
+                $self->stash->{stripe_client} = $doc;
+                return $self->render( ok => 1 );
+            } else {
+                $data->{owner} = $self->stash->{app_user}{_id};
+                $self->db_stripe_clients->create($data, sub{
+                    my ($err, $doc) = @_;
+                    $self->app->log->debug($err) if $err;
+                    $self->stash->{stripe_client} = $doc;
+                    return $self->render( ok => 1 );
+                });
+            }
         });
-        
     }
 
 }
