@@ -21,6 +21,10 @@
 	    	<div class="col-xs-12 col-sm-9">
                 <h2>Stripe Connect</h2>
                 
+                % if ($error){
+                    <div class="alert alert-danger"><%= $error %></div>
+                % }
+                
                 <div id="account-connected">
                 % if ($stripe_client){
                     % if ($stripe_client->{livemode}){
