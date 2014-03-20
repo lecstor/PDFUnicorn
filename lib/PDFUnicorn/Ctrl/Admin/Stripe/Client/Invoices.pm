@@ -44,25 +44,28 @@ sub list{
             
         } else {
 
-            my $stripe = Mojolicious::Plugin::Stripe::Client->new({
-                config => { secret_api_key => $client->{access_token} },
-            });
-            
-            my $data = $self->req->json();
-            my $options = {
-                count => $data->{count},
-                created => $data->{created},
-                offset => $data->{offset}, 
-            };
-            
-            my $invoices = $stripe->invoices->list(
-                sub{
-                    my ($client, $status, $data) = @_;
-                    $self->render( json => $data, status => $status );
-                },
-                $options
-            );
-            
+            if ($client){
+                my $stripe = Mojolicious::Plugin::Stripe::Client->new({
+                    config => { secret_api_key => $client->{access_token} },
+                });
+                
+                my $data = $self->req->json();
+                my $options = {
+                    count => $data->{count},
+                    created => $data->{created},
+                    offset => $data->{offset}, 
+                };
+                
+                my $invoices = $stripe->invoices->list(
+                    sub{
+                        my ($client, $status, $data) = @_;
+                        $self->render( json => $data, status => $status );
+                    },
+                    $options
+                );
+            } else {
+                $self->render( json => {}, status => 200 );
+            }            
         }
     });
 
