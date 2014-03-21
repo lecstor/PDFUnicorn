@@ -40,13 +40,13 @@ define(["layoutmanager","underscore", "moment", "stripe_checkout"], function(Lay
             var View = this;
             this.handler = StripeCheckout.configure({
                 key: $('#stripe-public_api_key').text(),
-                image: '/square-image.png',
-                token: function(token, args) {
+                image: '/img/pdfunicorn_logo_75.png',
+                token: function(cardToken, args) {
                     // Use the token to the card on the customer's account.
                     console.log(args);
                     var update_model = new StripeModel();
                     update_model.save(
-                        { id: 'customer', card: token.id },
+                        { id: 'customer', card: cardToken.id },
                         {
                             success: function(model, response, options){
                                 View.model = model;
