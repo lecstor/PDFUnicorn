@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <title>PDFUnicorn - Markup Documentation</title>
+    <meta name="description" content="Documentation for the PDFUnicorn markup language" />
 	%= include 'site/head'
 	%= include 'mixpanel'
   

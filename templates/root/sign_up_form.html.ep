@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>PDF Unicorn Sign Up</title>
-    <meta name="description" content="convert your data to pdf" />
+    <title>PDFU - Sign Up</title>
+    <meta name="description" content="Sign Up to PDFUnicorn for a free 30 day trial. No credit card required." />
 	%= include 'site/head'
 	%= include 'mixpanel'
   

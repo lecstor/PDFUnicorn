@@ -1,7 +1,9 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>PDFUnicorn - API Documentation</title>
+    <title>PDFU - API Documentation</title>
+    <meta name="description" content="Documentation for the PDFUnicorn API" />
+    
 	%= include 'site/head'
 	%= include 'mixpanel'
   

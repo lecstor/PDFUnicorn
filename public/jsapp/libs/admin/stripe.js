@@ -51,6 +51,8 @@ define(["layoutmanager","underscore", "moment", "stripe_checkout"], function(Lay
                             success: function(model, response, options){
                                 View.model = model;
                                 View.render();
+                                //SubscriptionView.model = model;
+                                //SubscriptionView.render();
                             },
                             error: function(model, xhr, options){ console.log('card NOT stored successfully'); }
                         }

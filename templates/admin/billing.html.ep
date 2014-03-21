@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>PDFUnicorn - online PDF generator</title>
+    <title>PDFU Billing</title>
     %= include 'site/head'
     %= include 'mixpanel'
   
