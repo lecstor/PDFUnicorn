@@ -14,26 +14,47 @@
         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
     </div>
     
-    <script type='text/javascript'>
-        var _ues = {
-            host:'pdfunicorn.userecho.com',
-            forum:'29989',
-            lang:'en',
-            tab_corner_radius:5,
-            tab_font_size:20,
-            tab_image_hash:'ZmVlZGJhY2s%3D',
-            tab_chat_hash:'Y2hhdA%3D%3D',
-            tab_alignment:'right',
-            tab_text_color:'#FFFFFF',
-            tab_text_shadow_color:'#357EBD55',
-            tab_bg_color:'#428BCA',
-            tab_hover_color:'#47BF43'
-        };
+    <script>
+        // Include the UserVoice JavaScript SDK (only needed once on a page)
+        UserVoice=window.UserVoice||[];(function(){var uv=document.createElement('script');uv.type='text/javascript';uv.async=true;uv.src='//widget.uservoice.com/ZmnQDNc47NT4wSp1zLPEGA.js';var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(uv,s)})();
         
-        (function() {
-            var _ue = document.createElement('script'); _ue.type = 'text/javascript'; _ue.async = true;
-            _ue.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'cdn.userecho.com/js/widget-1.4.gz.js';
-            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(_ue, s);
-        })();
+        //
+        // UserVoice Javascript SDK developer documentation:
+        // https://www.uservoice.com/o/javascript-sdk
+        //
+        
+        // Set colors
+        UserVoice.push(['set', {
+          accent_color: '#448dd6',
+          trigger_color: 'white',
+          trigger_background_color: 'rgba(46, 49, 51, 0.6)'
+        }]);
+        
+        // Identify the user and pass traits
+        // To enable, replace sample data with actual user traits and uncomment the line
+        UserVoice.push(['identify', {
+          //email:      'john.doe@example.com', // User’s email address
+          //name:       'John Doe', // User’s real name
+          //created_at: 1364406966, // Unix timestamp for the date the user signed up
+          //id:         123, // Optional: Unique id of the user (if set, this should not change)
+          //type:       'Owner', // Optional: segment your users by type
+          //account: {
+          //  id:           123, // Optional: associate multiple users with a single account
+          //  name:         'Acme, Co.', // Account name
+          //  created_at:   1364406966, // Unix timestamp for the date the account was created
+          //  monthly_rate: 9.99, // Decimal; monthly rate of the account
+          //  ltv:          1495.00, // Decimal; lifetime value of the account
+          //  plan:         'Enhanced' // Plan name for the account
+          //}
+        }]);
+        
+        // Add default trigger to the bottom-right corner of the window:
+        UserVoice.push(['addTrigger', { mode: 'contact', trigger_position: 'bottom-right' }]);
+        
+        // Or, use your own custom trigger:
+        //UserVoice.push(['addTrigger', '#id', { mode: 'contact' }]);
+        
+        // Autoprompt for Satisfaction and SmartVote (only displayed under certain conditions)
+        UserVoice.push(['autoprompt', {}]);
     </script>
 % }
