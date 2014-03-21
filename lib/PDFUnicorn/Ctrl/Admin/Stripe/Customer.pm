@@ -18,7 +18,7 @@ sub find{
         $user->{stripe_id},
         #{ 'expand[]' => 'default_card' }, # doesn't work
         sub{
-            my ($client, $data) = @_;
+            my ($client, $status, $data) = @_;
             # TODO: didn't see an error with broken code.. $self->render( json => $data->subscription );
             $self->render( json => $data );
         }
@@ -40,7 +40,7 @@ sub update{
             $user->{stripe_id},
             { card => $card, 'expand[]' => 'default_card' },
             sub{
-                my ($client, $data) = @_;
+                my ($client, $status, $data) = @_;
                 # TODO: didn't see an error with broken code.. $self->render( json => $data->subscription );
                 $self->render( json => $data );
             }
