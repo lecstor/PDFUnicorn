@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>PDFU - PDF Creation Demonstration</title>
+    <title>PDFUnicorn Demo</title>
     <meta name="description" content="A demonstration of generating a PDF from a template and data with PDFUnicorn" />
     
     %= include 'site/head'
