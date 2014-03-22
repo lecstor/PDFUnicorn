@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>PDFUnicorn - create PDFs with our simple API</title>
+    <title>PDFUnicorn - PDF Creator</title>
     <meta name="description" content="A web service for creating PDF files from templates and data via a simple API" />
     
 	%= include 'site/head'

@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>PDFU - Example/Starter Document</title>
+    <title>Example/Starter Document</title>
     <meta name="description" content="A simple example of a PDFUnicorn document's sourece" />
 
 	%= include 'site/head'

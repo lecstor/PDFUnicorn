@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>PDFU - pricing plans</title>
+    <title>Subscription Plans</title>
     <meta name="description" content="Pricing plans for PDFUnicorn" />
 
 	%= include 'site/head'
