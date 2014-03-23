@@ -33,9 +33,14 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
     });
 
     var InvoicesView = Backbone.Layout.extend({
-        template: "#stripe-invoices-tmpl",
+        template: "#customer-invoices-tmpl",
         serialize: function() {
-            return this.model.serialize();
+            var data = {
+                customer: this.customer,
+                invoices: this.collection.toJSON()[0]
+            };
+            console.log(data);
+            return data;
         }
     });
 
