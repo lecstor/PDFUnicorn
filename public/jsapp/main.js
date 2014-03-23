@@ -79,18 +79,26 @@ if (path == '/admin/api-key'){
 
 } else if (path == '/admin/stripe/connect'){
 
-    require(['jquery', 'admin/stripe_connect/invoices'], function($, invoices){
-        invoices.collection.fetch({
-            "success": function(collection, response, options){ console.log(collection.toJSON()); },
-            "error": function(collection, response, options){
-                console.log(response);
-                if (response.status == 401){
-                    if (response.responseJSON.error && response.responseJSON.error.type == 'invalid_request_error'){
-                        $('#account-connected').html($('#connected-not').html());
-                    }
-                }
-            }
+    require(['jquery', 'admin/stripe_connect/customer', 'admin/stripe_connect/invoices'], function($, customer, invoices){
+        var customerView = new customer.view.customer({ el: '#customer-view' });
+        console.log(customerView);
+        var lookup = new customer.view.lookup({
+            el: '#customer-lookup',
+            customerView: new customer.view.customer()
         });
+        console.log(lookup);
+        // invoices.collection.fetch({
+            // success: function(collection, response, options){ console.log(collection.toJSON()); },
+            // error: function(collection, response, options){
+                // console.log(response);
+                // if (response.status == 401){
+                    // if (response.responseJSON.error && response.responseJSON.error.type == 'invalid_request_error'){
+                        // $('#account-connected').html($('#connected-not').html());
+                    // }
+                // }
+            // },
+            // data: { 'expand[]': 'data.customer' }
+        // });
     });
 
 // [Object]
