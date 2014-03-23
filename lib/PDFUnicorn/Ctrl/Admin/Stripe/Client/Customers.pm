@@ -57,7 +57,7 @@ sub list{
             
             my $customers = $stripe->customers->list(
                 sub{
-                    my ($client, $data) = @_;
+                    my ($client, $status, $data) = @_;
                     $self->render( json => $data );
                 },
                 $options
@@ -99,7 +99,7 @@ sub find{
                 $self->stash->{customer_id},
                 #{ 'expand[]' => 'default_card' }, # doesn't work
                 sub{
-                    my ($client, $data) = @_;
+                    my ($client, $status, $data) = @_;
                     $self->render( json => $data );
                 }
             );
