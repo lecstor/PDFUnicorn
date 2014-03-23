@@ -17,9 +17,11 @@ GET /admin/stripe/connect/invoices
 returns a list of the client's invoices
 
 request body: {
-    count => 10,    # how many to return
-    created => {},  # A filter on the list based on the object created field.
-    offset => 20,   # An offset into the list of returned items.
+    count: 10,    # how many to return
+    created: {},  # A filter on the list based on the object created field.
+    offset: 20,   # An offset into the list of returned items.
+    expand[]: 'data.customer',
+    customer:  'cus_3G9DKxyV0h9qj1'
 }
 
 attributes are passed to Stripe's Invoices API
@@ -49,13 +51,15 @@ sub list{
                     config => { secret_api_key => $client->{access_token} },
                 });
                 
-                my $data = $self->req->json();
-                my $options = {
-                    count => $data->{count},
-                    created => $data->{created},
-                    offset => $data->{offset}, 
-                };
-                
+                my $data = $self->req->params->to_hash();
+                $self->app->log->debug(Dumper($data));
+                my $options = {};
+                $options->{count} = $data->{count} if $data->{count};
+                $options->{created} = $data->{created} if $data->{created};
+                $options->{offset} = $data->{offset} if $data->{offset};
+                $options->{customer} = $data->{customer} if $data->{customer};
+                $options->{'expand[]'} = $data->{'expand[]'} if $data->{'expand[]'};
+                                
                 my $invoices = $stripe->invoices->list(
                     sub{
                         my ($client, $status, $data) = @_;
