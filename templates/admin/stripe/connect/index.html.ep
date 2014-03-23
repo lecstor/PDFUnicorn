@@ -41,6 +41,21 @@
                 </div>
             </div>
     	
+            <div class="col-xs-12 col-sm-9">
+                <h2>Customer Lookup</h2>
+
+                <div id="customer-lookup">
+                    <form id="customer-lookup-form" role="form" class="form-inline">
+                        <div class="form-group">
+                            <label class="sr-only" for="customer_id">Customer ID</label>
+                            <input type="text" class="form-control" id="customer_id" placeholder="Customer ID">
+                        </div>
+                        <button class="btn btn-default">Display</button>
+                    </form>
+                    <div id="customer-view">
+                    </div>
+                </div>
+            </div>
     	</div>
     </div>
     
@@ -56,6 +71,222 @@
         <p><a href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=<%= config->{stripe}{client_id} %>">Connect with your <b>live</b> Stripe account</a></p>
         <p><a href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=<%= config->{stripe}{test_client_id} %>">Connect with your <b>test</b> Stripe account</a></p>
     </div>
+
+
+
+    <script id="customer-tmpl" type="template">
+        <div id="section">
+            <div id="{%= id %}" class="customer-view">
+                <div class="detail-container">
+                    <div class="section clearfix">
+                        <!-- Header -->
+                        <div class="header">
+                            <div class="test-object-badge" title="Test Customer"></div>
+                            <div class="title">
+                                <h2 class="email">
+                                    <strong data-text="{%= email %}">{%= email %}</strong>
+                                    <span>{%= id %}</span>
+                                </h2><!---->
+                            </div>
+                        </div>
+                        <!-- Content -->
+                        <div class="content">
+                            <div class="gradient"></div>
+                            <!-- Details -->
+                            <div class="section-wrap">
+                                <h3>Customer Details</h3>
+                                <div class="container">
+                                    <dl class="dl-horizontal">
+                                        <dt>ID:</dt>
+                                        <dd>{%= id %}</dd>
+                                        
+                                        <dt>Created:</dt>
+                                        <dd>{%= created %}</dd>
+                
+                                        <dt>Email:</dt>
+                                        <dd class="edit_details">{%= email %}</dd>
+                
+                                        <dt>Description:</dt>
+                                        <dd class="edit_details"><em>{%= description %}</em></dd>
+                                    </dl>
+                                </div>
+                            </div>
+                            <!-- Metadata -->
+
+                            <!-- Cards -->
+                            <div class="section-wrap">
+                                <h3>Cards</h3>
+                                <div class="container cards sublist">
+                                    <!-- Loading state -->
+                                    <div class="loading" style="display: none;">
+                                      <em class="empty-container">Loading cards...</em>
+                                    </div>
+                    
+                                    <!-- There are cards -->
+                                    <div class="many">
+                                        {% _.each(cards.data, function(card) { %}
+                                            <ul>
+                                                <div class="card-row default-card" data-card="{%= card.id %}">
+                                                    <div class="row clearfix" onselectstart="return false;" onmousedown="return false;" unselectable="on">
+                                                        <span class="disclosure">
+                                                          <em></em>
+                                                        </span>
+                                                        <span class="type">{%= card.type %}</span>
+                                                        <span class="digits"><em>····</em>{%= card.last4 %}</span>
+                                                        <span class="expires">{%= card.exp_month %}/{%= card.exp_year %}</span>
+        
+                                                        <span class="default">
+                                                            {% if (card.id == default_card){ %}
+                                                                <em>DEFAULT</em>
+                                                            {% } %}
+                                                        </span>
+                                                    </div>
+                                                    <div class="full-details">
+        
+                                                        <div class="gxrid">
+                                                            <div class="part card-details">
+                                                                <div class="container clearfix">
+                                                                    <div class="address-details">
+                                                                        <dl>
+                                                                            <dt>Address:</dt>
+                                                                            <dd>
+                                                                                <p>{%= card.address_line1 %}</p>
+                                                                                {% if (card.address_line2){ %}<p>{%= card.address_line2 %}</p>{% } %}
+                                                                                <p>
+                                                                                    {%= card.address_zip %},
+                                                                                    {%= card.address_city %},
+                                                                                    {%= card.address_state %},
+                                                                                    {%= card.address_country %}
+                                                                                </p>
+                                                                            </dd>
+                                                                        </dl>
+                                                                        <dl>
+                                                                            <dt>Origin:</dt>
+                                                                            <dd>{%= card.country %}</dd>
+                                                                            <dt>CVC Check:</dt>
+                                                                            {% if (card.cvc_check == "pass"){ %}
+                                                                                <dd><span class="status passed">Passed</span></dd>
+                                                                            {% } else { %}
+                                                                                <dd><span class="status failed">Failed</span></dd>
+                                                                            {% } %}
+                                                                            <dt>Street Check:</dt>
+                                                                            {% if (card.address_line1_check == "pass"){ %}
+                                                                                <dd><span class="status passed">Passed</span></dd>
+                                                                            {% } else { %}
+                                                                                <dd><span class="status failed">Failed</span></dd>
+                                                                            {% } %}
+                                                                            <dt>Zip Check:</dt>
+                                                                            {% if (card.address_zip_check == "pass"){ %}
+                                                                                <dd><span class="status passed">Passed</span></dd>
+                                                                            {% } else { %}
+                                                                                <dd><span class="status failed">Failed</span></dd>
+                                                                            {% } %}
+                                                                        </dl>
+                                                                    </div>
+    
+                                                                    <div class="card-partial visa">
+                                                                        <dl>
+                                                                            <dt>ID: </dt>
+                                                                            <dd> {%= card.id %}</dd>
+                                                                            <dt>Name:</dt>
+                                                                            <dd>
+                                                                                {%= card.name %}
+                                                                            </dd>
+                                                        
+                                                                            <dt>Number:</dt>
+                                                                            <dd>
+                                                                                **** **** **** {%= card.last4 %}
+                                                                            </dd>
+                                                        
+                                                                            <dt>Fingerprint:</dt>
+                                                                            <dd>
+                                                                                {%= card.fingerprint %}
+                                                                            </dd>
+                                                        
+                                                                            <dt>Expires:</dt>
+                                                                            <dd>
+                                                                                {%= card.exp_month %} / {%= card.exp_year %}
+                                                                            </dd>
+                                                        
+                                                                            <dt>Type:</dt>
+                                                                            <dd>
+                                                                                {%= card.type %}
+                                                                            </dd>
+                                                        
+                                                                        </dl>
+                                                                    </div>
+                                                                </div>
+                                                        
+                                                            </div>
+                                                        
+                                                        </div>
+    
+                                                    </div>
+                                                </div>
+                                            </ul>
+                                        {% }); %}
+                                    </div>
+
+                                    <!-- No cards -->
+                                    <div class="none" style="display: none;">
+                                        <em class="empty-container">No cards</em>
+                                    </div>
+                                </div>
+                            </div>
+            
+                            <!-- Invoices -->
+                            <div class="section-wrap" id="customer-invoices"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        
+    </script>
+    
+    <script id="customer-invoices-tmpl" type="template">
+        <h3>Invoices</h3>
+        <div class="container invoices sublist">
+
+            <!-- Loading state -->
+            <div class="loading" style="display: none;">
+              <em class="empty-container">Loading invoice information...</em>
+            </div>
+
+            <!-- There are invoices -->
+            <div class="many">
+                <ul>
+                    {% _.each(invoices, function(invoice) { %}
+                        <li>
+                            <a data-model-id="{%= invoice.id %}" href="/test/invoices/{%= invoice.id %}" class="unpaid">
+                                <span class="date">{%= invoice.date %}</span>
+                        
+                                <strong>${%= invoice.amount_due/100 %}</strong>
+                                <em>— {%= invoice.id %}</em>
+                                
+                                  <em>— Billed from {%= invoice.subscription %}</em>
+                                
+                            </a>
+                        </li>
+                    {% }); %}
+                </ul>
+
+                <p class="more" style="display: none;">
+                    <a href="/test/invoices?customer={%= customer %}">
+                        View more invoices
+                    </a>
+                </p>
+            </div>
+
+            <!-- No invoices -->
+            <div class="none" style="display: none;">
+                <em class="empty-container">No invoices</em>
+            </div>
+        </div>
+    </script>
+
 
 </body>
 </html>
