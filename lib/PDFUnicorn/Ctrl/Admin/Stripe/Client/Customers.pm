@@ -74,11 +74,16 @@ GET /admin/stripe/connect/customers/:customer_id
 
 returns a client's customer
 
+GET /admin/stripe/connect/customers/:customer_id?invoices=1
+
+returns a client's customer and last 10 invoices
+
 =cut
 
 sub find{
     my ($self) = shift;
     my $user = $self->stash->{app_user};
+    my $get_invoices = $self->req->param('invoices');
     
     $self->render_later;
 
@@ -101,7 +106,8 @@ sub find{
                 sub{
                     my ($client, $status, $data) = @_;
                     $self->render( json => $data );
-                }
+                },
+                { invoices => $get_invoices }
             );
         
         }
