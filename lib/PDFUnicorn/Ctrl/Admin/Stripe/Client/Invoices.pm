@@ -52,7 +52,6 @@ sub list{
                 });
                 
                 my $data = $self->req->params->to_hash();
-                $self->app->log->debug(Dumper($data));
                 my $options = {};
                 $options->{count} = $data->{count} if $data->{count};
                 $options->{created} = $data->{created} if $data->{created};
