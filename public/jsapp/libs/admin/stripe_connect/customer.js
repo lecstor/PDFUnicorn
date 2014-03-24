@@ -25,6 +25,20 @@ define([
             if (!data.description){
                 data.description = 'None';
             }
+            _.each(data.invoices.data, function(invoice){
+                invoice.date = moment.unix(invoice.date).format("ddd, Do MMM YYYY");
+                invoice.period_start = moment.unix(invoice.period_start).format("ddd, Do MMM YYYY");
+                invoice.period_end = moment.unix(invoice.period_end).format("ddd, Do MMM YYYY");
+                invoice.subtotal = invoice.subtotal/100;
+                invoice.total = invoice.total/100;
+                invoice.amount_due = invoice.amount_due/100;
+                _.each(invoice.lines.data, function(line){
+                    line.amount = line.amount/100;
+                    line.period.start = moment.unix(line.period.start).format("ddd, Do MMM YYYY");
+                    line.period.end = moment.unix(line.period.end).format("ddd, Do MMM YYYY");
+                });
+            });
+            data.card = _.find(data.cards.data, function(card){ console.log(card.id +'=='+ data.default_card); return card.id == data.default_card });
             return data;
         }
     });
@@ -47,19 +61,10 @@ define([
 
             console.log('lookupCustomer.fetch');
             model.fetch({
+                data: { invoices: 1 },
                 success: function(model, response, options){
                     console.log(customerView);
-                    var invoicesView = customerView.getView('#customer-invoices');
-                    invoicesView.customer = customer_id;
-                    invoicesView.collection.fetch({
-                        data: { customer: customer_id },
-                        success: function(){
-                            customerView.render();
-                        },
-                        error: function(){
-                            alert("There was an error retrieving the customer's invoices");
-                        }
-                    });
+                    customerView.render();
                 },
                 error: function(model, response, options){
                     alert('There was an error retrieving the customer');
@@ -70,9 +75,6 @@ define([
 
     var CustomerView = Backbone.Layout.extend({
         template: "#customer-tmpl",
-        views: {
-            "#customer-invoices": invoices,
-        },
         serialize: function() {
             console.log(this.model.toJSON());
             return this.model.serialize();
