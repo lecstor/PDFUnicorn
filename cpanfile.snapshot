@@ -85,16 +85,16 @@ DISTRIBUTIONS
     requirements:
       Digest::MD5 0
       ExtUtils::MakeMaker 0
-  DateTime-1.07
-    pathname: D/DR/DROLSKY/DateTime-1.07.tar.gz
+  DateTime-1.08
+    pathname: D/DR/DROLSKY/DateTime-1.08.tar.gz
     provides:
-      DateTime 1.07
-      DateTime::Duration 1.07
-      DateTime::Helpers 1.07
-      DateTime::Infinite 1.07
-      DateTime::Infinite::Future 1.07
-      DateTime::Infinite::Past 1.07
-      DateTime::LeapSecond 1.07
+      DateTime 1.08
+      DateTime::Duration 1.08
+      DateTime::Helpers 1.08
+      DateTime::Infinite 1.08
+      DateTime::Infinite::Future 1.08
+      DateTime::Infinite::Past 1.08
+      DateTime::LeapSecond 1.08
       inc::MyModuleBuild undef
     requirements:
       Carp 0
@@ -1056,54 +1056,54 @@ DISTRIBUTIONS
       perl 5.011002
       strict 0
       warnings 0
-  Devel-Cover-1.08
-    pathname: P/PJ/PJCJ/Devel-Cover-1.08.tar.gz
+  Devel-Cover-1.09
+    pathname: P/PJ/PJCJ/Devel-Cover-1.09.tar.gz
     provides:
-      Devel::Cover 1.08
-      Devel::Cover::Annotation::Git 1.08
-      Devel::Cover::Annotation::Random 1.08
-      Devel::Cover::Annotation::Svk 1.08
-      Devel::Cover::Branch 1.08
-      Devel::Cover::Condition 1.08
-      Devel::Cover::Condition_and_2 1.08
-      Devel::Cover::Condition_and_3 1.08
-      Devel::Cover::Condition_or_2 1.08
-      Devel::Cover::Condition_or_3 1.08
-      Devel::Cover::Condition_xor_4 1.08
-      Devel::Cover::Criterion 1.08
-      Devel::Cover::DB 1.08
-      Devel::Cover::DB::Criterion 1.08
-      Devel::Cover::DB::Digests 1.08
-      Devel::Cover::DB::File 1.08
-      Devel::Cover::DB::IO 1.08
-      Devel::Cover::DB::IO::JSON 1.08
-      Devel::Cover::DB::IO::Storable 1.08
-      Devel::Cover::DB::Run 1.08
-      Devel::Cover::DB::Structure 1.08
-      Devel::Cover::Html_Common 1.08
-      Devel::Cover::Inc 1.08
-      Devel::Cover::Op 1.08
-      Devel::Cover::Pod 1.08
-      Devel::Cover::Report::Compilation 1.08
-      Devel::Cover::Report::Html 1.08
-      Devel::Cover::Report::Html_basic 1.08
-      Devel::Cover::Report::Html_basic::Template::Provider 1.08
-      Devel::Cover::Report::Html_minimal 1.08
-      Devel::Cover::Report::Html_subtle 1.08
-      Devel::Cover::Report::Html_subtle::Template::Provider 1.08
-      Devel::Cover::Report::Sort 1.08
-      Devel::Cover::Report::Text 1.08
-      Devel::Cover::Report::Text2 1.08
-      Devel::Cover::Report::Vim 1.08
-      Devel::Cover::Report::Vim::Template::Provider 1.08
-      Devel::Cover::Statement 1.08
-      Devel::Cover::Subroutine 1.08
-      Devel::Cover::Test 1.08
-      Devel::Cover::Time 1.08
-      Devel::Cover::Truth_Table 1.08
-      Devel::Cover::Truth_Table::Row 1.08
-      Devel::Cover::Util 1.08
-      Devel::Cover::Web 1.08
+      Devel::Cover 1.09
+      Devel::Cover::Annotation::Git 1.09
+      Devel::Cover::Annotation::Random 1.09
+      Devel::Cover::Annotation::Svk 1.09
+      Devel::Cover::Branch 1.09
+      Devel::Cover::Condition 1.09
+      Devel::Cover::Condition_and_2 1.09
+      Devel::Cover::Condition_and_3 1.09
+      Devel::Cover::Condition_or_2 1.09
+      Devel::Cover::Condition_or_3 1.09
+      Devel::Cover::Condition_xor_4 1.09
+      Devel::Cover::Criterion 1.09
+      Devel::Cover::DB 1.09
+      Devel::Cover::DB::Criterion 1.09
+      Devel::Cover::DB::Digests 1.09
+      Devel::Cover::DB::File 1.09
+      Devel::Cover::DB::IO 1.09
+      Devel::Cover::DB::IO::JSON 1.09
+      Devel::Cover::DB::IO::Storable 1.09
+      Devel::Cover::DB::Run 1.09
+      Devel::Cover::DB::Structure 1.09
+      Devel::Cover::Html_Common 1.09
+      Devel::Cover::Inc 1.09
+      Devel::Cover::Op 1.09
+      Devel::Cover::Pod 1.09
+      Devel::Cover::Report::Compilation 1.09
+      Devel::Cover::Report::Html 1.09
+      Devel::Cover::Report::Html_basic 1.09
+      Devel::Cover::Report::Html_basic::Template::Provider 1.09
+      Devel::Cover::Report::Html_minimal 1.09
+      Devel::Cover::Report::Html_subtle 1.09
+      Devel::Cover::Report::Html_subtle::Template::Provider 1.09
+      Devel::Cover::Report::Sort 1.09
+      Devel::Cover::Report::Text 1.09
+      Devel::Cover::Report::Text2 1.09
+      Devel::Cover::Report::Vim 1.09
+      Devel::Cover::Report::Vim::Template::Provider 1.09
+      Devel::Cover::Statement 1.09
+      Devel::Cover::Subroutine 1.09
+      Devel::Cover::Test 1.09
+      Devel::Cover::Time 1.09
+      Devel::Cover::Truth_Table 1.09
+      Devel::Cover::Truth_Table::Row 1.09
+      Devel::Cover::Util 1.09
+      Devel::Cover::Web 1.09
     requirements:
       Digest::MD5 0
       ExtUtils::MakeMaker 0
@@ -1158,10 +1158,10 @@ DISTRIBUTIONS
       perl 5.006
       strict 0
       warnings 0
-  EV-4.15
-    pathname: M/ML/MLEHMANN/EV-4.15.tar.gz
+  EV-4.16
+    pathname: M/ML/MLEHMANN/EV-4.16.tar.gz
     provides:
-      EV 4.15
+      EV 4.16
       EV::MakeMaker undef
     requirements:
       ExtUtils::MakeMaker 0
@@ -1205,33 +1205,33 @@ DISTRIBUTIONS
       Time::Local 0
       strict 0
       warnings 0
-  Email-Sender-1.300010
-    pathname: R/RJ/RJBS/Email-Sender-1.300010.tar.gz
+  Email-Sender-1.300011
+    pathname: R/RJ/RJBS/Email-Sender-1.300011.tar.gz
     provides:
-      Email::Sender 1.300010
-      Email::Sender::Failure 1.300010
-      Email::Sender::Failure::Multi 1.300010
-      Email::Sender::Failure::Permanent 1.300010
-      Email::Sender::Failure::Temporary 1.300010
-      Email::Sender::Manual 1.300010
-      Email::Sender::Manual::QuickStart 1.300010
-      Email::Sender::Role::CommonSending 1.300010
-      Email::Sender::Role::HasMessage 1.300010
-      Email::Sender::Simple 1.300010
-      Email::Sender::Success 1.300010
-      Email::Sender::Success::Partial 1.300010
-      Email::Sender::Transport 1.300010
-      Email::Sender::Transport::DevNull 1.300010
-      Email::Sender::Transport::Failable 1.300010
-      Email::Sender::Transport::Maildir 1.300010
-      Email::Sender::Transport::Mbox 1.300010
-      Email::Sender::Transport::Print 1.300010
-      Email::Sender::Transport::SMTP 1.300010
-      Email::Sender::Transport::SMTP::Persistent 1.300010
-      Email::Sender::Transport::Sendmail 1.300010
-      Email::Sender::Transport::Test 1.300010
-      Email::Sender::Transport::Wrapper 1.300010
-      Email::Sender::Util 1.300010
+      Email::Sender 1.300011
+      Email::Sender::Failure 1.300011
+      Email::Sender::Failure::Multi 1.300011
+      Email::Sender::Failure::Permanent 1.300011
+      Email::Sender::Failure::Temporary 1.300011
+      Email::Sender::Manual 1.300011
+      Email::Sender::Manual::QuickStart 1.300011
+      Email::Sender::Role::CommonSending 1.300011
+      Email::Sender::Role::HasMessage 1.300011
+      Email::Sender::Simple 1.300011
+      Email::Sender::Success 1.300011
+      Email::Sender::Success::Partial 1.300011
+      Email::Sender::Transport 1.300011
+      Email::Sender::Transport::DevNull 1.300011
+      Email::Sender::Transport::Failable 1.300011
+      Email::Sender::Transport::Maildir 1.300011
+      Email::Sender::Transport::Mbox 1.300011
+      Email::Sender::Transport::Print 1.300011
+      Email::Sender::Transport::SMTP 1.300011
+      Email::Sender::Transport::SMTP::Persistent 1.300011
+      Email::Sender::Transport::Sendmail 1.300011
+      Email::Sender::Transport::Test 1.300011
+      Email::Sender::Transport::Wrapper 1.300011
+      Email::Sender::Util 1.300011
       Test::Email::SMTPRig undef
       Test::Email::Sender::Transport::FailEvery undef
       Test::Email::Sender::Util undef
@@ -1243,7 +1243,7 @@ DISTRIBUTIONS
       ExtUtils::MakeMaker 6.30
       Fcntl 0
       File::Basename 0
-      File::Path 0
+      File::Path 2.06
       File::Spec 0
       IO::File 0
       IO::Handle 0
@@ -1558,22 +1558,22 @@ DISTRIBUTIONS
       File::Temp 0
       Scalar::Util 0
       Test::More 0.88
-  IO-Socket-IP-0.28
-    pathname: P/PE/PEVANS/IO-Socket-IP-0.28.tar.gz
+  IO-Socket-IP-0.29
+    pathname: P/PE/PEVANS/IO-Socket-IP-0.29.tar.gz
     provides:
-      IO::Socket::IP 0.28
+      IO::Socket::IP 0.29
     requirements:
       IO::Socket 0
       Socket 1.97
       Test::More 0.88
-  IO-Socket-SSL-1.967
-    pathname: S/SU/SULLR/IO-Socket-SSL-1.967.tar.gz
+  IO-Socket-SSL-1.973
+    pathname: S/SU/SULLR/IO-Socket-SSL-1.973.tar.gz
     provides:
-      IO::Socket::SSL 1.967
+      IO::Socket::SSL 1.973
       IO::Socket::SSL::Intercept 1.93
-      IO::Socket::SSL::SSL_Context 1.967
-      IO::Socket::SSL::SSL_HANDLE 1.967
-      IO::Socket::SSL::Session_Cache 1.967
+      IO::Socket::SSL::SSL_Context 1.973
+      IO::Socket::SSL::SSL_HANDLE 1.973
+      IO::Socket::SSL::Session_Cache 1.973
       IO::Socket::SSL::Utils 0.02
     requirements:
       ExtUtils::MakeMaker 0
@@ -1654,10 +1654,10 @@ DISTRIBUTIONS
       ExtUtils::MakeMaker 6.59
       Test::More 0.47
       perl 5.006
-  Mango-0.23
-    pathname: S/SR/SRI/Mango-0.23.tar.gz
+  Mango-0.24
+    pathname: S/SR/SRI/Mango-0.24.tar.gz
     provides:
-      Mango 0.23
+      Mango 0.24
       Mango::BSON undef
       Mango::BSON::Binary undef
       Mango::BSON::Code undef
@@ -1676,7 +1676,7 @@ DISTRIBUTIONS
       Mango::Protocol undef
     requirements:
       ExtUtils::MakeMaker 0
-      Mojolicious 4.56
+      Mojolicious 4.85
   Module-Build-Tiny-0.034
     pathname: L/LE/LEONT/Module-Build-Tiny-0.034.tar.gz
     provides:
@@ -1739,8 +1739,8 @@ DISTRIBUTIONS
       perl 5.006
       strict 0
       warnings 0
-  Mojolicious-4.81
-    pathname: S/SR/SRI/Mojolicious-4.81.tar.gz
+  Mojolicious-4.90
+    pathname: S/SR/SRI/Mojolicious-4.90.tar.gz
     provides:
       Mojo undef
       Mojo::Asset undef
@@ -1803,7 +1803,7 @@ DISTRIBUTIONS
       Mojo::UserAgent::Server undef
       Mojo::UserAgent::Transactor undef
       Mojo::Util undef
-      Mojolicious 4.81
+      Mojolicious 4.90
       Mojolicious::Command undef
       Mojolicious::Command::cgi undef
       Mojolicious::Command::cpanify undef
@@ -1852,10 +1852,10 @@ DISTRIBUTIONS
     requirements:
       ExtUtils::MakeMaker 0
       perl 5.010001
-  Mojolicious-Plugin-RenderFile-0.06
-    pathname: K/KO/KOORCHIK/Mojolicious-Plugin-RenderFile-0.06.tar.gz
+  Mojolicious-Plugin-RenderFile-0.07
+    pathname: K/KO/KOORCHIK/Mojolicious-Plugin-RenderFile-0.07.tar.gz
     provides:
-      Mojolicious::Plugin::RenderFile 0.06
+      Mojolicious::Plugin::RenderFile 0.07
     requirements:
       ExtUtils::MakeMaker 0
       Mojolicious 3.90
@@ -1936,112 +1936,112 @@ DISTRIBUTIONS
       MIME::Base64 0
       Test::More 0.60_01
       perl 5.005
-  PDF-API2-2.020
-    pathname: S/SS/SSIMMS/PDF-API2-2.020.tar.gz
+  PDF-API2-2.021
+    pathname: S/SS/SSIMMS/PDF-API2-2.021.tar.gz
     provides:
-      PDF::API2 2.020
-      PDF::API2::Annotation 2.020
-      PDF::API2::Basic::PDF::Array 2.020
-      PDF::API2::Basic::PDF::Bool 2.020
-      PDF::API2::Basic::PDF::Dict 2.020
-      PDF::API2::Basic::PDF::File 2.020
-      PDF::API2::Basic::PDF::Filter 2.020
-      PDF::API2::Basic::PDF::Filter::ASCII85Decode 2.020
-      PDF::API2::Basic::PDF::Filter::ASCIIHexDecode 2.020
-      PDF::API2::Basic::PDF::Filter::FlateDecode 2.020
-      PDF::API2::Basic::PDF::Filter::LZWDecode 2.020
-      PDF::API2::Basic::PDF::Filter::RunLengthDecode 2.020
-      PDF::API2::Basic::PDF::Literal 2.020
-      PDF::API2::Basic::PDF::Name 2.020
-      PDF::API2::Basic::PDF::Null 2.020
-      PDF::API2::Basic::PDF::Number 2.020
-      PDF::API2::Basic::PDF::Objind 2.020
-      PDF::API2::Basic::PDF::Page 2.020
-      PDF::API2::Basic::PDF::Pages 2.020
-      PDF::API2::Basic::PDF::String 2.020
-      PDF::API2::Basic::PDF::Utils 2.020
-      PDF::API2::Content 2.020
-      PDF::API2::Content::Text 2.020
-      PDF::API2::Lite 2.020
-      PDF::API2::Matrix 2.020
-      PDF::API2::NamedDestination 2.020
-      PDF::API2::Outline 2.020
-      PDF::API2::Outlines 2.020
-      PDF::API2::Page 2.020
-      PDF::API2::Resource 2.020
-      PDF::API2::Resource::BaseFont 2.020
-      PDF::API2::Resource::CIDFont 2.020
-      PDF::API2::Resource::CIDFont::CJKFont 2.020
-      PDF::API2::Resource::CIDFont::TrueType 2.020
-      PDF::API2::Resource::CIDFont::TrueType::FontFile 2.020
-      PDF::API2::Resource::ColorSpace 2.020
-      PDF::API2::Resource::ColorSpace::DeviceN 2.020
-      PDF::API2::Resource::ColorSpace::Indexed 2.020
-      PDF::API2::Resource::ColorSpace::Indexed::ACTFile 2.020
-      PDF::API2::Resource::ColorSpace::Indexed::Hue 2.020
-      PDF::API2::Resource::ColorSpace::Indexed::WebColor 2.020
-      PDF::API2::Resource::ColorSpace::Separation 2.020
-      PDF::API2::Resource::Colors 2.020
-      PDF::API2::Resource::ExtGState 2.020
-      PDF::API2::Resource::Font 2.020
-      PDF::API2::Resource::Font::BdFont 2.020
-      PDF::API2::Resource::Font::CoreFont 2.020
-      PDF::API2::Resource::Font::CoreFont::bankgothic 2.020
-      PDF::API2::Resource::Font::CoreFont::courier 2.020
-      PDF::API2::Resource::Font::CoreFont::courierbold 2.020
-      PDF::API2::Resource::Font::CoreFont::courierboldoblique 2.020
-      PDF::API2::Resource::Font::CoreFont::courieroblique 2.020
-      PDF::API2::Resource::Font::CoreFont::georgia 2.020
-      PDF::API2::Resource::Font::CoreFont::georgiabold 2.020
-      PDF::API2::Resource::Font::CoreFont::georgiabolditalic 2.020
-      PDF::API2::Resource::Font::CoreFont::georgiaitalic 2.020
-      PDF::API2::Resource::Font::CoreFont::helvetica 2.020
-      PDF::API2::Resource::Font::CoreFont::helveticabold 2.020
-      PDF::API2::Resource::Font::CoreFont::helveticaboldoblique 2.020
-      PDF::API2::Resource::Font::CoreFont::helveticaoblique 2.020
-      PDF::API2::Resource::Font::CoreFont::symbol 2.020
-      PDF::API2::Resource::Font::CoreFont::timesbold 2.020
-      PDF::API2::Resource::Font::CoreFont::timesbolditalic 2.020
-      PDF::API2::Resource::Font::CoreFont::timesitalic 2.020
-      PDF::API2::Resource::Font::CoreFont::timesroman 2.020
-      PDF::API2::Resource::Font::CoreFont::trebuchet 2.020
-      PDF::API2::Resource::Font::CoreFont::trebuchetbold 2.020
-      PDF::API2::Resource::Font::CoreFont::trebuchetbolditalic 2.020
-      PDF::API2::Resource::Font::CoreFont::trebuchetitalic 2.020
-      PDF::API2::Resource::Font::CoreFont::verdana 2.020
-      PDF::API2::Resource::Font::CoreFont::verdanabold 2.020
-      PDF::API2::Resource::Font::CoreFont::verdanabolditalic 2.020
-      PDF::API2::Resource::Font::CoreFont::verdanaitalic 2.020
-      PDF::API2::Resource::Font::CoreFont::webdings 2.020
-      PDF::API2::Resource::Font::CoreFont::wingdings 2.020
-      PDF::API2::Resource::Font::CoreFont::zapfdingbats 2.020
-      PDF::API2::Resource::Font::Postscript 2.020
-      PDF::API2::Resource::Font::SynFont 2.020
-      PDF::API2::Resource::Glyphs 2.020
-      PDF::API2::Resource::PaperSizes 2.020
-      PDF::API2::Resource::Pattern 2.020
-      PDF::API2::Resource::Shading 2.020
-      PDF::API2::Resource::UniFont 2.020
-      PDF::API2::Resource::XObject 2.020
-      PDF::API2::Resource::XObject::Form 2.020
-      PDF::API2::Resource::XObject::Form::BarCode 2.020
-      PDF::API2::Resource::XObject::Form::BarCode::codabar 2.020
-      PDF::API2::Resource::XObject::Form::BarCode::code128 2.020
-      PDF::API2::Resource::XObject::Form::BarCode::code3of9 2.020
-      PDF::API2::Resource::XObject::Form::BarCode::ean13 2.020
-      PDF::API2::Resource::XObject::Form::BarCode::int2of5 2.020
-      PDF::API2::Resource::XObject::Form::Hybrid 2.020
-      PDF::API2::Resource::XObject::Image 2.020
-      PDF::API2::Resource::XObject::Image::GD 2.020
-      PDF::API2::Resource::XObject::Image::GIF 2.020
-      PDF::API2::Resource::XObject::Image::JPEG 2.020
-      PDF::API2::Resource::XObject::Image::PNG 2.020
-      PDF::API2::Resource::XObject::Image::PNM 2.020
-      PDF::API2::Resource::XObject::Image::TIFF 2.020
-      PDF::API2::Resource::XObject::Image::Tiff::File 2.020
-      PDF::API2::UniWrap 2.020
-      PDF::API2::Util 2.020
-      PDF::API2::Win32 2.020
+      PDF::API2 2.021
+      PDF::API2::Annotation 2.021
+      PDF::API2::Basic::PDF::Array 2.021
+      PDF::API2::Basic::PDF::Bool 2.021
+      PDF::API2::Basic::PDF::Dict 2.021
+      PDF::API2::Basic::PDF::File 2.021
+      PDF::API2::Basic::PDF::Filter 2.021
+      PDF::API2::Basic::PDF::Filter::ASCII85Decode 2.021
+      PDF::API2::Basic::PDF::Filter::ASCIIHexDecode 2.021
+      PDF::API2::Basic::PDF::Filter::FlateDecode 2.021
+      PDF::API2::Basic::PDF::Filter::LZWDecode 2.021
+      PDF::API2::Basic::PDF::Filter::RunLengthDecode 2.021
+      PDF::API2::Basic::PDF::Literal 2.021
+      PDF::API2::Basic::PDF::Name 2.021
+      PDF::API2::Basic::PDF::Null 2.021
+      PDF::API2::Basic::PDF::Number 2.021
+      PDF::API2::Basic::PDF::Objind 2.021
+      PDF::API2::Basic::PDF::Page 2.021
+      PDF::API2::Basic::PDF::Pages 2.021
+      PDF::API2::Basic::PDF::String 2.021
+      PDF::API2::Basic::PDF::Utils 2.021
+      PDF::API2::Content 2.021
+      PDF::API2::Content::Text 2.021
+      PDF::API2::Lite 2.021
+      PDF::API2::Matrix 2.021
+      PDF::API2::NamedDestination 2.021
+      PDF::API2::Outline 2.021
+      PDF::API2::Outlines 2.021
+      PDF::API2::Page 2.021
+      PDF::API2::Resource 2.021
+      PDF::API2::Resource::BaseFont 2.021
+      PDF::API2::Resource::CIDFont 2.021
+      PDF::API2::Resource::CIDFont::CJKFont 2.021
+      PDF::API2::Resource::CIDFont::TrueType 2.021
+      PDF::API2::Resource::CIDFont::TrueType::FontFile 2.021
+      PDF::API2::Resource::ColorSpace 2.021
+      PDF::API2::Resource::ColorSpace::DeviceN 2.021
+      PDF::API2::Resource::ColorSpace::Indexed 2.021
+      PDF::API2::Resource::ColorSpace::Indexed::ACTFile 2.021
+      PDF::API2::Resource::ColorSpace::Indexed::Hue 2.021
+      PDF::API2::Resource::ColorSpace::Indexed::WebColor 2.021
+      PDF::API2::Resource::ColorSpace::Separation 2.021
+      PDF::API2::Resource::Colors 2.021
+      PDF::API2::Resource::ExtGState 2.021
+      PDF::API2::Resource::Font 2.021
+      PDF::API2::Resource::Font::BdFont 2.021
+      PDF::API2::Resource::Font::CoreFont 2.021
+      PDF::API2::Resource::Font::CoreFont::bankgothic 2.021
+      PDF::API2::Resource::Font::CoreFont::courier 2.021
+      PDF::API2::Resource::Font::CoreFont::courierbold 2.021
+      PDF::API2::Resource::Font::CoreFont::courierboldoblique 2.021
+      PDF::API2::Resource::Font::CoreFont::courieroblique 2.021
+      PDF::API2::Resource::Font::CoreFont::georgia 2.021
+      PDF::API2::Resource::Font::CoreFont::georgiabold 2.021
+      PDF::API2::Resource::Font::CoreFont::georgiabolditalic 2.021
+      PDF::API2::Resource::Font::CoreFont::georgiaitalic 2.021
+      PDF::API2::Resource::Font::CoreFont::helvetica 2.021
+      PDF::API2::Resource::Font::CoreFont::helveticabold 2.021
+      PDF::API2::Resource::Font::CoreFont::helveticaboldoblique 2.021
+      PDF::API2::Resource::Font::CoreFont::helveticaoblique 2.021
+      PDF::API2::Resource::Font::CoreFont::symbol 2.021
+      PDF::API2::Resource::Font::CoreFont::timesbold 2.021
+      PDF::API2::Resource::Font::CoreFont::timesbolditalic 2.021
+      PDF::API2::Resource::Font::CoreFont::timesitalic 2.021
+      PDF::API2::Resource::Font::CoreFont::timesroman 2.021
+      PDF::API2::Resource::Font::CoreFont::trebuchet 2.021
+      PDF::API2::Resource::Font::CoreFont::trebuchetbold 2.021
+      PDF::API2::Resource::Font::CoreFont::trebuchetbolditalic 2.021
+      PDF::API2::Resource::Font::CoreFont::trebuchetitalic 2.021
+      PDF::API2::Resource::Font::CoreFont::verdana 2.021
+      PDF::API2::Resource::Font::CoreFont::verdanabold 2.021
+      PDF::API2::Resource::Font::CoreFont::verdanabolditalic 2.021
+      PDF::API2::Resource::Font::CoreFont::verdanaitalic 2.021
+      PDF::API2::Resource::Font::CoreFont::webdings 2.021
+      PDF::API2::Resource::Font::CoreFont::wingdings 2.021
+      PDF::API2::Resource::Font::CoreFont::zapfdingbats 2.021
+      PDF::API2::Resource::Font::Postscript 2.021
+      PDF::API2::Resource::Font::SynFont 2.021
+      PDF::API2::Resource::Glyphs 2.021
+      PDF::API2::Resource::PaperSizes 2.021
+      PDF::API2::Resource::Pattern 2.021
+      PDF::API2::Resource::Shading 2.021
+      PDF::API2::Resource::UniFont 2.021
+      PDF::API2::Resource::XObject 2.021
+      PDF::API2::Resource::XObject::Form 2.021
+      PDF::API2::Resource::XObject::Form::BarCode 2.021
+      PDF::API2::Resource::XObject::Form::BarCode::codabar 2.021
+      PDF::API2::Resource::XObject::Form::BarCode::code128 2.021
+      PDF::API2::Resource::XObject::Form::BarCode::code3of9 2.021
+      PDF::API2::Resource::XObject::Form::BarCode::ean13 2.021
+      PDF::API2::Resource::XObject::Form::BarCode::int2of5 2.021
+      PDF::API2::Resource::XObject::Form::Hybrid 2.021
+      PDF::API2::Resource::XObject::Image 2.021
+      PDF::API2::Resource::XObject::Image::GD 2.021
+      PDF::API2::Resource::XObject::Image::GIF 2.021
+      PDF::API2::Resource::XObject::Image::JPEG 2.021
+      PDF::API2::Resource::XObject::Image::PNG 2.021
+      PDF::API2::Resource::XObject::Image::PNM 2.021
+      PDF::API2::Resource::XObject::Image::TIFF 2.021
+      PDF::API2::Resource::XObject::Image::Tiff::File 2.021
+      PDF::API2::UniWrap 2.021
+      PDF::API2::Util 2.021
+      PDF::API2::Win32 2.021
     requirements:
       Compress::Zlib 1.0
       ExtUtils::MakeMaker 6.30
