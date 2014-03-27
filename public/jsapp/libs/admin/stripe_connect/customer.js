@@ -34,6 +34,7 @@ define([
                 invoice.amount_due = invoice.amount_due/100;
                 _.each(invoice.lines.data, function(line){
                     line.amount = line.amount/100;
+                    line.plan.amount = line.plan.amount/100;
                     line.period.start = moment.unix(line.period.start).format("ddd, Do MMM YYYY");
                     line.period.end = moment.unix(line.period.end).format("ddd, Do MMM YYYY");
                 });
