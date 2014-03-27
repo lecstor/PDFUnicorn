@@ -2,7 +2,7 @@
     <div style="display: none" id="stripe-public_api_key"><%= $config->{stripe}{public_api_key} %></div>
     <script src="/jsapp/require.js" data-main="/jsapp/main"></script>
 
-% if ($config->{'mode'} eq 'production'){
+% if ($config->{'mode'} && $config->{'mode'} eq 'production'){
 
     <div class="pull-right" style="margin: 20px 80px 0 10px">
         <a href="https://twitter.com/PDFUnicorn" class="twitter-follow-button" data-show-count="false">Follow @PDFUnicorn</a>
