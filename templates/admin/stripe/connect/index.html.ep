@@ -79,44 +79,38 @@
             <div id="{%= id %}" class="customer-view">
                 <div class="detail-container">
                     <div class="section clearfix">
-                        <!-- Header -->
-                        <div class="header">
-                            <div class="test-object-badge" title="Test Customer"></div>
-                            <div class="title">
-                                <h2 class="email">
-                                    <strong data-text="{%= email %}">{%= email %}</strong>
-                                    <span>{%= id %}</span>
-                                </h2><!---->
-                            </div>
-                        </div>
                         <!-- Content -->
                         <div class="content">
                             <div class="gradient"></div>
                             <!-- Details -->
                             <div class="section-wrap">
-                                <h3>Customer Details</h3>
+                                <h4>Customer Details</h4>
                                 <div class="container">
                                     <dl class="dl-horizontal">
                                         <dt>ID:</dt>
                                         <dd>{%= id %}</dd>
                                         
-                                        <dt>Name:</dt>
-                                        <dd class="edit_details">{%= card.name %}</dd>
-                
                                         <dt>Email:</dt>
                                         <dd class="edit_details">{%= email %}</dd>
                 
                                         <dt>Description:</dt>
                                         <dd class="edit_details"><em>{%= description %}</em></dd>
 
+                                </div>
+                                <h4>Default Card Details</h4>
+                                <div class="container">
+                                    <dl class="dl-horizontal">
+                                        <dt>Name:</dt>
+                                        <dd class="edit_details">{%= card.name %}</dd>
+                
                                         <dt>Address:</dt>
                                         <dd class="edit_details">
-                                            <p>{%= card.address_line1 %}</p>
-                                            {% if (card.address_line2){ %}<p>{%= card.address_line2 %}</p>{% } %}
                                             <p>
-                                                {%= card.address_zip %},
+                                                {%= card.address_line1 %}<br />
+                                                {% if (card.address_line2){ %}{%= card.address_line2 %}<br />{% } %}
                                                 {%= card.address_city %},
                                                 {%= card.address_state %},
+                                                {%= card.address_zip %},
                                                 {%= card.address_country %}
                                             </p>
                                         </dd>
@@ -126,7 +120,7 @@
             
                             <!-- Invoices -->
                             <div class="section-wrap" id="customer-invoices">
-                                <h3>Invoices</h3>
+                                <h4>Invoices</h4>
                                 <div class="container invoices sublist">
                         
                                     <!-- Loading state -->
@@ -141,13 +135,15 @@
                                                 <li>
                                                     <a data-model-id="{%= invoice.id %}" href="/test/invoices/{%= invoice.id %}" class="unpaid">
                                                         <span class="date">{%= invoice.date %}</span>
-                                                
                                                         <strong>${%= invoice.amount_due %}</strong>
-                                                        <em>— {%= invoice.id %}</em>
-                                                        
-                                                          <em>— Billed from {%= invoice.subscription %}</em>
-                                                        
                                                     </a>
+                                                    <ul>
+                                                        {% _.each(invoice.lines.data, function(line){ %}
+                                                            <li>
+                                                                <b>Plan: </b>{%= line.plan.name %} @ ${%= line.plan.amount %}
+                                                            </li>
+                                                        {% }); %}
+                                                    </ul>
                                                 </li>
                                             {% }); %}
                                         </ul>
