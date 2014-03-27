@@ -63,18 +63,6 @@ sub create {
     delete $data->{id};
     delete $data->{_id};
     
-    my $pdf_renderer = $self->stash->{pdf_renderer} = sub{
-        my ($self, $source) = @_;
-        my $grid = PDF::Grid->new({
-            media_directory => $self->config->{media_directory}.'/'.$self->stash->{api_key_owner_id}.'/',
-            source => $source,
-        });
-        $grid->render;
-        my $pdf_doc = $grid->producer->stringify();    
-        $grid->producer->end;
-        return $pdf_doc;              
-    };
-
     my $delayed_find_one = $self->stash->{delayed_find_one} = sub{
         my $delay = shift;
         my $id = $self->stash->{'pdfunicorn.doc'}{template_id};
@@ -88,126 +76,120 @@ sub create {
         # render PDF and return it in the response
         $self->collection->create($data, sub{
             my ($err, $doc) = @_;
-            
-            if ($doc->{source} || $doc->{template}){
-                my $source = $doc->{source};
-                if ($doc->{template}){
-                    $source = $self->alloy->render($doc->{template}, $doc->{data} || {});
-                }
-                $self->render( data => $pdf_renderer->($self, $source) );
-            } elsif ($doc->{template_id}){                
-                # stash doc to keep it in scope
-                $self->stash->{'pdfunicorn.doc'} = $doc;
 
-                my $delay = Mojo::IOLoop::Delay->new;
-                $delay->steps(
-                    $delayed_find_one,
-                    sub {
-                        my ($delay, $template) = @_;
-                        if ($template){
-                            my $source = $self->alloy->render($template->{source}, $self->stash->{'pdfunicorn.doc'}{data} || {});
-                            $self->render( data => $self->stash->{pdf_renderer}->($self, $source) );
-                        } else {
-                            $self->render(
-                                status => 422,
-                                json => {
-                                    type => 'invalid_request',
-                                    message => "Invalid Request Error",
-                                    errors => ['The requested document template was not found']
-                                }
-                            );
-                        }
+            my $delay = Mojo::IOLoop::Delay->new->data({ doc => $doc });
+
+            $delay->steps(
+                sub{
+                    # get template if we have a template id and no doc source or template
+                    my $delay = shift;
+                    my $doc = $delay->data('doc');
+                    
+                    
+                    if ($doc->{template_id} && !($doc->{source} || $doc->{template})){
+                        $self->db_templates->find_one(
+                            { _id => bson_oid($doc->{template_id}), deleted => bson_false }, $delay->begin
+                        );
+                    } else {
+                        $delay->pass;
                     }
-                );
-                $delay->wait unless Mojo::IOLoop->is_running;
-            }
+                },
+                sub{
+                    # render template and respond
+                    my ($delay, $template_doc) = @_;
+                    my $doc = $delay->data('doc');
+                    
+                    my $source = $doc->{source};
+                    if (!$source){
+                        my $template = $doc->{template} || $template_doc->{source};
+                        $source = $self->alloy->render($template, $doc->{data}) if $template;
+                    }
+                    if (!$source){
+                        my $error;
+                        if ($doc->{template_id}){
+                            $error = 'The requested document template was not found';
+                        } else {
+                            $error = 'The requested document source and template were empty';
+                        }
+                        $self->render(
+                            status => 422,
+                            json => {
+                                type => 'invalid_request', message => "Invalid Request Error",
+                                errors => [$error]
+                            }
+                        );
+                    } else {                        
+                        $self->render(
+                            data => $self->pdf_renderer(
+                                $self->config->{media_directory}, 
+                                $self->stash->{api_key_owner_id},
+                                $source
+                            )
+                        );
+                    }
+                }                
+            );
         });
         
     } else {
         # respond with metadata then render PDF and store it
+
         $self->on(finish => sub{
             my $c = shift;
-
-            my $pdf_writer = $c->stash->{pdf_writer} = sub{
-                my ($self, $doc, $pdf_doc) = @_;
-                
-                my $gfs_writer = $self->gridfs->prefix($self->stash->{api_key_owner_id})->writer;
-                
-                $gfs_writer->filename($doc->{name});
-                $gfs_writer->content_type('application/pdf');
-                $gfs_writer->write($pdf_doc, sub{
-                    my ($wwriter, $err) = @_;
-                    warn "!!! $err" if $err;
-                    # TODO: check err
-                    
-                    $wwriter->close(sub{
-                        my ($cwriter, $err, $oid) = @_;
-                        # TODO: check err
-                        warn "!!! $err" if $err;
-                        
-                        # here we set the file oid in the document
-                        my $opts = {
-                            query => { _id => $doc->{_id} },
-                            update => { '$set' => { file => $oid }},
-                        };
-                        $self->collection->find_and_modify($opts => sub {
-                            my ($collection, $err, $doc) = @_;
-                            # anything to do here?
-                            # call a webhook?
-                        });
-                    });
-                });
-            };
+            my $delay = Mojo::IOLoop::Delay->new->data({
+                doc => $c->stash->{'pdfunicorn.doc'}
+            });
             
-            my $doc = $c->stash->{'pdfunicorn.doc'};
-
-            if ($doc->{source} || $doc->{template}){
-                my $source = $doc->{source};
-                if ($doc->{template}){
-                    $source = $c->alloy->render($doc->{template}, $doc->{data} || {});
-                }
-                $pdf_writer->($c, $doc, $pdf_renderer->($self, $source));
-            } elsif ($doc->{template_id}){                
-                my $delay = Mojo::IOLoop::Delay->new;
-                $delay->steps(
-                    $c->stash->{delayed_find_one},
-                    sub {
-                        my ($delay, $template) = @_;
-                        if ($template){
-                            my $source = $c->alloy->render($template->{source}, $c->stash->{'pdfunicorn.doc'}{data} || {});
-                            #$c->render( data => $c->stash->{pdf_renderer}->($c, $source) );
-                            $c->stash->{pdf_writer}->(
-                                $c,
-                                $c->stash->{'pdfunicorn.doc'},
-                                $c->stash->{pdf_renderer}->($c, $source)
-                            );
-                        } else {
-                            # here we set an error in the document
-                            my $opts = {
-                                query => { _id => $c->stash->{'pdfunicorn.doc'}->{_id} },
-                                update => {
-                                    '$set' => {
-                                        render_error => {
-                                            type => 'invalid_request',
-                                            message => "Invalid Request Error",
-                                            errors => ['The requested document template was not found']
-                                        }
-                                    }
-                                },
-                            };
-                            $self->collection->find_and_modify($opts => sub {
-                                my ($collection, $err, $doc) = @_;
-                                # anything to do here?
-                                # call a webhook?
-                            });
-                        }
+            $delay->steps(
+                sub{
+                    # get template if we have a template id and no doc source or template
+                    my $delay = shift;
+                    #my $doc = $c->stash->{'pdfunicorn.doc'};
+                    my $doc = $delay->data('doc');
+                    
+                    if ($doc->{template_id} && !($doc->{source} || $doc->{template})){
+                        $c->db_templates->find_one(
+                            { _id => bson_oid($doc->{template_id}), deleted => bson_false }, $delay->begin
+                        );
+                    } else {
+                        $delay->pass;
                     }
-                );
-                $delay->wait unless Mojo::IOLoop->is_running;
-            }            
+                },
+                sub{
+                    # render template and store file
+                    my ($delay, $template_doc) = @_;
+                    my $doc = $delay->data('doc');
+                    
+                    my $source = $doc->{source};
+                    if (!$source){
+                        my $template = $doc->{template} || $template_doc->{source};
+                        $source = $self->alloy->render($template, $doc->{data}) if $template;
+                    }
+                    if (!$source){
+                        my $error;
+                        if ($doc->{template_id}){
+                            $error = 'The requested document template was not found';
+                        } else {
+                            $error = 'The requested document source and template were empty';
+                        }
+                        $c->collection->set_render_error(
+                            $doc->{_id}, 'invalid_request', "Invalid Request Error",
+                            ['The requested document template was not found']
+                        );
+                    } else {                        
+                        $c->pdf_grid_writer(
+                            $c->stash->{api_key_owner_id}, $doc->{_id}, $doc->{name},
+                            $c->pdf_renderer(
+                                $c->config->{media_directory}, $c->stash->{api_key_owner_id},
+                                $source
+                            )
+                        );
+                    }
+                }                
+            );
             return;
-        });
-    
+        });            
+        
         $self->collection->create($data, sub{
             my ($err, $doc) = @_;
             $doc->{uri} = "/v1/".$self->uri."/$doc->{_id}";
