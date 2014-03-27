@@ -47,5 +47,26 @@ sub remove{
     }, $callback);
 }
 
+sub set_render_error{
+    my ($self, $id, $type, $message, $errors) = @_;
+    my $opts = {
+        query => { _id => $id },
+        update => {
+            '$set' => {
+                render_error => {
+                    type => $type,
+                    message => $message,
+                    errors => $errors
+                }
+            }
+        },
+    };
+    $self->collection->find_and_modify($opts => sub {
+        my ($collection, $err, $doc) = @_;
+        # anything to do here?
+        # call a webhook?
+    });
+}
+
 
 1;
