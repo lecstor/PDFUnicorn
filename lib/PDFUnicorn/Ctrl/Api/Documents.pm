@@ -63,15 +63,6 @@ sub create {
     delete $data->{id};
     delete $data->{_id};
     
-    my $delayed_find_one = $self->stash->{delayed_find_one} = sub{
-        my $delay = shift;
-        my $id = $self->stash->{'pdfunicorn.doc'}{template_id};
-        $self->db_templates->find_one(
-            { _id => bson_oid($id), deleted => bson_false },
-            $delay->begin
-        );
-    };
-
     if ($pdf){
         # render PDF and return it in the response
         $self->collection->create($data, sub{
