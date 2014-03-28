@@ -87,18 +87,17 @@ if (path == '/admin/api-key'){
             customerView: new customer.view.customer()
         });
         console.log(lookup);
-        // invoices.collection.fetch({
-            // success: function(collection, response, options){ console.log(collection.toJSON()); },
-            // error: function(collection, response, options){
-                // console.log(response);
-                // if (response.status == 401){
-                    // if (response.responseJSON.error && response.responseJSON.error.type == 'invalid_request_error'){
-                        // $('#account-connected').html($('#connected-not').html());
-                    // }
-                // }
-            // },
-            // data: { 'expand[]': 'data.customer' }
-        // });
+
+        $('#customer a').click(function (e) {
+            e.preventDefault();
+            $(this).tab('customer');
+        });
+
+        $('#template a').click(function (e) {
+            e.preventDefault();
+            $(this).tab('template');
+        });
+
     });
 
 // [Object]
