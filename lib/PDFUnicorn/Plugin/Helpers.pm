@@ -16,13 +16,13 @@ sub register {
             $gfs_writer->filename($name);
             $gfs_writer->content_type('application/pdf');
             $gfs_writer->write($file, sub{
-                my ($gfs_writer, $err) = @_;
+                my ($gfs_writer2, $err) = @_;
                 warn "!!! $err" if $err;
                 # TODO: check err
                 
-                $gfs_writer->close(
+                $gfs_writer2->close(
                     sub{
-                        my ($gfs_writer, $err, $oid) = @_;
+                        my ($gfs_writer3, $err, $oid) = @_;
                         # TODO: check err
                         warn "!!! $err" if $err;
                         
