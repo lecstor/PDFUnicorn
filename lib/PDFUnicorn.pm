@@ -18,6 +18,7 @@ use PDFUnicorn::Collection::APIKeys;
 use PDFUnicorn::Collection::StripeClients;
 use PDFUnicorn::Valid;
 use PDFUnicorn::Template::Alloy;
+use PDFUnicorn::Plugin::Helpers;
 
 use Try;
 
@@ -41,6 +42,7 @@ sub startup {
     $self->plugin('Util::RandomString');
     $self->plugin('Config');
     $self->plugin('Stripe');
+    $self->plugin('PDFUnicorn::Plugin::Helpers');
 
     warn "Mode: ".$self->mode;
 
@@ -292,13 +294,15 @@ sub startup {
 	$r->post('/log-in')->to('root#log_in');
 	
 	$r->get('/log-out')->to('root#log_out');
+
+    $r->get('/set-password/:code/:email')->to('root#set_password_form');
+
 	
     $r->get('/invoice-maker')->name('invoice_creator')->to('invoice_creator#home');
     $r->post('/invoice-maker-pdf')->name('invoice_creator_pdf')->to('invoice_creator#pdf');
 
-	#$r->get('/stripe/connect')->to('stripe#connect');
+	$r->get('/stripe/invoice/pdf/:client_pub_key/:invoice_id')->to('stripe-invoice#pdf');
 	
-	$r->get('/set-password/:code/:email')->to('root#set_password_form');
 	
 	$admin->get('/')->to('admin#dash');
 	$admin->get('/api-key')->to('admin#apikey');
