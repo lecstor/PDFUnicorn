@@ -41,19 +41,41 @@
                 </div>
             </div>
     	
-            <div class="col-xs-12 col-sm-9">
-                <h2>Customer Lookup</h2>
-
-                <div id="customer-lookup">
-                    <form id="customer-lookup-form" role="form" class="form-inline">
-                        <div class="form-group">
-                            <label class="sr-only" for="customer_id">Customer ID</label>
-                            <input type="text" class="form-control" id="customer_id" placeholder="Customer ID">
+            <div class="col-xs-12">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs">
+                  <li class="active"><a href="#customer" data-toggle="tab">Customer</a></li>
+                  <li><a href="#template" data-toggle="tab">Template</a></li>
+                </ul>
+                
+                <!-- Tab panes -->
+                <div class="tab-content">
+                
+                    <div class="tab-pane in active" id="customer">
+                        <h2>Customer Lookup</h2>
+                        <div id="customer-lookup">
+                            <form id="customer-lookup-form" role="form" class="form-inline">
+                                <div class="form-group">
+                                    <label class="sr-only" for="customer_id">Customer ID</label>
+                                    <input type="text" class="form-control" id="customer_id" placeholder="Customer ID">
+                                </div>
+                                <button class="btn btn-default">Display</button>
+                            </form>
+                            <div id="customer-view">
+                            </div>
                         </div>
-                        <button class="btn btn-default">Display</button>
-                    </form>
-                    <div id="customer-view">
                     </div>
+
+                    <div class="tab-pane" id="template">
+                        <div class="col-xs-12 col-sm-3">
+                            Template List Here
+                        </div>
+                        <div class="col-xs-12 col-sm-9">
+                            Template Editor Here
+                            <textarea class="form-control" rows="15"></textarea>
+                        </div>
+                    </div>
+
                 </div>
             </div>
     	</div>
@@ -71,8 +93,6 @@
         <p><a href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=<%= config->{stripe}{client_id} %>">Connect with your <b>live</b> Stripe account</a></p>
         <p><a href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=<%= config->{stripe}{test_client_id} %>">Connect with your <b>test</b> Stripe account</a></p>
     </div>
-
-
 
     <script id="customer-tmpl" type="template">
         <div id="section">
