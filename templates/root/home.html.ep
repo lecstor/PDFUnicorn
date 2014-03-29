@@ -31,38 +31,43 @@
         <div class="jumbotron">
             <div class="row">
                 <div class="col-xs-12">
-                    <p>At it's core, PDFUnicorn is a web service for making PDF files.</p>
-                    
-                    <p>PDF files can be created directly from source documents, or from data
-                    applied to custom templates.</p>
-                    
-                    <p>The markup language is intentionally simple to allow you to start creating
-                    templates and documents as quickly and easily as possible.</p>
-                    
-                    <p>Document content is securely sent from your server to ours enabling private
-                    customer text and images to be included without allowing remote access to your
-                    server and content.</p>
-                    
+                    <p>So you've been tasked with producing PDF documents on demand, from your server, with custom data, in real time.</p>
+                    <p>You've looked at the option of web-to-pdf converters, but you've seen the issues others have had with page breaks, repeated headers, and assorted other things.</p>
                 </div>
             </div>
-
             <div class="row">
                 <div class="col-md-6">
-
-                    <p>Document images can be uploaded at print quality resolutions to create the
-                    best looking documents possible.</p>
-                    
-                    <p>This is not a html2pdf conversion service, it is designed as a simple, reliable
-                    way to create multi-page documents.</p>
-                    
+                    <p>Maybe you need to include images and have your documents be print quality.</p>
+                    <p>Or you need to include images which are not publicly accessible, so you think a web service is out of the question.</p> 
+                    <p>You've come to the right place!</p>
                 </div>
-                
                 <div class="col-md-6">
                 
                   <img class="img-responsive center-block" src="/img/tax_invoice_snap.png"><br />
                   
                 </div>
             </div>
+        </div>
+
+        <div class="well">
+            <h3>What is PDFUnicorn?</h3>
+            <p>At it's core, PDFUnicorn is a web service for making PDF files.</p>
+            
+            <p>PDF files can be created directly from source documents, or from data
+            applied to custom templates.</p>
+            
+            <p>The markup language is intentionally simple to allow you to start creating
+            templates and documents as quickly and easily as possible.</p>
+            
+            <p>Document content is securely sent from your server to ours enabling private
+            customer text and images to be included without allowing remote access to your
+            server and content.</p>
+            
+            <p>Document images can be uploaded at print quality resolutions to create the
+            best looking documents possible.</p>
+            
+            <p>This is not a html2pdf conversion service, it is designed as a simple, reliable
+            way to create multi-page documents.</p>
         </div>
 
         <div class="well">
