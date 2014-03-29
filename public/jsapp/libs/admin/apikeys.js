@@ -71,14 +71,15 @@ define(["layoutmanager","underscore"], function(Layout, _) {
 
     var TableView = Backbone.Layout.extend({
         template: "#apikey-table-tmpl",
-        initialise: function(){
-            this.collection.on('reset', this.render, this);
-            this.collection.on('remove', function(model){
-                console.log('helo collection remove')
-                this.collection.remove(model);
-                this.collection.fetch();
-            }, this);
-        },
+        // this wouldn't have been working..  initialiZe
+        // initialise: function(){
+            // this.collection.on('reset', this.render, this);
+            // this.collection.on('remove', function(model){
+                // console.log('helo collection remove')
+                // this.collection.remove(model);
+                // this.collection.fetch();
+            // }, this);
+        // },
         beforeRender: function(){
             var view = this;
             this.collection.each(function(key){
