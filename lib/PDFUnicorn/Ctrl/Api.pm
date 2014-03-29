@@ -36,7 +36,8 @@ sub create {
         );
     }
     
-    $data->{owner} = $self->stash->{api_key_owner_id};
+    #$data->{owner} = $self->stash->{api_key_owner_id};
+    $data->{owner} = $self->stash->{account_id};
     $data->{deleted} = bson_false;
     $data->{public} = bson_false;
     delete $data->{id};
@@ -65,7 +66,7 @@ sub find {
             }
         );
     }
-    $query->{owner} = $self->stash->{api_key_owner_id};
+    $query->{owner} = $self->stash->{account_id};
     delete $query->{_id};
     delete $query->{id};
     
@@ -91,7 +92,7 @@ sub find_one {
     $self->collection->find_one({ _id => bson_oid($id), deleted => bson_false }, sub{
         my ($err, $doc) = @_;
         if ($doc){
-            if ($doc->{owner} eq $self->stash->{api_key_owner_id}){
+            if ($doc->{owner} eq $self->stash->{account_id}){
                 $doc->{uri} = "/v1/".$self->uri."/$doc->{_id}";
                 $doc->{id} = delete $doc->{_id};    
                 return $self->render(json => $doc) ;
@@ -143,7 +144,7 @@ sub remove{
 	$self->collection->find_one({ _id => bson_oid($id), deleted => bson_false }, sub{
         my ($err, $doc) = @_;
         if ($doc){
-            if ($doc->{owner} eq $self->stash->{api_key_owner_id}){
+            if ($doc->{owner} eq $self->stash->{account_id}){
                 return $self->collection->remove($doc, sub{
                     my ($collection, $err, $mdoc) = @_;
                     if ($err){
