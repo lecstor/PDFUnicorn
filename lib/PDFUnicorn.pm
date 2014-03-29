@@ -188,7 +188,7 @@ sub startup {
             $ctrl->stash->{user_email} = $user->{email};
             my $email = Email::Simple->create(
                 header => [
-                    To      => '"Jason Galea" <jason@pdfunicorn.com>',
+                    To      => '"Jason Galea" <jason@lecstor.com>',
                     From    => '"PDFUnicorn" <server@pdfunicorn.com>',
                     Subject => "Notifications Signup",
                 ],
