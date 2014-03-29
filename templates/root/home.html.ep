@@ -15,6 +15,19 @@
 	%= include 'site/header'
 
     <div class="container">
+        <div class="well">
+            <form class="form-inline" action="/sign-up" method="post" role="form">
+                <div style="max-width:520px" class="center-block">
+                    <div>Sign up for email updates about PDFUnicorn features and services.</div>
+                    <label class="sr-only" for="firstname">Your first name</label>
+                    <input style="width:200px" id="firstname" name="firstname" type="text" class="form-control" placeholder="Your first name" required autofocus>
+                    <label class="sr-only" for="email">Your email address</label>
+                    <input style="width:200px" id="email" name="email" type="email" class="form-control" placeholder="Your email address" required>
+                    <button style="width:100px" class="btn btn-primary" type="submit">Sign Up</button>
+                </div>
+            </form>
+        </div>
+        
         <div class="jumbotron">
             <div class="row">
                 <div class="col-xs-12">
