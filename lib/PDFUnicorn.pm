@@ -230,6 +230,7 @@ sub startup {
                 );
             };
             $self->stash->{api_key_owner_id} = $doc->{owner};
+            $self->stash->{account_id} = $doc->{owner};
             $self->continue; # make it so - same as returning true from the bridge
         });
         return;
@@ -256,6 +257,7 @@ sub startup {
             
             if ($doc && $doc->{active}){
                 $self->stash->{app_user} = $doc;
+                $self->stash->{account_id} = $doc->{_id};
                 $self->continue; # make it so - same as returning true from the bridge
             } else {
                 # Not authenticated
@@ -326,6 +328,11 @@ sub startup {
     $admin->get('/rest/apikeys')->to('admin-rest-apikeys#find');
     $admin->put('/rest/apikeys/:key')->to('admin-rest-apikeys#update');
     $admin->delete('/rest/apikeys/:key')->to('admin-rest-apikeys#delete');
+
+    $admin->post('/rest/templates')->to('api-templates#create');
+    $admin->get('/rest/templates')->to('api-templates#find');
+    $admin->get('/rest/templates/:id')->to('api-templates#find_one');
+    $admin->delete('/rest/templates/:id')->to('api-templates#remove');
 	
 	$api->post('/documents')->to('api-documents#create');
 	$api->get('/documents')->to('api-documents#find');
