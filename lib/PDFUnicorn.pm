@@ -184,13 +184,11 @@ sub startup {
 
             my $original_format = $ctrl->stash->{format};
 
-            my $to = $user->{firstname} ? qq("$user->{firstname}" <$user->{email}>) : $user->{email};
-
             $ctrl->stash->{user_firstname} = $user->{firstname};
             $ctrl->stash->{user_email} = $user->{email};
             my $email = Email::Simple->create(
                 header => [
-                    To      => 'jason@pdfunicorn.com',
+                    To      => 'jason@lecstor.com',
                     From    => '"PDFUnicorn" <server@pdfunicorn.com>',
                     Subject => "Notifications Signup",
                 ],
