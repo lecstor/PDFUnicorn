@@ -79,7 +79,7 @@ if (path == '/admin/api-key'){
 
 } else if (path == '/admin/stripe/connect'){
 
-    require(['jquery', 'admin/stripe_connect/customer', 'admin/stripe_connect/invoices'], function($, customer, invoices){
+    require(['jquery', 'admin/stripe_connect/customer', 'admin/stripe_connect/invoices', 'admin/templates'], function($, customer, invoices, templates){
         var customerView = new customer.view.customer({ el: '#customer-view' });
         console.log(customerView);
         var lookup = new customer.view.lookup({
@@ -96,6 +96,17 @@ if (path == '/admin/api-key'){
         $('#template a').click(function (e) {
             e.preventDefault();
             $(this).tab('template');
+        });
+
+        var template_list = new templates.ListView({
+            el: '#template-list',
+            collection: new templates.Collection()
+        });
+
+        template_list.collection.fetch({
+            success: function(collection, response, options){
+                template_list.render();
+            }
         });
 
     });
