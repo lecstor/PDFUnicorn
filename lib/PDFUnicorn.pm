@@ -158,6 +158,52 @@ sub startup {
     );
     
     $self->helper(
+        'send_thankyou_notifications_signup' => sub {
+            my ($ctrl, $user) = @_;
+                        
+            my ($err, $user) = @_;
+            my $original_format = $ctrl->stash->{format};
+            my $to = $user->{firstname} ? qq("$user->{firstname}" <$user->{email}>) : $user->{email};
+            $ctrl->stash->{user_firstname} = $user->{firstname};
+            my $email = Email::Simple->create(
+                header => [
+                    To      => $to,
+                    From    => '"PDFUnicorn" <server@pdfunicorn.com>',
+                    Subject => "Thanks for you interest in PDFUnicorn",
+                ],
+                body => $ctrl->render('email/thanks_notifications_signup', partial => 1, format => 'text')
+            );
+            sendmail($email);
+            $ctrl->stash->{format} = $original_format;
+            
+        }
+    );
+    
+    $self->helper(
+        'send_alert_notifications_signup' => sub {
+            my ($ctrl, $user) = @_;
+
+            my ($err, $user) = @_;
+            my $original_format = $ctrl->stash->{format};
+
+            my $to = $user->{firstname} ? qq("$user->{firstname}" <$user->{email}>) : $user->{email};
+
+            $ctrl->stash->{user_firstname} = $user->{firstname};
+            $ctrl->stash->{user_email} = $user->{email};
+            my $email = Email::Simple->create(
+                header => [
+                    To      => 'jason@pdfunicorn.com',
+                    From    => '"PDFUnicorn" <server@pdfunicorn.com>',
+                    Subject => "Notifications Signup",
+                ],
+                body => $ctrl->render('email/alert_notifications_signup', partial => 1, format => 'text')
+            );
+            sendmail($email);
+            $ctrl->stash->{format} = $original_format;
+        }
+    );
+    
+    $self->helper(
         'invalidate' => sub {
             my ($ctrl, $schema, $data) = @_;
             return $validator->validate($schema, $data);
@@ -283,7 +329,7 @@ sub startup {
     $r->get('/demo')->name('demo')->to('root#demo_form');
     $r->post('/demo')->name('demo')->to('root#demo');
 
-	$r->get('/sign-up')->to('root#sign_up_form');
+#	$r->get('/sign-up')->to('root#sign_up_form');
 	$r->post('/sign-up')->to('root#sign_up');
 	
 	$r->get('/log-in')->to('root#log_in_form');
