@@ -161,7 +161,6 @@ sub startup {
         'send_thankyou_notifications_signup' => sub {
             my ($ctrl, $user) = @_;
                         
-            my ($err, $user) = @_;
             my $original_format = $ctrl->stash->{format};
             my $to = $user->{firstname} ? qq("$user->{firstname}" <$user->{email}>) : $user->{email};
             $ctrl->stash->{user_firstname} = $user->{firstname};
@@ -183,7 +182,6 @@ sub startup {
         'send_alert_notifications_signup' => sub {
             my ($ctrl, $user) = @_;
 
-            my ($err, $user) = @_;
             my $original_format = $ctrl->stash->{format};
 
             my $to = $user->{firstname} ? qq("$user->{firstname}" <$user->{email}>) : $user->{email};
