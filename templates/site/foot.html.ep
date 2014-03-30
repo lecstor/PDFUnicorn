@@ -15,9 +15,11 @@
             <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
         </div>
         
+    % if (0){
         <div class="pull-left" style="margin: 20px 0px">
             <a href="http://bufferapp.com/add" class="buffer-add-button" data-count="horizontal" data-via="PDFUnicorn" >Buffer</a><script type="text/javascript" src="https://d389zggrogs7qo.cloudfront.net/js/button.js"></script>
         </div>
+    % }
     </div>
         
     <div class="row" style="margin: 20px 20px 20px 40px">
