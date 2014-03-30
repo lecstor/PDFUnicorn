@@ -50,7 +50,7 @@
         <div style="padding-bottom: 25px;">
             <form class="form-inline" action="/sign-up" method="post" role="form">
                 <div style="max-width:520px; text-align:center" class="center-block">
-                    <b>Sign up to my newsletter for updates and special offers.</b>
+                    <p><b>Sign up to my newsletter for updates and special offers.</b></p>
                     <label class="sr-only" for="firstname">Your first name</label>
                     <input style="width:200px" id="firstname" name="firstname" type="text" class="form-control" placeholder="Your first name" required autofocus>
                     <label class="sr-only" for="email">Your email address</label>
