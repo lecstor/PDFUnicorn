@@ -2,7 +2,7 @@
     <div style="display: none" id="stripe-public_api_key"><%= $config->{stripe}{public_api_key} %></div>
     <script src="/jsapp/require.js" data-main="/jsapp/main"></script>
 
-%# if ($config->{'mode'} && $config->{'mode'} eq 'production'){
+% if ($config->{'mode'} && $config->{'mode'} eq 'production'){
 
     <div class="row">
         <div class="pull-left" style="margin: 20px 20px 0 40px">
@@ -92,4 +92,4 @@
         UserVoice.push(['autoprompt', {}]);
     </script>
     % }
-%# }
+% }
