@@ -1,15 +1,18 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Sign Up for a free trial</title>
-    <meta name="description" content="Sign Up to PDFUnicorn for a free 30 day trial. No credit card required." />
+    <title>Signed Up to PDFUnicorn</title>
 	%= include 'site/head'
 	%= include 'mixpanel'
   
     <!-- record subscription -->
 	% if (!$error){
-	  	<script type="text/javascript">mixpanel.track('sign-up')</script>
-  		<script type="text/javascript">mixpanel.alias('<%= $email %>');</script>
+        % if ($selected_plan->{name} eq 'notifications'){
+    	  	<script type="text/javascript">mixpanel.track('sign-up-notifications')</script>
+        % } else {
+            <script type="text/javascript">mixpanel.track('sign-up')</script>
+        % }
+        <script type="text/javascript">mixpanel.alias('<%= $email %>');</script>
   	% }
 </head>
 <body>
@@ -35,17 +38,21 @@
 				% if ($firstname){
 					<%= $firstname %>, 
 				% }
-				thanks for your interest in PDFUnicorn. I've sent you an email with a link to set
-				your password. 
+				thanks for your interest in PDFUnicorn.
 				
-    		% if (session 'user_id'){
-				The link will be valid for 24 hours so please set your password soon.
-				</p>
-				<p>
-					<a href="/admin" class="btn btn-primary pull-right">Start making PDFs!</a>
-			% } else {
-                Please click the link and set your password to log in.
-			% }
+				% if ($selected_plan->{name} eq 'notifications'){
+				
+				% } else {
+    				I've sent you an email with a link to set your password. 
+                    % if (session 'user_id'){
+                        The link will be valid for 24 hours so please set your password soon.
+                        </p>
+                        <p>
+                            <a href="/admin" class="btn btn-primary pull-right">Start making PDFs!</a>
+                    % } else {
+                        Please click the link and set your password to log in.
+                    % }
+    			%}
 				</p>
 				<p class="lead text-muted">
 					If you have any questions or suggestions regarding PDFUnicorn

@@ -2,19 +2,25 @@
 <form action="/sign-up" method="post" class="form-signin" role="form">
     <input type="hidden" name="selected_plan" value="<%= $selected_plan->{id} %>">
     <h2 class="form-signin-heading">Sign Up</h2>
-    % if ($selected_plan->{term} && $selected_plan->{term} eq 'year'){
-        <p><strong>Sign up for your annual subscription including free template creation.</strong></p>
+    % if ($selected_plan->{term} && $selected_plan->{term}){
+        % if ($selected_plan->{term} eq 'year'){
+            <p><strong>Sign up for your annual subscription including free template creation.</strong></p>
+        % } else {
+            <p><strong>Sign up for your free 30 day trial.</strong></p>
+        % }
+        <p>
+            You have selected the <%= $selected_plan->{name} %> plan giving you
+            <%= $selected_plan->{units} %> pages 
+            for just $<%= $selected_plan->{price} %> per <%= $selected_plan->{term} %>.<br />
+            (includes GST for Australian customers)
+        </p>
     % } else {
-        <p><strong>Sign up for your free 30 day trial.</strong></p>
+        <p><strong>Sign up for email updates about PDFUnicorn features and services.</strong></p>
     % }
-    <p>
-        You have selected the <%= $selected_plan->{name} %> plan giving you
-        <%= $selected_plan->{units} %> pages 
-        for just $<%= $selected_plan->{price} %> per <%= $selected_plan->{term} %>.<br />
-        (includes GST for Australian customers)
-    </p>
     <input name="firstname" type="text" class="form-control" placeholder="Your first name" value="<%= $firstname %>" required autofocus>
-    <input name="surname" type="text" class="form-control" placeholder="Your surname" value="<%= $surname %>" required>
+    % if ($selected_plan->{term}){
+        <input name="surname" type="text" class="form-control" placeholder="Your surname" value="<%= $surname %>" required>
+    % }
     <input name="email" type="email" class="form-control" placeholder="Email address" value="<%= $email %>" required>
     <button class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button>
 </form>

@@ -18,32 +18,16 @@
         <div class="jumbotron">
             <div class="row">
                 <div class="col-xs-12">
-                    <p>At it's core, PDFUnicorn is a web service for making PDF files.</p>
-                    
-                    <p>PDF files can be created directly from source documents, or from data
-                    applied to custom templates.</p>
-                    
-                    <p>The markup language is intentionally simple to allow you to start creating
-                    templates and documents as quickly and easily as possible.</p>
-                    
-                    <p>Document content is securely sent from your server to ours enabling private
-                    customer text and images to be included without allowing remote access to your
-                    server and content.</p>
-                    
+                    <p>So you've been tasked with producing PDF documents on demand, from your server, with custom data, in real time.</p>
+                    <p>You've looked at the option of web-to-pdf converters, but you've seen the issues others have had with page breaks, repeated headers, and assorted other things.</p>
                 </div>
             </div>
-
             <div class="row">
                 <div class="col-md-6">
-
-                    <p>Document images can be uploaded at print quality resolutions to create the
-                    best looking documents possible.</p>
-                    
-                    <p>This is not a html2pdf conversion service, it is designed as a simple, reliable
-                    way to create multi-page documents.</p>
-                    
+                    <p>Maybe you need to include images and have your documents be print quality.</p>
+                    <p>Or you need to include content which is not publicly accessible, so you think a web service is out of the question.</p> 
+                    <p>You've come to the right place!</p>
                 </div>
-                
                 <div class="col-md-6">
                 
                   <img class="img-responsive center-block" src="/img/tax_invoice_snap.png"><br />
@@ -52,6 +36,56 @@
             </div>
         </div>
 
+        <div class="well">
+            <p class="lead">Tell me what you're thinking..</p>
+            <p>
+                I'd love to know what brought you here and what you are
+                looking for, even if PDFUnicorn is not a solution (or
+                especially if it's not). You can send me an email me at
+                <a href="mailto:jason@pdfunicorn.com">jason@pdfunicorn.com</a>
+                or <a onclick="olark('api.box.expand'); return false">click here to chat or leave a message</a>.
+            </p>
+        </div>
+
+        <div style="padding-bottom: 25px;">
+            <form class="form-inline" action="/sign-up" method="post" role="form">
+                <div style="max-width:520px; text-align:center" class="center-block">
+                    <p><b>Sign up to my newsletter for updates and special offers.</b></p>
+                    <label class="sr-only" for="firstname">Your first name</label>
+                    <input style="width:200px" id="firstname" name="firstname" type="text" class="form-control" placeholder="Your first name" required autofocus>
+                    <label class="sr-only" for="email">Your email address</label>
+                    <input style="width:200px" id="email" name="email" type="email" class="form-control" placeholder="Your email address" required>
+                    <button style="width:100px" class="btn btn-primary" type="submit">Sign Up</button>
+                    <p class="text-muted">(Very occasional emails. I won't spam you daily, or even weekly..)</p>
+                </div>
+            </form>
+        </div>
+        
+        <div class="well">
+            <h3>What is PDFUnicorn?</h3>
+            <p>At it's core, PDFUnicorn is a web service for making PDF files.</p>
+            
+            <p>PDF files can be created directly from source documents, or from data
+            applied to custom templates.</p>
+            
+            <p>The markup language is intentionally simple to allow you to start creating
+            templates and documents as quickly and easily as possible.</p>
+            
+            <p>Document content is securely sent from your server to ours enabling private
+            customer text and images to be included without allowing remote access to your
+            server and content.</p>
+            
+            <p>Document images can be uploaded at print quality resolutions to create the
+            best looking documents possible.</p>
+            
+            <p>This is not a html2pdf conversion service, it is designed as a simple, reliable
+            way to create multi-page documents.</p>
+        </div>
+
+        <div class="signup">
+            %= include 'site/signup_prompt'
+        </div>
+        
         <div class="well">
             <h3>Why?</h3>
             <p>Over the years I have been presented with the challenge of creating custom solutions for generating
@@ -134,10 +168,6 @@
             </div>
         </div>
         
-        <div class="signup">
-            %= include 'site/signup_prompt'
-        </div>
-        
         <div class="well">
         	<div class="row">
                 <div class="col-md-3">
@@ -150,6 +180,11 @@
                 </div>
         	</div>
         </div>
+        
+        <div class="signup">
+            %= include 'site/signup_prompt'
+        </div>
+        
     </div>
     
     %= include 'site/foot'

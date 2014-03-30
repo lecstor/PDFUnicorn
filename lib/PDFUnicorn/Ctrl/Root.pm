@@ -59,23 +59,26 @@ sub example {
     $self->render();
 }
 
-sub sign_up_form {
-	my $self = shift;
-	my $plan = $self->param('plan');
-    $self->render(firstname => '', surname => '', email => '', error => '', selected_plan => $plan);
-}
+#sub sign_up_form {
+#	my $self = shift;
+#	my $plan = $self->param('plan');
+#    $self->render(firstname => '', surname => '', email => '', error => '', selected_plan => $plan);
+#}
 
 sub sign_up {
 	my $self = shift;
 
     my $firstname = $self->param('firstname');
-	my $surname = $self->param('surname');
-	my $email_addr = $self->param('email');
+    my $surname = $self->param('surname');
+    my $email_addr = $self->param('email');
     my $plan_id = $self->param('selected_plan');
-	my $timezone = $self->param('timezone');
-	my $email_length = length($email_addr);
-	my $plan = $self->config->{plans}{$plan_id} || $self->config->{annual_plans}{$plan_id};
-	
+    my $timezone = $self->param('timezone');
+    my $email_length = length($email_addr);
+    my $plan = { name => 'notifications' };
+    if ($plan_id){
+        $plan = $self->config->{plans}{$plan_id} || $self->config->{annual_plans}{$plan_id};
+    }
+    
 	foreach my $each (($firstname,$surname,$email_addr,$timezone)){
 	    next unless $each;
 	    $each =~ s/^\s+//;
@@ -172,9 +175,14 @@ sub sign_up {
                 });
             }
         } else {
-            $self->send_password_key($doc);
-            $self->session->{user_id} = $doc->{_id};
-            $self->stash->{new_user} = $doc;
+            $self->send_alert_notifications_signup($doc);
+            if ($plan->{name} eq 'notifications'){
+                $self->send_thankyou_notifications_signup($doc);
+            } else {
+                $self->send_password_key($doc);
+                $self->session->{user_id} = $doc->{_id};
+                $self->stash->{new_user} = $doc;
+            }
         }
         
         $self->render(
