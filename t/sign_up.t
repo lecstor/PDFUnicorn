@@ -24,8 +24,6 @@ $t->app->mango($mango);
 
 $t->get_ok('/')->status_is(200)->content_like(qr/PDFUnicorn/i);
 
-$t->get_ok('/sign-up')->status_is(200)->content_like(qr/action="\/sign-up"/i);
-
 $t->post_ok('/sign-up', => form => { firstname => 'Jason', email => '', time_zone => 'America/Chicago', selected_plan => 'small-1' })
     ->status_is(200)
     ->element_exists('input[name="firstname"]')
@@ -79,7 +77,7 @@ $t->post_ok('/sign-up', => form => { firstname => 'Jason', email => 'jason-test2
     ->content_like(qr/jason-test2\@lecstor\.com/);
 
 my @deliveries = Email::Sender::Simple->default_transport->deliveries;
-is(@deliveries, 3, 'delivered three emails');
+is(@deliveries, 5, 'delivered three emails');
 
 $t->app->helper('db_users' => 'ouch');
 $t->post_ok('/sign-up', => form => { email => 'jason@lecstor.com', time_zone => 'America/Chicago', selected_plan => 'medium-1' })

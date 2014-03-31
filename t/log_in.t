@@ -51,8 +51,8 @@ $t->get_ok('/admin')->status_is(200);
 $t->get_ok('/admin?get-started')->status_is(200);
 
 my @deliveries = Email::Sender::Simple->default_transport->deliveries;
-is (@deliveries, 1, "account key sent for signup");
-my $body = $deliveries[0]->{email}->get_body;
+is (@deliveries, 2, "account key sent for signup");
+my $body = $deliveries[1]->{email}->get_body;
 my ($code, $email_hash) = $body =~ /\/set-password\/(\w+)\/(\w+)/;
 
 $t->get_ok('/set-password/'.$code.'/'.$email_hash)->status_is(200);
@@ -75,7 +75,7 @@ $t->post_ok('/log-in', => form => { username => 'jason+1@lecstor.com', password 
 $t->post_ok('/log-in', => form => { username => 'jason+1@lecstor.com', password => '' })
     ->status_is(200);
 @deliveries = Email::Sender::Simple->default_transport->deliveries;
-is (@deliveries, 3, "account key sent");
+is (@deliveries, 4, "account key sent");
 
 $t->post_ok('/log-in', => form => { username => 'jason+1@lecstor.com', password => 'pass' })
     ->status_is(302);
@@ -114,7 +114,7 @@ $t->post_ok('/sign-up', => form => { firstname => 'Jason', email => 'jason+1@lec
     ->content_like(qr/jason\+1\@lecstor\.com/);
 
 @deliveries = Email::Sender::Simple->default_transport->deliveries;
-is(@deliveries, 5);
+is(@deliveries, 7);
 
 
 done_testing();
