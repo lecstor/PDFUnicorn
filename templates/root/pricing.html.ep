@@ -49,17 +49,23 @@
         % }
         <div class="row">
         % foreach my $plan (@$plans){
-            <div class="col-sm-12 col-md-3">
+            <div class="col-sm-12 col-md-4">
                 <div class="pdfu-plan" <%== $plan->{recommended} ? 'style="background-color: #E0FFE0"' : '' %>>
                     <form action="/sign-up" method="post">
                         <input type="hidden" name="selected_plan" value="<%= $plan->{id} %>" />
                         <h3 style="text-align: center"><%= $plan->{name} %></h3>
-                        <h2 style="text-align: center">$<%= $plan->{price} %>/<%= $plan->{term} %></h2>
+                        % if ($plan->{price}){
+                            <h2 style="text-align: center">$<%= $plan->{price} %>/<%= $plan->{term} %></h2>
+                        % }
                         <div style="text-align: center"><%= $plan->{templates} %> templates</div>
                         <div style="text-align: center"><%= $plan->{units} %> pages/month</div>
                         <div style="text-align: center">
                             % if (current_route 'pricing') {
-                                <button type="submit" class="btn btn-primary btn-lg">Start Free Trial</button>
+                                % if ($plan->{price}){
+                                    <button type="submit" class="btn btn-primary btn-lg">Start Free Trial</button>
+                                % } else {
+                                    <button type="submit" class="btn btn-primary btn-lg">Sign Up Free</button>
+                                % }
                             % } else {
                                 <button type="submit" class="btn btn-primary btn-lg">Sign Up</button>
                             % }
@@ -68,6 +74,10 @@
                 </div>
             </div>
         % }
+
+        </div>
+
+    % if (0){
             <!-- div class="col-sm-12 col-md-3">
                 <div class="pdfu-plan">
                         <h3 style="text-align: center">Enterprise</h3>
@@ -79,9 +89,6 @@
                         </div>
                 </div>
             </div -->
-
-        </div>
-
         <div class="row" style="text-align: center">
             % if (current_route 'pricing') {
                 <a class="btn btn-primary" href="/pricing/annual">Annual Subscriptions</a>
@@ -90,7 +97,7 @@
                 <a class="btn btn-primary" href="/pricing">Monthly Subscriptions</a>
             % }
         </div>
-                
+    % }                
       </div>
     </div>
 
