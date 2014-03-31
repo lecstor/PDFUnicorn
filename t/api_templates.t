@@ -43,7 +43,7 @@ $t->post_ok(
     $url,
     json => {
         name => 'Test 2', 
-        source => '<doc><page>Test 2!<img src="[% image %]" /></page></doc>'
+        source => '<doc><page>Test 2!<img src="{{ image }}" /></page></doc>'
     },
 )->status_is(200)
     ->json_has( '/id', "has id" )
@@ -51,13 +51,35 @@ $t->post_ok(
     ->json_has( '/uri', "has uri" )
     ->json_has( '/owner', "has owner" )
     ->json_has( '/name', "Test 2" )
-    ->json_is( '/source' => '<doc><page>Test 2!<img src="[% image %]" /></page></doc>', "correct source" )
+    ->json_is( '/source' => '<doc><page>Test 2!<img src="{{ image }}" /></page></doc>', "correct source" )
     ->json_is( '/file' => undef, "file is undef" );
 
 my $json = $t->tx->res->json;
 is $json->{uri}, '/v1/templates/'.$json->{id}, 'uri';
 
 my $doc_uri = $json->{uri};
+
+
+# update template
+$url = $t->ua->server->url->userinfo("$api_key:")->path($doc_uri);
+$t->put_ok(
+    $url,
+    json => {
+        name => 'Test 2', 
+        source => '<doc><page>Test 2! with update <img src="{{ image }}" /></page></doc>'
+    },
+)->status_is(200)
+    ->json_has( '/id', "has id" )
+    ->json_has( '/created', "has created" )
+    ->json_has( '/uri', "has uri" )
+    ->json_has( '/owner', "has owner" )
+    ->json_has( '/name', "Test 2" )
+    ->json_is( '/source' => '<doc><page>Test 2! with update <img src="{{ image }}" /></page></doc>', "correct source" )
+    ->json_is( '/file' => undef, "file is undef" );
+
+$json = $t->tx->res->json;
+is $json->{uri}, '/v1/templates/'.$json->{id}, 'uri';
+
 
 
 # list templates
@@ -69,7 +91,7 @@ $t->get_ok(
     ->json_has( '/data/0/created', "has created" )
     ->json_is( '/data/0/uri' => $doc_uri, "has uri" )
     ->json_has( '/data/0/owner', "has owner" )
-    ->json_is( '/data/0/source' => '<doc><page>Test 2!<img src="[% image %]" /></page></doc>', "correct source" )
+    ->json_is( '/data/0/source' => '<doc><page>Test 2!<img src="{{ image }}" /></page></doc>', "correct source" )
     ;
 
 
@@ -82,7 +104,7 @@ $t->get_ok(
     ->json_has( '/id', "has id" )
     ->json_has( '/created', "has created" )
     ->json_is( '/uri' => $json->{uri}, "has uri" )
-    ->json_is( '/source' => '<doc><page>Test 2!<img src="[% image %]" /></page></doc>', "correct source" )
+    ->json_is( '/source' => '<doc><page>Test 2!<img src="{{ image }}" /></page></doc>', "correct source" )
     ;
 
 

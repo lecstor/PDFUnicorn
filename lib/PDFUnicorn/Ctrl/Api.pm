@@ -101,38 +101,44 @@ sub find_one {
     });
 }
 
-#sub update{
-#	my $self = shift;
-#	my $id = $self->stash('id');
-#    my $data = $self->req->json();
-#    delete $data->{uri};
-#
-#    if (my $errors = $self->invalidate($self->item_schema, $data)){
-#        return $self->render(
-#            status => 422, json => { errors => $errors }
-#        );
-#    }
-#
-#    delete $data->{_id};
-#    delete $data->{id};
-#    
-#    $data->{owner} = $self->stash->{api_key_owner_id};
-#    
-#    $self->render_later;
-#    
-#    $self->collection->update(
-#        ( { _id => $id, owner => $self->$data->{owner} }, $data ) => sub {
-#            my ($collection, $err, $doc) = @_;
-#            if ($err){
-#                warn $err;
-#                $self->render_not_found;
-#            } else {
-#                $doc->{id} = delete $doc->{_id};
-#                return $self->render(json => $doc);
-#            }
-#        }
-#    );
-#}
+sub update{
+	my $self = shift;
+	my $id = $self->stash('id');
+    my $data = $self->req->json();
+    delete $data->{uri};
+
+warn "1111";
+
+    if (my $errors = $self->invalidate($self->item_schema, $data)){
+        return $self->render(
+            status => 422, json => { errors => $errors }
+        );
+    }
+
+warn "2222";
+
+    delete $data->{_id};
+    delete $data->{id};
+    
+    $data->{owner} = $self->stash->{api_key_owner_id};
+    
+    $self->render_later;
+
+warn "3333";
+    
+    $self->collection->update(
+        { _id => $id, owner => $self->$data->{owner} }, $data, sub {
+            my ($collection, $err, $doc) = @_;
+            if ($err){
+                warn $err;
+                $self->render_not_found;
+            } else {
+                $doc->{id} = delete $doc->{_id};
+                return $self->render(json => $doc);
+            }
+        }
+    );
+}
 
 sub remove{
 	my $self = shift;
