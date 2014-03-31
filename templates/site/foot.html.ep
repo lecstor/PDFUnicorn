@@ -26,13 +26,6 @@
         © Lecstor Pty Ltd. ACN 150 921 074. All Rights Reserved.
     </div>
     
-    <script type='text/javascript'>
-    var pq_bid = '54a5f8d24b4284edc1de6fa7df06b7cd';
-    var pq_elm_id = 'popup_question';
-    </script>
-    <script type='text/javascript' src='https://s.feedbackdaddy.com/qs.js'></script>
-
-    % if (0){
 
     <!-- begin olark code -->
     <script data-cfasync="false" type='text/javascript'>/*<![CDATA[*/window.olark||(function(c){var f=window,d=document,l=f.location.protocol=="https:"?"https:":"http:",z=c.name,r="load";var nt=function(){
@@ -54,6 +47,16 @@
     /* custom configuration goes here (www.olark.com/documentation) */
     olark.identify('4844-763-10-7277');/*]]>*/</script><noscript><a href="https://www.olark.com/site/4844-763-10-7277/contact" title="Contact us" target="_blank">Questions? Feedback?</a> powered by <a href="http://www.olark.com?welcome" title="Olark live chat software">Olark live chat software</a></noscript>
     <!-- end olark code -->
+
+    % if (0){
+
+    <script type='text/javascript'>
+    var pq_bid = '54a5f8d24b4284edc1de6fa7df06b7cd';
+    var pq_elm_id = 'popup_question';
+    </script>
+    <script type='text/javascript' src='https://s.feedbackdaddy.com/qs.js'></script>
+
+
 
     <script>
         // Include the UserVoice JavaScript SDK (only needed once on a page)
