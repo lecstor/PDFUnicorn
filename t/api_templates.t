@@ -59,7 +59,6 @@ is $json->{uri}, '/v1/templates/'.$json->{id}, 'uri';
 
 my $doc_uri = $json->{uri};
 
-
 # update template
 $url = $t->ua->server->url->userinfo("$api_key:")->path($doc_uri);
 $t->put_ok(
@@ -81,7 +80,6 @@ $json = $t->tx->res->json;
 is $json->{uri}, '/v1/templates/'.$json->{id}, 'uri';
 
 
-
 # list templates
 $url = $t->ua->server->url->userinfo("$api_key:")->path('/v1/templates');
 $t->get_ok(
@@ -91,7 +89,7 @@ $t->get_ok(
     ->json_has( '/data/0/created', "has created" )
     ->json_is( '/data/0/uri' => $doc_uri, "has uri" )
     ->json_has( '/data/0/owner', "has owner" )
-    ->json_is( '/data/0/source' => '<doc><page>Test 2!<img src="{{ image }}" /></page></doc>', "correct source" )
+    ->json_is( '/data/0/source' => '<doc><page>Test 2! with update <img src="{{ image }}" /></page></doc>', "correct source" )
     ;
 
 
@@ -104,7 +102,7 @@ $t->get_ok(
     ->json_has( '/id', "has id" )
     ->json_has( '/created', "has created" )
     ->json_is( '/uri' => $json->{uri}, "has uri" )
-    ->json_is( '/source' => '<doc><page>Test 2!<img src="{{ image }}" /></page></doc>', "correct source" )
+    ->json_is( '/source' => '<doc><page>Test 2! with update <img src="{{ image }}" /></page></doc>', "correct source" )
     ;
 
 
