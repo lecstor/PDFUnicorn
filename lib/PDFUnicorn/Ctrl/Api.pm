@@ -107,15 +107,11 @@ sub update{
     my $data = $self->req->json();
     delete $data->{uri};
 
-warn "1111";
-
     if (my $errors = $self->invalidate($self->item_schema, $data)){
         return $self->render(
             status => 422, json => { errors => $errors }
         );
     }
-
-warn "2222";
 
     delete $data->{_id};
     delete $data->{id};
@@ -124,17 +120,25 @@ warn "2222";
     
     $self->render_later;
 
-warn "3333";
-    
     $self->collection->update(
-        { _id => $id, owner => $self->$data->{owner} }, $data, sub {
+        { _id => bson_oid($id), owner => bson_oid($data->{owner}), deleted => bson_false },
+        $data,
+        sub {
             my ($collection, $err, $doc) = @_;
-            if ($err){
-                warn $err;
-                $self->render_not_found;
+            if ($doc){
+                $self->collection->find_one({ _id => $doc->{_id}, deleted => bson_false }, sub{
+                    my ($err, $doc) = @_;
+                    if ($doc){
+                        $doc->{uri} = "/v1/".$self->uri."/$doc->{_id}";
+                        $doc->{id} = delete $doc->{_id};    
+                        return $self->render(json => $doc);
+                    }
+                    $self->app->log->error("UPDATE FIND_ONE ERROR: $err") if $err;
+                    $self->render_not_found;
+                });
             } else {
-                $doc->{id} = delete $doc->{_id};
-                return $self->render(json => $doc);
+                $self->app->log->error("UPDATE ERROR: $err") if $err;
+                $self->render_not_found;
             }
         }
     );
