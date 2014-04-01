@@ -102,38 +102,48 @@ sub find_one {
     });
 }
 
-#sub update{
-#	my $self = shift;
-#	my $id = $self->stash('id');
-#    my $data = $self->req->json();
-#    delete $data->{uri};
-#
-#    if (my $errors = $self->invalidate($self->item_schema, $data)){
-#        return $self->render(
-#            status => 422, json => { errors => $errors }
-#        );
-#    }
-#
-#    delete $data->{_id};
-#    delete $data->{id};
-#    
-#    $data->{owner} = $self->stash->{api_key_owner_id};
-#    
-#    $self->render_later;
-#    
-#    $self->collection->update(
-#        ( { _id => $id, owner => $self->$data->{owner} }, $data ) => sub {
-#            my ($collection, $err, $doc) = @_;
-#            if ($err){
-#                warn $err;
-#                $self->render_not_found;
-#            } else {
-#                $doc->{id} = delete $doc->{_id};
-#                return $self->render(json => $doc);
-#            }
-#        }
-#    );
-#}
+sub update{
+	my $self = shift;
+	my $id = $self->stash('id');
+    my $data = $self->req->json();
+    delete $data->{uri};
+
+    if (my $errors = $self->invalidate($self->item_schema, $data)){
+        return $self->render(
+            status => 422, json => { errors => $errors }
+        );
+    }
+
+    delete $data->{_id};
+    delete $data->{id};
+    
+    $data->{owner} = $self->stash->{api_key_owner_id};
+    
+    $self->render_later;
+
+    $self->collection->update(
+        { _id => bson_oid($id), owner => bson_oid($data->{owner}), deleted => bson_false },
+        $data,
+        sub {
+            my ($collection, $err, $doc) = @_;
+            if ($doc){
+                $self->collection->find_one({ _id => $doc->{_id}, deleted => bson_false }, sub{
+                    my ($err, $doc) = @_;
+                    if ($doc){
+                        $doc->{uri} = "/v1/".$self->uri."/$doc->{_id}";
+                        $doc->{id} = delete $doc->{_id};    
+                        return $self->render(json => $doc);
+                    }
+                    $self->app->log->error("UPDATE FIND_ONE ERROR: $err") if $err;
+                    $self->render_not_found;
+                });
+            } else {
+                $self->app->log->error("UPDATE ERROR: $err") if $err;
+                $self->render_not_found;
+            }
+        }
+    );
+}
 
 sub remove{
 	my $self = shift;

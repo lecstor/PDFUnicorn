@@ -6,13 +6,20 @@
         % if ($selected_plan->{term} eq 'year'){
             <p><strong>Sign up for your annual subscription including free template creation.</strong></p>
         % } else {
-            <p><strong>Sign up for your free 30 day trial.</strong></p>
+            % if ($selected_plan->{price}){
+                <p><strong>Sign up for your free 30 day trial.</strong></p>
+            % } else {
+                <p><strong>Sign up for a free account.</strong></p>
+            % }
         % }
         <p>
-            You have selected the <%= $selected_plan->{name} %> plan giving you
-            <%= $selected_plan->{units} %> pages 
-            for just $<%= $selected_plan->{price} %> per <%= $selected_plan->{term} %>.<br />
-            (includes GST for Australian customers)
+            You have selected the <%= $selected_plan->{name} %> plan with
+            <%= $selected_plan->{templates} %> document templates and              
+            <%= $selected_plan->{units} %> pages/<%= $selected_plan->{term} %>
+            % if ($selected_plan->{price}){
+                for AU$<%= $selected_plan->{price} %>/<%= $selected_plan->{term} %>.<br />
+                (includes GST for Australian customers)
+            % }
         </p>
     % } else {
         <p><strong>Sign up for email updates about PDFUnicorn features and services.</strong></p>

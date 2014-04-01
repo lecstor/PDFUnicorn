@@ -384,6 +384,7 @@ sub startup {
     $api->post('/templates')->to('api-templates#create');
     $api->get('/templates')->to('api-templates#find');
     $api->get('/templates/:id')->to('api-templates#find_one');
+    $api->put('/templates/:id')->to('api-templates#update');
     $api->delete('/templates/:id')->to('api-templates#remove');
     
 	$api->post('/images')->to('api-images#create');

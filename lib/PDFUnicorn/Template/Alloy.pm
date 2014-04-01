@@ -9,6 +9,8 @@ sub new{
     
     my $alloy = Template::Alloy->new(
         INCLUDE_PATH => ['pdf_unicorn/templates'],
+        START_TAG => '{{',
+        END_TAG => '}}',
     );
     my $self = bless { alloy => $alloy }, $class;
     $self->add_vmethods();

@@ -32,11 +32,11 @@ $t->post_ok('/sign-up', => form => { firstname => 'Jason', email => 'jason+1@lec
     ->content_like(qr/jason\+1\@lecstor\.com/);
 
 my @deliveries = Email::Sender::Simple->default_transport->deliveries;
-is(@deliveries, 1, 'one email delivered');
+is(@deliveries, 2, 'one email delivered');
 
 my ($code, $email_hash);
 try{
-    my $body = $deliveries[0]->{email}->get_body;
+    my $body = $deliveries[1]->{email}->get_body;
     ($code, $email_hash) = $body =~ /\/set-password\/(\w+)\/(\w+)/;
     ok($code, 'got code');
     ok($email_hash, 'got email hash');

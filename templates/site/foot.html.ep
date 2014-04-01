@@ -26,6 +26,7 @@
         © Lecstor Pty Ltd. ACN 150 921 074. All Rights Reserved.
     </div>
     
+
     <!-- begin olark code -->
     <script data-cfasync="false" type='text/javascript'>/*<![CDATA[*/window.olark||(function(c){var f=window,d=document,l=f.location.protocol=="https:"?"https:":"http:",z=c.name,r="load";var nt=function(){
     f[z]=function(){
@@ -48,6 +49,15 @@
     <!-- end olark code -->
 
     % if (0){
+
+    <script type='text/javascript'>
+    var pq_bid = '54a5f8d24b4284edc1de6fa7df06b7cd';
+    var pq_elm_id = 'popup_question';
+    </script>
+    <script type='text/javascript' src='https://s.feedbackdaddy.com/qs.js'></script>
+
+
+
     <script>
         // Include the UserVoice JavaScript SDK (only needed once on a page)
         UserVoice=window.UserVoice||[];(function(){var uv=document.createElement('script');uv.type='text/javascript';uv.async=true;uv.src='//widget.uservoice.com/ZmnQDNc47NT4wSp1zLPEGA.js';var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(uv,s)})();

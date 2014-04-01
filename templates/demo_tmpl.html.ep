@@ -10,16 +10,16 @@
                 padding: 5
     </style>
     <page>
-        <row><text align="center" font-size="40">[% title %]</text></row>
-        <footer><cell><img src="[% logo %]" /></cell></footer>
+        <row><text align="center" font-size="40">{{ title }}</text></row>
+        <footer><cell><img src="{{ logo }}" /></cell></footer>
     </page>
     <page>
         <header margin="5">
             <row columns="3">
-                <cell border="1" border-radius="5" padding="5"><img src="[% logo %]" /></cell>
+                <cell border="1" border-radius="5" padding="5"><img src="{{ logo }}" /></cell>
                 <cell span="2" padding="5">
-                    <row><text align="center" font-size="20">[% title %]</text></row>
-                    <row><text align="center">[% header_text %]</text></row>
+                    <row><text align="center" font-size="20">{{ title }}</text></row>
+                    <row><text align="center">{{ header_text }}</text></row>
                 </cell>
             </row>
         </header>
@@ -39,23 +39,23 @@
                     <cell><text class="header">Total</text></cell>
                 </row>
             </header>
-            [% FOR item IN items %]
+            {{ FOR item IN items }}
                 <row>
                     <cell>
                         <row columns="5">
-                            <cell span="2">[% item.desc %]</cell>
-                            <cell><text align="center">[% item.qty %]</text></cell>
-                            <cell><text align="right">$[% item.price %]</text></cell>
-                            <cell><text align="right">$[% item.total %]</text></cell>
+                            <cell span="2">{{ item.desc }}</cell>
+                            <cell><text align="center">{{ item.qty }}</text></cell>
+                            <cell><text align="right">${{ item.price }}</text></cell>
+                            <cell><text align="right">${{ item.total }}</text></cell>
                         </row>
-                        <row>[% item.options %]</row>
+                        <row>{{ item.options }}</row>
                     </cell>
                 </row>
-            [% END %]
+            {{ END }}
             <row columns="5">
                 <cell span="3"></cell>
                 <cell><text align="right">Subtotal</text></cell>
-                <cell><text align="right">$[% subtotal %]</text></cell>
+                <cell><text align="right">${{ subtotal }}</text></cell>
             </row>
         </section>
         <row padding="5" margin="5">
@@ -63,23 +63,23 @@
                 <row columns="5">
                     <cell span="3"></cell>
                     <cell><text align="right">Tax</text></cell>
-                    <cell><text align="right">$[% tax %]</text></cell>
+                    <cell><text align="right">${{ tax }}</text></cell>
                 </row>
                 <row columns="5">
                     <cell span="3"></cell>
                     <cell><text align="right">Shipping</text></cell>
-                    <cell><text align="right">$[% shipping %]</text></cell>
+                    <cell><text align="right">${{ shipping }}</text></cell>
                 </row>
                 <row columns="5">
                     <cell span="3"></cell>
                     <cell><text align="right">Total</text></cell>
-                    <cell><text align="right">$[% total %]</text></cell>
+                    <cell><text align="right">${{ total }}</text></cell>
                 </row>
             </cell>
         </row>
         <row>
             <cell>
-                <row class="para">Hey [% customer.firstname %], thanks for using PDFUnicorn.</row>
+                <row class="para">Hey {{ customer.firstname }}, thanks for using PDFUnicorn.</row>
                 <row class="para">
                     <cell>
                         As a long time customer I'd like to offer you
@@ -95,7 +95,7 @@
         <footer>
             <row columns="3">
                 pdfunicorn.com
-                <cell span="2"><text align="right">[% epoch(time, { "tz": tz, "strf": '%c' }) %]</text></cell>
+                <cell span="2"><text align="right">{{ epoch(time, { "tz": tz, "strf": '%c' }) }}</text></cell>
             </row>
         </footer>
     </page>

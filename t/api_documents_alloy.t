@@ -52,7 +52,7 @@ $t->post_ok(
     $url,
     json => {
         data => { image => "cory_unicorn.jpeg" },
-        template => '<doc><page>Test 2!<img src="[% image %]" /></page></doc>'
+        template => '<doc><page>Test 2!<img src="{{ image }}" /></page></doc>'
     },
 )->status_is(200);
 ok($t->tx->res->body =~ /^%PDF/, 'doc is a PDF');
@@ -64,7 +64,7 @@ $t->post_ok(
     $url,
     json => {
         name => 'Test 2', 
-        source => '<doc><page>Test 2!<img src="[% image %]" /></page></doc>'
+        source => '<doc><page>Test 2!<img src="{{ image }}" /></page></doc>'
     },
 )->status_is(200);
 my $template_id = $t->tx->res->json->{id};

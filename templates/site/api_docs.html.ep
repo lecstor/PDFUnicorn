@@ -176,17 +176,15 @@
     <div class="panel-body">
         <p>
             By creating document templates on the PDFUnicorn server you can then
-            use the templates to generate documents by posting the data to be
-            inserted into the templates.
+            use them to generate documents by posting the data to be merged into them.
         </p> 
         <h4>Request</h4>
         
         <p>POST https://pdfunicorn.com/v1/templates</p>
 
         <p>
-            <h3>Create a template</h3>
             <p>
-                A POST to /v1/templates will return the document's metadata
+                A POST to /v1/templates will create the template and return it's metadata
                 containing:
                 <ul>
                     <li>id - the template's id which is used as the template_id
@@ -211,7 +209,40 @@
     "owner": "52caa7b4b9efb777cc050000",
     "id": "52cb32bfb9efb70c36070000",
     "uri": "/v1/templates/52cb32bfb9efb70c36070000",
-    "source": "source=&lt;doc&gt;&lt;page&gt;[% some_text %]&lt;/page&gt;&lt;/doc&gt;",
+    "source": "&lt;doc&gt;&lt;page&gt;[% some_text %]&lt;/page&gt;&lt;/doc&gt;",
+    "public": false,
+}
+</code></pre>
+                
+    </div>
+</div>            
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Update a Template</h3>
+    </div>
+    <div class="panel-body">
+        <h4>Request</h4>
+        
+        <p>PUT https://pdfunicorn.com/v1/templates/{{template_id}}</p>
+
+        <p>
+            <p>Use a PUT to update the template and return it's metadata.</p>
+            <pre><code class="language-bash">$ curl https://pdfunicorn.com/v1/templates/52cb32bfb9efb70c36070000 \\
+    -d '{"source": "&lt;doc&gt;&lt;page&gt;[% some_text %] with update&lt;/page&gt;&lt;/doc&gt;", "name": "hello-world" }' \\
+    -X PUT \\
+    -u [YourApiKey]:
+</code></pre>
+        </p>
+        
+        <h4>Response</h4>
+            <pre><code>{
+    "name": "hello-world",
+    "created": 1394631592988,
+    "owner": "52caa7b4b9efb777cc050000",
+    "id": "52cb32bfb9efb70c36070000",
+    "uri": "/v1/templates/52cb32bfb9efb70c36070000",
+    "source": "&lt;doc&gt;&lt;page&gt;[% some_text %] with update&lt;/page&gt;&lt;/doc&gt;",
     "public": false,
 }
 </code></pre>
@@ -289,8 +320,9 @@
         <p>If you have created a document for background generation you can fetch
         the metadata for the document or the generated PDF file. Once the PDF file
         has been fetched the file and it's source will be deleted from PDFUnicorn.
+        <h3>Fetch a document as a PDF</h3>
         <h4>Request</h4>        
-        <p>GET https://pdfunicorn.com/v1/documents/52cb32bfb9efb70c36070000.pdf</p>        
+        <p>GET https://pdfunicorn.com/v1/documents/{{document_id}}.pdf</p>        
         <p>
             <pre><code class="language-bash">$ curl https://pdfunicorn.com/v1/documents/52cb32bfb9efb70c36070000 \\
     -u [YourApiKey]:
@@ -298,12 +330,13 @@
         </p>
 
         <h4>Response</h4>
-            <pre><code>Status-Code: 200
+        <pre><code>Status-Code: 200
 [PDF File]
 </code></pre>
         
+        <h3>Fetch a document's metadata</h3>
         <h4>Request</h4>
-        <p>GET https://pdfunicorn.com/v1/documents/52cb32bfb9efb70c36070000</p>        
+        <p>GET https://pdfunicorn.com/v1/documents/{{document_id}}</p>        
         <p>
             <pre><code class="language-bash">$ curl https://pdfunicorn.com/v1/documents/52cb32bfb9efb70c36070000 \\
     -u [YourApiKey]:
@@ -332,7 +365,7 @@
     <div class="panel-body">
         <h4>Request</h4>
         
-        <p>DELETE https://pdfunicorn.com/v1/documents/52cb32bfb9efb70c36070000</p>        
+        <p>DELETE https://pdfunicorn.com/v1/documents/{{document_id}}</p>        
         <p>
             <pre><code class="language-bash">$ curl https://pdfunicorn.com/v1/documents/52cb32bfb9efb70c36070000 \\
     -X DELETE \\
