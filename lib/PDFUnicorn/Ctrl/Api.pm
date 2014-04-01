@@ -117,7 +117,7 @@ sub update{
     delete $data->{_id};
     delete $data->{id};
     
-    $data->{owner} = $self->stash->{api_key_owner_id};
+    $data->{owner} = $self->stash->{account_id};
     
     $self->render_later;
 
