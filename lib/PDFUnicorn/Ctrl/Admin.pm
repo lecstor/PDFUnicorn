@@ -78,6 +78,11 @@ sub markup_docs {
     $self->render();
 }
 
+sub template_docs {
+    my $self = shift;
+    $self->render();
+}
+
 sub example {
     my $self = shift;
     $self->render();

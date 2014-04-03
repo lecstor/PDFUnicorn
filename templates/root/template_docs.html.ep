@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Template Documentation</title>
+    <meta name="description" content="Documentation for the PDFUnicorn template system" />
+	%= include 'site/head'
+	%= include 'mixpanel'
+  
+    <!-- record main page view -->
+  	<script type="text/javascript">mixpanel.track('view-template-documentation-page')</script>
+</head>
+
+<body>
+	%= include 'site/header'
+
+    <div class="container">
+
+        %= include 'site/template_docs'
+
+    </div>
+
+    %= include 'site/foot'
+
+</body>
+</html>
