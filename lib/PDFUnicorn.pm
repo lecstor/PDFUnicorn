@@ -321,6 +321,7 @@ sub startup {
 	$r->get('/about')->name('about')->to('root#about');
     $r->get('/docs/api')->name('apidocs')->to('root#api_docs');
     $r->get('/docs/markup')->name('markupdocs')->to('root#markup_docs');
+    $r->get('/docs/template')->name('templatedocs')->to('root#template_docs');
     $r->get('/docs/example')->name('example')->to('root#example');
     $r->get('/demo')->name('demo')->to('root#demo_form');
     $r->post('/demo')->name('demo')->to('root#demo');
@@ -344,6 +345,7 @@ sub startup {
 	$admin->get('/api-key')->to('admin#apikey');
 	$admin->get('/api-docs')->to('admin#api_docs');
     $admin->get('/markup-docs')->to('admin#markup_docs');
+    $admin->get('/template-docs')->to('admin#template_docs');
     $admin->get('/example')->to('admin#example');
 	$admin->get('/billing')->to('admin#billing');
 	$admin->post('/get-pdf')->to('admin#get_pdf');

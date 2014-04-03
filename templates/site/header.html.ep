@@ -18,6 +18,7 @@
                 <li data-toggle="tooltip" data-placement="bottom" title="Play with a demo" <%=  current_route 'demo' ? 'class="active"' : '' %>><a href="/demo">Demo</a></li>
                 <li data-toggle="tooltip" data-placement="bottom" title="API Documentation" <%=  current_route 'apidocs' ? 'class="active"' : '' %>><a href="/docs/api">API</a></li>
                 <li data-toggle="tooltip" data-placement="bottom" title="PUML Documentation" <%=  current_route 'markupdocs' ? 'class="active"' : '' %>><a href="/docs/markup">Markup</a></li>
+                <li data-toggle="tooltip" data-placement="bottom" title="Template Documentation" <%=  current_route 'templatedocs' ? 'class="active"' : '' %>><a href="/docs/template">Template</a></li>
                 <li data-toggle="tooltip" data-placement="bottom" title="Our Plans" <%=  current_route 'pricing' ? 'class="active"' : current_route 'annual_pricing' ? 'class="active"' : '' %>><a href="/pricing">Pricing</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">

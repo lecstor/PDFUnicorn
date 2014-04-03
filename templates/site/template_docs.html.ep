@@ -1,0 +1,63 @@
+<link rel="stylesheet" href="/lib/highlight/styles/mono-blue.css">
+
+<h2>Templating in PDFUnicorn</h2>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h1 class="panel-title">Intro</h1>
+    </div>
+    <div class="panel-body">
+        <p>Templates in PDFUnicorn are used to merge data into markup to produce the source for a document.</p>
+        <p>So you can design your document based on customer, invoice, or product data for instance and then easily generate customised documents.</p>
+        <p>Content to be substituted for values in the data are embedded within the markers <b>{{</b> ... <b>}}</b>.
+<pre><code>&lt;cell&gt;Hi {{ firstname }}, how are you?&lt;/cell&gt;</code></pre>
+        <p>We can then apply data to the template, for example:</p>
+<pre><code>{ "firstname": "Annabel" }
+</code></pre>
+        <p>Our document source then becomes:</p>
+<pre><code>&lt;cell&gt;Hi Annabel, how are you?&lt;/cell&gt;</code></pre>
+        <p>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h1 class="panel-title">Structured Data</h1>
+    </div>
+    <div class="panel-body">
+        <p>Ok, so we've seen a simple example, but most of the data we use these days keys and values, it goes deeper than that.</p>
+        <p>Maybe our name data is a bit more structured..</p>
+<pre><code>{ "name": { "first": "Annabel", "last": "Lee" } }</code></pre>
+        <p>In this case the can use template tags which dive into the data structure to get the values we need.</p>
+<pre><code>&lt;cell&gt;Hi {{ name.first }} {{ name.last }}&lt;/cell&gt;</code></pre>
+        <p>If our data contains a list of values we can apply each value to a block of template tags.</p>
+        <p>Data:</p>
+<pre><code>{
+    "my": {
+        "people": [
+            { "name": { "first": "Annabel", "last": "Lee" } },
+            { "name": { "first": "Jon", "last": "Lajoie" } },
+        ]
+    }
+}
+</code></pre>
+        <p>Template:</p>
+<pre><code>{{ FOREACH person IN my.people }}
+    &lt;row&gt;&lt;cell&gt;Name: {{ name.first }} {{ name.last }}&lt;/cell&gt;&lt;/row&gt;
+{{ END }}
+</code></pre>
+        <p>Source:</p>
+<pre><code>&lt;row&gt;&lt;cell&gt;Name: Annabel Lee&lt;/cell&gt;&lt;/row&gt;
+&lt;row&gt;&lt;cell&gt;Name: Jon Lajoie&lt;/cell&gt;&lt;/row&gt;
+</code></pre>
+
+    </div>
+</div>
+
+<div class="signup">
+    %= include 'site/signup_prompt'
+</div>
+
+<script src="/lib/highlight/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
