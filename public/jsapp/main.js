@@ -98,16 +98,21 @@ if (path == '/admin/api-key'){
             $(this).tab('template');
         });
 
-        var template_list = new templates.ListView({
-            el: '#template-list',
+        //var template_list = new templates.ListView({
+        //    el: '#template-list',
+        //    collection: new templates.Collection()
+        //});
+
+        var template_editor = new templates.EditorView({
+            el: '#template-editor',
             collection: new templates.Collection()
         });
-
-        template_list.collection.fetch({
+        template_editor.fetch_templates({
             success: function(collection, response, options){
-                template_list.render();
+                template_editor.render();
             }
         });
+
 
     });
 

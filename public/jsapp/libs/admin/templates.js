@@ -30,25 +30,55 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
         }
     });
 
-    var EditorView = Backbone.Layout.extend({
-        template: "#template-editor-tmpl",
-    });
-
     var ListItemView = Backbone.Layout.extend({
+        el: false,
         template: "#template-list-item-tmpl",
+        events: {
+            'click a': 'clicked'
+        },
+        clicked: function(){
+            this.trigger('click');
+        }
     });
 
     var ListView = Backbone.Layout.extend({
-        template: "#template-list-tmpl",
+        tagName: 'ul',
+        className: 'nav nav-pills nav-stacked',
+        //template: "#template-list-tmpl",
         beforeRender: function(){
             var view = this;
             this.collection.each(function(template){
                 var row = new ListItemView({ model: template });
-                this.insertView('.template-list-items', row);
+                this.insertView(row);
+                //row.on('click', this.trigger('click', row.model), this)
             }, this);
         },
     });
 
+    var EditorView = Backbone.Layout.extend({
+        initialize: function(options){
+            var listView = new ListView({ collection: options.collection });
+            //listView.on('click', function(template){
+            //    this.$('textarea').first().val(template.source);
+            //}, this);
+            this.insertView('.template-list-items', listView);
+        },
+        afterRender: function(){
+            var editor = this;
+            this.getView('.template-list-items').getViews().each(function(itemView){
+                itemView.on('click', function(){
+                    editor.getView('.template-list-items').getViews().each(function(itemView){
+                        itemView.$el.removeClass('active');
+                    });
+                    itemView.$el.addClass('active');
+                    editor.$('textarea').first().val(this.model.get('source'));
+                }, itemView);
+            });
+        },
+        fetch_templates: function(options){
+            this.collection.fetch(options)
+        }
+    });
 
     return {
         Model: Model,
