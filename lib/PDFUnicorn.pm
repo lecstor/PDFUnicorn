@@ -377,6 +377,7 @@ sub startup {
     $admin->get('/rest/templates')->to('api-templates#find');
     $admin->get('/rest/templates/:id')->to('api-templates#find_one');
     $admin->delete('/rest/templates/:id')->to('api-templates#remove');
+    $admin->put('/rest/templates/:id')->to('api-templates#update');
 	
 	$api->post('/documents')->to('api-documents#create');
 	$api->get('/documents')->to('api-documents#find');
