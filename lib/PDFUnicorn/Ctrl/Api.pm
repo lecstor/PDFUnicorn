@@ -107,6 +107,7 @@ sub update{
 	my $id = $self->stash('id');
     my $data = $self->req->json();
     delete $data->{uri};
+    delete $data->{created};
 
     if (my $errors = $self->invalidate($self->item_schema, $data)){
         return $self->render(
