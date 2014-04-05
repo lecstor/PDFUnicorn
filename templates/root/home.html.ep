@@ -15,44 +15,24 @@
 	%= include 'site/header'
 
     <div class="container">
-        <div class="jumbotron">
-            <div class="row">
-                <div class="col-xs-12">
-                    <p>So you've been tasked with producing PDF documents on demand, from your server, with custom data, in real time.</p>
-                    <p>You've looked at the option of web-to-pdf converters, but you've seen the issues others have had with page breaks, repeated headers, and assorted other things.</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <p>Maybe you need to include images and have your documents be print quality.</p>
-                    <p>Or you need to include content which is not publicly accessible, so you think a web service is out of the question.</p> 
-                    <p>You've come to the right place!</p>
-                </div>
-                <div class="col-md-6">
-                
-                  <img class="img-responsive center-block" src="/img/tax_invoice_snap.png"><br />
-                  
-                </div>
-            </div>
+        <div class="jumbotron center-block" style="max-width: 650px">
+            <p style="text-align: center">Need PDFs for your customers?</p>
+            <p style="text-align: center">Invoices, quotes, catalogues?</p>
+            <p style="text-align: center">Save time and effort with PDFUnicorn.</p>
         </div>
 
-        <div class="well">
-            <p class="lead">Tell me what you're thinking..</p>
-            <p>
-                I'd love to know what brought you here and what you are
-                looking for, even if PDFUnicorn is not a solution (or
-                especially if it's not). You can send me an email me at
-                <a href="mailto:jason@pdfunicorn.com">jason@pdfunicorn.com</a>
-                or <a onclick="olark('api.box.expand'); return false">click here to chat or leave a message</a>.
-            </p>
+        <div class="well center-block" style="max-width: 650px">
+            <p>So you've been tasked with producing PDF documents on demand, from your server, with custom data, in real time.</p>
+            <p>You've looked at the option of web-to-pdf converters, but you've seen the issues others have had with page breaks, repeated headers, private content, and more.</p>
+            <p>Maybe you need to include images and have your documents be print quality.</p>
+            <p>Or you need to include content which is not publicly accessible, so you think a web service is out of the question.</p> 
+            <p>You've come to the right place!</p>
         </div>
 
         <div style="padding-bottom: 25px;">
             <form class="form-inline" action="/sign-up" method="post" role="form">
                 <div style="max-width:520px; text-align:center" class="center-block">
-                    <p><b>Sign up to my newsletter for updates and special offers.</b></p>
-                    <label class="sr-only" for="firstname">Your first name</label>
-                    <input style="width:200px" id="firstname" name="firstname" type="text" class="form-control" placeholder="Your first name" required autofocus>
+                    <p><b>Get updates and special offers.</b></p>
                     <label class="sr-only" for="email">Your email address</label>
                     <input style="width:200px" id="email" name="email" type="email" class="form-control" placeholder="Your email address" required>
                     <button style="width:100px" class="btn btn-primary" type="submit">Sign Up</button>
@@ -61,9 +41,8 @@
             </form>
         </div>
         
-        <div class="well">
-            <h3>What is PDFUnicorn?</h3>
-            <p>At it's core, PDFUnicorn is a web service for making PDF files.</p>
+        <div class="well center-block" style="max-width: 650px">
+            <p>PDFUnicorn is a web service for creating PDF files.</p>
             
             <p>PDF files can be created directly from source documents, or from data
             applied to custom templates.</p>
@@ -86,8 +65,8 @@
             %= include 'site/signup_prompt'
         </div>
         
-        <div class="well">
-            <h3>Why?</h3>
+        <div class="well center-block" style="max-width: 650px">
+            <h3>Background</h3>
             <p>Over the years I have been presented with the challenge of creating custom solutions for generating
             PDF files from data for invoices, packing slips, and assorted other documents.. It's
             really not as much fun as you would think.. ;)</p>
@@ -116,7 +95,7 @@
             </p>
         </div>
 
-        <div class="well">
+        <div class="well center-block" style="max-width: 650px">
             <h3>Why would you want to use PDFUnicorn?</h3>
             <img class="pull-right" src="/img/pdfunicorn_logo_200.png" title="The Unicorn" alt="[logo] The Unicorn">
             <p>I want to build a solution to solve your PDF generation problems. I want to keep it as simple
@@ -129,7 +108,7 @@
             on with running your business. <a href="/contact">Contact Me</a> any time, I'd love to hear from you.</p>  
         </div>
 
-        <div class="well">
+        <div class="well center-block" style="max-width: 650px">
         	<div class="row">
         		<div class="col-md-8">
                     <p class="lead">
@@ -148,7 +127,7 @@
             </div>
         </div>
 
-        <div class="well">
+        <div class="well center-block" style="max-width: 650px">
             <div class="row">
                 <div class="col-md-12">
                     <p class="lead">
@@ -161,19 +140,20 @@
                     </p>
                     <p class="lead">
                         Check out the documentation for our
-                        <a href="docs/api">API</a> and
-                        <a href="docs/markup">markup language</a>.
+                        <a href="docs/api">API</a>,
+                        <a href="docs/markup">markup language</a>, and
+                        <a href="docs/template">template system</a>.
                     </p>
                 </div>
             </div>
         </div>
         
-        <div class="well">
+        <div class="well center-block" style="max-width: 650px">
         	<div class="row">
-                <div class="col-md-3">
+                <div class="col-md-4 col-sm-5">
                     <img src="/img/pdfunicorn_logo_200.png" title="The Unicorn" alt="[logo] The Unicorn">
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-8 col-sm-7">
                     <p class="lead">PDFUnicorn is a PDF creation web service for businesses who need to generate custom
                     PDF files on demand. We use a simple HTML-like markup language designed for laying
                     out pageable documents in the simplest way possible.</p>
