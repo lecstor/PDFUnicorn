@@ -15,6 +15,7 @@ sub schemas{
             sample_data => { type => 'object' },
             source => { type => 'string', required => 1 },
             created => { type => 'datetime', bson => 'time' },
+            modified => { type => 'datetime', bson => 'time' },
             public => { type => 'boolean', bson => 'bool' },
             owner => { type => 'oid', bson => 'oid' },
             deleted => { type => 'boolean', bson => 'bool' },
