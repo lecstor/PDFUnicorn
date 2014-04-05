@@ -25,6 +25,7 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
     var Collection = Backbone.Collection.extend({
         url: '/admin/rest/templates',
         model: Model,
+        comparator: 'modified',
         parse: function(resp){
             return resp.data ? resp.data : resp;
         }
@@ -58,22 +59,34 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
     var EditorView = Backbone.Layout.extend({
         initialize: function(options){
             var listView = new ListView({ collection: options.collection });
-            //listView.on('click', function(template){
-            //    this.$('textarea').first().val(template.source);
-            //}, this);
             this.insertView('.template-list-items', listView);
+        },
+        events:{
+            'click #save-button': 'save_template'
         },
         afterRender: function(){
             var editor = this;
             this.getView('.template-list-items').getViews().each(function(itemView){
                 itemView.on('click', function(){
-                    editor.getView('.template-list-items').getViews().each(function(itemView){
-                        itemView.$el.removeClass('active');
-                    });
-                    itemView.$el.addClass('active');
-                    editor.$('textarea').first().val(this.model.get('source'));
+                    if (editor.selected_template){
+                        editor.selected_template.$el.removeClass('active');
+                    }
+                    editor.selected_template = this;
+                    this.$el.addClass('active');
+                    editor.$('#editor-template-name').html(this.model.get('name'));
+                    editor.$('#template-source').val(this.model.get('source'));
                 }, itemView);
             });
+        },
+        save_template: function(){
+            if (this.selected_template){
+                var model = this.selected_template.model;
+                model.set('source', this.$('#template-source').val());
+                model.set('name', this.$('#editor-template-name').text());
+                model.save();
+            } else {
+                // new template
+            }
         },
         fetch_templates: function(options){
             this.collection.fetch(options)
