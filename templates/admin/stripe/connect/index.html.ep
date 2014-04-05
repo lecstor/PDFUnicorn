@@ -45,7 +45,7 @@
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs">
                   <li class="active"><a href="#customer" data-toggle="tab">Customer</a></li>
-                  <li><a href="#template" data-toggle="tab">Template</a></li>
+                  <li><a href="#templates" data-toggle="tab">Templates</a></li>
                 </ul>
                 
                 <!-- Tab panes -->
@@ -66,15 +66,32 @@
                         </div>
                     </div>
 
-                    <div class="tab-pane" id="template">
+                    <div class="tab-pane" id="templates">
                         <div id="template-editor">
-                            <div id="template-list" class="col-xs-12 col-sm-3">
-                                <p>Templates</p>
+                            <div id="template-list" class="col-xs-12 col-sm-3" style="margin-top: 30px">
                                 <ul class="template-list-items nav nav-pills nav-stacked"></ul>
                             </div>
                             <div class="col-xs-12 col-sm-9">
-                                Template Editor Here
-                                <textarea class="form-control" rows="15"></textarea>
+                                <div class="row" style="margin-top: 10px; margin-bottom: 10px;">
+                                    <div class="col-xs-6">
+                                        <h3 id="editor-template-name" style="margin-top: 2px; margin-bottom: 2px">New Template</h3>
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <form class="form-inline" role="form">
+                                            <button type="button" id="save-button" class="btn btn-default btn-sm pull-right">
+                                                <span class="glyphicon glyphicon-save"></span> Save
+                                            </button>
+                                        </form>
+                                        <ul class="nav nav-pills">
+                                            <li class="active"><a href="#">Source</a></li>
+                                            <li><a href="#">Sample Data</a></li>
+                                            <li><a href="#">Preview</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <textarea id="template-source" class="form-control" rows="15"></textarea>
+                                </div>
                             </div>
                         </div>
                     </div>
