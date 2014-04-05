@@ -18,7 +18,7 @@
 <body>
 	%= include 'site/header'
     <div class="container">
-    	<div style="max-width: 500px; margin: 0 auto;">
+    	<div style="max-width: 500px; margin: 40px auto;">
 			% if ($error eq 'not_email'){
 				<p class="lead">Sorry, that doesn't look like an email address to me..</p>
 				%= include 'site/sign_up_form'

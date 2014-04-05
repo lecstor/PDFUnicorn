@@ -22,15 +22,14 @@
                 <li data-toggle="tooltip" data-placement="bottom" title="Our Plans" <%=  current_route 'pricing' ? 'class="active"' : current_route 'annual_pricing' ? 'class="active"' : '' %>><a href="/pricing">Pricing</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                    <li data-toggle="tooltip" data-placement="bottom" title="Contact the person behind the horse.." ><a href="/contact">
+                    <li data-toggle="tooltip" data-placement="bottom" title="Contact Us" ><a class="icon" href="/contact">
                         <span class="glyphicon glyphicon-envelope">
                     </a></li>
               	% if (session 'user_id'){
                     <li data-toggle="tooltip" data-placement="bottom" title="Account Admin"><a href="/admin"><span class="glyphicon glyphicon-cog"></a></li>
-                    <li data-toggle="tooltip" data-placement="bottom" title="Log Out"><a href="/log-out"><span class="glyphicon glyphicon-log-out"></a></li>
+                    <li data-toggle="tooltip" data-placement="bottom" title="Log Out"><a class="icon" href="/log-out"><span class="glyphicon glyphicon-log-out"></a></li>
                 % } else {
-                    <li data-toggle="tooltip" data-placement="bottom" title="Log In"><a href="/log-in" title="Log In"><span class="glyphicon glyphicon-log-in"></span></a></li>
-                	<li><a href="/pricing">Sign Up</a></li>
+                    <li data-toggle="tooltip" data-placement="bottom" title="Log In"><a class="icon" href="/log-in" title="Log In"><span class="glyphicon glyphicon-log-in"></span></a></li>
             	% }
             </ul>
         </div><!--/.nav-collapse -->
