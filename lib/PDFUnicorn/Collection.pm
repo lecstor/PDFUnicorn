@@ -20,7 +20,7 @@ sub create{
     die 'Need a callback!' unless $callback;
  
     $data->{created} = bson_time; # note Time::HiRes 'time'
-    #$data->{modified} = $data->{created};
+    $data->{modified} = $data->{created};
         
     my $oid = $self->collection->insert($data => sub{
         my ($coll, $err, $oid) = @_;
@@ -101,6 +101,8 @@ sub update{
     my $self = shift;
     my $query = shift;
     my $data = shift;
+    delete $data->{created};
+    $data->{modified} = bson_time; # note Time::HiRes 'time'
     my $callback = ref($_[-1]) eq 'CODE' ? pop : undef;
     my $options = shift || {};
     die 'Need a callback!' unless $callback;
