@@ -9,8 +9,11 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
     };
 
     var Model = Backbone.Model.extend({
-        defaults: {
-            name: 'Unnamed Template'
+        defaults: function(){
+            return {
+                name: 'Unnamed Template',
+                modified: (new Date).getTime()
+            }
         },
         parse: function(resp){
             return resp.data ? resp.data : resp;
@@ -82,6 +85,7 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
             if (this.selected_template){
                 var model = this.selected_template.model;
                 model.set('source', this.$('#template-source').val());
+                model.set('sample_data', this.$('#template-data').val());
                 model.set('name', this.$('#editor-template-name').text());
                 model.save();
             } else {
@@ -89,6 +93,12 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
             }
         },
         fetch_templates: function(options){
+            if (!options) options = {};
+            var orig_success = options.success;
+            options.success = function(collection, response, options){
+                collection.add(new Model({ name: 'New Template' }));
+                orig_success(collection, response, options);
+            };
             this.collection.fetch(options)
         }
     });
