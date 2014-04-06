@@ -26,7 +26,7 @@
                         <span class="glyphicon glyphicon-envelope">
                     </a></li>
               	% if (session 'user_id'){
-                    <li data-toggle="tooltip" data-placement="bottom" title="Account Admin"><a href="/admin"><span class="glyphicon glyphicon-cog"></a></li>
+                    <li data-toggle="tooltip" data-placement="bottom" title="Account Admin"><a class="icon" href="/admin"><span class="glyphicon glyphicon-cog"></a></li>
                     <li data-toggle="tooltip" data-placement="bottom" title="Log Out"><a class="icon" href="/log-out"><span class="glyphicon glyphicon-log-out"></a></li>
                 % } else {
                     <li data-toggle="tooltip" data-placement="bottom" title="Log In"><a class="icon" href="/log-in" title="Log In"><span class="glyphicon glyphicon-log-in"></span></a></li>
