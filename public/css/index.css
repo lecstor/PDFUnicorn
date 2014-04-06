@@ -80,20 +80,23 @@ footer {
 #invoice-item-list .row {
   margin: 0 0 10px 0;
 }
-.nav > li > a.icon {
+.navbar .nav > li > a.icon {
   font-size: 20px;
 }
 .navbar-nav > li > a.icon {
   padding-top: 10px;
   padding-bottom: 10px;
 }
+#template-editor .nav-pills > li > a {
+  padding: 5px 8px;
+}
 @media (min-width: 768px) {
+  .navbar-nav > li > a {
+    padding: 20px 10px;
+  }
   .navbar-nav > li > a.icon {
     padding-top: 15px;
     padding-bottom: 15px;
-  }
-  .nav > li > a {
-    padding: 20px 10px;
   }
 }
 /*
