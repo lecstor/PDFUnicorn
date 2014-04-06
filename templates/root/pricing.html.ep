@@ -36,7 +36,7 @@
 
     <div class="container">
       
-	  <div class="jumbotron clearfix">
+	  <div class="jumbotron clearfix" style="background-color: #fff">
 	  
 	    % if (current_route 'pricing') {
             <h2 style="text-align: center">Try PDFUnicorn free for 30 days</h2>
@@ -50,21 +50,23 @@
         <div class="row">
         % foreach my $plan (@$plans){
             <div class="col-sm-12 col-md-4">
-                <div class="pdfu-plan" <%== $plan->{recommended} ? 'style="background-color: #E0FFE0"' : '' %>>
+                <div class="pdfu-plan" style="background-color: #eee; min-height: 270px<%== $plan->{recommended} ? '; background-color: #E0FFE0' : '' %>">
                     <form action="/sign-up" method="post">
                         <input type="hidden" name="selected_plan" value="<%= $plan->{id} %>" />
                         <h3 style="text-align: center"><%= $plan->{name} %></h3>
                         % if ($plan->{price}){
                             <h2 style="text-align: center">$<%= $plan->{price} %>/<%= $plan->{term} %></h2>
+                        % } else {
+                            <h2 style="text-align: center">$0</h2>
                         % }
-                        <div style="text-align: center"><%= $plan->{templates} %> templates</div>
+                        <div style="text-align: center"><%= $plan->{templates} %> template<% if ($plan->{templates} > 1){ %>s<% } %></div>
                         <div style="text-align: center"><%= $plan->{units} %> pages/month</div>
                         <div style="text-align: center">
                             % if (current_route 'pricing') {
                                 % if ($plan->{price}){
                                     <button type="submit" class="btn btn-primary btn-lg">Start Free Trial</button>
                                 % } else {
-                                    <button type="submit" class="btn btn-primary btn-lg">Sign Up Free</button>
+                                    <button type="submit" class="btn btn-primary btn-lg">Get Started</button>
                                 % }
                             % } else {
                                 <button type="submit" class="btn btn-primary btn-lg">Sign Up</button>
