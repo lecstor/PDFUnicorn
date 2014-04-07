@@ -103,7 +103,7 @@ if (path == '/admin/api-key'){
         //    collection: new templates.Collection()
         //});
 
-        var template_editor = new templates.EditorView({
+        var template_editor = new templates.EditorLayout({
             el: '#template-editor',
             collection: new templates.Collection()
         });
