@@ -1,7 +1,11 @@
 % if (! session 'user_id'){
-    <div>
-            <h2 style="text-align: center">Try PDFUnicorn free for 30 days</h2>
-            <h3 style="text-align: center">No credit card required. 60 day money back guarantee.</h3>
-            <div style="text-align: center" class="select-plan"><a href="/pricing" class="btn btn-primary btn-lg">Select a Plan</a></div>
-    </div>
+    <form class="form-inline" action="/sign-up" method="post" role="form">
+        <input type="hidden" name="selected_plan" value="free-1">
+        <div style="text-align:center" class="center-block">
+            <p class="lead">Get 50 pages per month on our free starter plan</p>
+            <label class="sr-only" for="email">Your email address</label>
+            <input style="width:200px; display: inline-block;" id="email" name="email" type="email" class="form-control" placeholder="Your email address" required>
+            <button style="width:100px" class="btn btn-primary" type="submit">Get Started</button>
+        </div>
+    </form>
 % }
