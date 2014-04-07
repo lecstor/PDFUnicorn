@@ -51,7 +51,18 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
     var ListView = Backbone.Layout.extend({
         tagName: 'ul',
         className: 'nav nav-pills nav-stacked',
-        //template: "#template-list-tmpl",
+        initialize: function(options){
+            console.log(options);
+            this.editor = options.editor;
+        },
+        afterRender: function(){
+            var listView = this;
+            this.getViews().each(function(itemView){
+                itemView.on('click', function(){
+                    this.editor.open_template(itemView.model);
+                }, listView);
+            });
+        },
         beforeRender: function(){
             var view = this;
             this.collection.each(function(template){
@@ -60,27 +71,7 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
                 //row.on('click', this.trigger('click', row.model), this)
             }, this);
         },
-    });
-
-    var EditorLayout = Backbone.Layout.extend({
-        initialize: function(options){
-            var listView = new ListView({ collection: options.collection });
-            this.insertView('.template-list-items', listView);
-        },
-        events:{
-            'click #save-button': 'save_template'
-        },
-        beforeRender: function(){
-        },
-        afterRender: function(){
-            var editor = this;
-            this.getView('.template-list-items').getViews().each(function(itemView){
-                itemView.on('click', function(){
-                    editor.open_template(this);
-                }, itemView);
-            });
-        },
-        open_template: function(listTemplateView){
+        open_template: function(model){
             if (this.selected_template){
                 this.selected_template.$el.removeClass('active');
             }
@@ -89,16 +80,40 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
             this.$('#editor-template-name').html(listTemplateView.model.get('name'));
             this.$('#template-source').val(listTemplateView.model.get('source'));
         },
+    });
+
+    var EditorView = Backbone.Layout.extend({
+        el: false,
+        template: '#template-editor-tmpl',
+        events:{
+            'click #save-button': 'save_template'
+        },
+        open_template: function(model){
+            this.model = model;
+            this.$('#editor-template-name').html(model.get('name'));
+            this.$('#template-source').val(model.get('source'));
+        },
         save_template: function(){
-            if (this.selected_template){
-                var model = this.selected_template.model;
-                model.set('source', this.$('#template-source').val());
-                model.set('sample_data', this.$('#template-data').val());
-                model.set('name', this.$('#editor-template-name').text());
-                model.save();
+            if (this.model){
+                this.model.set('source', this.$('#template-source').val());
+                this.model.set('sample_data', this.$('#template-data').val());
+                this.model.set('name', this.$('#editor-template-name').text());
+                this.model.save();
             } else {
                 // new template
             }
+        },
+    });
+
+    var EditorLayout = Backbone.Layout.extend({
+        initialize: function(options){
+            var editorView = new EditorView();
+            this.insertView('#template-editor', editorView);
+            var listView = new ListView({
+                collection: options.collection,
+                editor: editorView
+            });
+            this.insertView('#template-list-items', listView);
         },
         fetch_templates: function(options){
             if (!options) options = {};
@@ -111,9 +126,6 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
         }
     });
 
-    var EditorView = Backbone.Layout.extend({
-
-    });
 
     return {
         Model: Model,

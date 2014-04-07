@@ -103,13 +103,13 @@ if (path == '/admin/api-key'){
         //    collection: new templates.Collection()
         //});
 
-        var template_editor = new templates.EditorLayout({
-            el: '#template-editor',
+        var template_editor_layout = new templates.EditorLayout({
+            el: '#template-editor-layout',
             collection: new templates.Collection()
         });
-        template_editor.fetch_templates({
+        template_editor_layout.fetch_templates({
             success: function(collection, response, options){
-                template_editor.render();
+                template_editor_layout.render();
             }
         });
 
