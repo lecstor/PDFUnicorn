@@ -49,8 +49,8 @@ my $TYPES = {
     },
     
     'datetime' => { # 1374324216.568317
-        test => qr/^\d{10}(?:\.\d{0,6})?$/,
-        message => 'must be seconds since the epoch',
+        test => qr/^\d{13}(?:\.\d{0,3})?$/,
+        message => 'must be microseconds since the epoch',
     },
     
     'oid' => {
