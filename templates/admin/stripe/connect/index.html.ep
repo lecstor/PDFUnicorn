@@ -204,9 +204,9 @@
                 <div id="editor-name" class="col-xs-12 col-sm-12 col-md-5"></div>
                 <div class="col-xs-12 col-sm-10 col-md-5">
                     <ul class="nav nav-pills">
-                        <li class="active"><a href="#">Source</a></li>
-                        <li><a href="#">Sample Data</a></li>
-                        <li><a href="#">Preview</a></li>
+                        <li id="source-item"><a href="#" id="source-pill">Source</a></li>
+                        <li id="sample_data-item"><a href="#" id="data-pill">Sample Data</a></li>
+                        <li id="preview-item"><a href="#" id="preview-pill">Preview</a></li>
                     </ul>
                 </div>
                 <div class="col-xs-12 col-sm-2 col-md-2">
@@ -228,11 +228,11 @@
     </script>
     
     <script id="template-editor-content-source-tmpl" type="template">
-        <textarea class="form-control" rows="15">{%= source %}</textarea>
+        <div><textarea class="form-control" rows="15">{%= source %}</textarea></div>
     </script>
 
     <script id="template-editor-content-data-tmpl" type="template">
-        <textarea class="form-control" rows="15">{%= data %}</textarea>
+        <div><textarea class="form-control" rows="15">{%= sample_data %}</textarea></div>
     </script>
 
     <script id="template-editor-content-preview-tmpl" type="template">

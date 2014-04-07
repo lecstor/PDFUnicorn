@@ -12,7 +12,8 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
         defaults: function(){
             return {
                 name: 'Unnamed Template',
-                source: '<doc size="a4"><page></page></doc>',
+                source: '<doc size="a4"><page>{{some_text}}</page></doc>',
+                sample_data: { "some_text": "Hello World!" },
                 modified: (new Date).getTime()
             };
         },
@@ -22,6 +23,7 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
         serialize: function(){
             var data = JSON.parse(JSON.stringify(this.toJSON())); //deepcopy..
             data.created = moment.unix(data.created).format("ddd, Do MMM YYYY, h:mm:ssa");
+            data.modified = moment.unix(data.modified).format("ddd, Do MMM YYYY, h:mm:ssa");
             return data;
         }
     });
@@ -90,14 +92,28 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
     var EditorSourceView = Backbone.View.extend({
         el: false,
         template: '#template-editor-content-source-tmpl',
-        serialize: function(){
-            return this.model.toJSON();
-        }
+        events: {
+            'change textarea': 'changed'
+        },
+        changed: function(){
+            this.model.set('source', this.$('textarea').first().val());
+        },
     });
 
     var EditorDataView = Backbone.View.extend({
         el: false,
         template: '#template-editor-content-data-tmpl',
+        events: {
+            'change textarea': 'changed'
+        },
+        serialize: function(){
+            var data = this.model.toJSON();
+            data.sample_data = JSON.stringify(data.sample_data);
+            return data;
+        },
+        changed: function(){
+            this.model.set('sample_data', JSON.parse(this.$('textarea').first().val()));
+        },
     });
 
     var EditorPreviewView = Backbone.View.extend({
@@ -109,11 +125,20 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
         el: false,
         template: '#template-editor-tmpl',
         events:{
-            'click #save-button': 'save_template'
+            'click #save-button': 'save_template',
+            'click #source-pill': 'show_source',
+            'click #data-pill': 'show_data',
+            'click #preview-pill': 'show_preview',
         },
         initialize: function(options){
             this.setView('#editor-name', new EditorNameView({ model: options.model }));
-            this.setView('#editor-content', new EditorSourceView({ model: options.model }));
+            this.source_view = new EditorSourceView({ model: options.model });
+            this.data_view = new EditorDataView({ model: options.model });
+            this.item_selected = '#source-item';
+            this.setView('#editor-content', this.source_view);
+        },
+        afterRender: function(){
+            this.$(this.item_selected).first().addClass('active');
         },
         open_template: function(model){
             this.model = model;
@@ -122,14 +147,23 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
             this.render();
         },
         save_template: function(){
-            if (this.model){
-                this.model.set('source', this.$('#template-source').val());
-                this.model.set('sample_data', this.$('#template-data').val());
-                this.model.set('name', this.$('#editor-template-name').text());
-                this.model.save();
-            } else {
-                // new template
-            }
+            this.model.save();
+        },
+        show_source: function(){
+            this.$(this.item_selected).first().removeClass('active');
+            this.item_selected = '#source-item';
+            this.$(this.item_selected).first().addClass('active');
+            this.setView('#editor-content', this.source_view);
+            this.source_view.render();
+        },
+        show_data: function(){
+            this.$(this.item_selected).first().removeClass('active');
+            this.item_selected = '#sample_data-item';
+            this.$(this.item_selected).first().addClass('active');
+            this.setView('#editor-content', this.data_view);
+            this.data_view.render();
+        },
+        show_preview: function(){
         },
     });
 

@@ -37,7 +37,6 @@ requirejs.config({
 });
 
 var path = location.pathname;
-console.log(path);
 
 require(['jquery'], function($){
     $('[data-toggle=offcanvas]').click(function() {
@@ -81,12 +80,10 @@ if (path == '/admin/api-key'){
 
     require(['jquery', 'admin/stripe_connect/customer', 'admin/stripe_connect/invoices', 'admin/templates'], function($, customer, invoices, Template){
         var customerView = new customer.view.customer({ el: '#customer-view' });
-        console.log(customerView);
         var lookup = new customer.view.lookup({
             el: '#customer-lookup',
             customerView: new customer.view.customer()
         });
-        console.log(lookup);
 
         $('#customer a').click(function (e) {
             e.preventDefault();
