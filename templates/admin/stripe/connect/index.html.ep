@@ -69,7 +69,6 @@
                     <div class="tab-pane" id="templates">
                         <div id="template-editor-layout">
                             <div id="template-list" class="col-xs-12 col-sm-3" style="margin-top: 30px">
-                                <ul id="template-list-items" class="nav nav-pills nav-stacked"></ul>
                             </div>
                             <div id="template-editor" class="col-xs-12 col-sm-9">
                             </div>
@@ -191,6 +190,10 @@
         
     </script>
 
+    <script id="template-list-tmpl" type="template">
+        <ul id="template-list-items" class="nav nav-pills nav-stacked"></ul>
+    </script>
+
     <script id="template-list-item-tmpl" type="template">
         <li class="template-list-name"><a href="#">{%= name %}</a></li>
     </script>
@@ -198,9 +201,7 @@
     <script id="template-editor-tmpl" type="template">
         <div>
             <div class="row" style="margin-top: 10px; margin-bottom: 10px;">
-                <div class="col-xs-12 col-sm-12 col-md-5">
-                    <h3 id="editor-template-name" style="margin-top: 2px; margin-bottom: 2px">New Template</h3>
-                </div>
+                <div id="editor-name" class="col-xs-12 col-sm-12 col-md-5"></div>
                 <div class="col-xs-12 col-sm-10 col-md-5">
                     <ul class="nav nav-pills">
                         <li class="active"><a href="#">Source</a></li>
@@ -217,11 +218,25 @@
                 </div>
             </div>
             <div class="row">
-                <textarea id="template-source" class="form-control" rows="15"></textarea>
+                <div id="editor-content"></div>
             </div>
         </div>
     </script>
 
+    <script id="template-editor-name-tmpl" type="template">
+        <h3 id="editor-template-name" style="margin-top: 2px; margin-bottom: 2px">{%= name %}</h3>
+    </script>
+    
+    <script id="template-editor-content-source-tmpl" type="template">
+        <textarea class="form-control" rows="15">{%= source %}</textarea>
+    </script>
+
+    <script id="template-editor-content-data-tmpl" type="template">
+        <textarea class="form-control" rows="15">{%= data %}</textarea>
+    </script>
+
+    <script id="template-editor-content-preview-tmpl" type="template">
+    </script>
 
 </body>
 </html>

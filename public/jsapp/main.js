@@ -79,7 +79,7 @@ if (path == '/admin/api-key'){
 
 } else if (path == '/admin/stripe/connect'){
 
-    require(['jquery', 'admin/stripe_connect/customer', 'admin/stripe_connect/invoices', 'admin/templates'], function($, customer, invoices, templates){
+    require(['jquery', 'admin/stripe_connect/customer', 'admin/stripe_connect/invoices', 'admin/templates'], function($, customer, invoices, Template){
         var customerView = new customer.view.customer({ el: '#customer-view' });
         console.log(customerView);
         var lookup = new customer.view.lookup({
@@ -103,15 +103,25 @@ if (path == '/admin/api-key'){
         //    collection: new templates.Collection()
         //});
 
-        var template_editor_layout = new templates.EditorLayout({
-            el: '#template-editor-layout',
-            collection: new templates.Collection()
-        });
-        template_editor_layout.fetch_templates({
+        var templates = new Template.Collection();
+        templates.fetch({
             success: function(collection, response, options){
+                collection.add(new Template.Model({ name: 'New Template' }));
+                var template_editor_layout = new Template.EditorLayout({
+                    el: '#template-editor-layout',
+                    collection: collection,
+                    model: collection.first()
+                });
                 template_editor_layout.render();
             }
         });
+
+        // template_editor_layout.fetch_templates({
+            // success: function(collection, response, options){
+                // template_editor_layout.set_model()
+                // template_editor_layout.render();
+            // }
+        // });
 
 
     });

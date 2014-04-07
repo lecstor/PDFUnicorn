@@ -12,8 +12,9 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
         defaults: function(){
             return {
                 name: 'Unnamed Template',
+                source: '<doc size="a4"><page></page></doc>',
                 modified: (new Date).getTime()
-            }
+            };
         },
         parse: function(resp){
             return resp.data ? resp.data : resp;
@@ -49,17 +50,14 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
     });
 
     var ListView = Backbone.Layout.extend({
-        tagName: 'ul',
-        className: 'nav nav-pills nav-stacked',
-        initialize: function(options){
-            console.log(options);
-            this.editor = options.editor;
-        },
+        el: false,
+        template: "#template-list-tmpl",
         afterRender: function(){
             var listView = this;
             this.getViews().each(function(itemView){
                 itemView.on('click', function(){
-                    this.editor.open_template(itemView.model);
+                    //this.editor.open_template(itemView.model);
+                    this.open_template(itemView);
                 }, listView);
             });
         },
@@ -71,15 +69,40 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
                 //row.on('click', this.trigger('click', row.model), this)
             }, this);
         },
-        open_template: function(model){
+        open_template: function(itemView){
+            this.editor.open_template(itemView.model);
             if (this.selected_template){
                 this.selected_template.$el.removeClass('active');
             }
-            this.selected_template = listTemplateView;
-            listTemplateView.$el.addClass('active');
-            this.$('#editor-template-name').html(listTemplateView.model.get('name'));
-            this.$('#template-source').val(listTemplateView.model.get('source'));
+            this.selected_template = itemView;
+            itemView.$el.addClass('active');
         },
+    });
+
+    var EditorNameView = Backbone.View.extend({
+        el: false,
+        template: '#template-editor-name-tmpl',
+        serialize: function(){
+            return this.model.toJSON();
+        }
+    });
+
+    var EditorSourceView = Backbone.View.extend({
+        el: false,
+        template: '#template-editor-content-source-tmpl',
+        serialize: function(){
+            return this.model.toJSON();
+        }
+    });
+
+    var EditorDataView = Backbone.View.extend({
+        el: false,
+        template: '#template-editor-content-data-tmpl',
+    });
+
+    var EditorPreviewView = Backbone.View.extend({
+        el: false,
+        template: '#template-editor-content-preview-tmpl',
     });
 
     var EditorView = Backbone.Layout.extend({
@@ -88,10 +111,15 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
         events:{
             'click #save-button': 'save_template'
         },
+        initialize: function(options){
+            this.setView('#editor-name', new EditorNameView({ model: options.model }));
+            this.setView('#editor-content', new EditorSourceView({ model: options.model }));
+        },
         open_template: function(model){
             this.model = model;
-            this.$('#editor-template-name').html(model.get('name'));
-            this.$('#template-source').val(model.get('source'));
+            this.getView('#editor-name').model = model;
+            this.getView('#editor-content').model = model;
+            this.render();
         },
         save_template: function(){
             if (this.model){
@@ -107,23 +135,14 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
 
     var EditorLayout = Backbone.Layout.extend({
         initialize: function(options){
-            var editorView = new EditorView();
-            this.insertView('#template-editor', editorView);
-            var listView = new ListView({
-                collection: options.collection,
-                editor: editorView
-            });
-            this.insertView('#template-list-items', listView);
+            var editor = new EditorView({ model: options.model });
+            this.setView('#template-editor', editor);
+            this.setView('#template-list', new ListView({
+                editor: editor,
+                model: options.model,
+                collection: options.collection
+            }));
         },
-        fetch_templates: function(options){
-            if (!options) options = {};
-            var orig_success = options.success;
-            options.success = function(collection, response, options){
-                collection.add(new Model({ name: 'New Template' }));
-                orig_success(collection, response, options);
-            };
-            this.collection.fetch(options)
-        }
     });
 
 
@@ -131,6 +150,7 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
         Model: Model,
         Collection: Collection,
         EditorLayout: EditorLayout,
+        EditorView: EditorView,
         ListView: ListView,
         ListItemView: ListItemView,
     };
