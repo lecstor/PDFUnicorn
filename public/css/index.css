@@ -374,9 +374,9 @@ pre {
 .container {
   min-height: 300px;
 }
-@media (min-width: 1200px) {
+@media (min-width: 768px) {
   .nav-container {
-    width: 1170px;
+    width: 750px;
   }
 }
 @media (min-width: 992px) {
@@ -384,9 +384,9 @@ pre {
     width: 970px;
   }
 }
-@media (min-width: 768px) {
+@media (min-width: 1200px) {
   .nav-container {
-    width: 750px;
+    width: 1170px;
   }
 }
 .splash {
@@ -467,7 +467,6 @@ html,
 body {
   overflow-x: hidden;
   /* Prevent scroll on narrow devices */
-
 }
 footer {
   padding: 30px 0;
@@ -508,29 +507,24 @@ footer {
   .row-offcanvas-right .sidebar-offcanvas {
     right: -50%;
     /* 6 columns */
-  
   }
   .row-offcanvas-left .sidebar-offcanvas {
     left: -50%;
     /* 6 columns */
-  
   }
   .row-offcanvas-right.active {
     right: 50%;
     /* 6 columns */
-  
   }
   .row-offcanvas-left.active {
     left: 50%;
     /* 6 columns */
-  
   }
   .sidebar-offcanvas {
     position: absolute;
     top: 0;
     width: 50%;
     /* 6 columns */
-  
   }
   .navbar-default .navbar-nav .open .dropdown-menu > li > a {
     color: #BDBDBD;
