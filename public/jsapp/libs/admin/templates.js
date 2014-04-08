@@ -32,8 +32,10 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
         url: '/admin/rest/templates',
         model: Model,
         comparator: function(m1,m2){
-            if (m1 == m2) return 0;
-            return m1 > m2 ? -1 : 1;
+            var d1 = m1.get('modified'),
+                d2 = m2.get('modified');
+            if (d1 == d2) return 0;
+            return d1 > d2 ? -1 : 1;
         },
         parse: function(resp){
             return resp.data ? resp.data : resp;
@@ -44,10 +46,28 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
         el: false,
         template: "#template-list-item-tmpl",
         events: {
-            'click a': 'clicked'
+            'click a': 'clicked',
+            'click .trash': 'remove',
+            'mouseover a': 'show_options',
+            'mouseout a': 'hide_options',
         },
         clicked: function(){
             this.trigger('click');
+        },
+        show_options: function(){
+            this.$('.trash').show();
+        },
+        hide_options: function(){
+            this.$('.trash').hide();
+        },
+        remove: function(event){
+            console.log('remove');
+            this.model.destroy({
+                success: function(){
+                    console.log('destryed? 222');
+                }
+            });
+            event.preventDefault();
         }
     });
 
@@ -56,11 +76,17 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
         template: "#template-list-tmpl",
         afterRender: function(){
             var listView = this;
-            this.getViews().each(function(itemView){
+            var views = this.getViews();
+            console.log(views);
+            this.set_selected(views.first().value());
+            views.each(function(itemView){
                 itemView.on('click', function(){
-                    //this.editor.open_template(itemView.model);
                     this.open_template(itemView);
                 }, listView);
+                itemView.model.on('change', function(){
+                    this.render();
+                    this.$el.addClass('active');
+                }, itemView);
             });
         },
         beforeRender: function(){
@@ -71,19 +97,30 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
                 //row.on('click', this.trigger('click', row.model), this)
             }, this);
         },
-        open_template: function(itemView){
-            this.editor.open_template(itemView.model);
+        set_selected: function(itemView){
             if (this.selected_template){
                 this.selected_template.$el.removeClass('active');
             }
             this.selected_template = itemView;
             itemView.$el.addClass('active');
         },
+        open_template: function(itemView){
+            this.editor.open_template(itemView.model, itemView);
+            this.set_selected(itemView);
+        },
     });
 
     var EditorNameView = Backbone.View.extend({
         el: false,
         template: '#template-editor-name-tmpl',
+        serialize: function(){
+            return this.model.toJSON();
+        }
+    });
+
+    var EditorNameEditView = Backbone.View.extend({
+        el: false,
+        template: '#template-editor-name-edit-tmpl',
         serialize: function(){
             return this.model.toJSON();
         }
@@ -129,6 +166,9 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
             'click #source-pill': 'show_source',
             'click #data-pill': 'show_data',
             'click #preview-pill': 'show_preview',
+            'click #editor-name-link': 'edit_name',
+            'change #editor-name input': 'set_name',
+            'blur #editor-name input': 'show_name',
         },
         initialize: function(options){
             this.setView('#editor-name', new EditorNameView({ model: options.model }));
@@ -136,6 +176,10 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
             this.data_view = new EditorDataView({ model: options.model });
             this.item_selected = '#source-item';
             this.setView('#editor-content', this.source_view);
+            options.model.on('change', function(){
+                this.$('#save-button').removeClass('btn-default');
+                this.$('#save-button').addClass('btn-danger');
+            }, this);
         },
         afterRender: function(){
             this.$(this.item_selected).first().addClass('active');
@@ -147,7 +191,13 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
             this.render();
         },
         save_template: function(){
-            this.model.save();
+            var editor = this;
+            this.model.save({},{
+                success: function(){
+                    editor.$('#save-button').addClass('btn-default');
+                    editor.$('#save-button').removeClass('btn-danger');
+                }
+            });
         },
         show_source: function(){
             this.$(this.item_selected).first().removeClass('active');
@@ -164,6 +214,21 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
             this.data_view.render();
         },
         show_preview: function(){
+        },
+        edit_name: function(){
+            var edit_view = new EditorNameEditView({ model: this.model });
+            this.setView('#editor-name', edit_view);
+            edit_view.render();
+            edit_view.$('input').focus();
+        },
+        set_name: function(){
+            var edit_view = this.getView('#editor-name');
+            this.model.set('name', edit_view.$('input').val());
+        },
+        show_name: function(){
+            var show_view = new EditorNameView({ model: this.model });
+            this.setView('#editor-name', show_view);
+            show_view.render();
         },
     });
 

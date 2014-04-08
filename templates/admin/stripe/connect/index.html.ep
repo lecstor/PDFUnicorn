@@ -195,12 +195,14 @@
     </script>
 
     <script id="template-list-item-tmpl" type="template">
-        <li class="template-list-name"><a href="#">{%= name %}</a></li>
+        <li class="template-list-name">
+            <a href="#">{%= name %}<span style="display:none" class=" pull-right glyphicon glyphicon-trash trash"></span></a>
+        </li>
     </script>
 
     <script id="template-editor-tmpl" type="template">
         <div>
-            <div class="row" style="margin-top: 10px; margin-bottom: 10px;">
+            <div class="row" style="height: 30px; margin-top: 10px; margin-bottom: 10px;">
                 <div id="editor-name" class="col-xs-12 col-sm-12 col-md-5"></div>
                 <div class="col-xs-12 col-sm-10 col-md-5">
                     <ul class="nav nav-pills">
@@ -224,7 +226,11 @@
     </script>
 
     <script id="template-editor-name-tmpl" type="template">
-        <h3 id="editor-template-name" style="margin-top: 2px; margin-bottom: 2px">{%= name %}</h3>
+        <div><a id="editor-name-link" href="#" style="text-decoration:none; color:black"><h4 id="editor-template-name" style="margin-top: 2px; margin-bottom: 2px">{%= name %}</h4></a></div>
+    </script>
+    
+    <script id="template-editor-name-edit-tmpl" type="template">
+        <div><input type="text" class="form-control" value="{%= name %}"></div>
     </script>
     
     <script id="template-editor-content-source-tmpl" type="template">
