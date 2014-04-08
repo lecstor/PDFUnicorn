@@ -79,6 +79,17 @@ PasswordAuthentication no
 # openssl req -new -nodes -days 365 -newkey rsa:2048 -keyout pdfunicorn.com.key -out pdfunicorn.com.csr
 # chmod 400 /etc/ssl/localcerts/pdfunicorn.com.key
 
+### Reissue (heartbleed) ###
+# cd /etc/ssl/localcerts
+# openssl req -new -nodes -newkey rsa:2048 -keyout pdfunicorn.com-heartbleed.key -out pdfunicorn.com-heartbleed.csr
+
+Country Name (2 letter code) [AU]:
+State or Province Name (full name) [Some-State]:Queensland
+Locality Name (eg, city) []:Kewarra Beach
+Organization Name (eg, company) [Internet Widgits Pty Ltd]:Lecstor Pty Ltd
+Organizational Unit Name (eg, section) []:PDFUnicorn
+Common Name (e.g. server FQDN or YOUR name) []:pdfunicorn.com
+Email Address []:jason@pdfunicorn.com
 
 
 #### SSH Key for Github access #####
