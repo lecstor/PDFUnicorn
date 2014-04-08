@@ -78,7 +78,8 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
             var listView = this;
             var views = this.getViews();
             console.log(views);
-            this.set_selected(views.first().value());
+            var first_view = views.first().value();
+            if (first_view) this.set_selected(views.first().value());
             views.each(function(itemView){
                 itemView.on('click', function(){
                     this.open_template(itemView);
@@ -171,6 +172,8 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
             'blur #editor-name input': 'show_name',
         },
         initialize: function(options){
+            if (!options.model) return;
+
             this.setView('#editor-name', new EditorNameView({ model: options.model }));
             this.source_view = new EditorSourceView({ model: options.model });
             this.data_view = new EditorDataView({ model: options.model });

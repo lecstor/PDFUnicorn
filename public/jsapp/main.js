@@ -103,7 +103,7 @@ if (path == '/admin/api-key'){
         var templates = new Template.Collection();
         templates.fetch({
             success: function(collection, response, options){
-                collection.add(new Template.Model({ name: 'New Template' }));
+                //collection.add(new Template.Model({ name: 'New Template' }));
                 var template_editor_layout = new Template.EditorLayout({
                     el: '#template-editor-layout',
                     collection: collection,
