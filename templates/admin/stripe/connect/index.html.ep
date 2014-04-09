@@ -68,7 +68,7 @@
 
                     <div class="tab-pane" id="templates">
                         <div id="template-editor-layout">
-                            <div id="template-list" class="col-xs-12 col-sm-3" style="margin-top: 30px">
+                            <div id="template-list" class="col-xs-12 col-sm-3" style="margin-top: 10px">
                             </div>
                             <div id="template-editor" class="col-xs-12 col-sm-9">
                             </div>
@@ -191,7 +191,20 @@
     </script>
 
     <script id="template-list-tmpl" type="template">
-        <ul id="template-list-items" class="nav nav-pills nav-stacked"></ul>
+        <div>
+            <div class="row" style="margin-bottom: 10px">
+                <div class="col-xs-12">
+                    <button type="button" id="new-button" class="btn btn-default btn-xs">
+                        <span class="glyphicon glyphicon-plus"></span> New
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <ul id="template-list-items" class="nav nav-pills nav-stacked"></ul>
+                </div>
+            </div>
+        </div>
     </script>
 
     <script id="template-list-item-tmpl" type="template">
@@ -213,11 +226,8 @@
                 </div>
                 <div class="col-xs-12 col-sm-2 col-md-2">
                     <form class="form-inline" role="form">
-                        <button type="button" id="save-button" class="btn btn-default btn-sm pull-right">
-                            <span class="glyphicon glyphicon-save"></span> Save
-                        </button>
-                        <button type="button" id="new-button" class="btn btn-default btn-sm pull-right">
-                            <span class="glyphicon glyphicon-new"></span> New
+                        <button type="button" id="save-button" disabled="disabled" class="btn btn-default btn-sm pull-right" style="margin-left: 5px">
+                            <span style="display:none" class="glyphicon glyphicon-save save"></span><span class="glyphicon glyphicon-saved saved"></span> Save
                         </button>
                     </form>
                 </div>

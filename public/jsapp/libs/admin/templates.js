@@ -17,6 +17,12 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
                 modified: (new Date).getTime()
             };
         },
+        initialize: function() {
+            this.listenTo(this, 'change', this.model_changed);
+        },
+        model_changed: function() {
+            this.has_changed_since_last_sync = true;
+        },
         parse: function(resp){
             return resp.data ? resp.data : resp;
         },
@@ -25,6 +31,15 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
             data.created = moment.unix(data.created).format("ddd, Do MMM YYYY, h:mm:ssa");
             data.modified = moment.unix(data.modified).format("ddd, Do MMM YYYY, h:mm:ssa");
             return data;
+        },
+        sync: function(method, model, options) {
+            options = options || {};
+            var success = options.success;
+            options.success = function(resp) {
+              success && success(resp);
+              model.has_changed_since_last_sync = false;
+            };
+            return Backbone.sync(method, model, options);
         }
     });
 
@@ -45,11 +60,24 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
     var ListItemView = Backbone.Layout.extend({
         el: false,
         template: "#template-list-item-tmpl",
+        initialize: function(){
+            // this.model.on('change', function(){
+                // this.$el.addClass('save'); this.$el.removeClass('saved');
+            // }, this);
+            this.model.on('sync', function(){
+                this.$el.addClass('saved'); this.$el.removeClass('save');
+            }, this);
+        },
         events: {
             'click a': 'clicked',
             'click .trash': 'remove',
             'mouseover a': 'show_options',
             'mouseout a': 'hide_options',
+        },
+        afterRender: function(){
+            if (this.model.has_changed_since_last_sync){
+                this.$el.addClass('save');
+            }
         },
         clicked: function(){
             this.trigger('click');
@@ -74,9 +102,12 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
     var ListView = Backbone.Layout.extend({
         el: false,
         template: "#template-list-tmpl",
+        events: {
+            'click #new-button': 'new_template',
+        },
         afterRender: function(){
             var listView = this;
-            var views = this.getViews();
+            var views = this.getViews('#template-list-items');
             console.log(views);
             var first_view = views.first().value();
             if (first_view) this.set_selected(views.first().value());
@@ -94,7 +125,7 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
             var view = this;
             this.collection.each(function(template){
                 var row = new ListItemView({ model: template });
-                this.insertView(row);
+                this.insertView('#template-list-items', row);
                 //row.on('click', this.trigger('click', row.model), this)
             }, this);
         },
@@ -104,6 +135,14 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
             }
             this.selected_template = itemView;
             itemView.$el.addClass('active');
+        },
+        new_template: function(){
+            var template = new Model();
+            this.collection.add(template);
+            var view = new ListItemView({ model: template });
+            //this.insertView('#template-list-items', view);
+            this.open_template(view);
+            this.render();
         },
         open_template: function(itemView){
             this.editor.open_template(itemView.model, itemView);
@@ -134,6 +173,7 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
             'change textarea': 'changed'
         },
         changed: function(){
+            console.log('source change textarea');
             this.model.set('source', this.$('textarea').first().val());
         },
     });
@@ -173,16 +213,16 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
         },
         initialize: function(options){
             if (!options.model) return;
-
             this.setView('#editor-name', new EditorNameView({ model: options.model }));
             this.source_view = new EditorSourceView({ model: options.model });
             this.data_view = new EditorDataView({ model: options.model });
             this.item_selected = '#source-item';
             this.setView('#editor-content', this.source_view);
-            options.model.on('change', function(){
-                this.$('#save-button').removeClass('btn-default');
-                this.$('#save-button').addClass('btn-danger');
-            }, this);
+            this.watch_model(options.model);
+        },
+        watch_model: function(model){
+            model.on('change', function(){ this.update_save_button_state('save'); }, this);
+            model.on('sync', function(){ this.update_save_button_state('saved'); }, this);
         },
         afterRender: function(){
             this.$(this.item_selected).first().addClass('active');
@@ -192,13 +232,32 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
             this.getView('#editor-name').model = model;
             this.getView('#editor-content').model = model;
             this.render();
+            this.watch_model(model);
+            this.update_save_button_state();
+        },
+        update_save_button_state: function(state){
+            if (!state){
+                state = this.model.has_changed_since_last_sync ? 'save' : 'saved';
+            }
+            if (state == 'save'){
+                this.$('#save-button').removeClass('btn-default');
+                this.$('#save-button').addClass('btn-success');
+                this.$('#save-button').removeAttr('disabled');
+                this.$('#save-button .saved').css('display','none');
+                this.$('#save-button .save').css('display','inline-block');
+            } else {
+                this.$('#save-button').addClass('btn-default');
+                this.$('#save-button').removeClass('btn-success');
+                this.$('#save-button').attr('disabled','disabled');
+                this.$('#save-button .saved').css('display','inline-block');
+                this.$('#save-button .save').css('display','none');
+            }
         },
         save_template: function(){
             var editor = this;
             this.model.save({},{
                 success: function(){
-                    editor.$('#save-button').addClass('btn-default');
-                    editor.$('#save-button').removeClass('btn-danger');
+                    editor.update_save_button_state('saved');
                 }
             });
         },
