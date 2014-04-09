@@ -68,9 +68,9 @@ sub find {
     }
     $query->{owner} = $self->stash->{account_id};
     
-    if (exists $query->{deleted}){
-        $query->{deleted} = $query->{deleted} ? bson_true : bson_false;
-    }
+    $query->{deleted} = (exists $query->{deleted} && $query->{deleted})
+        ? bson_true : bson_false;
+    
     delete $query->{_id};
     delete $query->{id};
     
