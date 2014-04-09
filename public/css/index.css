@@ -467,6 +467,7 @@ html,
 body {
   overflow-x: hidden;
   /* Prevent scroll on narrow devices */
+
 }
 footer {
   padding: 30px 0;
@@ -486,6 +487,12 @@ footer {
 }
 #template-editor .nav-pills > li > a {
   padding: 5px 8px;
+}
+#template-list-items .template-list-name.save a {
+  background-color: #cff7cf;
+}
+#template-list-items .template-list-name.save.active a {
+  background-color: #419641;
 }
 @media (min-width: 768px) {
   .navbar-nav > li > a {
@@ -510,24 +517,29 @@ footer {
   .row-offcanvas-right .sidebar-offcanvas {
     right: -50%;
     /* 6 columns */
+  
   }
   .row-offcanvas-left .sidebar-offcanvas {
     left: -50%;
     /* 6 columns */
+  
   }
   .row-offcanvas-right.active {
     right: 50%;
     /* 6 columns */
+  
   }
   .row-offcanvas-left.active {
     left: 50%;
     /* 6 columns */
+  
   }
   .sidebar-offcanvas {
     position: absolute;
     top: 0;
     width: 50%;
     /* 6 columns */
+  
   }
   .navbar-default .navbar-nav .open .dropdown-menu > li > a {
     color: #BDBDBD;
