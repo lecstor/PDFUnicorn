@@ -76,7 +76,7 @@
 	    </script>
     % }
     
-    %= include 'site/foot'
+    %= include 'admin/foot'
 
 </body>
 </html>

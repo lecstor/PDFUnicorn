@@ -27,7 +27,7 @@
     	</div>
     </div>
     
-    %= include 'site/foot'
+    %= include 'admin/foot'
 
 </body>
 </html>

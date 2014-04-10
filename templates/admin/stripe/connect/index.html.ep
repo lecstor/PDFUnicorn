@@ -80,7 +80,7 @@
     	</div>
     </div>
     
-    %= include 'site/foot'
+    %= include 'admin/foot'
 
     <div style="display: none" id="connected-test">
         <p>Your PDFUnicorn account and <b>test</b> Stripe account are connected.</p>

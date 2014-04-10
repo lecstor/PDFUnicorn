@@ -1,0 +1,27 @@
+
+<div class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Please Sign In</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-signin form-login" role="form">
+                    <label for="username">Email Address</label>
+                    <input name="username" type="email" class="form-control" placeholder="Email address" required autofocus>
+                    <label for="password">Password</label>
+                    <input name="password" type="password" class="form-control" placeholder="Password">
+                </form>                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Sign In</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div style="display: none" id="stripe-public_api_key"><%= $config->{stripe}{public_api_key} %></div>
+    <script src="/jsapp/require.js" data-main="/jsapp/main"></script>
+
