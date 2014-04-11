@@ -48,6 +48,24 @@ require(['bootstrap'], function(){
     $('[data-toggle=tooltip]').tooltip();
 });
 
+require(['backbone'], function(Backbone){
+
+    var bbSync = Backbone.sync;
+    Backbone.sync = function(method, model, options){
+        options || (options = {});
+        var error = options.error;
+        options.error = function(resp) {
+            console.log(resp);
+            if (resp.status == 401){
+                $('#signinModal').modal();
+            }
+            error && error(resp);
+        };
+        return bbSync(method, model, options);
+    };
+
+});
+
 if (path == '/admin/api-key'){
 
     require(['admin/apikeys'], function(apiKeys){

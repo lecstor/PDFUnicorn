@@ -1,10 +1,10 @@
 
-<div class="modal fade">
-    <div class="modal-dialog">
+<div class="modal fade" id="signinModal" tabindex="-1" role="dialog" aria-labelledby="signinModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Please Sign In</h4>
+                <h4 class="modal-title" id="signinModalLabel">Please Sign In</h4>
             </div>
             <div class="modal-body">
                 <form class="form-signin form-login" role="form">
@@ -22,6 +22,6 @@
     </div>
 </div>
 
-    <div style="display: none" id="stripe-public_api_key"><%= $config->{stripe}{public_api_key} %></div>
-    <script src="/jsapp/require.js" data-main="/jsapp/main"></script>
+<div style="display: none" id="stripe-public_api_key"><%= $config->{stripe}{public_api_key} %></div>
+<script src="/jsapp/require.js" data-main="/jsapp/main"></script>
 
