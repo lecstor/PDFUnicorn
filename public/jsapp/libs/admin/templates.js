@@ -154,7 +154,7 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
         el: false,
         template: '#template-editor-name-tmpl',
         serialize: function(){
-            return this.model.toJSON();
+            return this.model ? this.model.toJSON() : {};
         }
     });
 
@@ -162,7 +162,7 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
         el: false,
         template: '#template-editor-name-edit-tmpl',
         serialize: function(){
-            return this.model.toJSON();
+            return this.model ? this.model.toJSON() : {};
         }
     });
 
@@ -171,6 +171,9 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
         template: '#template-editor-content-source-tmpl',
         events: {
             'change textarea': 'changed'
+        },
+        serialize: function(){
+            return this.model ? this.model.toJSON() : { source: '' };
         },
         changed: function(){
             console.log('source change textarea');
@@ -212,13 +215,14 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
             'blur #editor-name input': 'show_name',
         },
         initialize: function(options){
-            if (!options.model) return;
-            this.setView('#editor-name', new EditorNameView({ model: options.model }));
-            this.source_view = new EditorSourceView({ model: options.model });
-            this.data_view = new EditorDataView({ model: options.model });
+            //if (!options.model) return;
+            var model = options.model;
+            this.setView('#editor-name', new EditorNameView({ model: model }));
+            this.source_view = new EditorSourceView({ model: model });
+            this.data_view = new EditorDataView({ model: model });
             this.item_selected = '#source-item';
             this.setView('#editor-content', this.source_view);
-            this.watch_model(options.model);
+            if (model) this.watch_model(model);
         },
         watch_model: function(model){
             model.on('change', function(){ this.update_save_button_state('save'); }, this);
@@ -230,7 +234,9 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
         open_template: function(model){
             this.model = model;
             this.getView('#editor-name').model = model;
-            this.getView('#editor-content').model = model;
+            //this.getView('#editor-content').model = model;
+            this.source_view.model = model;
+            this.data_view.model = model;
             this.render();
             this.watch_model(model);
             this.update_save_button_state();
