@@ -1,7 +1,7 @@
 requires 'DateTime';
 requires 'Email::Sender::Simple';
-requires 'Mango';
-requires 'Mojolicious';
+requires 'Mango', '0.24';
+requires 'Mojolicious', '4.85';
 requires 'Mojolicious::Plugin::PODRenderer';
 requires 'Mojolicious::Plugin::RenderFile';
 requires 'Mojolicious::Plugin::Util::RandomString';
