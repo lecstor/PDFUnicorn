@@ -2,6 +2,7 @@ package PDFUnicorn::Ctrl::Admin;
 use Mojo::Base 'Mojolicious::Controller';
 use Mojo::Util qw(md5_sum);
 use Mojo::JSON;
+use JSON;
 
 use Mango::BSON ':bson';
 
@@ -118,6 +119,68 @@ sub get_pdf{
             
     $self->res->headers->content_type("application/pdf");
     $self->res->headers->content_disposition('inline; filename=pdfunicorn.com-test.pdf;');
+    $self->render( data => $pdf_doc );
+}
+
+sub preview{
+    my $self = shift;
+    my $data_json = $self->param('data');
+    my $template = $self->param('template');
+
+    my $data = eval{ decode_json($data_json) };
+    if (my $err = $@){
+        warn $err->message;
+        warn $data_json;
+        my $message = $err->message;
+        $message =~ s/\s+at [\w_\-\/.]+PDFUnicorn.*//;
+        return $self->render(
+            template => 'root/demo_form',
+            error => 'Data Error: '.$message,
+            time => time
+        );
+    }
+
+    my $source = eval{ $self->alloy->render($template, $data) };
+    if (my $err = $@){
+        # Template::Exception
+        #warn $err->as_string;
+        #warn $data_json;
+        my $message;
+        eval{ $message = $err->as_string; };
+        if ($@){
+            $message = $err->to_string;
+        }
+        $message =~ s/.*\s\-\s//;
+        return $self->render(
+            template => 'root/demo_form',
+            error => 'Template Error: '.$message,
+            time => time
+        );
+    }
+    
+    my $grid = PDF::Grid->new({
+        media_directory => $self->config->{media_directory}.'/'. $self->stash->{account_id},
+        source => $source,
+    });
+    
+    eval{ $grid->render };
+    if (my $err = $@){
+        warn $err->message;
+        warn $data_json;
+        my $message = $err->message;
+        $message =~ s/\s+at \/.*//;
+        return $self->render(
+            template => 'root/demo_form',
+            error => $message,
+            time => time
+        );
+    }
+
+    my $pdf_doc = $grid->producer->stringify();    
+    $grid->producer->end;
+            
+    $self->res->headers->content_type("application/pdf");
+    $self->res->headers->content_disposition('inline; filename=pdfunicorn.com-tryit.pdf;');
     $self->render( data => $pdf_doc );
 }
 

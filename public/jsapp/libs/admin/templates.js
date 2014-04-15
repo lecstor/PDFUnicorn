@@ -207,6 +207,7 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
         template: '#template-editor-tmpl',
         events:{
             'click #save-button': 'save_template',
+            'click #preview-button': 'open_preview',
             'click #source-pill': 'show_source',
             'click #data-pill': 'show_data',
             'click #preview-pill': 'show_preview',
@@ -266,6 +267,11 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
                     editor.update_save_button_state('saved');
                 }
             });
+        },
+        open_preview: function(){
+            this.$('#editorPreview input[name="template"]').val(this.model.get('source'));
+            this.$('#editorPreview input[name="data"]').val(JSON.stringify(this.model.get('sample_data')));
+            this.$('#editorPreview').submit();
         },
         show_source: function(){
             this.$(this.item_selected).first().removeClass('active');

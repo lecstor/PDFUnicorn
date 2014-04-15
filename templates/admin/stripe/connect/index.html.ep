@@ -229,12 +229,19 @@
                         <button type="button" id="save-button" disabled="disabled" class="btn btn-default btn-sm pull-right" style="margin-left: 5px">
                             <span style="display:none" class="glyphicon glyphicon-save save"></span><span class="glyphicon glyphicon-saved saved"></span> Save
                         </button>
+                        <button type="button" id="preview-button" class="btn btn-default btn-sm pull-right" style="margin-left: 5px">
+                            <span class="glyphicon glyphicon-save"></span> Preview
+                        </button>
                     </form>
                 </div>
             </div>
             <div class="row">
                 <div id="editor-content"></div>
             </div>
+            <form id="editorPreview" action="/admin/preview" method="post" target="_blank">
+                <input type="hidden" name="template" />
+                <input type="hidden" name="data" />
+            </form>        
         </div>
     </script>
 
@@ -256,6 +263,6 @@
 
     <script id="template-editor-content-preview-tmpl" type="template">
     </script>
-
+    
 </body>
 </html>

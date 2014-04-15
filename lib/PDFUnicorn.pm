@@ -360,6 +360,8 @@ sub startup {
 	$admin->post('/get-pdf')->to('admin#get_pdf');
 	$admin->post('/set-password')->to('admin#set_password');
 	
+    $admin->post('/preview')->to('admin#preview');
+    
     $admin->get('/stripe/customer')->to('admin-stripe-customer#find');
     $admin->put('/stripe/customer')->to('admin-stripe-customer#update');
     
