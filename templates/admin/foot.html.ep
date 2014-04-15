@@ -7,7 +7,7 @@
                 <h4 class="modal-title" id="signinModalLabel">Please Sign In</h4>
             </div>
             <div class="modal-body">
-                <form class="form-signin form-login" role="form">
+                <form id="signinForm" class="form-signin form-login" role="form">
                     <label for="username">Email Address</label>
                     <input name="username" type="email" class="form-control" placeholder="Email address" required autofocus>
                     <label for="password">Password</label>
@@ -16,7 +16,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Sign In</button>
+                <button id="signinModalSubmit" type="button" class="btn btn-primary">Sign In</button>
             </div>
         </div>
     </div>

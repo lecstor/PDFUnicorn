@@ -348,6 +348,7 @@ sub startup {
 
 	$r->get('/stripe/invoice/pdf/:client_pub_key/:invoice_id')->to('stripe-invoice#pdf');
 	
+    $r->post('/rest/session')->to('admin-rest-session#create');
 	
 	$admin->get('/')->to('admin#dash');
 	$admin->get('/api-key')->to('admin#apikey');

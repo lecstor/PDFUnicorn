@@ -48,23 +48,39 @@ require(['bootstrap'], function(){
     $('[data-toggle=tooltip]').tooltip();
 });
 
-require(['backbone'], function(Backbone){
+var re = new RegExp("^/admin/");
+if (re.test(path)){
 
-    var bbSync = Backbone.sync;
-    Backbone.sync = function(method, model, options){
-        options || (options = {});
-        var error = options.error;
-        options.error = function(resp) {
+    require(['backbone','admin/session'], function(Backbone, Session){
+
+        var openSignin = function(resp, options){
             console.log(resp);
+
+            var signin_form = new Session.View({
+                el: '#signinModal',
+                model: new Session.Model()
+            });
+
             if (resp.status == 401){
                 $('#signinModal').modal();
+            } else {
+                options.error && options.error(resp);
             }
-            error && error(resp);
         };
-        return bbSync(method, model, options);
-    };
 
-});
+        var bbSync = Backbone.sync;
+        Backbone.sync = function(method, model, options){
+            options || (options = {});
+            var error = options.error;
+            options.error = function(resp){
+                openSignin(resp, { error: error });
+            };
+            return bbSync(method, model, options);
+        };
+
+    });
+
+}
 
 if (path == '/admin/api-key'){
 
