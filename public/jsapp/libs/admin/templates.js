@@ -193,7 +193,12 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
             return data;
         },
         changed: function(){
-            this.model.set('sample_data', JSON.parse(this.$('textarea').first().val()));
+            try {
+                this.model.set('sample_data', JSON.parse(this.$('textarea').first().val()));
+            }
+            catch(e){
+                console.log(e);
+            }
         },
     });
 
