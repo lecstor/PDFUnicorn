@@ -18,7 +18,11 @@
         
 	    	%= include 'admin/side_nav'   
 	    
-	    	<div class="col-xs-12 col-sm-9">
+	    	<div class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
+                <p class="visible-xs" style="margin-top: 20px">
+                    <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Menu</button>
+                </p>
+	    	
                 <h2>Stripe Connect</h2>
                 
                 % if ($error){
@@ -41,7 +45,7 @@
                 </div>
             </div>
     	
-            <div class="col-xs-12">
+            <div class="col-xs-12 col-sm-12 col-md-9 col-lg-10">
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs">
                   <li class="active"><a href="#customer" data-toggle="tab">Customer</a></li>
@@ -216,15 +220,14 @@
     <script id="template-editor-tmpl" type="template">
         <div>
             <div class="row" style="height: 30px; margin-top: 10px; margin-bottom: 10px;">
-                <div id="editor-name" class="col-xs-12 col-sm-12 col-md-5"></div>
-                <div class="col-xs-12 col-sm-10 col-md-5">
+                <div id="editor-name" class="col-xs-12 col-md-12 col-lg-4" style="margin:5px 0"></div>
+                <div class="col-xs-6 col-lg-4" style="margin:5px 0">
                     <ul class="nav nav-pills">
                         <li id="source-item"><a href="#" id="source-pill">Source</a></li>
                         <li id="sample_data-item"><a href="#" id="data-pill">Sample Data</a></li>
-                        <li id="preview-item"><a href="#" id="preview-pill">Preview</a></li>
                     </ul>
                 </div>
-                <div class="col-xs-12 col-sm-2 col-md-2">
+                <div class="col-xs-6 col-lg-4" style="margin:5px 0">
                     <form class="form-inline" role="form">
                         <button type="button" id="save-button" disabled="disabled" class="btn btn-default btn-sm pull-right" style="margin-left: 5px">
                             <span style="display:none" class="glyphicon glyphicon-save save"></span><span class="glyphicon glyphicon-saved saved"></span> Save

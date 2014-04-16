@@ -19,6 +19,9 @@
             %= include 'admin/side_nav'   
         
             <div class="col-xs-12 col-sm-9">
+                <p class="visible-xs" style="margin-top: 20px">
+                    <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Menu</button>
+                </p>
 		        %= include 'site/api_docs'
             </div>
         
