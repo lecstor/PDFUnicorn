@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>PDFU - Preview Error</title>
+    
+    %= include 'site/head'
+    %= include 'mixpanel'
+  
+    <!-- record main page view -->
+    <script type="text/javascript">mixpanel.track('view-preview_error-page')</script>
+</head>
+
+<body>
+    %= include 'site/header'
+
+    <div class="container">
+        <h3>Error Rendering Preview</h3>
+        <div class="alert alert-danger"><%= $error %></div>
+        <div>
+            You can close this browser tab (or maybe window).
+        </div>
+    </div>
+        
+    %= include 'site/foot'
+
+</body>
+</html>
