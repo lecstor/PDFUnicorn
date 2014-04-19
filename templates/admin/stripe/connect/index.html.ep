@@ -220,14 +220,26 @@
     <script id="template-editor-tmpl" type="template">
         <div>
             <div class="row" style="height: 30px; margin-top: 10px; margin-bottom: 10px;">
-                <div id="editor-name" class="col-xs-12 col-md-12 col-lg-4" style="margin:5px 0"></div>
+                <div id="editor-name" class="col-xs-12 col-sm-6" style="margin:5px 0"></div>
+                <div id="template-options" class="col-xs-12 col-sm-6" style="margin:5px 0">
+                    <div class="btn-group pull-right">
+                        <label class="btn btn-primary" id="editor-private">
+                            <input type="radio" style="display:none" id="editor-private-btn" name="public" value="false"> Private
+                        </label>
+                        <label class="btn btn-primary" id="editor-public">
+                            <input type="radio" style="display:none" id="editor-public-btn" name="public" value="true"> Public
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="height: 30px; margin-top: 10px; margin-bottom: 10px;">
                 <div class="col-xs-6 col-lg-4" style="margin:5px 0">
                     <ul class="nav nav-pills">
                         <li id="source-item"><a href="#" id="source-pill">Source</a></li>
                         <li id="sample_data-item"><a href="#" id="data-pill">Sample Data</a></li>
                     </ul>
                 </div>
-                <div class="col-xs-6 col-lg-4" style="margin:5px 0">
+                <div class="col-xs-6 col-lg-4 pull-right" style="margin:5px 0">
                     <form class="form-inline" role="form">
                         <button type="button" id="save-button" disabled="disabled" class="btn btn-default btn-sm pull-right" style="margin-left: 5px">
                             <span style="display:none" class="glyphicon glyphicon-save save"></span><span class="glyphicon glyphicon-saved saved"></span> Save

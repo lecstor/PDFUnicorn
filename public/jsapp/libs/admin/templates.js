@@ -215,10 +215,11 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
             'click #preview-button': 'open_preview',
             'click #source-pill': 'show_source',
             'click #data-pill': 'show_data',
-            'click #preview-pill': 'show_preview',
             'click #editor-name-link': 'edit_name',
             'change #editor-name input': 'set_name',
             'blur #editor-name input': 'show_name',
+            'click #editor-private-btn': 'set_private',
+            'click #editor-public-btn': 'set_public'
         },
         initialize: function(options){
             //if (!options.model) return;
@@ -236,6 +237,7 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
         },
         afterRender: function(){
             this.$(this.item_selected).first().addClass('active');
+            this.model.get('public') ? this.set_public() : this.set_private();
         },
         open_template: function(model){
             this.model = model;
@@ -292,8 +294,6 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
             this.setView('#editor-content', this.data_view);
             this.data_view.render();
         },
-        show_preview: function(){
-        },
         edit_name: function(){
             var edit_view = new EditorNameEditView({ model: this.model });
             this.setView('#editor-name', edit_view);
@@ -303,6 +303,18 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
         set_name: function(){
             var edit_view = this.getView('#editor-name');
             this.model.set('name', edit_view.$('input').val());
+        },
+        set_private: function(){
+            this.model.set('public', false);
+            this.$('#editor-public').removeClass('active');
+            this.$('#editor-private').addClass('active');
+            console.log('public: '+this.model.get('public'));
+        },
+        set_public: function(){
+            this.model.set('public', true);
+            this.$('#editor-public').addClass('active');
+            this.$('#editor-private').removeClass('active');
+            console.log('public: '+this.model.get('public'));
         },
         show_name: function(){
             var show_view = new EditorNameView({ model: this.model });
