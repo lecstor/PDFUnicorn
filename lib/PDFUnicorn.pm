@@ -346,6 +346,7 @@ sub startup {
     $r->get('/invoice-maker')->name('invoice_creator')->to('invoice_creator#home');
     $r->post('/invoice-maker-pdf')->name('invoice_creator_pdf')->to('invoice_creator#pdf');
 
+    # /stripe/invoice/pdf/pk_test_LmUDH20WiHLM0ueeBiScs1cc
 	$r->get('/stripe/invoice/pdf/:client_pub_key/:invoice_id')->to('stripe-invoice#pdf');
 	
     $r->post('/rest/session')->to('admin-rest-session#create');
