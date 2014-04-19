@@ -15,6 +15,7 @@ requires 'Template::Alloy';
 requires 'JSON::XS', '< 3.0';
 requires 'JSON';
 
+requires 'Locale::Currency::Format';
 
 # helpers for Mojo::IOLoop
 requires 'EV', '>= 4';

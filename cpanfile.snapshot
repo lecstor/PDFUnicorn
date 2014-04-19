@@ -1632,6 +1632,12 @@ DISTRIBUTIONS
       ExtUtils::MakeMaker 6.52
       Test::More 0.82
       perl 5.00503
+  Locale-Currency-Format-1.30
+    pathname: T/TN/TNGUYEN/Locale-Currency-Format-1.30.tar.gz
+    provides:
+      Locale::Currency::Format 1.30
+    requirements:
+      ExtUtils::MakeMaker 0
   MRO-Compat-0.12
     pathname: B/BO/BOBTFISH/MRO-Compat-0.12.tar.gz
     provides:
