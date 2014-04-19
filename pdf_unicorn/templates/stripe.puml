@@ -1,0 +1,222 @@
+{{ BLOCK document_title }}
+    Invoice
+{{ END }}
+
+{{ BLOCK business_name }}
+    PDFUnicorn
+{{ END }}
+
+{{ BLOCK company_details }}
+    Lecstor Pty Ltd[n]
+    3 Bondi Cresent, Kewarra Beach[n]
+    Queensland 4879, Australia[n]
+    ACN 150 921 074[n]
+    jason@pdfunicorn.comPDFUnicorn
+{{ END }}
+
+
+{{ BLOCK discount }}
+    {{ IF object.coupon.percent_off }}
+        {{ object.coupon.percent_off }}% off
+    {{ ELSE }}
+        {{ format_price(object.coupon.amount_off,object.coupon.currency) }}
+    {{ END }}
+{{ END }}
+
+{{ BLOCK charge }}
+    <row>
+        <cell>
+            Created: {{ epoch(object.created) }}[n]
+            Amount: {{ format_price(object.amount,object.currency) }}
+            ({{ IF object.paid }}Paid{{ ELSE }}Not Paid{{ END }})[n]
+            {{ IF object.refunded }}Refunded: {{ format_price(object.amount_refunded,object.currency) }}[n]{{ END }}
+            {{ IF object.failure_message }}Failed: {{ object.failure_message }}[n]{{ END }}
+            Card: {{ object.card.last4 }}[n]
+        </cell>
+    </row>
+{{ END }}
+
+{{ BLOCK invoiceitem }}
+    <row>
+        <cell>
+            {{ IF line.description }}{{ line.description }}{{ END }}
+        </cell>
+    </row>
+    <row columns="14" border="0 0 1 0" border-color="#A0A0A0" margin-bottom="5">
+        <cell span="12"><text>{{ epoch(line.period.start) }} - {{ epoch(line.period.end) }}</text></cell>
+        <cell span="2"><text class="amount">{{ format_price(line.amount,line.currency) }}</text></cell>
+    </row>
+{{ END }}
+
+{{ BLOCK subscription }}
+    <row>
+        <cell>
+            {{ line.plan.name }} Plan{{ IF line.description }}: {{ line.description }}{{ END }}
+        </cell>
+    </row>
+    <row columns="14" border="0 0 1 0" border-color="#A0A0A0" margin-bottom="5">
+        <cell span="8"><text>{{ line.quantity }} {{ line.plan.interval }}: {{ epoch(line.period.start) }} - {{ epoch(line.period.end) }}</text></cell>
+        <cell span="2"><text class="amount">{{ line.quantity }}</text></cell>
+        <cell span="2"><text class="amount">{{ format_price(line.plan.amount,line.plan.currency) }}</text></cell>
+        <cell span="2"><text class="amount">{{ format_price(line.amount,line.currency) }}</text></cell>
+    </row>
+{{ END }}
+
+<doc size="A4">
+    <style>
+        cell:
+            margin: 0
+            padding: 0
+            border: 0
+        row:
+            margin: 2
+        page:
+            padding: 10
+        class:
+            part:
+                border-color: "#A0A0A0"
+                border: 1
+                border-radius: 4
+                margin: 5
+                padding: 10
+            value:
+                align: right
+            total_label:
+                align: right
+            header:
+                align: center
+                font-face: Helvetica-Bold
+                font-size: 10
+            overdue:
+                font-color: red
+                border-color: red
+            amount:
+                align: right
+            total-amount:
+                font-face: Helvetica-Bold
+                align: right
+            busname:
+                font-face: Courier10Pitch
+                font-size: 30
+                font-lead: 26
+            invoice-label:
+                font-face: Helvetica-Bold
+                align: right
+                font-size: 20
+            invoice-sender:
+                align: right
+                font-size: 10
+            paid:
+                font-face: Helvetica-Bold
+                font-size: 30
+                font-color: green
+    </style>
+    <page>
+        {{ i = invoice }}
+        <header class="part">
+            <row columns="10">
+                <cell span="6" padding="10">
+                    <text class="busname">{{ INCLUDE business_name }}</text>
+                </cell>
+                <cell span="4">
+                    <row>
+                        <cell><text align="right" class="invoice-label">{{ INCLUDE document_title }}</text></cell>
+                    </row>
+                    <row>
+                        <cell>
+                            <text class="invoice-sender">
+                                {{ INCLUDE company_details }}
+                            </text>
+                        </cell>
+                    </row>
+                </cell>
+            </row>
+        </header>
+        
+        <row class="part" columns="16">
+            <cell><text align="right">To:</text></cell>
+            {{ card = i.customer.cards.data.0 }}
+            <cell span="5" padding="10">
+                {{ IF card.name }}{{ card.name }}[n]{{ END }}
+                {{ IF card.address_line1 }}{{ card.address_line1 }}[n]{{ END }}
+                {{ IF card.address_line2 }}{{ card.address_line2 }}[n]{{ END }}
+                {{ IF card.address_city }}{{ card.address_city }}[n]{{ END }}
+                {{ IF card.address_state }}{{ card.address_state }} {{ card.address_zip }}[n]{{ END }}
+                {{ IF card.address_country }}{{ card.address_country }}{{ END }}
+            </cell>
+            <cell span="10">
+                <row><cell>
+                    <text align="right">Date: {{ epoch(i.date) }}</text>
+                </cell></row>
+              {{ IF i.paid }}
+                <row><cell>
+                    <text class="paid">PAID</text>
+                </cell></row>
+              {{ END }}
+            </cell>
+        </row>
+        
+        
+        <section class="part">
+            <header>
+                <row columns="1" margin="2">
+                    <cell><text>Invoice Period: {{ epoch(i.period_start) }} - {{ epoch(i.period_end) }}</text></cell>
+                </row>
+                <row columns="14">
+                    <cell span="8"></cell>
+                    <cell span="2"><text class="header">Quantity</text></cell>
+                    <cell span="2"><text class="header">Price</text></cell>
+                    <cell span="2"><text class="header">Total</text></cell>
+                </row>
+            </header>
+            {{ FOR line IN i.lines.data }}
+                {{ INCLUDE ${line.type} }}
+            {{ END }}
+        
+            <row margin-top="20" columns="1"><cell>
+                <row>
+                    <cell span="6"><text class="total_label">TOTAL ex GST</text></cell>
+                    <cell span="1"><text class="total-amount">{{ format_price(i.total-i.total/11,i.currency) }}</text></cell>
+                </row>
+                <row>
+                    <cell span="6"><text class="total_label">GST</text></cell>
+                    <cell span="1"><text class="total-amount">{{ format_price(i.total/11,i.currency) }}</text></cell>
+                </row>
+              {{ IF i.discount }}
+                <row>
+                    <cell span="6"><text class="total_label">Discount</text></cell>
+                    <cell span="1"><text class="total-amount">{{ INCLUDE discount object = i.discount}}</text></cell>
+                </row>
+              {{ END }}
+                <row>
+                    <cell span="6"><text class="total_label">Starting balance</text></cell>
+                    <cell span="1"><text class="total-amount">{{ format_price(i.starting_balance,i.currency) }}</text></cell>
+                </row>
+              {{ IF i.paid }}
+                <row>
+                    <cell span="6"><text class="total_label" font-face="Helvetica-Bold">TOTAL AMOUNT PAYABLE</text></cell>
+                    <cell span="1"><text class="total-amount">{{ format_price(i.amount_due,i.currency,{ code: 1 }) }}</text></cell>
+                </row>
+              {{ ELSE }}
+                <row>
+                    <cell span="6"><text class="total_label overdue" font-face="Helvetica-Bold">TOTAL AMOUNT PAYABLE</text></cell>
+                    <cell span="1"><text class="total-amount overdue">{{ format_price(i.amount_due,i.currency,{ code: 1 }) }}</text></cell>
+                </row>
+              {{ END }}
+                <row>
+                    <cell span="6"><text class="total_label">Ending balance</text></cell>
+                    <cell span="1"><text class="total-amount">{{ format_price(i.ending_balance,i.currency) }}</text></cell>
+                </row>
+              {{ IF i.charge }}
+                <row margin-top="10">
+                    <cell span="5" margin-right="10"><text class="total_label">Charge</text></cell>
+                    <cell span="2">{{ INCLUDE charge object = i.charge}}</cell>
+                </row>
+              {{ END }}
+            </cell></row>
+        </section>
+        <footer>
+            <row columns="1">pdfunicorn.com</row>
+        </footer>
+    </page>
+</doc>
