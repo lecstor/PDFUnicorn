@@ -3,6 +3,8 @@ package PDFUnicorn::Template::Alloy;
 use Template::Alloy;
 use DateTime;
 use Data::Dumper;
+use Locale::Currency::Format;
+
 
 sub new{
     my ($class) = @_;
@@ -63,6 +65,19 @@ sub add_vmethods{
         }
     );
 
+    $self->{alloy}->define_vmethod(
+        'text',
+        format_price => sub{
+            my ($amount, $code, $options) = @_;
+            warn "amount $amount code $code";
+            $options ||= {};
+            $code = uc($code);
+            #my $symbol = currency_symbol($code, SYM_UTF);
+            #$symbol = '£' if $code eq 'GBP';
+            #$symbol = '€' if $code eq 'EUR';
+            return ($options->{code} ? $code : '') .currency_format($code, $amount/100, FMT_SYMBOL);
+        }
+    );
 }
 
 sub format_datetime{
