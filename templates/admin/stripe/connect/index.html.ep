@@ -50,6 +50,7 @@
                 <ul class="nav nav-tabs">
                   <li class="active"><a href="#customer" data-toggle="tab">Customer</a></li>
                   <li><a href="#templates" data-toggle="tab">Templates</a></li>
+                  <li><a href="#template-lib" data-toggle="tab">Template Library</a></li>
                 </ul>
                 
                 <!-- Tab panes -->
@@ -71,6 +72,15 @@
                     </div>
 
                     <div class="tab-pane" id="templates">
+                        <div id="template-editor-layout">
+                            <div id="template-list" class="col-xs-12 col-sm-3" style="margin-top: 10px">
+                            </div>
+                            <div id="template-editor" class="col-xs-12 col-sm-9">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane" id="template-lib">
                         <div id="template-editor-layout">
                             <div id="template-list" class="col-xs-12 col-sm-3" style="margin-top: 10px">
                             </div>
@@ -232,6 +242,9 @@
                     </div>
                 </div>
             </div>
+            <div class="row" style="margin-top: 10px; margin-bottom: 10px;">
+                <div id="template-description"></div>
+            </div>
             <div class="row" style="height: 30px; margin-top: 10px; margin-bottom: 10px;">
                 <div class="col-xs-6 col-lg-4" style="margin:5px 0">
                     <ul class="nav nav-pills">
@@ -268,6 +281,14 @@
         <div><input type="text" class="form-control" value="{%= name %}"></div>
     </script>
     
+    <script id="template-editor-description-tmpl" type="template">
+        <div><a id="template-description-link" href="#" style="text-decoration:none; color:black"><span id="editor-template-description" style="margin-top: 2px; margin-bottom: 2px">{%= description %}</span></a></div>
+    </script>
+
+    <script id="template-editor-description-edit-tmpl" type="template">
+        <div><textarea class="form-control" rows="3">{%= description %}</textarea></div>
+    </script>
+
     <script id="template-editor-content-source-tmpl" type="template">
         <div><textarea class="form-control" rows="15">{%= source %}</textarea></div>
     </script>

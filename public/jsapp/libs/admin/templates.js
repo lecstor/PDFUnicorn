@@ -12,6 +12,7 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
         defaults: function(){
             return {
                 name: 'Unnamed Template',
+                description: 'No Description',
                 source: '<doc size="a4"><page>{{some_text}}</page></doc>',
                 sample_data: { "some_text": "Hello World!" },
                 modified: (new Date).getTime()
@@ -166,6 +167,22 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
         }
     });
 
+    var EditorDescriptionView = Backbone.View.extend({
+        el: false,
+        template: '#template-editor-description-tmpl',
+        serialize: function(){
+            return this.model ? this.model.toJSON() : {};
+        }
+    });
+
+    var EditorDescriptionEditView = Backbone.View.extend({
+        el: false,
+        template: '#template-editor-description-edit-tmpl',
+        serialize: function(){
+            return this.model ? this.model.toJSON() : {};
+        }
+    });
+
     var EditorSourceView = Backbone.View.extend({
         el: false,
         template: '#template-editor-content-source-tmpl',
@@ -218,6 +235,9 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
             'click #editor-name-link': 'edit_name',
             'change #editor-name input': 'set_name',
             'blur #editor-name input': 'show_name',
+            'click #template-description-link': 'edit_description',
+            'change #template-description textarea': 'set_description',
+            'blur #template-description textarea': 'show_description',
             'click #editor-private-btn': 'set_private',
             'click #editor-public-btn': 'set_public'
         },
@@ -225,6 +245,7 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
             //if (!options.model) return;
             var model = options.model;
             this.setView('#editor-name', new EditorNameView({ model: model }));
+            this.setView('#template-description', new EditorDescriptionView({ model: model }));
             this.source_view = new EditorSourceView({ model: model });
             this.data_view = new EditorDataView({ model: model });
             this.item_selected = '#source-item';
@@ -242,6 +263,7 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
         open_template: function(model){
             this.model = model;
             this.getView('#editor-name').model = model;
+            this.getView('#template-description').model = model;
             //this.getView('#editor-content').model = model;
             this.source_view.model = model;
             this.data_view.model = model;
@@ -304,6 +326,26 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
             var edit_view = this.getView('#editor-name');
             this.model.set('name', edit_view.$('input').val());
         },
+        show_name: function(){
+            var show_view = new EditorNameView({ model: this.model });
+            this.setView('#editor-name', show_view);
+            show_view.render();
+        },
+        edit_description: function(){
+            var edit_view = new EditorDescriptionEditView({ model: this.model });
+            this.setView('#template-description', edit_view);
+            edit_view.render();
+            edit_view.$('textarea').focus();
+        },
+        set_description: function(){
+            var edit_view = this.getView('#template-description');
+            this.model.set('description', edit_view.$('input').val());
+        },
+        show_description: function(){
+            var show_view = new EditorDescriptionView({ model: this.model });
+            this.setView('#template-description', show_view);
+            show_view.render();
+        },
         set_private: function(){
             this.model.set('public', false);
             this.$('#editor-public').removeClass('active');
@@ -315,11 +357,6 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
             this.$('#editor-public').addClass('active');
             this.$('#editor-private').removeClass('active');
             console.log('public: '+this.model.get('public'));
-        },
-        show_name: function(){
-            var show_view = new EditorNameView({ model: this.model });
-            this.setView('#editor-name', show_view);
-            show_view.render();
         },
     });
 
