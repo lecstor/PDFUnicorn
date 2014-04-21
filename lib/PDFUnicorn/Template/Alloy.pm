@@ -9,23 +9,44 @@ use Locale::Currency::Format;
 sub new{
     my ($class) = @_;
     
-    my $alloy = Template::Alloy->new(
+    my $alloy = $class->new_alloy;
+#    my $alloy = Template::Alloy->new(
+#        INCLUDE_PATH => ['pdf_unicorn/templates'],
+#        START_TAG => '{{',
+#        END_TAG => '}}',
+#    );
+    my $self = bless { alloy => $alloy }, $class;
+    $self->add_vmethods();
+    return $self;   
+}
+
+sub new_alloy{
+    return Template::Alloy->new(
         INCLUDE_PATH => ['pdf_unicorn/templates'],
         START_TAG => '{{',
         END_TAG => '}}',
     );
-    my $self = bless { alloy => $alloy }, $class;
-    $self->add_vmethods();
-    return $self;   
 }
 
 sub render{
     my ($self, $template, $data) = @_;
     my $out = '';
     if ($template =~ /<doc/){
-        $self->{alloy}->process(\$template, $data, \$out) || die $self->{alloy}->error;
+        # $self->{alloy}->process(\$template, $data, \$out) || die $self->{alloy}->error;
+        unless ($self->{alloy}->process(\$template, $data, \$out)){
+            my $error = $self->{alloy}->error;
+            $self->{alloy} = $self->new_alloy;
+            $self->add_vmethods();
+            die $error;
+        }
     } else {
-        $self->{alloy}->process($template, $data, \$out) || die $self->{alloy}->error;
+        # $self->{alloy}->process($template, $data, \$out) || die $self->{alloy}->error;
+        unless ($self->{alloy}->process($template, $data, \$out)){
+            my $error = $self->{alloy}->error;
+            $self->{alloy} = $self->new_alloy;
+            $self->add_vmethods();
+            die $error;
+        }
     }
     return $out;
 }
