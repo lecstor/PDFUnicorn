@@ -422,6 +422,45 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
         },
     });
 
+    var SelectorItemView = Backbone.Layout.extend({
+        el: false,
+        template: "#template-selector-item-tmpl",
+    });
+
+    var SelectorView = Backbone.Layout.extend({
+        el: false,
+        template: "#template-selectlist-tmpl",
+        events: {
+            'click #select-button': 'select_template',
+        },
+        beforeRender: function(){
+            var view = this;
+            this.collection.each(function(template){
+                var row = new SelectorItemView({ model: template });
+                this.insertView('#template-selectlist-items', row);
+                //row.on('click', this.trigger('click', row.model), this)
+            }, this);
+        },
+    });
+
+    var SelectedView = Backbone.Layout.extend({
+        el: false,
+        template: "#template-selected-tmpl",
+    });
+
+    var SelectorLayout = Backbone.Layout.extend({
+        initialize: function(options){
+            var selected = new SelectedView({
+                model: options.model,
+            });
+            this.setView('#template-selected', selected);
+            var selector = new SelectorView({
+                collection: options.collection
+            });
+            this.setView('#template-list', selector);
+        },
+    });
+
 
     return {
         Model: Model,
@@ -429,6 +468,7 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
         EditorLayout: EditorLayout,
         EditorView: EditorView,
         LibraryLayout: LibraryLayout,
+        SelectorLayout: SelectorLayout,
         ListView: ListView,
         ListItemView: ListItemView,
     };

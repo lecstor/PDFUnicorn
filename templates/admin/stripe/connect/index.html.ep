@@ -49,7 +49,8 @@
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs">
                   <li class="active"><a href="#customer" data-toggle="tab">Customer</a></li>
-                  <li><a href="#templates" data-toggle="tab">Templates</a></li>
+                  <li><a href="#template-select" data-toggle="tab">Template Selector</a></li>
+                  <li><a href="#templates" data-toggle="tab">Template Editor</a></li>
                   <li><a href="#template-lib" data-toggle="tab">Template Library</a></li>
                 </ul>
                 
@@ -71,21 +72,24 @@
                         </div>
                     </div>
 
+                    <div class="tab-pane" id="template-select">
+                        <div id="template-selector-layout">
+                            <div id="template-selected" class="col-xs-12" style="margin-top: 10px"></div>
+                            <div id="template-list" class="col-xs-12" style="margin-top: 10px"></div>
+                        </div>
+                    </div>
+
                     <div class="tab-pane" id="templates">
                         <div id="template-editor-layout">
-                            <div id="template-list" class="col-xs-12 col-sm-3" style="margin-top: 10px">
-                            </div>
-                            <div id="template-editor" class="col-xs-12 col-sm-9">
-                            </div>
+                            <div id="template-list" class="col-xs-12 col-sm-3" style="margin-top: 10px; padding-left:0px; padding-right:0px"></div>
+                            <div id="template-editor" class="col-xs-12 col-sm-9" style="margin-top: 10px; padding-left:10px; padding-right:0px"></div>
                         </div>
                     </div>
 
                     <div class="tab-pane" id="template-lib">
                         <div id="template-library-layout">
-                            <div id="template-list" class="col-xs-12 col-sm-3" style="margin-top: 10px">
-                            </div>
-                            <div id="template-editor" class="col-xs-12 col-sm-9">
-                            </div>
+                            <div id="template-list" class="col-xs-12 col-sm-3" style="margin-top: 10px; padding-left:0px; padding-right:0px""></div>
+                            <div id="template-editor" class="col-xs-12 col-sm-9" style="margin-top: 10px; padding-left:10px; padding-right:0px"></div>
                         </div>
                     </div>
 
@@ -205,7 +209,7 @@
     </script>
 
     <script id="template-liblist-tmpl" type="template">
-        <div>
+        <div class="well">
             <div class="row">
                 <div class="col-xs-12">
                     <ul id="template-list-items" class="nav nav-pills nav-stacked"></ul>
@@ -215,7 +219,7 @@
     </script>
 
     <script id="template-editorlist-tmpl" type="template">
-        <div>
+        <div class="well">
             <div class="row" style="margin-bottom: 10px">
                 <div class="col-xs-12">
                     <button type="button" id="new-button" class="btn btn-default btn-xs">
@@ -237,13 +241,42 @@
         </li>
     </script>
 
+    <script id="template-selectlist-tmpl" type="template">
+        <div class="well" id="template-selectlist-items">
+        </div>
+    </script>
+
+    <script id="template-selector-item-tmpl" type="template">
+        <div class="row" style="margin-bottom: 5px">
+            <div class="col-xs-2 col-md-1">
+                <a href="#" class="btn btn-primary">Select</a>
+            </div>
+            <div class="col-xs-3 col-md-3">{%= name %}</div>
+            <div class="col-xs-7 col-md-8">{%= description %}</div>
+        </div>
+    </script>
+
+    <script id="template-selected-tmpl" type="template">
+        <div class="well" style="padding:5px">
+            <strong>Current Template:</strong>
+            <div class="row">
+                <div class="col-xs-2">
+                    {%= name %}
+                </div>
+                <div class="col-xs-10">
+                    {%= description %}
+                </div>
+            </div>
+        </div>
+    </script>
+
     <script id="template-library-tmpl" type="template">
-        <div>
-            <div class="row" style="height: 30px; margin-top: 10px; margin-bottom: 10px;">
+        <div class="well">
+            <div class="row" style="height: 30px">
                 <div id="editor-name" class="col-xs-12 col-sm-6" style="margin:5px 0"></div>
             </div>
             <div class="row" style="margin-top: 10px; margin-bottom: 10px;">
-                <div id="template-description"></div>
+                <div id="template-description" class="col-xs-12"></div>
             </div>
             <div class="row" style="height: 30px; margin-top: 10px; margin-bottom: 10px;">
                 <div class="col-xs-6 col-lg-4" style="margin:5px 0">
@@ -274,8 +307,8 @@
     </script>
 
     <script id="template-editor-tmpl" type="template">
-        <div>
-            <div class="row" style="height: 30px; margin-top: 10px; margin-bottom: 10px;">
+        <div class="well">
+            <div class="row" style="height: 30px">
                 <div id="editor-name" class="col-xs-12 col-sm-6" style="margin:5px 0"></div>
                 <div id="template-options" class="col-xs-12 col-sm-6" style="margin:5px 0">
                     <div class="btn-group pull-right">
@@ -289,7 +322,7 @@
                 </div>
             </div>
             <div class="row" style="margin-top: 10px; margin-bottom: 10px;">
-                <div id="template-description"></div>
+                <div id="template-description" class="col-xs-12"></div>
             </div>
             <div class="row" style="height: 30px; margin-top: 10px; margin-bottom: 10px;">
                 <div class="col-xs-6 col-lg-4" style="margin:5px 0">

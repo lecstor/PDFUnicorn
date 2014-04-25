@@ -144,6 +144,15 @@ if (path == '/admin/api-key'){
                     model: collection.first()
                 });
                 template_editor_layout.render();
+
+                var template_selector_layout = new Template.SelectorLayout({
+                    el: '#template-selector-layout',
+                    collection: collection,
+
+                    // TODO: selected template should be displayed
+                    model: collection.first()
+                });
+                template_selector_layout.render();
             }
         });
 
