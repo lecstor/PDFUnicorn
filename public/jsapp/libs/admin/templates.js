@@ -102,9 +102,12 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
 
     var ListView = Backbone.Layout.extend({
         el: false,
-        template: "#template-list-tmpl",
+        template: "#template-liblist-tmpl",
         events: {
             'click #new-button': 'new_template',
+        },
+        initialize: function(options){
+            if (this.editor.mode == 'edit') this.template = '#template-editorlist-tmpl';
         },
         afterRender: function(){
             var listView = this;
@@ -219,31 +222,49 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
         },
     });
 
-    var EditorPreviewView = Backbone.View.extend({
-        el: false,
-        template: '#template-editor-content-preview-tmpl',
-    });
-
     var EditorView = Backbone.Layout.extend({
         el: false,
-        template: '#template-editor-tmpl',
-        events:{
-            'click #save-button': 'save_template',
-            'click #preview-button': 'open_preview',
-            'click #source-pill': 'show_source',
-            'click #data-pill': 'show_data',
-            'click #editor-name-link': 'edit_name',
-            'change #editor-name input': 'set_name',
-            'blur #editor-name input': 'show_name',
-            'click #template-description-link': 'edit_description',
-            'change #template-description textarea': 'set_description',
-            'blur #template-description textarea': 'show_description',
-            'click #editor-private-btn': 'set_private',
-            'click #editor-public-btn': 'set_public'
+        template: '#template-library-tmpl',
+        events: function(){
+            var events = {
+                'click #preview-button': 'open_preview',
+                'click #source-pill': 'show_source',
+                'click #data-pill': 'show_data',
+            };
+            if (this.mode == 'view'){
+                events['click #import-button'] = 'import_template';
+            }
+            if (this.mode == 'edit'){
+                events['click #save-button'] = 'save_template';
+                events['click #editor-name-link'] = 'edit_name';
+                events['change #editor-name input'] = 'set_name';
+                events['blur #editor-name input'] = 'show_name';
+                events['click #template-description-link'] = 'edit_description';
+                events['change #template-description textarea'] = 'set_description';
+                events['blur #template-description textarea'] = 'show_description';
+                events['click #editor-private-btn'] = 'set_private';
+                events['click #editor-public-btn'] = 'set_public';
+            }
+            return events;
         },
+        // events:{
+            // 'click #save-button': 'save_template',
+            // 'click #preview-button': 'open_preview',
+            // 'click #source-pill': 'show_source',
+            // 'click #data-pill': 'show_data',
+            // 'click #editor-name-link': 'edit_name',
+            // 'change #editor-name input': 'set_name',
+            // 'blur #editor-name input': 'show_name',
+            // 'click #template-description-link': 'edit_description',
+            // 'change #template-description textarea': 'set_description',
+            // 'blur #template-description textarea': 'show_description',
+            // 'click #editor-private-btn': 'set_private',
+            // 'click #editor-public-btn': 'set_public'
+        // },
         initialize: function(options){
             //if (!options.model) return;
             var model = options.model;
+            if (this.mode == 'edit') this.template = '#template-editor-tmpl';
             this.setView('#editor-name', new EditorNameView({ model: model }));
             this.setView('#template-description', new EditorDescriptionView({ model: model }));
             this.source_view = new EditorSourceView({ model: model });
@@ -294,6 +315,16 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
             this.model.save({},{
                 success: function(){
                     editor.update_save_button_state('saved');
+                }
+            });
+        },
+        import_template: function(){
+            var editor = this;
+            this.model.set('id', null);
+            this.model.save({},{
+                success: function(model, response, options){
+                    this.trigger('import', model);
+                    // editor.update_save_button_state('saved');
                 }
             });
         },
@@ -362,10 +393,29 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
 
     var EditorLayout = Backbone.Layout.extend({
         initialize: function(options){
-            var editor = new EditorView({ model: options.model });
+            var editor = new EditorView({
+                model: options.model,
+                mode: 'edit',
+            });
             this.setView('#template-editor', editor);
             this.setView('#template-list', new ListView({
                 editor: editor,
+                model: options.model,
+                collection: options.collection
+            }));
+        },
+    });
+
+
+    var LibraryLayout = Backbone.Layout.extend({
+        initialize: function(options){
+            var viewer = new EditorView({
+                model: options.model,
+                mode: 'view',
+            });
+            this.setView('#template-editor', viewer);
+            this.setView('#template-list', new ListView({
+                editor: viewer,
                 model: options.model,
                 collection: options.collection
             }));
@@ -378,6 +428,7 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
         Collection: Collection,
         EditorLayout: EditorLayout,
         EditorView: EditorView,
+        LibraryLayout: LibraryLayout,
         ListView: ListView,
         ListItemView: ListItemView,
     };

@@ -119,15 +119,15 @@ if (path == '/admin/api-key'){
             customerView: new customer.view.customer()
         });
 
-        $('#customer a').click(function (e) {
-            e.preventDefault();
-            $(this).tab('customer');
-        });
+        // $('#customer a').click(function (e) {
+            // e.preventDefault();
+            // $(this).tab('customer');
+        // });
 
-        $('#template a').click(function (e) {
-            e.preventDefault();
-            $(this).tab('template');
-        });
+        // $('#template a').click(function (e) {
+            // e.preventDefault();
+            // $(this).tab('template');
+        // });
 
         //var template_list = new templates.ListView({
         //    el: '#template-list',
@@ -144,6 +144,19 @@ if (path == '/admin/api-key'){
                     model: collection.first()
                 });
                 template_editor_layout.render();
+            }
+        });
+
+        var lib_templates = new Template.Collection();
+        templates.fetch({
+            data: { public: 1 },
+            success: function(collection, response, options){
+                var template_library_layout = new Template.LibraryLayout({
+                    el: '#template-library-layout',
+                    collection: collection,
+                    model: collection.first()
+                });
+                template_library_layout.render();
             }
         });
 

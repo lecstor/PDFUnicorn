@@ -81,7 +81,7 @@
                     </div>
 
                     <div class="tab-pane" id="template-lib">
-                        <div id="template-editor-layout">
+                        <div id="template-library-layout">
                             <div id="template-list" class="col-xs-12 col-sm-3" style="margin-top: 10px">
                             </div>
                             <div id="template-editor" class="col-xs-12 col-sm-9">
@@ -204,7 +204,17 @@
         
     </script>
 
-    <script id="template-list-tmpl" type="template">
+    <script id="template-liblist-tmpl" type="template">
+        <div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <ul id="template-list-items" class="nav nav-pills nav-stacked"></ul>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <script id="template-editorlist-tmpl" type="template">
         <div>
             <div class="row" style="margin-bottom: 10px">
                 <div class="col-xs-12">
@@ -225,6 +235,42 @@
         <li class="template-list-name">
             <a href="#">{%= name %}<span style="display:none" class=" pull-right glyphicon glyphicon-trash trash"></span></a>
         </li>
+    </script>
+
+    <script id="template-library-tmpl" type="template">
+        <div>
+            <div class="row" style="height: 30px; margin-top: 10px; margin-bottom: 10px;">
+                <div id="editor-name" class="col-xs-12 col-sm-6" style="margin:5px 0"></div>
+            </div>
+            <div class="row" style="margin-top: 10px; margin-bottom: 10px;">
+                <div id="template-description"></div>
+            </div>
+            <div class="row" style="height: 30px; margin-top: 10px; margin-bottom: 10px;">
+                <div class="col-xs-6 col-lg-4" style="margin:5px 0">
+                    <ul class="nav nav-pills">
+                        <li id="source-item"><a href="#" id="source-pill">Source</a></li>
+                        <li id="sample_data-item"><a href="#" id="data-pill">Sample Data</a></li>
+                    </ul>
+                </div>
+                <div class="col-xs-6 col-lg-4 pull-right" style="margin:5px 0">
+                    <form class="form-inline" role="form">
+                        <button type="button" id="import-button" class="btn btn-default btn-sm pull-right" style="margin-left: 5px">
+                            <span class="glyphicon glyphicon-import saved"></span> Import
+                        </button>
+                        <button type="button" id="preview-button" class="btn btn-default btn-sm pull-right" style="margin-left: 5px">
+                            <span class="glyphicon glyphicon-save"></span> Preview
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="row">
+                <div id="editor-content"></div>
+            </div>
+            <form id="editorPreview" action="/admin/preview" method="post" target="_blank">
+                <input type="hidden" name="template" />
+                <input type="hidden" name="data" />
+            </form>        
+        </div>
     </script>
 
     <script id="template-editor-tmpl" type="template">
