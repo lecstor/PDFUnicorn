@@ -66,10 +66,15 @@ sub find {
             }
         );
     }
-    $query->{owner} = $self->stash->{account_id};
     
     $query->{deleted} = (exists $query->{deleted} && $query->{deleted})
         ? bson_true : bson_false;
+    
+    if (exists $query->{public} && $query->{public}){
+        $query->{public} = bson_true;
+    } else {
+        $query->{owner} = $self->stash->{account_id};
+    }
     
     delete $query->{_id};
     delete $query->{id};
