@@ -16,85 +16,136 @@
     
         <div class="row row-offcanvas row-offcanvas-left">
         
-	    	%= include 'admin/side_nav'   
-	    
-	    	<div class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
-                <p class="visible-xs" style="margin-top: 20px">
-                    <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Menu</button>
-                </p>
+	    	%= include 'admin/side_nav'
 	    	
-                <h2>Stripe Connect</h2>
-                
-                % if ($error){
-                    <div class="alert alert-danger"><%= $error %></div>
-                % }
-                
-                <div id="account-connected">
-                % if ($stripe_client){
-                    % if ($stripe_client->{livemode}){
-                        <p>Your PDFUnicorn account and <b>live</b> Stripe account are connected.</p>
-                    % } else {
-                        <p>Your PDFUnicorn account and <b>test</b> Stripe account are connected.</p>
-                        <p><a href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=<%= config->{stripe}{client_id} %>">Connect with your <b>live</b> Stripe account</a></p>
-                    % }                    
-                % } else {
-                    <p>Your PDFUnicorn account is not connected to a Stripe account.</p>
-    	    		<p><a href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=<%= config->{stripe}{client_id} %>">Connect with your <b>live</b> Stripe account</a></p>
-                    <p><a href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=<%= config->{stripe}{test_client_id} %>">Connect with your <b>test</b> Stripe account</a></p>
-                % }
+	    	<div class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
+                <div class="row">
+                    <p class="visible-xs" style="margin-top: 20px">
+                        <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Menu</button>
+                    </p>
+                    
                 </div>
-            </div>
-    	
-            <div class="col-xs-12 col-sm-12 col-md-9 col-lg-10">
-                <!-- Nav tabs -->
-                <ul class="nav nav-tabs">
-                  <li class="active"><a href="#customer" data-toggle="tab">Customer</a></li>
-                  <li><a href="#template-select" data-toggle="tab">Template Selector</a></li>
-                  <li><a href="#templates" data-toggle="tab">Template Editor</a></li>
-                  <li><a href="#template-lib" data-toggle="tab">Template Library</a></li>
-                </ul>
                 
-                <!-- Tab panes -->
-                <div class="tab-content">
-                
-                    <div class="tab-pane in active" id="customer">
-                        <h2>Customer Lookup</h2>
-                        <div id="customer-lookup">
-                            <form id="customer-lookup-form" role="form" class="form-inline">
-                                <div class="form-group">
-                                    <label class="sr-only" for="customer_id">Customer ID</label>
-                                    <input type="text" class="form-control" id="customer_id" placeholder="Customer ID">
-                                </div>
-                                <button class="btn btn-default">Display</button>
-                            </form>
-                            <div id="customer-view">
+                <div class="row" style="margin-top: 20px">
+                    <div class="col-xs-9">
+                        <div class="panel panel-default">
+                            <!-- Default panel contents -->
+                            <div class="panel-heading">
+                                <a data-toggle="collapse" data-target="#help">
+                                    <div style="color: #333; font-weight: bold">
+                                        Stripe Invoices
+                                    </div>
+                                </a>
+                            </div>                        
+                                <div class="list-group collapse in" id="help">
+                                    <a href="#connect" class="list-group-item">
+                                        <h4 class="list-group-item-heading">Connect</h4>
+                                        <p class="list-group-item-text">Connect PDFUnicorn to your Stripe live or test account.</p>
+                                    </a>
+                                    <a href="#customer" class="list-group-item">
+                                        <h4 class="list-group-item-heading">Customer Lookup</h4>
+                                        <p class="list-group-item-text">Look up a customer's invoices and preview or download their invoice as a PDF generated using your selected template.</p>
+                                    </a>
+                                    <a href="#template-select" class="list-group-item">
+                                        <h4 class="list-group-item-heading">Template Selector</h4>
+                                        <p class="list-group-item-text">Select a template to use for generating your customers' invoices.</p>
+                                    </a>
+                                    <a href="#templates" class="list-group-item">
+                                        <h4 class="list-group-item-heading">Template Editor</h4>
+                                        <p class="list-group-item-text">Create and edit your templates.</p>
+                                    </a>
+                                    <a href="#template-lib" class="list-group-item">
+                                        <h4 class="list-group-item-heading">Template Library</h4>
+                                        <p class="list-group-item-text">Public templates which you can preview and import into your account.</p>
+                                    </a>
+                                </div>                
                             </div>
                         </div>
                     </div>
-
-                    <div class="tab-pane" id="template-select">
-                        <div id="template-selector-layout">
-                            <div id="template-selected" class="col-xs-12" style="margin-top: 10px"></div>
-                            <div id="template-list" class="col-xs-12" style="margin-top: 10px"></div>
+                </div>
+                
+                <div class="row" style="margin-top: 20px">
+                    <div class="col-xs-9">
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs" id="myTabs">
+                          <li class="active"><a href="#connect" data-toggle="tab">Connect</a></li>
+                          <li><a href="#customer" data-toggle="tab">Customer Lookup</a></li>
+                          <li><a href="#template-select" data-toggle="tab">Template Selector</a></li>
+                          <li><a href="#templates" data-toggle="tab">Template Editor</a></li>
+                          <li><a href="#template-lib" data-toggle="tab">Template Library</a></li>
+                        </ul>
+                        
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                        
+                            <div class="tab-pane in active" id="connect">
+                                <h4>Connect PDFUnicorn to your Stripe live or test account.</h4>
+                                % if ($error){
+                                    <div class="alert alert-danger"><%= $error %></div>
+                                % }
+                                
+                                <div id="account-connected">
+                                % if ($stripe_client){
+                                    % if ($stripe_client->{livemode}){
+                                        <p>Your PDFUnicorn account and <b>live</b> Stripe account are connected.</p>
+                                    % } else {
+                                        <p>Your PDFUnicorn account and <b>test</b> Stripe account are connected.</p>
+                                        <p><a href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=<%= config->{stripe}{client_id} %>">Connect with your <b>live</b> Stripe account</a></p>
+                                    % }                    
+                                % } else {
+                                    <p>Your PDFUnicorn account is not connected to a Stripe account.</p>
+                                    <p><a href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=<%= config->{stripe}{client_id} %>">Connect with your <b>live</b> Stripe account</a></p>
+                                    <p><a href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=<%= config->{stripe}{test_client_id} %>">Connect with your <b>test</b> Stripe account</a></p>
+                                % }
+                                </div>
+                            </div>
+        
+                            <div class="tab-pane" id="customer">
+                                <h4>Enter your customer's Stripe ID to view their current invoices.</h4>
+                                <div id="customer-lookup">
+                                    <form id="customer-lookup-form" role="form" class="form-inline">
+                                        <div class="form-group">
+                                            <label class="sr-only" for="customer_id">Customer ID</label>
+                                            <input type="text" class="form-control" id="customer_id" placeholder="Customer ID">
+                                        </div>
+                                        <button class="btn btn-default">Display</button>
+                                    </form>
+                                    <div id="customer-view"></div>
+                                </div>
+                            </div>
+        
+                            <div class="tab-pane" id="template-select">
+                                <h4>Select one of your templates to use to generate your invoices.</h4>
+                                <div id="template-selector-layout" class="row">
+                                    <div id="template-selected" class="col-xs-12" style="margin-top: 10px"></div>
+                                    <div id="template-list" class="col-xs-12" style="margin-top: 10px"></div>
+                                </div>
+                            </div>
+        
+                            <div class="tab-pane" id="templates">
+                                <h4>Create and edit your templates.</h4>
+                                <div id="template-editor-layout" class="row">
+                                    <div id="template-list" class="col-xs-12 col-sm-3" style="margin-top: 10px; padding-left:0px; padding-right:0px"></div>
+                                    <div id="template-editor" class="col-xs-12 col-sm-9" style="margin-top: 10px; padding-left:10px; padding-right:0px"></div>
+                                </div>
+                            </div>
+        
+                            <div class="tab-pane" id="template-lib">
+                                <h4>Public templates which you can preview and import into your account.</h4>
+                                <div id="template-library-layout" class="row">
+                                    <div id="template-list" class="col-xs-12 col-sm-3" style="margin-top: 10px; padding-left:0px; padding-right:0px""></div>
+                                    <div id="template-editor" class="col-xs-12 col-sm-9" style="margin-top: 10px; padding-left:10px; padding-right:0px"></div>
+                                </div>
+                            </div>
+        
                         </div>
+                
                     </div>
-
-                    <div class="tab-pane" id="templates">
-                        <div id="template-editor-layout">
-                            <div id="template-list" class="col-xs-12 col-sm-3" style="margin-top: 10px; padding-left:0px; padding-right:0px"></div>
-                            <div id="template-editor" class="col-xs-12 col-sm-9" style="margin-top: 10px; padding-left:10px; padding-right:0px"></div>
-                        </div>
-                    </div>
-
-                    <div class="tab-pane" id="template-lib">
-                        <div id="template-library-layout">
-                            <div id="template-list" class="col-xs-12 col-sm-3" style="margin-top: 10px; padding-left:0px; padding-right:0px""></div>
-                            <div id="template-editor" class="col-xs-12 col-sm-9" style="margin-top: 10px; padding-left:10px; padding-right:0px"></div>
-                        </div>
-                    </div>
-
                 </div>
             </div>
+
+
+    	
     	</div>
     </div>
     
@@ -222,8 +273,8 @@
         <div class="well">
             <div class="row" style="margin-bottom: 10px">
                 <div class="col-xs-12">
-                    <button type="button" id="new-button" class="btn btn-default btn-xs">
-                        <span class="glyphicon glyphicon-plus"></span> New
+                    <button type="button" id="new-button" class="btn btn-default btn-sm">
+                        <span class="glyphicon glyphicon-plus"></span> Create a new template
                     </button>
                 </div>
             </div>

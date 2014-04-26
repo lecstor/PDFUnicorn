@@ -366,7 +366,7 @@ sub startup {
     $admin->get('/stripe/customer')->to('admin-stripe-customer#find');
     $admin->put('/stripe/customer')->to('admin-stripe-customer#update');
     
-    $admin->get('/stripe/connect')->name('stripe_connect')->to('admin-stripe-connect#index');
+    $admin->get('/stripe/invoices')->name('stripe_invoices')->to('admin-stripe-invoices#index');
     $admin->get('/stripe/connect/authorise')->to('admin-stripe-connect#authorise');
     $admin->get('/stripe/connect/customers')->to('admin-stripe-client-customers#list');
     $admin->get('/stripe/connect/customers/:customer_id')->to('admin-stripe-client-customers#find');
