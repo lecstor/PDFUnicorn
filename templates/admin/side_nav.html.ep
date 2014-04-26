@@ -8,6 +8,6 @@
         <!-- a href="/admin/example" class="list-group-item <%= current_route('example') ? 'active' : '' %>">Example/Starter Document</a -->
 	    <a href="/admin/api-key" class="list-group-item <%= current_route('apikey') ? 'active' : '' %>">API Key</a>
 	    <a href="/admin/billing" class="list-group-item <%= current_route('billing') ? 'active' : '' %>">Billing</a>
-        <a href="/admin/stripe/connect" class="list-group-item <%= current_route('stripe_connect') ? 'active' : '' %>">Stripe Connect</a>
+        <a href="/admin/stripe/invoices" class="list-group-item <%= current_route('stripe_connect') ? 'active' : '' %>">Stripe Invoices</a>
 	</div>
 </div>    
