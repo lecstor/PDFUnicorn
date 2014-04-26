@@ -110,7 +110,7 @@ if (path == '/admin/api-key'){
 
     require(['invoice/maker']);
 
-} else if (path == '/admin/stripe/connect'){
+} else if (path == '/admin/stripe/invoices'){
 
     require(['jquery', 'admin/stripe_connect/customer', 'admin/stripe_connect/invoices', 'admin/templates'], function($, customer, invoices, Template){
         var customerView = new customer.view.customer({ el: '#customer-view' });
@@ -119,20 +119,31 @@ if (path == '/admin/api-key'){
             customerView: new customer.view.customer()
         });
 
-        // $('#customer a').click(function (e) {
-            // e.preventDefault();
-            // $(this).tab('customer');
-        // });
-
-        // $('#template a').click(function (e) {
-            // e.preventDefault();
-            // $(this).tab('template');
-        // });
-
-        //var template_list = new templates.ListView({
-        //    el: '#template-list',
-        //    collection: new templates.Collection()
-        //});
+        $('a[href="#connect"]').click(function (e) {
+            e.preventDefault();
+            $('#help').collapse()
+            $('#myTabs a[href="#connect"]').tab('show');
+        });
+        $('a[href="#customer"]').click(function (e) {
+            e.preventDefault();
+            $('#help').collapse()
+            $('#myTabs a[href="#customer"]').tab('show');
+        });
+        $('a[href="#template-select"]').click(function (e) {
+            e.preventDefault();
+            $('#help').collapse()
+            $('#myTabs a[href="#template-select"]').tab('show');
+        });
+        $('a[href="#templates"]').click(function (e) {
+            e.preventDefault();
+            $('#help').collapse()
+            $('#myTabs a[href="#templates"]').tab('show');
+        });
+        $('a[href="#template-lib"]').click(function (e) {
+            e.preventDefault();
+            $('#help').collapse()
+            $('#myTabs a[href="#template-lib"]').tab('show');
+        });
 
         var templates = new Template.Collection();
         templates.fetch({
