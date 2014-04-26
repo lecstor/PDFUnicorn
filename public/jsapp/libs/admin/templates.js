@@ -118,6 +118,7 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
             views.each(function(itemView){
                 itemView.on('click', function(){
                     this.open_template(itemView);
+                    event.preventDefault();
                 }, listView);
                 itemView.model.on('change', function(){
                     this.render();
@@ -311,6 +312,7 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
             }
         },
         save_template: function(){
+            event.preventDefault();
             var editor = this;
             this.model.save({},{
                 success: function(){
@@ -334,6 +336,7 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
             this.$('#editorPreview').submit();
         },
         show_source: function(){
+            event.preventDefault();
             this.$(this.item_selected).first().removeClass('active');
             this.item_selected = '#source-item';
             this.$(this.item_selected).first().addClass('active');
@@ -341,6 +344,7 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
             this.source_view.render();
         },
         show_data: function(){
+            event.preventDefault();
             this.$(this.item_selected).first().removeClass('active');
             this.item_selected = '#sample_data-item';
             this.$(this.item_selected).first().addClass('active');
@@ -348,6 +352,7 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
             this.data_view.render();
         },
         edit_name: function(){
+            event.preventDefault();
             var edit_view = new EditorNameEditView({ model: this.model });
             this.setView('#editor-name', edit_view);
             edit_view.render();
@@ -367,6 +372,7 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
             this.setView('#template-description', edit_view);
             edit_view.render();
             edit_view.$('textarea').focus();
+            event.preventDefault();
         },
         set_description: function(){
             var edit_view = this.getView('#template-description');
