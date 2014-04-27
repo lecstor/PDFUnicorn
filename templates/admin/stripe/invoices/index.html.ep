@@ -117,7 +117,7 @@
                                 <h4>Select one of your templates to use to generate your invoices.</h4>
                                 <div id="template-selector-layout" class="row">
                                     <div id="template-selected" class="col-xs-12" style="margin-top: 10px"></div>
-                                    <div id="template-list" class="col-xs-12" style="margin-top: 10px"></div>
+                                    <div id="template-list" class="col-xs-12"></div>
                                 </div>
                             </div>
         
@@ -298,11 +298,11 @@
 
     <script id="template-selector-item-tmpl" type="template">
         <div class="row" style="margin-bottom: 5px">
-            <div class="col-xs-2 col-md-1">
+            <div class="col-xs-3 col-sm-2 col-md-2">
                 <a href="#" class="btn btn-primary">Select</a>
             </div>
-            <div class="col-xs-3 col-md-3">{%= name %}</div>
-            <div class="col-xs-7 col-md-8">{%= description %}</div>
+            <div class="col-xs-9 col-sm-10 col-md-3">{%= name %}</div>
+            <div class="col-xs-offset-3 col-xs-9 col-sm-offset-2 col-sm-10 col-md-offset-0 col-md-7">{%= description %}</div>
         </div>
     </script>
 
