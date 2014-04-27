@@ -4,7 +4,7 @@ use Test::More;
 use Test::Exception;
 use PDFUnicorn::Valid;
 use DateTime;
-use Data::Dumper::Perltidy;
+use Data::Dumper 'Dumper';
 use Clone qw(clone);
 use Try;
 
@@ -146,26 +146,26 @@ my $day = {
     name => 'Jun 23',
     user => 'abc123',
     day => '1374278400',
-    created => '1374324216.568317',
-    modified => '1374324216.568317',
+    created => '1374324216568',
+    modified => '1374324216568',
     meals => [{
         _id => '123456789012345678901234',
         name => 'Crumbed Chicken Meal',
         user => 'abc123',
-        created => '1374324216.568317',
-        modified => '1374324216.568317',
+        created => '1374324216568',
+        modified => '1374324216568',
         recipes => [{
             _id => '123456789012345678901234',
             name => 'Crumbed Chicken Recipe',
             user => 'abc123',
-            created => '1374324216.568317',
-            modified => '1374324216.568317',
+            created => '1374324216568',
+            modified => '1374324216568',
         }]
     }]
 };
 
 my $res = $valid->validate('Day', clone($day));
-ok(!$res);
+ok(!$res) or warn Dumper($res);
 
 delete $day->{name};
 $res = $valid->validate('Day', clone($day));
@@ -185,7 +185,7 @@ $res = $valid->validate('Day', clone($day));
 ok($res);
 is(@$res, 1);
 is($res->[0], q!Not a "datetime" in created - ggg!);
-$day->{created} = '1374324216.568317';
+$day->{created} = '1374324216568';
 
 $day->{not_required} = '';
 
