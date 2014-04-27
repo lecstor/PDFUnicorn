@@ -15,6 +15,7 @@ sub schemas{
             token_type => { type => 'string' },
             scope => { type => 'string' },
             livemode => { type => 'boolean', bson => 'bool' },
+            template_id => { type => 'oid', bson => 'oid' },
         },
         'StripeClientQuery', {
             id => { type => 'string' },
