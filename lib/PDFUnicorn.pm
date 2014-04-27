@@ -373,6 +373,13 @@ sub startup {
 
     $admin->get('/stripe/connect/invoices')->to('admin-stripe-client-invoices#list');
     
+    # update stripe client
+    $admin->post('/rest/stripe_clients')->to('api-stripeclients#create');
+    $admin->get('/rest/stripe_clients/:id')->to('api-stripeclients#find_one');
+    $admin->get('/rest/stripe_clients')->to('api-stripeclients#find');
+    $admin->put('/rest/stripe_clients/:id')->to('api-stripeclients#update');
+    $admin->delete('/rest/stripe_clients/:id')->to('api-stripeclients#remove');
+
     $admin->get('/rest/apikeys')->to('admin-rest-apikeys#find');
     $admin->put('/rest/apikeys/:key')->to('admin-rest-apikeys#update');
     $admin->delete('/rest/apikeys/:key')->to('admin-rest-apikeys#delete');
