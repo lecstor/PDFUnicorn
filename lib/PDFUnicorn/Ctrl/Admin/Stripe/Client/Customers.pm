@@ -3,6 +3,7 @@ use Mojo::Base 'Mojolicious::Controller';
 
 use Mojolicious::Plugin::Stripe::Client;
 
+use Mango::BSON ':bson';
 
 =header AJAX Backend for for accessing client customer data
 
@@ -84,10 +85,11 @@ sub find{
     my ($self) = shift;
     my $user = $self->stash->{app_user};
     my $get_invoices = $self->req->param('invoices');
+    my $client_id = $self->req->param('client');
     
     $self->render_later;
 
-    $self->db_stripe_clients->find_one({ owner => $user->{_id} }, sub{
+    $self->db_stripe_clients->find_one({ _id => bson_oid($client_id), owner => $user->{_id} }, sub{
         my ($err, $client) = @_;
         
         if ($err){
