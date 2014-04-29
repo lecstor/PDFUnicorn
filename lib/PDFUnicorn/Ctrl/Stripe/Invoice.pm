@@ -22,9 +22,17 @@ sub home{
 sub pdf{
     my $self = shift;
 
+    my $mode = $self->stash->{'client_mode'} || 'live';
+    
+    my $client_key = $self->stash->{'client_pub_key'}
+    if ($client_key !~ /^pk_/){ $client_key = "pk_${mode}_$client_key";
+    
+    my $invoice_id = $self->stash->{'invoice_id'};
+    if ($invoice_id !~ /^in_/){ $invoice_id = "in_$invoice_id";
+    
     my $delay = Mojo::IOLoop::Delay->new->data({
-        client_key => $self->stash->{'client_pub_key'},
-        invoice_id => $self->stash->{'invoice_id'}
+        client_key => $client_key,
+        invoice_id => $invoice_id
     });
     
     $self->render_later;
@@ -44,11 +52,6 @@ sub pdf{
             
             if ($stripe_client){
                 
-                # get the template
-                $self->db_templates->find_one(
-                    { _id => bson_oid($stripe_client->{default_invoice_id}), deleted => bson_false }, $delay->begin
-                );
-                
                 # retrieve the invoice from stripe
                 my $stripe = Mojolicious::Plugin::Stripe::Client->new({
                     config => { secret_api_key => $stripe_client->{access_token} },
@@ -59,7 +62,24 @@ sub pdf{
             }
         },
         sub {
-            my ($delay, $stripe_client, $template_doc, $status, $invoice) = @_;
+            my ($delay, $stripe_client, $status, $invoice) = @_;
+            $delay->pass($stripe_client, $status, $invoice);
+            
+            # use data in stripe client + invoice data
+            # to determine which template to use
+            # if invoice.charge.card.address_country eq 'Australia', template id = ...
+            # else template id = ...
+            
+            if ($stripe_client){
+                # get the template
+                $self->db_templates->find_one(
+                    { _id => bson_oid($stripe_client->{template_id}), deleted => bson_false }, $delay->begin
+                );
+            }
+                
+        },
+        sub {
+            my ($delay, $stripe_client, $status, $invoice, $template_doc) = @_;
             
             if ($stripe_client && $invoice && $status eq '200'){
                 

@@ -347,8 +347,13 @@ sub startup {
     $r->post('/invoice-maker-pdf')->name('invoice_creator_pdf')->to('invoice_creator#pdf');
 
     # /stripe/invoice/pdf/pk_test_LmUDH20WiHLM0ueeBiScs1cc
-	$r->get('/stripe/invoice/pdf/:client_pub_key/:invoice_id')->to('stripe-invoice#pdf');
-	
+    
+    # /stripe/invoice/pdf/pk_test_LmUDH20WiHLM0ueeBiScs1cc/103pNa2ehWbn3Xkf3AK9reII
+    $r->get('/stripe/invoice/pdf/:client_pub_key/:invoice_id')->to('stripe-invoice#pdf');
+    
+    # /stripe/invoice/pdf/test/LmUDH20WiHLM0ueeBiScs1cc/103pNa2ehWbn3Xkf3AK9reII
+	$r->get('/stripe/invoice/pdf/:client_mode/:client_pub_key/:invoice_id')->to('stripe-invoice#pdf');
+    	
     $r->post('/rest/session')->to('admin-rest-session#create');
 	
 	$admin->get('/')->to('admin#dash');
