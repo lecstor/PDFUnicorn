@@ -23,5 +23,7 @@
 </div>
 
 <div style="display: none" id="stripe-public_api_key"><%= $config->{stripe}{public_api_key} %></div>
+<div style="display: none" id="stripe-client_id"><%= config->{stripe}{client_id} %></div>
+<div style="display: none" id="stripe-test_client_id"><%= config->{stripe}{test_client_id} %></div>
 <script src="/jsapp/require.js" data-main="/jsapp/main"></script>
 

@@ -2,7 +2,7 @@ define([
     "layoutmanager",
     "underscore",
     "moment",
-    "admin/stripe_connect/invoices"
+    "admin/stripe/invoices"
     ], function(Layout, _, moment, invoices) {
 
     // Configure globally.
@@ -47,6 +47,7 @@ define([
     var LookupView = Backbone.Layout.extend({
         initialize: function(options){
             //this.customerView = options.customerView;
+            this.client = options.client;
             this.setView('#customer-view', options.customerView);
         },
         events: {
@@ -61,8 +62,12 @@ define([
             customerView.model = model;
 
             console.log('lookupCustomer.fetch');
+            console.log(this.client);
             model.fetch({
-                data: { invoices: 1 },
+                data: {
+                    invoices: 1,
+                    client: this.client.id
+                },
                 success: function(model, response, options){
                     console.log(customerView);
                     customerView.render();
@@ -83,11 +88,14 @@ define([
     });
 
     return {
-        model: { customer: CustomerModel },
-        view: {
-            customer: CustomerView,
-            lookup: LookupView
-        }
+        // model: { customer: CustomerModel },
+        // view: {
+            // customer: CustomerView,
+            // lookup: LookupView
+        // },
+        CustomerModel: CustomerModel,
+        CustomerView: CustomerView,
+        LookupView: LookupView
     };
 
 });

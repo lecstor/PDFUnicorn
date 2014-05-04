@@ -17,7 +17,7 @@ sub authorise{
     $self->stash->{error} = undef;
     $self->stash->{stripe_client} = undef;
     
-    $self->stash->{template} = 'admin/stripe/connect/index';
+    $self->stash->{template} = 'admin/stripe/invoices/index';
     
     my $error = $self->param('error');
     
@@ -50,8 +50,14 @@ sub authorise{
         $self->render_later;
         
         $data->{livemode} = $data->{livemode} eq 'true' ? bson_true : bson_false, 
+        $data->{deleted} = bson_false;
+         
         my $opts = {
-            query => { owner => $self->stash->{app_user}{_id} },
+            query => {
+                owner => $self->stash->{app_user}{_id},
+                livemode => $data->{livemode},
+                stripe_user_id => $data->{stripe_user_id},
+            },
             update => { '$set' => $data },
         };
                 

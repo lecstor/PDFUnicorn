@@ -28,6 +28,9 @@
                 
                 <div class="row" style="margin-top: 20px">
                     <div class="col-xs-12">
+
+                        <b>Active Stripe Account:</b> <div class="btn-group" id="connect-switch"></div>
+
                         <div class="panel panel-default">
                             <!-- Default panel contents -->
                             <div class="panel-heading">
@@ -83,19 +86,9 @@
                                     <div class="alert alert-danger"><%= $error %></div>
                                 % }
                                 
-                                <div id="account-connected">
-                                % if ($stripe_client){
-                                    % if ($stripe_client->{livemode}){
-                                        <p>Your PDFUnicorn account and <b>live</b> Stripe account are connected.</p>
-                                    % } else {
-                                        <p>Your PDFUnicorn account and <b>test</b> Stripe account are connected.</p>
-                                        <p><a href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=<%= config->{stripe}{client_id} %>">Connect with your <b>live</b> Stripe account</a></p>
-                                    % }                    
-                                % } else {
-                                    <p>Your PDFUnicorn account is not connected to a Stripe account.</p>
-                                    <p><a href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=<%= config->{stripe}{client_id} %>">Connect with your <b>live</b> Stripe account</a></p>
-                                    <p><a href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=<%= config->{stripe}{test_client_id} %>">Connect with your <b>test</b> Stripe account</a></p>
-                                % }
+                                <div id="connect-clients">
+                                    <p>Live Stripe Account: <span id="live-connect"></span></p>
+                                    <p>Test Stripe Account: <span id="test-connect"></span></p>
                                 </div>
                             </div>
         
@@ -161,6 +154,13 @@
         <p><a href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=<%= config->{stripe}{test_client_id} %>">Connect with your <b>test</b> Stripe account</a></p>
     </div>
 
+
+    <script id="connect-switch-item-tmpl" type="template">
+        <label class="btn btn-primary btn-sm" id="connect-switch-{%= name %}" style="margin-bottom: 8px">
+            <input type="radio" style="display:none" id="connect-switch-{%= name %}-btn" name="{%= name %}"> {%= label %}
+        </label>
+    </script>
+    
     <script id="customer-tmpl" type="template">
         <div id="section">
             <div id="{%= id %}" class="customer-view">
@@ -173,7 +173,7 @@
                             <div class="section-wrap">
                                 <h4>Customer Details</h4>
                                 <div class="container">
-                                    <dl class="dl-horizontal">
+                                    <dl class="dl-horizontal" style="margin-bottom: 0px;">
                                         <dt>ID:</dt>
                                         <dd>{%= id %}</dd>
                                         
@@ -182,11 +182,11 @@
                 
                                         <dt>Description:</dt>
                                         <dd class="edit_details"><em>{%= description %}</em></dd>
-
+                                    </dl>
                                 </div>
                                 <h4>Default Card Details</h4>
                                 <div class="container">
-                                    <dl class="dl-horizontal">
+                                    <dl class="dl-horizontal" style="margin-bottom: 0px;">
                                         <dt>Name:</dt>
                                         <dd class="edit_details">{%= card.name %}</dd>
                 

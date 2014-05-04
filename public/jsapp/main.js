@@ -112,83 +112,154 @@ if (path == '/admin/api-key'){
 
 } else if (path == '/admin/stripe/invoices'){
 
-    require(['jquery', 'admin/stripe_connect/customer', 'admin/stripe_connect/invoices', 'admin/templates'], function($, customer, invoices, Template){
-        var customerView = new customer.view.customer({ el: '#customer-view' });
-        var lookup = new customer.view.lookup({
-            el: '#customer-lookup',
-            customerView: new customer.view.customer()
-        });
+    require(
+        [
+            'jquery',
+            'admin/stripe/customer',
+            'admin/stripe/clients',
+            'admin/templates'
+        ],
+        function($, Customers, Clients, Template){
 
-        $('a[href="#connect"]').click(function (e) {
-            e.preventDefault();
-            $('#help').collapse()
-            $('#myTabs a[href="#connect"]').tab('show');
-        });
-        $('a[href="#customer"]').click(function (e) {
-            e.preventDefault();
-            $('#help').collapse()
-            $('#myTabs a[href="#customer"]').tab('show');
-        });
-        $('a[href="#template-select"]').click(function (e) {
-            e.preventDefault();
-            $('#help').collapse()
-            $('#myTabs a[href="#template-select"]').tab('show');
-        });
-        $('a[href="#templates"]').click(function (e) {
-            e.preventDefault();
-            $('#help').collapse()
-            $('#myTabs a[href="#templates"]').tab('show');
-        });
-        $('a[href="#template-lib"]').click(function (e) {
-            e.preventDefault();
-            $('#help').collapse()
-            $('#myTabs a[href="#template-lib"]').tab('show');
-        });
-
-        var templates = new Template.Collection();
-        templates.fetch({
-            success: function(collection, response, options){
-                //collection.add(new Template.Model({ name: 'New Template' }));
-                var template_editor_layout = new Template.EditorLayout({
-                    el: '#template-editor-layout',
-                    collection: collection,
-                    model: collection.first()
+            var wireup_help = function(){
+                $('a[href="#connect"]').click(function (e) {
+                    e.preventDefault();
+                    $('#help').collapse()
+                    $('#myTabs a[href="#connect"]').tab('show');
                 });
-                template_editor_layout.render();
-
-                var template_selector_layout = new Template.SelectorLayout({
-                    el: '#template-selector-layout',
-                    collection: collection,
-
-                    // TODO: selected template should be displayed
-                    model: collection.first()
+                $('a[href="#customer"]').click(function (e) {
+                    e.preventDefault();
+                    $('#help').collapse()
+                    $('#myTabs a[href="#customer"]').tab('show');
                 });
-                template_selector_layout.render();
-            }
-        });
-
-        var lib_templates = new Template.Collection();
-        templates.fetch({
-            data: { public: 1 },
-            success: function(collection, response, options){
-                var template_library_layout = new Template.LibraryLayout({
-                    el: '#template-library-layout',
-                    collection: collection,
-                    model: collection.first()
+                $('a[href="#template-select"]').click(function (e) {
+                    e.preventDefault();
+                    $('#help').collapse()
+                    $('#myTabs a[href="#template-select"]').tab('show');
                 });
-                template_library_layout.render();
-            }
-        });
+                $('a[href="#templates"]').click(function (e) {
+                    e.preventDefault();
+                    $('#help').collapse()
+                    $('#myTabs a[href="#templates"]').tab('show');
+                });
+                $('a[href="#template-lib"]').click(function (e) {
+                    e.preventDefault();
+                    $('#help').collapse()
+                    $('#myTabs a[href="#template-lib"]').tab('show');
+                });
+            };
 
-        // template_editor_layout.fetch_templates({
-            // success: function(collection, response, options){
-                // template_editor_layout.set_model()
-                // template_editor_layout.render();
-            // }
-        // });
+
+            var clients = new Clients.Collection();
+            clients.fetch({
+                success: function(collection, response, options){
+
+                    var client;
+
+                    var connect_view = new Clients.ConnectView({
+                        el: '#connect-clients',
+                        collection: collection,
+                        stripe_client_id: $('#stripe-client_id').text(),
+                        stripe_test_client_id: $('#stripe-test_client_id').text()
+                    });
+                    connect_view.render();
+
+                    var connect_switch_view = new Clients.ConnectSwitchView({
+                        el: '#connect-switch',
+                        collection: collection,
+                    });
+                    connect_switch_view.render();
+
+                    if (collection.length){
+                        if (collection.length == 1){
+                            client = collection.first();
+                        } else {
+                            client = collection.find(function(client){
+                                if (client.get('default') == true) return true;
+                            });
+                        }
+
+                        if (!client){
+                            // set first test client as active
+                            client = collection.find(function(client){
+                                if (client.get('livemode') == false) return true;
+                            });
+                        }
+
+                        if (!client){
+                            // set first live client as active
+                            client = collection.find(function(client){
+                                if (client.get('livemode') == true) return true;
+                            });
+                        }
+
+                        //var customerView = new Customers.CustomerView({ el: '#customer-view' });
+                        var lookup = new Customers.LookupView({
+                            el: '#customer-lookup',
+                            customerView: new Customers.CustomerView(),
+                            client: client
+                        });
+                    }
+
+                    wireup_help();
+
+                    var templates = new Template.Collection();
+                    templates.fetch({
+                        success: function(collection, response, options){
+                            //collection.add(new Template.Model({ name: 'New Template' }));
+                            var template_editor_layout = new Template.EditorLayout({
+                                el: '#template-editor-layout',
+                                collection: collection,
+                                model: collection.first()
+                            });
+                            template_editor_layout.render();
+
+                            var selected;
+                            if (client){
+                                selected = collection.find(function(template){
+                                    if (template.id == client.template_id) return true;
+                                });
+                                if (!selected){
+                                    selected = collection.find(function(template){
+                                        if (template.get('name') == 'Stripe') return true;
+                                    });
+                                }
+                            }
+
+                            console.log(selected);
+
+                            var template_selector_layout = new Template.SelectorLayout({
+                                el: '#template-selector-layout',
+                                collection: collection,
+
+                                // TODO: selected template should be displayed
+                                model: selected
+                            });
+                            template_selector_layout.render();
+                        }
+                    });
+
+                    var lib_templates = new Template.Collection();
+                    lib_templates.fetch({
+                        data: { public: 1 },
+                        success: function(collection, response, options){
+                            var template_library_layout = new Template.LibraryLayout({
+                                el: '#template-library-layout',
+                                collection: collection,
+                                model: collection.first()
+                            });
+                            template_library_layout.render();
+                        }
+                    });
 
 
-    });
+
+                }
+            });
+
+
+        }
+    );
 
 // [Object]
 //   0: Object
