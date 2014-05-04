@@ -371,9 +371,6 @@ pre {
   margin-right: auto;
   margin-left: auto;
 }
-.container {
-  min-height: 300px;
-}
 @media (min-width: 768px) {
   .nav-container {
     width: 750px;
