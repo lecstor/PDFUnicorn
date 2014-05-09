@@ -110,7 +110,7 @@ if (path == '/admin/api-key'){
 
     require(['invoice/maker']);
 
-} else if (path == '/admin/stripe/invoices'){
+} else if (path == '/admin/stripe/invoices' || path == '/admin/stripe/connect'){
 
     require(
         [
@@ -124,27 +124,27 @@ if (path == '/admin/api-key'){
             var wireup_help = function(){
                 $('a[href="#connect"]').click(function (e) {
                     e.preventDefault();
-                    $('#help').collapse()
+                    $('#help').collapse();
                     $('#myTabs a[href="#connect"]').tab('show');
                 });
                 $('a[href="#customer"]').click(function (e) {
                     e.preventDefault();
-                    $('#help').collapse()
+                    $('#help').collapse();
                     $('#myTabs a[href="#customer"]').tab('show');
                 });
                 $('a[href="#template-select"]').click(function (e) {
                     e.preventDefault();
-                    $('#help').collapse()
+                    $('#help').collapse();
                     $('#myTabs a[href="#template-select"]').tab('show');
                 });
                 $('a[href="#templates"]').click(function (e) {
                     e.preventDefault();
-                    $('#help').collapse()
+                    $('#help').collapse();
                     $('#myTabs a[href="#templates"]').tab('show');
                 });
                 $('a[href="#template-lib"]').click(function (e) {
                     e.preventDefault();
-                    $('#help').collapse()
+                    $('#help').collapse();
                     $('#myTabs a[href="#template-lib"]').tab('show');
                 });
             };
@@ -162,6 +162,7 @@ if (path == '/admin/api-key'){
                         stripe_client_id: $('#stripe-client_id').text(),
                         stripe_test_client_id: $('#stripe-test_client_id').text()
                     });
+                    console.log(connect_view);
                     connect_view.render();
 
                     var connect_switch_view = new Clients.ConnectSwitchView({
