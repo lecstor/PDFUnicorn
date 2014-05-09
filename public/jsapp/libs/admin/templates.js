@@ -8,6 +8,18 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
         escape: /\{\%\-(.+?)\%\}/g
     };
 
+    var EmptyModel = Backbone.Model.extend({
+        defaults: function(){
+            return {
+                name: '',
+                description: '',
+                source: '',
+                sample_data: {},
+                modified: (new Date).getTime()
+            };
+        },
+    });
+    
     var Model = Backbone.Model.extend({
         defaults: function(){
             return {
@@ -37,8 +49,8 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
             options = options || {};
             var success = options.success;
             options.success = function(resp) {
-              success && success(resp);
-              model.has_changed_since_last_sync = false;
+                success && success(resp);
+                model.has_changed_since_last_sync = false;
             };
             return Backbone.sync(method, model, options);
         }
@@ -264,7 +276,7 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
         // },
         initialize: function(options){
             //if (!options.model) return;
-            var model = options.model;
+            var model = this.model = options.model || new EmptyModel();
             if (this.mode == 'edit') this.template = '#template-editor-tmpl';
             this.setView('#editor-name', new EditorNameView({ model: model }));
             this.setView('#template-description', new EditorDescriptionView({ model: model }));
@@ -272,7 +284,7 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
             this.data_view = new EditorDataView({ model: model });
             this.item_selected = '#source-item';
             this.setView('#editor-content', this.source_view);
-            if (model) this.watch_model(model);
+            if (options.model) this.watch_model(model);
         },
         watch_model: function(model){
             model.on('change', function(){ this.update_save_button_state('save'); }, this);
