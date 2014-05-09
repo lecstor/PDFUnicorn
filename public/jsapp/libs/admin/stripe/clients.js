@@ -45,7 +45,7 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
             if (this.test_client){
                 this.$('#test-connect').html('<a href="#" class="btn btn-success" disabled>Connected</a>');
             } else {
-                this.$('#test-connect').html('<a href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id='+this.test_stripe_client_id+'" class="btn btn-primary">Connect Test</a>');
+                this.$('#test-connect').html('<a href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id='+this.stripe_test_client_id+'" class="btn btn-primary">Connect Test</a>');
             }
         }
     });
