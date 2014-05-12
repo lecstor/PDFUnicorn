@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Template Library</title>
+	%= include 'site/head'
+	%= include 'mixpanel'
+  
+    <!-- record main page view -->
+  	<script type="text/javascript">mixpanel.track('view-library-page')</script>
+</head>
+
+<body>
+	%= include 'site/header'
+
+    <div class="container">
+                    
+        <div class="row">
+            <div class="col-xs-12">
+                <h4>Public templates which you can preview and import into your account.</h4>
+                <div id="template-library-layout" class="row">
+                    <div id="template-list" class="col-xs-12 col-sm-3" style="margin-top: 10px; padding-left:0px; padding-right:0px""></div>
+                    <div id="template-editor" class="col-xs-12 col-sm-9" style="margin-top: 10px; padding-left:10px; padding-right:0px"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    
+    %= include 'site/foot'
+
+    <script id="template-liblist-tmpl" type="template">
+        <div class="well">
+            <div class="row">
+                <div class="col-xs-12">
+                    <ul id="template-list-items" class="nav nav-pills nav-stacked"></ul>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <script id="template-list-item-tmpl" type="template">
+        <li class="template-list-name">
+            <a href="#">{%= name %}<span style="display:none" class=" pull-right glyphicon glyphicon-trash trash"></span></a>
+        </li>
+    </script>
+
+    <script id="template-library-tmpl" type="template">
+        <div class="well">
+            <div class="row" style="height: 30px">
+                <div id="editor-name" class="col-xs-12 col-sm-6" style="margin:5px 0"></div>
+            </div>
+            <div class="row" style="margin-top: 10px; margin-bottom: 10px;">
+                <div id="template-description" class="col-xs-12"></div>
+            </div>
+            <div class="row" style="height: 30px; margin-top: 10px; margin-bottom: 10px;">
+                <div class="col-xs-6 col-lg-4" style="margin:5px 0">
+                    <ul class="nav nav-pills">
+                        <li id="source-item"><a href="#" id="source-pill">Source</a></li>
+                        <li id="sample_data-item"><a href="#" id="data-pill">Sample Data</a></li>
+                    </ul>
+                </div>
+                <div class="col-xs-6 col-lg-4 pull-right" style="margin:5px 0">
+                    <form class="form-inline" role="form">
+                        <button type="button" id="preview-button" class="btn btn-default btn-sm pull-right" style="margin-left: 5px">
+                            <span class="glyphicon glyphicon-save"></span> Preview
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="row">
+                <div id="editor-content"></div>
+            </div>
+            <form id="editorPreview" action="/preview" method="post" target="_blank">
+                <input type="hidden" name="template" />
+                <input type="hidden" name="data" />
+            </form>        
+        </div>
+    </script>
+
+    <script id="template-editor-name-tmpl" type="template">
+        <div><a id="editor-name-link" href="#" style="text-decoration:none; color:black"><h4 id="editor-template-name" style="margin-top: 2px; margin-bottom: 2px">{%= name %}</h4></a></div>
+    </script>
+    
+    <script id="template-editor-name-edit-tmpl" type="template">
+        <div><input type="text" class="form-control" value="{%= name %}"></div>
+    </script>
+    
+    <script id="template-editor-description-tmpl" type="template">
+        <div><a id="template-description-link" href="#" style="text-decoration:none; color:black"><span id="editor-template-description" style="margin-top: 2px; margin-bottom: 2px">{%= description %}</span></a></div>
+    </script>
+
+    <script id="template-editor-description-edit-tmpl" type="template">
+        <div><textarea class="form-control" rows="3">{%= description %}</textarea></div>
+    </script>
+
+    <script id="template-editor-content-source-tmpl" type="template">
+        <div><textarea class="form-control" rows="15">{%= source %}</textarea></div>
+    </script>
+
+    <script id="template-editor-content-data-tmpl" type="template">
+        <div><textarea class="form-control" rows="15">{%= sample_data %}</textarea></div>
+    </script>
+
+    <script id="template-editor-content-preview-tmpl" type="template">
+    </script>
+
+</body>
+</html>
