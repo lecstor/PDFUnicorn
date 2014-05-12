@@ -90,7 +90,6 @@ sub add_vmethods{
         'text',
         format_price => sub{
             my ($amount, $code, $options) = @_;
-            warn "amount $amount code $code";
             $options ||= {};
             $code = uc($code);
             #my $symbol = currency_symbol($code, SYM_UTF);
