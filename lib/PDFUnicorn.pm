@@ -332,6 +332,10 @@ sub startup {
     $r->get('/demo')->name('demo')->to('root#demo_form');
     $r->post('/demo')->name('demo')->to('root#demo');
 
+    $r->get('/library')->name('library')->to('root#library');
+    $r->get('/rest/templates')->to('api-templates#find');
+    $r->post('/preview')->to('root#preview');
+    
 #	$r->get('/sign-up')->to('root#sign_up_form');
 	$r->post('/sign-up')->to('root#sign_up');
 	
@@ -366,7 +370,7 @@ sub startup {
 	$admin->post('/get-pdf')->to('admin#get_pdf');
 	$admin->post('/set-password')->to('admin#set_password');
 	
-    $admin->post('/preview')->to('admin#preview');
+    $admin->post('/preview')->to('root#preview');
     
     $admin->get('/stripe/customer')->to('admin-stripe-customer#find');
     $admin->put('/stripe/customer')->to('admin-stripe-customer#update');
