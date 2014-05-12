@@ -19,7 +19,7 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
             };
         },
     });
-    
+
     var Model = Backbone.Model.extend({
         defaults: function(){
             return {
@@ -59,6 +59,9 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
     var Collection = Backbone.Collection.extend({
         url: '/admin/rest/templates',
         model: Model,
+        initialize: function(options){
+            if (options && options.url) this.url = options.url;
+        },
         comparator: function(m1,m2){
             var d1 = m1.get('modified'),
                 d2 = m2.get('modified');
@@ -388,7 +391,7 @@ define(["layoutmanager","underscore", "moment"], function(Layout, _, moment) {
         },
         set_description: function(){
             var edit_view = this.getView('#template-description');
-            this.model.set('description', edit_view.$('input').val());
+            this.model.set('description', edit_view.$('textarea').val());
         },
         show_description: function(){
             var show_view = new EditorDescriptionView({ model: this.model });
