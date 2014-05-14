@@ -96,16 +96,16 @@ DISTRIBUTIONS
     requirements:
       Digest::MD5 0
       ExtUtils::MakeMaker 0
-  DateTime-1.08
-    pathname: D/DR/DROLSKY/DateTime-1.08.tar.gz
+  DateTime-1.10
+    pathname: D/DR/DROLSKY/DateTime-1.10.tar.gz
     provides:
-      DateTime 1.08
-      DateTime::Duration 1.08
-      DateTime::Helpers 1.08
-      DateTime::Infinite 1.08
-      DateTime::Infinite::Future 1.08
-      DateTime::Infinite::Past 1.08
-      DateTime::LeapSecond 1.08
+      DateTime 1.10
+      DateTime::Duration 1.10
+      DateTime::Helpers 1.10
+      DateTime::Infinite 1.10
+      DateTime::Infinite::Future 1.10
+      DateTime::Infinite::Past 1.10
+      DateTime::LeapSecond 1.10
       inc::MyModuleBuild undef
     requirements:
       Carp 0
@@ -126,6 +126,7 @@ DISTRIBUTIONS
       strict 0
       vars 0
       warnings 0
+      warnings::register 0
   DateTime-Locale-0.45
     pathname: D/DR/DROLSKY/DateTime-Locale-0.45.tar.gz
     provides:
@@ -1067,55 +1068,55 @@ DISTRIBUTIONS
       perl 5.011002
       strict 0
       warnings 0
-  Devel-Cover-1.11
-    pathname: P/PJ/PJCJ/Devel-Cover-1.11.tar.gz
+  Devel-Cover-1.14
+    pathname: P/PJ/PJCJ/Devel-Cover-1.14.tar.gz
     provides:
-      Devel::Cover 1.11
-      Devel::Cover::Annotation::Git 1.11
-      Devel::Cover::Annotation::Random 1.11
-      Devel::Cover::Annotation::Svk 1.11
-      Devel::Cover::Branch 1.11
-      Devel::Cover::Condition 1.11
-      Devel::Cover::Condition_and_2 1.11
-      Devel::Cover::Condition_and_3 1.11
-      Devel::Cover::Condition_or_2 1.11
-      Devel::Cover::Condition_or_3 1.11
-      Devel::Cover::Condition_xor_4 1.11
-      Devel::Cover::Criterion 1.11
-      Devel::Cover::DB 1.11
-      Devel::Cover::DB::Criterion 1.11
-      Devel::Cover::DB::Digests 1.11
-      Devel::Cover::DB::File 1.11
-      Devel::Cover::DB::IO 1.11
-      Devel::Cover::DB::IO::JSON 1.11
-      Devel::Cover::DB::IO::Sereal 1.11
-      Devel::Cover::DB::IO::Storable 1.11
-      Devel::Cover::DB::Run 1.11
-      Devel::Cover::DB::Structure 1.11
-      Devel::Cover::Html_Common 1.11
-      Devel::Cover::Inc 1.11
-      Devel::Cover::Op 1.11
-      Devel::Cover::Pod 1.11
-      Devel::Cover::Report::Compilation 1.11
-      Devel::Cover::Report::Html 1.11
-      Devel::Cover::Report::Html_basic 1.11
-      Devel::Cover::Report::Html_basic::Template::Provider 1.11
-      Devel::Cover::Report::Html_minimal 1.11
-      Devel::Cover::Report::Html_subtle 1.11
-      Devel::Cover::Report::Html_subtle::Template::Provider 1.11
-      Devel::Cover::Report::Sort 1.11
-      Devel::Cover::Report::Text 1.11
-      Devel::Cover::Report::Text2 1.11
-      Devel::Cover::Report::Vim 1.11
-      Devel::Cover::Report::Vim::Template::Provider 1.11
-      Devel::Cover::Statement 1.11
-      Devel::Cover::Subroutine 1.11
-      Devel::Cover::Test 1.11
-      Devel::Cover::Time 1.11
-      Devel::Cover::Truth_Table 1.11
-      Devel::Cover::Truth_Table::Row 1.11
-      Devel::Cover::Util 1.11
-      Devel::Cover::Web 1.11
+      Devel::Cover 1.14
+      Devel::Cover::Annotation::Git 1.14
+      Devel::Cover::Annotation::Random 1.14
+      Devel::Cover::Annotation::Svk 1.14
+      Devel::Cover::Branch 1.14
+      Devel::Cover::Condition 1.14
+      Devel::Cover::Condition_and_2 1.14
+      Devel::Cover::Condition_and_3 1.14
+      Devel::Cover::Condition_or_2 1.14
+      Devel::Cover::Condition_or_3 1.14
+      Devel::Cover::Condition_xor_4 1.14
+      Devel::Cover::Criterion 1.14
+      Devel::Cover::DB 1.14
+      Devel::Cover::DB::Criterion 1.14
+      Devel::Cover::DB::Digests 1.14
+      Devel::Cover::DB::File 1.14
+      Devel::Cover::DB::IO 1.14
+      Devel::Cover::DB::IO::JSON 1.14
+      Devel::Cover::DB::IO::Sereal 1.14
+      Devel::Cover::DB::IO::Storable 1.14
+      Devel::Cover::DB::Run 1.14
+      Devel::Cover::DB::Structure 1.14
+      Devel::Cover::Html_Common 1.14
+      Devel::Cover::Inc 1.14
+      Devel::Cover::Op 1.14
+      Devel::Cover::Pod 1.14
+      Devel::Cover::Report::Compilation 1.14
+      Devel::Cover::Report::Html 1.14
+      Devel::Cover::Report::Html_basic 1.14
+      Devel::Cover::Report::Html_basic::Template::Provider 1.14
+      Devel::Cover::Report::Html_minimal 1.14
+      Devel::Cover::Report::Html_subtle 1.14
+      Devel::Cover::Report::Html_subtle::Template::Provider 1.14
+      Devel::Cover::Report::Sort 1.14
+      Devel::Cover::Report::Text 1.14
+      Devel::Cover::Report::Text2 1.14
+      Devel::Cover::Report::Vim 1.14
+      Devel::Cover::Report::Vim::Template::Provider 1.14
+      Devel::Cover::Statement 1.14
+      Devel::Cover::Subroutine 1.14
+      Devel::Cover::Test 1.14
+      Devel::Cover::Time 1.14
+      Devel::Cover::Truth_Table 1.14
+      Devel::Cover::Truth_Table::Row 1.14
+      Devel::Cover::Util 1.14
+      Devel::Cover::Web 1.14
     requirements:
       Digest::MD5 0
       ExtUtils::MakeMaker 0
@@ -1564,15 +1565,17 @@ DISTRIBUTIONS
       IO::Socket 0
       Socket 1.97
       Test::More 0.88
-  IO-Socket-SSL-1.981
-    pathname: S/SU/SULLR/IO-Socket-SSL-1.981.tar.gz
+  IO-Socket-SSL-1.984
+    pathname: S/SU/SULLR/IO-Socket-SSL-1.984.tar.gz
     provides:
-      IO::Socket::SSL 1.981
+      IO::Socket::SSL 1.984
       IO::Socket::SSL::Intercept 1.93
+      IO::Socket::SSL::OCSP_Cache 1.984
+      IO::Socket::SSL::OCSP_Resolver 1.984
       IO::Socket::SSL::PublicSuffix undef
-      IO::Socket::SSL::SSL_Context 1.981
-      IO::Socket::SSL::SSL_HANDLE 1.981
-      IO::Socket::SSL::Session_Cache 1.981
+      IO::Socket::SSL::SSL_Context 1.984
+      IO::Socket::SSL::SSL_HANDLE 1.984
+      IO::Socket::SSL::Session_Cache 1.984
       IO::Socket::SSL::Utils 0.02
     requirements:
       ExtUtils::MakeMaker 0
@@ -1659,10 +1662,10 @@ DISTRIBUTIONS
       ExtUtils::MakeMaker 6.59
       Test::More 0.47
       perl 5.006
-  Mango-0.30
-    pathname: S/SR/SRI/Mango-0.30.tar.gz
+  Mango-0.39
+    pathname: S/SR/SRI/Mango-0.39.tar.gz
     provides:
-      Mango 0.30
+      Mango 0.39
       Mango::BSON undef
       Mango::BSON::Binary undef
       Mango::BSON::Code undef
@@ -1672,7 +1675,6 @@ DISTRIBUTIONS
       Mango::BSON::Timestamp undef
       Mango::BSON::_MaxKey undef
       Mango::BSON::_MinKey undef
-      Mango::BSON::_Raw undef
       Mango::Bulk undef
       Mango::Collection undef
       Mango::Cursor undef
@@ -1683,7 +1685,7 @@ DISTRIBUTIONS
       Mango::Protocol undef
     requirements:
       ExtUtils::MakeMaker 0
-      Mojolicious 4.92
+      Mojolicious 4.99
   Module-Build-Tiny-0.035
     pathname: L/LE/LEONT/Module-Build-Tiny-0.035.tar.gz
     provides:
@@ -1746,8 +1748,8 @@ DISTRIBUTIONS
       perl 5.006
       strict 0
       warnings 0
-  Mojolicious-4.93
-    pathname: S/SR/SRI/Mojolicious-4.93.tar.gz
+  Mojolicious-4.99
+    pathname: S/SR/SRI/Mojolicious-4.99.tar.gz
     provides:
       Mojo undef
       Mojo::Asset undef
@@ -1810,7 +1812,7 @@ DISTRIBUTIONS
       Mojo::UserAgent::Server undef
       Mojo::UserAgent::Transactor undef
       Mojo::Util undef
-      Mojolicious 4.93
+      Mojolicious 4.99
       Mojolicious::Command undef
       Mojolicious::Command::cgi undef
       Mojolicious::Command::cpanify undef
