@@ -165,7 +165,7 @@ sub sign_up {
         my ($err, $doc) = @_;
         
         if ($err){
-            if ($err =~ /^E11000 duplicate key error/){
+            if ($err =~ /E11000 duplicate key error/){
                 # clear the error and send an account key
                 $err = '';
                 return $self->db_users->find_one({ email => $data->{email} }, sub{
