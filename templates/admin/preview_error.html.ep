@@ -11,7 +11,7 @@
 </head>
 
 <body>
-    %= include 'site/header'
+    %= include 'admin/header'
 
     <div class="container">
         <h3>Error Rendering Preview</h3>

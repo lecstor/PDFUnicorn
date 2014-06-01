@@ -10,12 +10,11 @@
 </head>
 
 <body>
-	%= include 'site/header'
+	%= include 'admin/header'
 
     <div class="container">
     
         <div class="row row-offcanvas row-offcanvas-left">
-	    	%= include 'admin/side_nav'   
 	    
 	    	<div class="col-xs-12 col-sm-9">
                 <p class="visible-xs" style="margin-top: 20px">
