@@ -268,6 +268,65 @@ if (path == '/admin/api-key'){
 //       message: "Expired API key provided: sk_test_************************.  Application access may have been revoked."
 //       type: "invalid_request_error"
 
+} else if (path == '/admin'){
+
+    require(
+        [
+            'jquery',
+            'admin/templates'
+        ],
+        function($, Template){
+
+            var wireup_help = function(){
+                $('a[href="#templates"]').click(function (e) {
+                    e.preventDefault();
+                    $('#help').collapse();
+                    $('#myTabs a[href="#templates"]').tab('show');
+                });
+                $('a[href="#template-lib"]').click(function (e) {
+                    e.preventDefault();
+                    $('#help').collapse();
+                    $('#myTabs a[href="#template-lib"]').tab('show');
+                });
+            };
+
+            wireup_help();
+
+            var templates = new Template.Collection();
+            templates.fetch({
+                success: function(collection, response, options){
+                    //collection.add(new Template.Model({ name: 'New Template' }));
+                    var template_editor_layout = new Template.EditorLayout({
+                        el: '#template-editor-layout',
+                        collection: collection,
+                        model: collection.first()
+                    });
+                    template_editor_layout.render();
+                }
+            });
+
+            var lib_templates = new Template.Collection();
+            lib_templates.fetch({
+                data: { public: 1 },
+                success: function(collection, response, options){
+                    var template_library_layout = new Template.LibraryLayout({
+                        el: '#template-library-layout',
+                        collection: collection,
+                        model: collection.first()
+                    });
+                    template_library_layout.render();
+                }
+            });
+
+        }
+    );
+
+// [Object]
+//   0: Object
+//     error: Object
+//       message: "Expired API key provided: sk_test_************************.  Application access may have been revoked."
+//       type: "invalid_request_error"
+
 }
 
 

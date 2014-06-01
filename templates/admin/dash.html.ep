@@ -16,13 +16,65 @@
     
         <div class="row">
         
-            <div class="col-xs-12 col-sm-8 col-md-9">
-                <p class="visible-xs" style="margin-top: 20px">
-                    <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Menu</button>
-                </p>
+            <div class="col-xs-12">
         
-                <h2>Dashboard</h2>
-	    		<p>Hi, and thanks again for using PDFUnicorn!</p>
+               <div class="row" style="margin-top: 20px">
+                    <div class="col-xs-12">
+
+                        <div class="panel panel-default">
+                            <!-- Default panel contents -->
+                            <div class="panel-heading">
+                                <a data-toggle="collapse" data-target="#help">
+                                    <div style="color: #333; font-weight: bold">
+                                        Dashboard
+                                    </div>
+                                </a>
+                            </div>                        
+                            <div class="list-group collapse in" id="help">
+                                <a href="#templates" class="list-group-item">
+                                    <h4 class="list-group-item-heading">Template Editor</h4>
+                                    <p class="list-group-item-text">Create and edit your templates.</p>
+                                </a>
+                                <a href="#template-lib" class="list-group-item">
+                                    <h4 class="list-group-item-heading">Template Library</h4>
+                                    <p class="list-group-item-text">Public templates which you can preview and import into your account.</p>
+                                </a>
+                            </div>                
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-xs-12">
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs" id="myTabs">
+                          <li><a href="#templates" data-toggle="tab">Template Editor</a></li>
+                          <li><a href="#template-lib" data-toggle="tab">Template Library</a></li>
+                        </ul>
+                        
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                                
+                            <div class="tab-pane" id="templates">
+                                <h4>Create and edit your templates.</h4>
+                                <div id="template-editor-layout" class="row">
+                                    <div id="template-list" class="col-xs-12 col-sm-3" style="margin-top: 10px; padding-left:0px; padding-right:0px"></div>
+                                    <div id="template-editor" class="col-xs-12 col-sm-9" style="margin-top: 10px; padding-left:10px; padding-right:0px"></div>
+                                </div>
+                            </div>
+        
+                            <div class="tab-pane" id="template-lib">
+                                <h4>Public templates which you can preview and import into your account.</h4>
+                                <div id="template-library-layout" class="row">
+                                    <div id="template-list" class="col-xs-12 col-sm-3" style="margin-top: 10px; padding-left:0px; padding-right:0px""></div>
+                                    <div id="template-editor" class="col-xs-12 col-sm-9" style="margin-top: 10px; padding-left:10px; padding-right:0px"></div>
+                                </div>
+                            </div>
+        
+                        </div>
+                
+                    </div>
+                </div>
 
             </div>
     	
@@ -30,6 +82,156 @@
     </div>
     
     %= include 'admin/foot'
+
+    <script id="template-liblist-tmpl" type="template">
+        <div class="well">
+            <div class="row">
+                <div class="col-xs-12">
+                    <ul id="template-list-items" class="nav nav-pills nav-stacked"></ul>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <script id="template-editorlist-tmpl" type="template">
+        <div class="well">
+            <div class="row" style="margin-bottom: 10px">
+                <div class="col-xs-12">
+                    <button type="button" id="new-button" class="btn btn-default btn-sm">
+                        <span class="glyphicon glyphicon-plus"></span> Create a new template
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <ul id="template-list-items" class="nav nav-pills nav-stacked"></ul>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <script id="template-list-item-tmpl" type="template">
+        <li class="template-list-name">
+            <a href="#">{%= name %}<span style="display:none" class=" pull-right glyphicon glyphicon-trash trash"></span></a>
+        </li>
+    </script>
+
+    <script id="template-selectlist-tmpl" type="template">
+        <div class="well" id="template-selectlist-items">
+        </div>
+    </script>
+
+    <script id="template-library-tmpl" type="template">
+        <div class="well">
+            <div class="row" style="height: 30px">
+                <div id="editor-name" class="col-xs-12 col-sm-6" style="margin:5px 0"></div>
+            </div>
+            <div class="row" style="margin-top: 10px; margin-bottom: 10px;">
+                <div id="template-description" class="col-xs-12"></div>
+            </div>
+            <div class="row" style="height: 30px; margin-top: 10px; margin-bottom: 10px;">
+                <div class="col-xs-6 col-lg-4" style="margin:5px 0">
+                    <ul class="nav nav-pills">
+                        <li id="source-item"><a href="#" id="source-pill">Source</a></li>
+                        <li id="sample_data-item"><a href="#" id="data-pill">Sample Data</a></li>
+                    </ul>
+                </div>
+                <div class="col-xs-6 col-lg-4 pull-right" style="margin:5px 0">
+                    <form class="form-inline" role="form">
+                        <button type="button" id="import-button" class="btn btn-default btn-sm pull-right" style="margin-left: 5px">
+                            <span class="glyphicon glyphicon-import saved"></span> Import
+                        </button>
+                        <button type="button" id="preview-button" class="btn btn-default btn-sm pull-right" style="margin-left: 5px">
+                            <span class="glyphicon glyphicon-save"></span> Preview
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="row">
+                <div id="editor-content"></div>
+            </div>
+            <form id="editorPreview" action="/admin/preview" method="post" target="_blank">
+                <input type="hidden" name="template" />
+                <input type="hidden" name="data" />
+            </form>        
+        </div>
+    </script>
+
+    <script id="template-editor-tmpl" type="template">
+        <div class="well">
+            <div class="row" style="height: 30px">
+                <div id="editor-name" class="col-xs-12 col-sm-6" style="margin:5px 0"></div>
+                <div id="template-options" class="col-xs-12 col-sm-6" style="margin:5px 0">
+                    <div class="btn-group pull-right">
+                        <label class="btn btn-primary" id="editor-private">
+                            <input type="radio" style="display:none" id="editor-private-btn" name="public" value="false"> Private
+                        </label>
+                        <label class="btn btn-primary" id="editor-public">
+                            <input type="radio" style="display:none" id="editor-public-btn" name="public" value="true"> Public
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 10px; margin-bottom: 10px;">
+                <div class="col-xs-12"><span><b>Template ID: </b></span><span id="template-id">{%= id %}</span></div>
+            </div>
+            <div class="row" style="margin-top: 10px; margin-bottom: 10px;">
+                <div id="template-description" class="col-xs-12"></div>
+            </div>
+            <div class="row" style="height: 30px; margin-top: 10px; margin-bottom: 10px;">
+                <div class="col-xs-6 col-lg-4" style="margin:5px 0">
+                    <ul class="nav nav-pills">
+                        <li id="source-item"><a href="#" id="source-pill">Source</a></li>
+                        <li id="sample_data-item"><a href="#" id="data-pill">Sample Data</a></li>
+                    </ul>
+                </div>
+                <div class="col-xs-6 col-lg-4 pull-right" style="margin:5px 0">
+                    <form class="form-inline" role="form">
+                        <button type="button" id="save-button" disabled="disabled" class="btn btn-default btn-sm pull-right" style="margin-left: 5px">
+                            <span style="display:none" class="glyphicon glyphicon-save save"></span><span class="glyphicon glyphicon-saved saved"></span> Save
+                        </button>
+                        <button type="button" id="preview-button" class="btn btn-default btn-sm pull-right" style="margin-left: 5px">
+                            <span class="glyphicon glyphicon-save"></span> Preview
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="row">
+                <div id="editor-content"></div>
+            </div>
+            <form id="editorPreview" action="/admin/preview" method="post" target="_blank">
+                <input type="hidden" name="template" />
+                <input type="hidden" name="data" />
+            </form>        
+        </div>
+    </script>
+
+    <script id="template-editor-name-tmpl" type="template">
+        <div><a id="editor-name-link" href="#" style="text-decoration:none; color:black"><h4 id="editor-template-name" style="margin-top: 2px; margin-bottom: 2px">{%= name %}</h4></a></div>
+    </script>
+    
+    <script id="template-editor-name-edit-tmpl" type="template">
+        <div><input type="text" class="form-control" value="{%= name %}"></div>
+    </script>
+    
+    <script id="template-editor-description-tmpl" type="template">
+        <div><a id="template-description-link" href="#" style="text-decoration:none; color:black"><span id="editor-template-description" style="margin-top: 2px; margin-bottom: 2px">{%= description %}</span></a></div>
+    </script>
+
+    <script id="template-editor-description-edit-tmpl" type="template">
+        <div><textarea class="form-control" rows="3">{%= description %}</textarea></div>
+    </script>
+
+    <script id="template-editor-content-source-tmpl" type="template">
+        <div><textarea class="form-control" rows="15">{%= source %}</textarea></div>
+    </script>
+
+    <script id="template-editor-content-data-tmpl" type="template">
+        <div><textarea class="form-control" rows="15">{%= sample_data %}</textarea></div>
+    </script>
+
+    <script id="template-editor-content-preview-tmpl" type="template">
+    </script>
 
 </body>
 </html>
