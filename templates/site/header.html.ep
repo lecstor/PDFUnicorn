@@ -11,7 +11,7 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li data-toggle="tooltip" data-placement="bottom" title="Try the demo" <%=  current_route 'demo' ? 'class="active"' : '' %>><a href="/demo">Demo</a></li>
+                <li data-toggle="tooltip" data-placement="bottom" title="Preview public templates" <%=  current_route 'library' ? 'class="active"' : '' %>><a href="/library">Templates</a></li>
                 <li data-toggle="tooltip" data-placement="bottom" title="Our Plans" <%=  current_route 'pricing' ? 'class="active"' : current_route 'annual_pricing' ? 'class="active"' : '' %>><a href="/pricing">Pricing</a></li>
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Documentation <b class="caret"></b></a>
