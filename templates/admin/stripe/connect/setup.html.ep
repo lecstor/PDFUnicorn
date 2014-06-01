@@ -10,14 +10,12 @@
 </head>
 
 <body>
-	%= include 'site/header'
+	%= include 'admin/header'
 
     <div class="container">
     
         <div class="row">
         
-	    	%= include 'admin/side_nav'   
-	    
 	    	<div class="col-xs-12 col-sm-9">
                 <h2>Stripe Connect Setup</h2>
 	    		<p><a href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=<%= config->{stripe}{client_id} %>">Connect with Stripe</a></p>
