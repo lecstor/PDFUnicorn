@@ -451,7 +451,7 @@ sub preview{
     }
     
     my $grid = PDF::Grid->new({
-        media_directory => $self->config->{media_directory}.'/'. $self->stash->{account_id},
+        media_directory => $self->config->{media_directory}.'/'. ($self->stash->{account_id} || 'public_account'),
         source => $source,
     });
     
