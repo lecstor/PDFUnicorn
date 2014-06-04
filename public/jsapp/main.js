@@ -222,7 +222,7 @@ if (path == '/admin/api-key'){
                                 });
                                 if (!selected){
                                     selected = collection.find(function(template){
-                                        if (template.get('name') == 'Stripe') return true;
+                                        if (template.get('name') == 'Stripe Connect Invoice') return true;
                                     });
                                 }
                             }
