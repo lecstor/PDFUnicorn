@@ -18,7 +18,7 @@
         % if ($error){
             <div class="alert alert-danger"><%= $error %></div>
             <div>
-                You can close this browser tab (or maybe window) and go back to the demo form.
+                You can close this browser tab (or maybe window) and go back to the template library.
             </div>
         % } else {
             <h2>Demonstration UI</h2>
