@@ -28,13 +28,3 @@ on 'test' => sub {
 };
 
 
-# PDF::Grid requires extra
-requires 'Clone';
-requires 'Hash::Merge';
-requires 'List::AllUtils';
-requires 'PDF::API2';
-requires 'XML::Parser';
-requires 'YAML';
-requires 'YAML::Syck';
-
-

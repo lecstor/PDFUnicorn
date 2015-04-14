@@ -91,6 +91,18 @@ Organizational Unit Name (eg, section) []:PDFUnicorn
 Common Name (e.g. server FQDN or YOUR name) []:pdfunicorn.com
 Email Address []:jason@pdfunicorn.com
 
+### ezyapp wildcard cert
+$ openssl req -nodes -newkey rsa:2048 -keyout ezyapp.key -out ezyapp.csr
+Generating a 2048 bit RSA private key
+
+Country Name (2 letter code) [AU]:
+State or Province Name (full name) [Some-State]:Queensland
+Locality Name (eg, city) []:Cairns
+Organization Name (eg, company) [Internet Widgits Pty Ltd]:Lecstor Pty Ltd
+Organizational Unit Name (eg, section) []:EzyApp
+Common Name (e.g. server FQDN or YOUR name) []:*.ezyapp.com
+Email Address []:admin@ezyapp.com
+
 
 #### SSH Key for Github access #####
 # su edoc747
@@ -122,32 +134,49 @@ $ git clone git@github.com:lecstor/PDF-Grid.git
 # aptitude install nginx
 
 
-#### NGINX Config /etc/nginx/conf.d/default.conf ####
+#### NGINX Config /etc/nginx/conf.d/ezyapp-default.conf ####
 
-upstream pdfunicorn {
+$ curl -I https://pdf.ezyapp.com
+HTTP/1.1 200 OK
+Server: nginx
+Date: Sat, 24 Jan 2015 12:41:24 GMT
+Content-Type: text/html;charset=UTF-8
+Content-Length: 16982
+Connection: keep-alive
+
+## EzyApp ##
+
+server_tokens off;
+
+upstream ezyapp {
   server 127.0.0.1:8080;
 }
 
 server {
     listen 80;
     server_name www.pdfunicorn.com pdfunicorn.com;
-    return 301 https://pdfunicorn.com$request_uri;
+    return 301 https://pdf.ezyapp.com$request_uri;
 }
 
 server {
     listen 443;
-    server_name www.pdfunicorn.com;
-    return 301 https://pdfunicorn.com$request_uri;
+    server_name www.pdfunicorn.com pdfunicorn.com;
+    return 301 https://pdf.ezyapp.com$request_uri;
+}
+
+server {
+    listen 443;
+    server_name www.ezyapp.com ezyapp.com;
+    return 301 https://pdf.ezyapp.com$request_uri;
 }
 
 server {
   listen 443 default_server ssl;
   server_name localhost;
-  ssl_certificate      /etc/ssl/localcerts/pdfunicorn.com-heartbleed.crt;
-  ssl_certificate_key  /etc/ssl/localcerts/pdfunicorn.com-heartbleed.key;
+  ssl_certificate      /etc/ssl/localcerts/ezyapp-ssl-bundle.crt;
+  ssl_certificate_key  /etc/ssl/localcerts/ezyapp.key;
   ssl_verify_depth 3;
-  # http://blog.visionsource.org/2011/06/08/setting-up-thawte-ssl-123-on-nginx/
-  # https://ssltools.thawte.com/checker/views/certCheck.jsp
+  # https://support.comodo.com/index.php?/Default/Knowledgebase/Article/View/789/37/
 
   ssl_session_cache shared:SSL:1m;
   ssl_session_timeout  5m;
@@ -156,7 +185,7 @@ server {
   ssl_prefer_server_ciphers   on;
 
   location / {
-    proxy_pass http://pdfunicorn;
+    proxy_pass http://ezyapp;
     proxy_http_version 1.1;
     proxy_set_header Upgrade $http_upgrade;
     proxy_set_header Connection "upgrade";
@@ -165,7 +194,6 @@ server {
     proxy_set_header X-Forwarded-HTTPS 0;
   }
 }
-
 
 #### Custom Perl Install ####
 
