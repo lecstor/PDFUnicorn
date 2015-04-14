@@ -1,18 +1,5 @@
 # carton snapshot format: version 1.0
 DISTRIBUTIONS
-  AppConfig-1.66
-    pathname: A/AB/ABW/AppConfig-1.66.tar.gz
-    provides:
-      AppConfig 1.66
-      AppConfig::Args 1.65
-      AppConfig::CGI 1.65
-      AppConfig::File 1.65
-      AppConfig::Getopt 1.65
-      AppConfig::State 1.65
-      AppConfig::Sys 1.65
-    requirements:
-      ExtUtils::MakeMaker 0
-      Test::More 0
   B-Hooks-OP-Check-0.19
     pathname: Z/ZE/ZEFRAM/B-Hooks-OP-Check-0.19.tar.gz
     provides:
@@ -24,6 +11,29 @@ DISTRIBUTIONS
       Test::More 0
       parent 0
       perl 5.008001
+  CPAN-Meta-2.150001
+    pathname: D/DA/DAGOLDEN/CPAN-Meta-2.150001.tar.gz
+    provides:
+      CPAN::Meta 2.150001
+      CPAN::Meta::Converter 2.150001
+      CPAN::Meta::Feature 2.150001
+      CPAN::Meta::History 2.150001
+      CPAN::Meta::Merge 2.150001
+      CPAN::Meta::Prereqs 2.150001
+      CPAN::Meta::Spec 2.150001
+      CPAN::Meta::Validator 2.150001
+    requirements:
+      CPAN::Meta::Requirements 2.121
+      CPAN::Meta::YAML 0.008
+      Carp 0
+      ExtUtils::MakeMaker 6.17
+      JSON::PP 2.27200
+      Parse::CPAN::Meta 1.4414
+      Scalar::Util 0
+      perl 5.008
+      strict 0
+      version 0.88
+      warnings 0
   Class-Load-0.21
     pathname: E/ET/ETHER/Class-Load-0.21.tar.gz
     provides:
@@ -106,7 +116,6 @@ DISTRIBUTIONS
       DateTime::Infinite::Future 1.10
       DateTime::Infinite::Past 1.10
       DateTime::LeapSecond 1.10
-      inc::MyModuleBuild undef
     requirements:
       Carp 0
       DateTime::Locale 0.41
@@ -1159,6 +1168,7 @@ DISTRIBUTIONS
   DynaLoader-Functions-0.002
     pathname: Z/ZE/ZEFRAM/DynaLoader-Functions-0.002.tar.gz
     provides:
+      DynaLoader 0.002
       DynaLoader::Functions 0.002
     requirements:
       Carp 0
@@ -1188,7 +1198,6 @@ DISTRIBUTIONS
       Email::Abstract::MailInternet 3.007
       Email::Abstract::MailMessage 3.007
       Email::Abstract::Plugin 3.007
-      Test::EmailAbstract undef
     requirements:
       Carp 0
       Email::Simple 1.998
@@ -1244,9 +1253,6 @@ DISTRIBUTIONS
       Email::Sender::Transport::Test 1.300011
       Email::Sender::Transport::Wrapper 1.300011
       Email::Sender::Util 1.300011
-      Test::Email::SMTPRig undef
-      Test::Email::Sender::Transport::FailEvery undef
-      Test::Email::Sender::Util undef
     requirements:
       Carp 0
       Email::Abstract 3.006
@@ -1557,14 +1563,6 @@ DISTRIBUTIONS
       File::Temp 0
       Scalar::Util 0
       Test::More 0.88
-  IO-Socket-IP-0.29
-    pathname: P/PE/PEVANS/IO-Socket-IP-0.29.tar.gz
-    provides:
-      IO::Socket::IP 0.29
-    requirements:
-      IO::Socket 0
-      Socket 1.97
-      Test::More 0.88
   IO-Socket-SSL-1.984
     pathname: S/SU/SULLR/IO-Socket-SSL-1.984.tar.gz
     provides:
@@ -1579,6 +1577,7 @@ DISTRIBUTIONS
       IO::Socket::SSL::Utils 0.02
     requirements:
       ExtUtils::MakeMaker 0
+      Mozilla::CA 0
       Net::SSLeay 1.46
       Scalar::Util 0
   IO-String-1.08
@@ -1648,12 +1647,6 @@ DISTRIBUTIONS
       ExtUtils::MakeMaker 6.52
       Test::More 0.82
       perl 5.00503
-  Locale-Currency-Format-1.30
-    pathname: T/TN/TNGUYEN/Locale-Currency-Format-1.30.tar.gz
-    provides:
-      Locale::Currency::Format 1.30
-    requirements:
-      ExtUtils::MakeMaker 0
   MRO-Compat-0.12
     pathname: B/BO/BOBTFISH/MRO-Compat-0.12.tar.gz
     provides:
@@ -1686,6 +1679,56 @@ DISTRIBUTIONS
     requirements:
       ExtUtils::MakeMaker 0
       Mojolicious 4.99
+  Module-Build-0.4211
+    pathname: L/LE/LEONT/Module-Build-0.4211.tar.gz
+    provides:
+      Module::Build 0.4211
+      Module::Build::Base 0.4211
+      Module::Build::Compat 0.4211
+      Module::Build::Config 0.4211
+      Module::Build::Cookbook 0.4211
+      Module::Build::Dumper 0.4211
+      Module::Build::Notes 0.4211
+      Module::Build::PPMMaker 0.4211
+      Module::Build::Platform::Default 0.4211
+      Module::Build::Platform::MacOS 0.4211
+      Module::Build::Platform::Unix 0.4211
+      Module::Build::Platform::VMS 0.4211
+      Module::Build::Platform::VOS 0.4211
+      Module::Build::Platform::Windows 0.4211
+      Module::Build::Platform::aix 0.4211
+      Module::Build::Platform::cygwin 0.4211
+      Module::Build::Platform::darwin 0.4211
+      Module::Build::Platform::os2 0.4211
+      Module::Build::PodParser 0.4211
+    requirements:
+      CPAN::Meta 2.142060
+      CPAN::Meta::YAML 0.003
+      Cwd 0
+      Data::Dumper 0
+      ExtUtils::CBuilder 0.27
+      ExtUtils::Install 0
+      ExtUtils::Manifest 0
+      ExtUtils::Mkbootstrap 0
+      ExtUtils::ParseXS 2.21
+      File::Basename 0
+      File::Compare 0
+      File::Copy 0
+      File::Find 0
+      File::Path 0
+      File::Spec 0.82
+      File::Temp 0.15
+      Getopt::Long 0
+      Module::Metadata 1.000002
+      Parse::CPAN::Meta 1.4401
+      Perl::OSType 1
+      Pod::Man 2.17
+      Test::Harness 3.16
+      Test::More 0.49
+      Text::Abbrev 0
+      Text::ParseWords 0
+      perl 5.008000
+      version 0.87
   Module-Build-Tiny-0.035
     pathname: L/LE/LEONT/Module-Build-Tiny-0.035.tar.gz
     provides:
@@ -1715,10 +1758,6 @@ DISTRIBUTIONS
     pathname: D/DR/DROLSKY/Module-Implementation-0.07.tar.gz
     provides:
       Module::Implementation 0.07
-      T::Impl1 undef
-      T::Impl2 undef
-      T::ImplFails1 undef
-      T::ImplFails2 undef
     requirements:
       Carp 0
       ExtUtils::MakeMaker 6.30
@@ -1822,7 +1861,7 @@ DISTRIBUTIONS
       Mojolicious::Command::generate::app undef
       Mojolicious::Command::generate::lite_app undef
       Mojolicious::Command::generate::makefile undef
-      Mojolicious::Command::generate::plugin 0.01
+      Mojolicious::Command::generate::plugin undef
       Mojolicious::Command::get undef
       Mojolicious::Command::inflate undef
       Mojolicious::Command::prefork undef
@@ -1869,6 +1908,24 @@ DISTRIBUTIONS
       ExtUtils::MakeMaker 0
       Mojolicious 3.90
       perl 5.01
+  Mojolicious-Plugin-Stripe-0.01
+    pathname: J/JA/JASON/Mojolicious-Plugin-Stripe-0.01.tar.gz
+    provides:
+      MPS::Test::Response undef
+      MPS::Test::TX undef
+      Mojolicious::Plugin::Stripe 0.01
+      Mojolicious::Plugin::Stripe::Client undef
+      Mojolicious::Plugin::Stripe::Client::Account undef
+      Mojolicious::Plugin::Stripe::Client::Base undef
+      Mojolicious::Plugin::Stripe::Client::Customers undef
+      Mojolicious::Plugin::Stripe::Client::Exception undef
+      Mojolicious::Plugin::Stripe::Client::Invoices undef
+      Mojolicious::Plugin::Stripe::Test::UserAgent undef
+    requirements:
+      CPAN::Meta 0
+      ExtUtils::MakeMaker 6.36
+      Mojolicious 0
+      Try 0
   Mojolicious-Plugin-Util-RandomString-0.05
     pathname: A/AK/AKRON/Mojolicious-Plugin-Util-RandomString-0.05.tar.gz
     provides:
@@ -1921,6 +1978,14 @@ DISTRIBUTIONS
       Moo 0.09101
       Test::Fatal 0.003
       Test::More 0.96
+  Mozilla-CA-20141217
+    pathname: A/AB/ABH/Mozilla-CA-20141217.tar.gz
+    provides:
+      Mozilla::CA 20141217
+    requirements:
+      ExtUtils::MakeMaker 0
+      Test 0
+      perl 5.006
   Net-HTTP-6.06
     pathname: G/GA/GAAS/Net-HTTP-6.06.tar.gz
     provides:
@@ -2055,6 +2120,35 @@ DISTRIBUTIONS
       Compress::Zlib 1.0
       ExtUtils::MakeMaker 6.30
       Font::TTF 0
+  PDF-Grid-0.01
+    pathname: J/JA/JASON/PDF-Grid-0.01.tar.gz
+    provides:
+      PDF::Grid 0.01
+      PDF::Grid::Element::Base undef
+      PDF::Grid::Element::Cell undef
+      PDF::Grid::Element::Doc undef
+      PDF::Grid::Element::Image undef
+      PDF::Grid::Element::Page undef
+      PDF::Grid::Element::Row undef
+      PDF::Grid::Element::Section undef
+      PDF::Grid::Element::Text undef
+      PDF::Grid::ElementManager undef
+      PDF::Grid::SpecParser undef
+      PDF::Grid::Test::Util undef
+    requirements:
+      CPAN::Meta 0
+      Clone 0
+      ExtUtils::MakeMaker 6.36
+      Hash::Merge 0
+      JSON 0
+      List::AllUtils 0
+      Moo 0
+      PDF::API2 0
+      Template::Alloy 0
+      Try 0
+      XML::Parser 0
+      YAML 0
+      YAML::Syck 0
   Package-Stash-0.36
     pathname: D/DO/DOY/Package-Stash-0.36.tar.gz
     provides:
@@ -2086,7 +2180,6 @@ DISTRIBUTIONS
   Package-Stash-XS-0.28
     pathname: D/DO/DOY/Package-Stash-XS-0.28.tar.gz
     provides:
-      CompileTime undef
       Package::Stash::XS 0.28
     requirements:
       ExtUtils::MakeMaker 6.30
@@ -2108,23 +2201,10 @@ DISTRIBUTIONS
     pathname: D/DR/DROLSKY/Params-Validate-1.08.tar.gz
     provides:
       Attribute::Params::Validate 1.08
-      Bar undef
-      Baz undef
-      Foo undef
-      PVTests undef
-      PVTests::Callbacks undef
-      PVTests::Defaults undef
-      PVTests::Regex undef
-      PVTests::Standard undef
-      PVTests::With undef
       Params::Validate 1.08
       Params::Validate::Constants 1.08
       Params::Validate::PP 1.08
       Params::Validate::XS 1.08
-      Quux undef
-      Testing::X undef
-      Yadda undef
-      inc::MyModuleBuild undef
     requirements:
       Attribute::Handlers 0.79
       Carp 0
@@ -2143,14 +2223,23 @@ DISTRIBUTIONS
     pathname: S/SH/SHANCOCK/Perl-Tidy-20140328.tar.gz
     provides:
       Perl::Tidy 20140328
+      Perl::Tidy::Debugger 20140328
       Perl::Tidy::DevNull 20140328
       Perl::Tidy::Diagnostics 20140328
+      Perl::Tidy::FileWriter 20140328
+      Perl::Tidy::Formatter 20140328
       Perl::Tidy::HtmlWriter 20140328
       Perl::Tidy::IOScalar 20140328
       Perl::Tidy::IOScalarArray 20140328
+      Perl::Tidy::IndentationItem 20140328
+      Perl::Tidy::LineBuffer 20140328
       Perl::Tidy::LineSink 20140328
       Perl::Tidy::LineSource 20140328
       Perl::Tidy::Logger 20140328
+      Perl::Tidy::Tokenizer 20140328
+      Perl::Tidy::VerticalAligner 20140328
+      Perl::Tidy::VerticalAligner::Alignment 20140328
+      Perl::Tidy::VerticalAligner::Line 20140328
     requirements:
       ExtUtils::MakeMaker 0
   Role-Tiny-1.003003
@@ -2161,15 +2250,6 @@ DISTRIBUTIONS
     requirements:
       Exporter 5.57
       perl 5.006
-  Scalar-List-Utils-1.38
-    pathname: P/PE/PEVANS/Scalar-List-Utils-1.38.tar.gz
-    provides:
-      List::Util 1.38
-      List::Util::XS 1.38
-      Scalar::Util 1.38
-    requirements:
-      ExtUtils::MakeMaker 0
-      Test::More 0
   Session-Token-1.007
     pathname: F/FR/FRACTAL/Session-Token-1.007.tar.gz
     provides:
@@ -2182,13 +2262,6 @@ DISTRIBUTIONS
     provides:
       Sub::Exporter 0.987
       Sub::Exporter::Util 0.987
-      Test::SubExporter::DashSetup undef
-      Test::SubExporter::Faux undef
-      Test::SubExporter::GroupGen undef
-      Test::SubExporter::GroupGenSubclass undef
-      Test::SubExporter::ObjGen undef
-      Test::SubExporter::ObjGen::Obj undef
-      Test::SubExporter::s_e undef
     requirements:
       Carp 0
       Data::OptList 0.100
@@ -2233,92 +2306,12 @@ DISTRIBUTIONS
     pathname: R/RH/RHANDOM/Template-Alloy-1.020.tar.gz
     provides:
       Template::Alloy 1.020
-      Template::Alloy::Compile undef
-      Template::Alloy::Context undef
-      Template::Alloy::EvalPerlHandle undef
       Template::Alloy::Exception undef
-      Template::Alloy::HTE undef
       Template::Alloy::Iterator undef
-      Template::Alloy::Operator undef
-      Template::Alloy::Parse undef
-      Template::Alloy::Perl undef
-      Template::Alloy::Play undef
-      Template::Alloy::Stream undef
-      Template::Alloy::TT undef
-      Template::Alloy::Tmpl undef
       Template::Alloy::VMethod undef
-      Template::Alloy::Velocity undef
-      Template::Alloy::_ContextStash undef
     requirements:
       Digest::MD5 1
       ExtUtils::MakeMaker 0
-  Template-Alloy-XS-1.004
-    pathname: G/GA/GAUDEON/Template-Alloy-XS-1.004.tar.gz
-    provides:
-      Template::Alloy::XS 1.004
-    requirements:
-      ExtUtils::MakeMaker 0
-      Template::Alloy 1.002
-  Template-Toolkit-2.25
-    pathname: A/AB/ABW/Template-Toolkit-2.25.tar.gz
-    provides:
-      Template 2.25
-      Template::Base 2.78
-      Template::Config 2.75
-      Template::Constants 2.75
-      Template::Context 2.98
-      Template::Directive 2.2
-      Template::Document 2.79
-      Template::Exception 2.7
-      Template::Filters 2.87
-      Template::Grammar 2.25
-      Template::Iterator 2.68
-      Template::Monad::Assert 1
-      Template::Monad::Scalar 1
-      Template::Namespace::Constants 1.27
-      Template::Parser 2.89
-      Template::Perl 2.2
-      Template::Plugin 2.7
-      Template::Plugin::Assert 1
-      Template::Plugin::CGI 2.7
-      Template::Plugin::Datafile 2.72
-      Template::Plugin::Date 2.78
-      Template::Plugin::Date::Calc 2.78
-      Template::Plugin::Date::Manip 2.78
-      Template::Plugin::Directory 2.7
-      Template::Plugin::Dumper 2.7
-      Template::Plugin::File 2.71
-      Template::Plugin::Filter 1.38
-      Template::Plugin::Format 2.7
-      Template::Plugin::HTML 2.62
-      Template::Plugin::Image 1.21
-      Template::Plugin::Iterator 2.68
-      Template::Plugin::Math 1.16
-      Template::Plugin::Pod 2.69
-      Template::Plugin::Procedural 1.17
-      Template::Plugin::Scalar 1
-      Template::Plugin::String 2.4
-      Template::Plugin::Table 2.71
-      Template::Plugin::URL 2.74
-      Template::Plugin::View 2.68
-      Template::Plugin::Wrap 2.68
-      Template::Plugins 2.77
-      Template::Provider 2.94
-      Template::Service 2.8
-      Template::Stash 2.91
-      Template::Stash::Context 1.63
-      Template::Stash::XS undef
-      Template::Test 2.75
-      Template::TieString 2.75
-      Template::VMethods 2.16
-      Template::View 2.91
-      bytes 2.94
-    requirements:
-      AppConfig 1.56
-      ExtUtils::MakeMaker 0
-      File::Spec 0.8
-      File::Temp 0.12
-      Scalar::Util 0
   Test-Exception-0.32
     pathname: A/AD/ADIE/Test-Exception-0.32.tar.gz
     provides:
@@ -2342,59 +2335,6 @@ DISTRIBUTIONS
       Try::Tiny 0.07
       strict 0
       warnings 0
-  Test-Harness-3.30
-    pathname: L/LE/LEONT/Test-Harness-3.30.tar.gz
-    provides:
-      App::Prove 3.30
-      App::Prove::State 3.30
-      App::Prove::State::Result 3.30
-      App::Prove::State::Result::Test 3.30
-      TAP::Base 3.30
-      TAP::Formatter::Base 3.30
-      TAP::Formatter::Color 3.30
-      TAP::Formatter::Console 3.30
-      TAP::Formatter::Console::ParallelSession 3.30
-      TAP::Formatter::Console::Session 3.30
-      TAP::Formatter::File 3.30
-      TAP::Formatter::File::Session 3.30
-      TAP::Formatter::Session 3.30
-      TAP::Harness 3.30
-      TAP::Harness::Env 3.30
-      TAP::Object 3.30
-      TAP::Parser 3.30
-      TAP::Parser::Aggregator 3.30
-      TAP::Parser::Grammar 3.30
-      TAP::Parser::Iterator 3.30
-      TAP::Parser::Iterator::Array 3.30
-      TAP::Parser::Iterator::Process 3.30
-      TAP::Parser::Iterator::Stream 3.30
-      TAP::Parser::IteratorFactory 3.30
-      TAP::Parser::Multiplexer 3.30
-      TAP::Parser::Result 3.30
-      TAP::Parser::Result::Bailout 3.30
-      TAP::Parser::Result::Comment 3.30
-      TAP::Parser::Result::Plan 3.30
-      TAP::Parser::Result::Pragma 3.30
-      TAP::Parser::Result::Test 3.30
-      TAP::Parser::Result::Unknown 3.30
-      TAP::Parser::Result::Version 3.30
-      TAP::Parser::Result::YAML 3.30
-      TAP::Parser::ResultFactory 3.30
-      TAP::Parser::Scheduler 3.30
-      TAP::Parser::Scheduler::Job 3.30
-      TAP::Parser::Scheduler::Spinner 3.30
-      TAP::Parser::Source 3.30
-      TAP::Parser::SourceHandler 3.30
-      TAP::Parser::SourceHandler::Executable 3.30
-      TAP::Parser::SourceHandler::File 3.30
-      TAP::Parser::SourceHandler::Handle 3.30
-      TAP::Parser::SourceHandler::Perl 3.30
-      TAP::Parser::SourceHandler::RawTAP 3.30
-      TAP::Parser::YAMLish::Reader 3.30
-      TAP::Parser::YAMLish::Writer 3.30
-      Test::Harness 3.30
-    requirements:
-      ExtUtils::MakeMaker 0
   Test-Requires-0.07
     pathname: T/TO/TOKUHIROM/Test-Requires-0.07.tar.gz
     provides:
@@ -2440,10 +2380,7 @@ DISTRIBUTIONS
   Try-0.03
     pathname: D/DO/DOY/Try-0.03.tar.gz
     provides:
-      Error1 undef
-      Error2 undef
       Try 0.03
-      inc::MakeMaker undef
     requirements:
       Devel::CallParser 0
       Exporter 0
@@ -2557,8 +2494,6 @@ DISTRIBUTIONS
   YAML-0.90
     pathname: I/IN/INGY/YAML-0.90.tar.gz
     provides:
-      Spiffy 0.31
-      Test::Base::Filter undef
       Test::YAML 0.90
       Test::YAML::Filter 0.90
       YAML 0.90
@@ -2580,8 +2515,6 @@ DISTRIBUTIONS
       YAML::Type::undef 0.90
       YAML::Types 0.90
       YAML::Warning 0.90
-      t::Base undef
-      t::TestYAML undef
       yaml_mapping 0.90
       yaml_scalar 0.90
       yaml_sequence 0.90
@@ -2601,7 +2534,6 @@ DISTRIBUTIONS
     pathname: I/IL/ILMARI/bareword-filehandles-0.003.tar.gz
     provides:
       bareword::filehandles 0.003
-      inc::BarewordFilehandlesMakeMaker undef
     requirements:
       B::Hooks::OP::Check 0
       ExtUtils::Depends 0
@@ -2684,8 +2616,6 @@ DISTRIBUTIONS
   multidimensional-0.011
     pathname: I/IL/ILMARI/multidimensional-0.011.tar.gz
     provides:
-      MyTest undef
-      inc::MultidimensionalMakeMaker undef
       multidimensional 0.011
     requirements:
       B::Hooks::OP::Check 0.19
