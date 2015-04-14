@@ -98,7 +98,7 @@ sub set_password{
     $self->db_users->set_password(
         $app_user_id, $password,
         $self->random_string(length => 2),
-        sub{ $self->redirect_to('/admin') },
+        sub{ $self->redirect_to($ctrl->req->url->to_abs->host.'/admin') },
     );
     
 }
