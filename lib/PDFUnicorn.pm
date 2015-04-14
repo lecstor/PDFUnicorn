@@ -20,7 +20,7 @@ use PDFUnicorn::Template::Alloy;
 
 use Try;
 
-use lib '../Mojolicious-Plugin-Stripe/lib';
+# use lib '../Mojolicious-Plugin-Stripe/lib';
 
 ## Forward error messages to the application log
 #Mojo::IOLoop->singleton->reactor->on(error => sub {

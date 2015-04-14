@@ -10,7 +10,7 @@ use Mojo::JSON;
   
 use Try;
 
-use lib '../PDF-Grid/lib';
+# use lib '../PDF-Grid/lib';
 use PDF::Grid;
 
 # Render template "admin/dash.html.ep"
