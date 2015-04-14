@@ -5,6 +5,7 @@ requires 'Mojolicious';
 requires 'Mojolicious::Plugin::PODRenderer';
 requires 'Mojolicious::Plugin::RenderFile';
 requires 'Mojolicious::Plugin::Util::RandomString';
+requires 'Mojolicious::Plugin::Stripe';
 requires 'Mojolicious::Static';
 
 requires 'Moo';
@@ -15,6 +16,7 @@ requires 'Template::Alloy';
 requires 'JSON::XS', '< 3.0';
 requires 'JSON';
 
+requires 'PDF::Grid';
 
 # helpers for Mojo::IOLoop
 requires 'EV', '>= 4';
