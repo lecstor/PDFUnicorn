@@ -224,7 +224,7 @@ sub create {
 sub find_one {
 	my $self = shift;	
 	my $id = $self->stash('id');
-    return $self->render_not_found unless $id = $self->validate_type('oid', $id);
+    return $self->reply->not_found unless $id = $self->validate_type('oid', $id);
 	my $format = $self->stash('format');
 	my $pdf = 1 if $format && $format eq 'pdf';
 	
@@ -264,7 +264,7 @@ sub find_one {
                 }
             }
         }
-        $self->render_not_found;
+        $self->reply->not_found;
     });
 }
 

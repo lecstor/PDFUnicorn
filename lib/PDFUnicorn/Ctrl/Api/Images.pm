@@ -74,7 +74,7 @@ sub create {
 sub find_one {
 	my $self = shift;
 	my $id = $self->stash('id');
-    return $self->render_not_found unless $id = $self->validate_type('oid', $id);
+    return $self->reply->not_found unless $id = $self->validate_type('oid', $id);
         
     $self->render_later;
     $self->collection->find_one({ _id => bson_oid($id), deleted => bson_false }, sub{
@@ -84,7 +84,7 @@ sub find_one {
                 return $self->serve_doc($doc);
             }
         }
-        $self->render_not_found;
+        $self->reply->not_found;
     });
 }
 
