@@ -1,7 +1,6 @@
 package PDFUnicorn::Ctrl::Admin::Rest::Apikeys;
 use Mojo::Base 'Mojolicious::Controller';
 use Mojo::Util qw(md5_sum);
-use Mojo::JSON;
 
 use Mango::BSON ':bson';
 use Data::UUID;

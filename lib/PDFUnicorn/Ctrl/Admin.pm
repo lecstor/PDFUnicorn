@@ -6,7 +6,7 @@ use Mojo::JSON;
 use Mango::BSON ':bson';
 
 use Data::UUID;
-use Mojo::JSON;
+use Mojo::JSON 'encode_json';
   
 use Try;
 
@@ -42,7 +42,7 @@ sub apikey {
         my ($cursor, $err, $docs) = @_;
         my $json  = Mojo::JSON->new;
         if (@$docs){
-            $self->render( keys => $json->encode($docs), error => '' );
+            $self->render( keys => encode_json($docs), error => '' );
         } else {
             $self->db_apikeys->create({
                 owner => bson_oid($user_id),
@@ -52,7 +52,7 @@ sub apikey {
                 deleted => bson_false,
             }, sub {
                 my ($err, $doc) = @_;
-                $self->render( keys => $json->encode([$doc]), error => '' );
+                $self->render( keys => encode_json([$doc]), error => '' );
             });
         }
     }, { key => 1, owner => 1, _id => 0, name => 1, active => 1 });
