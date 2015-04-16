@@ -40,7 +40,6 @@ sub apikey {
     
     $self->db_apikeys->find_all($query, sub{
         my ($cursor, $err, $docs) = @_;
-        my $json  = Mojo::JSON->new;
         if (@$docs){
             $self->render( keys => encode_json($docs), error => '' );
         } else {
