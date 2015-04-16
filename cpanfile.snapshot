@@ -2084,10 +2084,10 @@ DISTRIBUTIONS
       Compress::Zlib 1.0
       ExtUtils::MakeMaker 6.30
       Font::TTF 0
-  PDF-Grid-0.01
-    pathname: J/JA/JASON/PDF-Grid-0.01.tar.gz
+  PDF-Grid-0.02
+    pathname: L/LE/LECSTOR/PDF-Grid-0.02.tar.gz
     provides:
-      PDF::Grid 0.01
+      PDF::Grid 0.02
       PDF::Grid::Element::Base undef
       PDF::Grid::Element::Cell undef
       PDF::Grid::Element::Doc undef
