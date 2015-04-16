@@ -238,7 +238,7 @@ sub startup {
 
     $r->namespaces(['PDFUnicorn::Ctrl']);
     
-    my $api = $r->bridge('/v1')->to(cb => sub {
+    my $api = $r->under('/v1' => sub {
         my $self = shift;
 
         my $token = $self->api_key;
@@ -268,13 +268,13 @@ sub startup {
                 );
             };
             $self->stash->{api_key_owner_id} = $doc->{owner};
-            $self->continue; # make it so - same as returning true from the bridge
+            $self->continue;
         });
         return;
     });
 
 
-    my $admin = $r->bridge('/admin')->to(cb => sub {
+    my $admin = $r->under('/admin' => sub {
         my $self = shift;
         
         my $user_id = $self->session->{user_id};
@@ -294,7 +294,7 @@ sub startup {
             
             if ($doc && $doc->{active}){
                 $self->stash->{app_user} = $doc;
-                $self->continue; # make it so - same as returning true from the bridge
+                $self->continue;
             } else {
                 # Not authenticated
                 $self->render(
