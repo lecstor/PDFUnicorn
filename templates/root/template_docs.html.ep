@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <title>Template Documentation</title>
-    <meta name="description" content="Documentation for the PDFUnicorn template system" />
+    <meta name="description" content="Documentation for the EzyPDF template system" />
 	%= include 'site/head'
 	%= include 'mixpanel'
   

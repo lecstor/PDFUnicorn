@@ -1,7 +1,7 @@
 {
     "time": <%= $time %>,
     "tz": "+1000",
-    "title": "PDFUnicorn",
+    "title": "EzyPDF",
     "logo": "pdfunicorn_logo_1067.jpg",
     "header_text": "Make your invoices and quotes stand out from the crowd.",
     "customer": {

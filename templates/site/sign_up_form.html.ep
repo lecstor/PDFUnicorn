@@ -22,7 +22,7 @@
             % }
         </p>
     % } else {
-        <p><strong>Sign up for email updates about PDFUnicorn features and services.</strong></p>
+        <p><strong>Sign up for email updates about EzyPDF features and services.</strong></p>
     % }
     <input name="firstname" type="text" class="form-control" placeholder="Your first name" value="<%= $firstname %>" required autofocus>
     % if ($selected_plan->{term}){

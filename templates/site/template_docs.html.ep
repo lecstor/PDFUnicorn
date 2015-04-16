@@ -1,13 +1,13 @@
 <link rel="stylesheet" href="/lib/highlight/styles/mono-blue.css">
 
-<h2>Templating in PDFUnicorn</h2>
+<h2>Templating in EzyPDF</h2>
 
 <div class="panel panel-default">
     <div class="panel-heading">
         <h1 class="panel-title">Intro</h1>
     </div>
     <div class="panel-body">
-        <p>Templates in PDFUnicorn are used to merge data into markup to produce the source for a document.</p>
+        <p>Templates in EzyPDF are used to merge data into markup to produce the source for a document.</p>
         <p>So you can design your document based on customer, invoice, or product data for instance and then easily generate customised documents.</p>
         <p>Content to be substituted for values in the data are embedded within the markers <b>{{</b> ... <b>}}</b>.
 <pre><code>&lt;cell&gt;Hi {{ firstname }}, how are you?&lt;/cell&gt;</code></pre>

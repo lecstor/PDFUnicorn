@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <title>Example/Starter Document</title>
-    <meta name="description" content="A simple example of a PDFUnicorn document's sourece" />
+    <meta name="description" content="A simple example of a EzyPDF document's sourece" />
 
 	%= include 'site/head'
 	%= include 'mixpanel'

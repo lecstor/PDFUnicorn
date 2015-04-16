@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="/lib/highlight/styles/mono-blue.css">
 
-<h2>PUML - the PDFUnicorn Markup Language</h2>
+<h2>PUML - the EzyPDF Markup Language</h2>
 
 <div class="panel panel-default">
     <div class="panel-heading">
@@ -293,7 +293,7 @@
                 <table class="table">
                     <thead><tr><th colspan="2" class="text-muted">Attributes</th></tr></thead>
                     <tbody>
-                        <tr><th>src</th><td>The path to the image in the PDFUnicorn account. Remote sources are not supported.</td></tr>
+                        <tr><th>src</th><td>The path to the image in the EzyPDF account. Remote sources are not supported.</td></tr>
                     </tbody>
                 </table>
                 <p>Example:</p>

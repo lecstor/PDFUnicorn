@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>PDFUnicorn - PDF Creator</title>
+    <title>EzyPDF - PDF Creator</title>
     <meta name="description" content="A web service for creating PDF files from templates and data via a simple API" />
     
 	%= include 'site/head'
@@ -36,7 +36,7 @@
 
         
         <div class="well center-block" style="max-width: 650px">
-            <p>PDFUnicorn is a web service for creating PDF files.</p>
+            <p>EzyPDF is a web service for creating PDF files.</p>
             
             <p>PDF files can be created directly from source documents, or from data
             applied to custom templates.</p>
@@ -84,19 +84,18 @@
                 repeat sections of it across multiple pages.
             </p> 
             <p>
-                PDFUnicorn is my attempt to simplify the process of generating PDF documents and to
+                EzyPDF is my attempt to simplify the process of generating PDF documents and to
                 save you the time and costs associated with creating and maintaining your own solution.
             </p>
         </div>
 
         <div class="well center-block" style="max-width: 650px">
-            <h3>Why would you want to use PDFUnicorn?</h3>
-            <img class="pull-right" src="/img/pdfunicorn_logo_200.png" title="The Unicorn" alt="[logo] The Unicorn">
+            <h3>Why would you want to use EzyPDF?</h3>
             <p>I want to build a solution to solve your PDF generation problems. I want to keep it as simple
             as possible to use while allowing you to create the documents you need, the way you want them.</p>
             <p>I have a long list of features I could implement, but I want to hear from you, so I'm not just
             creating another overly complicated solution to what should be a simple problem.</p>
-            <p>PDFUnicorn is not built on someone else's PDF generator. I can improve and modify any and all
+            <p>EzyPDF is not built on someone else's PDF generator. I can improve and modify any and all
             of the layout features that turn markup into documents.</p>
             <p>So let me know what you need and I will do my best to turn that into a reality and let you get
             on with running your business. <a href="/contact">Contact Me</a> any time, I'd love to hear from you.</p>  
@@ -144,11 +143,8 @@
         
         <div class="well center-block" style="max-width: 650px">
         	<div class="row">
-                <div class="col-md-4 col-sm-5">
-                    <img src="/img/pdfunicorn_logo_200.png" title="The Unicorn" alt="[logo] The Unicorn">
-                </div>
-                <div class="col-md-8 col-sm-7">
-                    <p class="lead">PDFUnicorn is a PDF creation web service for businesses who need to generate custom
+                <div class="col-sm-12">
+                    <p class="lead">EzyPDF is a PDF creation web service for businesses who need to generate custom
                     PDF files on demand. We use a simple HTML-like markup language designed for laying
                     out pageable documents in the simplest way possible.</p>
                 </div>

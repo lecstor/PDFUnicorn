@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <title>Contact Us</title>
-    <meta name="description" content="Contact details for Jason at PDFUnicorn" />
+    <meta name="description" content="Contact details for Jason at EzyPDF" />
     
 	%= include 'site/head'
 	%= include 'mixpanel'
@@ -22,7 +22,7 @@
 	           <p>Have a question or a suggestion? I'd love to hear from you!</p>
 	           <p>
 	               <ul>
-	                   <li>Send me an email at <a href="mailto:jason@pdfunicorn.com">jason@pdfunicorn.com</a>.</li>
+	                   <li>Send me an email at <a href="mailto:jason@ezyapp.com">jason@ezyapp.com</a>.</li>
 	                   <li>Give me a call on 61 7 4055 6926.</li>
 	                   <li>Tweet me <a href="http://www.twitter.com/lecstor">@lecstor</a>.</li>
 	               </ul>

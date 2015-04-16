@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>PDFUnicorn - online PDF generator</title>
+    <title>EzyPDF - online PDF generator</title>
 	%= include 'site/head'
 	%= include 'mixpanel'
   
@@ -24,7 +24,7 @@
                 </p>
         
                 <h2>Dashboard</h2>
-	    		<p>Hi, and thanks again for using PDFUnicorn!</p>
+	    		<p>Hi, and thanks again for using EzyPDF!</p>
 
             </div>
     	

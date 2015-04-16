@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <title>Subscription Plans</title>
-    <meta name="description" content="Pricing plans for PDFUnicorn" />
+    <meta name="description" content="Pricing plans for EzyPDF" />
 
 	%= include 'site/head'
 	%= include 'mixpanel'
@@ -39,7 +39,7 @@
 	  <div class="jumbotron clearfix" style="background-color: #fff">
 	  
 	    % if (current_route 'pricing') {
-            <h2 style="text-align: center">Try PDFUnicorn free for 30 days</h2>
+            <h2 style="text-align: center">Try EzyPDF free for 30 days</h2>
             <h3 style="text-align: center">No credit card required</h3>
         % } else {
             <h2 style="text-align: center">
@@ -87,7 +87,7 @@
                         <div style="text-align: center">Templates as Required</div>
                         <div style="text-align: center">Pages as Required</div>
                         <div style="text-align: center">
-                            <a class="btn btn-primary btn-lg" href="mailto:jason@pdfunicorn.com?subject=PDFUnicorn%20Enterprise%20Pricing">Contact Me</a>
+                            <a class="btn btn-primary btn-lg" href="mailto:jason@ezyapp.com?subject=EzyPDF%20Enterprise%20Pricing">Contact Me</a>
                         </div>
                 </div>
             </div -->

@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Signed Up to PDFUnicorn</title>
+    <title>Signed Up to EzyPDF</title>
 	%= include 'site/head'
 	%= include 'mixpanel'
   
@@ -38,7 +38,7 @@
 				% if ($firstname){
 					<%= $firstname %>, 
 				% }
-				thanks for your interest in PDFUnicorn.
+				thanks for your interest in EzyPDF.
 				
 				% if ($selected_plan->{name} eq 'notifications'){
 				
@@ -55,8 +55,8 @@
     			%}
 				</p>
 				<p class="lead text-muted">
-					If you have any questions or suggestions regarding PDFUnicorn
-					please email me at <a href="mailto:jason@pdfunicorn.com">jason@pdfunicorn.com</a>,
+					If you have any questions or suggestions regarding EzyPDF
+					please email me at <a href="mailto:jason@ezyapp.com">jason@ezyapp.com</a>,
 					I'd love to hear from you.
 				</p>
 			% }

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <title>Sign Up for a free trial</title>
-    <meta name="description" content="Sign Up to PDFUnicorn for a free 30 day trial. No credit card required." />
+    <meta name="description" content="Sign Up to EzyPDF for a free 30 day trial. No credit card required." />
 	%= include 'site/head'
 	%= include 'mixpanel'
   

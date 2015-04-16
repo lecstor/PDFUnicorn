@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>PDFUnicorn - Template Documentation</title>
+    <title>EzyPDF - Template Documentation</title>
 	%= include 'site/head'
 	%= include 'mixpanel'
   

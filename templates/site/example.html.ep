@@ -42,7 +42,7 @@
                 &lt;/cell&gt;
                 &lt;cell&gt;&lt;/cell&gt;
                 &lt;cell span="8" padding="10"&gt;
-                    &lt;text class="busname"&gt;PDFUnicorn&lt;/text&gt;
+                    &lt;text class="busname"&gt;EzyPDF&lt;/text&gt;
                     ABN: XX XXX XXX XXX
                 &lt;/cell&gt;
             &lt;/row&gt;
@@ -424,7 +424,7 @@
             &lt;/cell&gt;&lt;/row&gt;
         &lt;/section&gt;
         &lt;footer&gt;
-            &lt;row columns="1"&gt;pdfunicorn.com&lt;/row&gt;
+            &lt;row columns="1"&gt;pdf.ezyapp.com&lt;/row&gt;
         &lt;/footer&gt;
     &lt;/page&gt;
 &lt;/doc&gt;

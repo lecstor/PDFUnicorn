@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>PDFUnicorn Demo</title>
-    <meta name="description" content="A demonstration of generating a PDF from a template and data with PDFUnicorn" />
+    <title>EzyPDF Demo</title>
+    <meta name="description" content="A demonstration of generating a PDF from a template and data with EzyPDF" />
     
     %= include 'site/head'
     %= include 'mixpanel'
@@ -23,7 +23,7 @@
         % } else {
             <h2>Demonstration UI</h2>
             <div style="max-width: 600px">
-                <p>The most common usage of PDFUnicorn involves uploading images
+                <p>The most common usage of EzyPDF involves uploading images
                 and templates and then sending data along with a template id to
                 render your PDF files.</p>
                 <p>In the demo you can simulate the results of this process

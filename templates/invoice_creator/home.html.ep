@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>PDFUnicorn - free online invoice maker</title>
+    <title>EzyPDF - free online invoice maker</title>
 	%= include 'site/head'
 	%= include 'mixpanel'
   

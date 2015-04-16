@@ -79,13 +79,13 @@
         </row>
         <row>
             <cell>
-                <row class="para">Hey {{ customer.firstname }}, thanks for using PDFUnicorn.</row>
+                <row class="para">Hey {{ customer.firstname }}, thanks for using EzyPDF.</row>
                 <row class="para">
                     <cell>
                         As a long time customer I'd like to offer you
                         <text font-face="HelveticaBold">3 months free</text> per year for
                         signing up for our annual plan. That'll save you 25% over the monthly
-                        charges you're currently paying.[n]Shoot me an email at jason@pdfunicorn.com
+                        charges you're currently paying.[n]Shoot me an email at jason@ezyapp.com
                         and I'll get you set up right away!
                     </cell>
                 </row>
@@ -94,7 +94,7 @@
         </row>
         <footer>
             <row columns="3">
-                pdfunicorn.com
+                pdf.ezyapp.com
                 <cell span="2"><text align="right">{{ epoch(time, { "tz": tz, "strf": '%c' }) }}</text></cell>
             </row>
         </footer>

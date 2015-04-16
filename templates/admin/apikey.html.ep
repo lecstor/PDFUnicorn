@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>PDFUnicorn - online PDF generator</title>
+    <title>EzyPDF - online PDF generator</title>
 	%= include 'site/head'
 	%= include 'mixpanel'
   
@@ -27,7 +27,7 @@
 	                	<p class="text-danger">You need to set your password to
 	                	access your api-key</p>
 	                	<p>Check your email for the subject "Set your password on
-	                	PDFUnicorn"</p>
+	                	EzyPDF"</p>
 	                	<p>otherwise, click the send button below and I'll send
 	                	you an email with a link to set your password.</p>
 	            		<form action="/log-in" method="post" class="form-signin" role="form">

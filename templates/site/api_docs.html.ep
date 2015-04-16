@@ -15,7 +15,7 @@
             There are currently two basic client libraries available on Github for interacting with the API for Perl and Python..
         </p>
         <p>
-            <a href="https://github.com/pdfunicorn/Net-PDFUnicorn">Perl "reference" PDFUnicorm client library</a><br />
+            <a href="https://github.com/pdfunicorn/Net-EzyPDF">Perl "reference" PDFUnicorm client library</a><br />
             <a href="https://github.com/pdfunicorn/pdfunicorn-python">Python PDFUnicorm client library</a><br />
         </p>
     </div>
@@ -108,9 +108,9 @@
         than they need to be.</p>  
         <h4>Request</h4>
         
-        <p>POST https://pdfunicorn.com/v1/images</p>        
+        <p>POST https://pdf.ezyapp.com/v1/images</p>        
         <p>        
-            <pre><code class="language-bash">$ curl https://pdfunicorn.com/v1/images \\
+            <pre><code class="language-bash">$ curl https://pdf.ezyapp.com/v1/images \\
     -F "image=@unicorn.jpg" \\
     -F "src=the/unicorn.jpg" \\
     -H "Content-Type: multipart/form-data" \\
@@ -134,7 +134,7 @@
     create an image that you use repeatedly add the "stock" option to the create
     call. Stock images are not deleted. The amount of space available for your
     stock images depends on the plan you are on.</p> 
-            <pre><code class="language-bash">$ curl https://pdfunicorn.com/v1/images \\
+            <pre><code class="language-bash">$ curl https://pdf.ezyapp.com/v1/images \\
     -F "image=@unicorn.jpg" \\
     -F "src=the/unicorn.jpg" \\
     -F "stock=1" \\
@@ -154,9 +154,9 @@
     <div class="panel-body">
         <h4>Request</h4>
         
-        <p>DELETE https://pdfunicorn.com/v1/images/52cb32bfb9efb70c36070000</p>        
+        <p>DELETE https://pdf.ezyapp.com/v1/images/52cb32bfb9efb70c36070000</p>        
         <p>
-            <pre><code class="language-bash">$ curl https://pdfunicorn.com/v1/images/52cb32bfb9efb70c36070000 \\
+            <pre><code class="language-bash">$ curl https://pdf.ezyapp.com/v1/images/52cb32bfb9efb70c36070000 \\
     -X DELETE \\
     -u [YourApiKey]:
 </code></pre>
@@ -175,12 +175,12 @@
     </div>
     <div class="panel-body">
         <p>
-            By creating document templates on the PDFUnicorn server you can then
+            By creating document templates on the EzyPDF server you can then
             use them to generate documents by posting the data to be merged into them.
         </p> 
         <h4>Request</h4>
         
-        <p>POST https://pdfunicorn.com/v1/templates</p>
+        <p>POST https://pdf.ezyapp.com/v1/templates</p>
 
         <p>
             <p>
@@ -195,7 +195,7 @@
                     created</li>
                 </ul>
             </p>
-            <pre><code class="language-bash">$ curl https://pdfunicorn.com/v1/templates \\
+            <pre><code class="language-bash">$ curl https://pdf.ezyapp.com/v1/templates \\
     -d '{"source": "&lt;doc&gt;&lt;page&gt;[% some_text %]&lt;/page&gt;&lt;/doc&gt;", "name": "hello-world" }' \\
     -X POST \\
     -u [YourApiKey]:
@@ -224,11 +224,11 @@
     <div class="panel-body">
         <h4>Request</h4>
         
-        <p>PUT https://pdfunicorn.com/v1/templates/{{template_id}}</p>
+        <p>PUT https://pdf.ezyapp.com/v1/templates/{{template_id}}</p>
 
         <p>
             <p>Use a PUT to update the template and return it's metadata.</p>
-            <pre><code class="language-bash">$ curl https://pdfunicorn.com/v1/templates/52cb32bfb9efb70c36070000 \\
+            <pre><code class="language-bash">$ curl https://pdf.ezyapp.com/v1/templates/52cb32bfb9efb70c36070000 \\
     -d '{"source": "&lt;doc&gt;&lt;page&gt;[% some_text %] with update&lt;/page&gt;&lt;/doc&gt;", "name": "hello-world" }' \\
     -X PUT \\
     -u [YourApiKey]:
@@ -256,24 +256,24 @@
     </div>
     <div class="panel-body">
         <p>You can create a document by posting your document source or the data to
-        fill a template and the template's id to the PDFUnicorn
+        fill a template and the template's id to the EzyPDF
         server. By default the document's metadata will be returned immediately and
         the PDF file will be created in the background and stored for retrieval.
         The document's metadata includes the url to be used to retrieve the file.</p>
         <p>If you add the extension ".pdf" to the URL the PDF file will be generated
         and returned in the same request and the document's file, source, and non-stock
-        images will be deleted from the PDFUnicorn.</p>
-        <p>* Any required images must be uploaded to the PDFUnicorn server before
+        images will be deleted from the EzyPDF.</p>
+        <p>* Any required images must be uploaded to the EzyPDF server before
         the document creation request is made.</p> 
         <h4>Request</h4>
         
-        <p>POST https://pdfunicorn.com/v1/documents</p>
-        <p>POST https://pdfunicorn.com/v1/documents.pdf</p>
+        <p>POST https://pdf.ezyapp.com/v1/documents</p>
+        <p>POST https://pdf.ezyapp.com/v1/documents.pdf</p>
 
         <p>
             <h3>Create a document from source</h3>
             <p>A POST to /v1/documents will return the document's metadata</p>
-            <pre><code class="language-bash">$ curl https://pdfunicorn.com/v1/documents \\
+            <pre><code class="language-bash">$ curl https://pdf.ezyapp.com/v1/documents \\
     -d '{"source": "&lt;doc&gt;&lt;page&gt;Hello World&lt;img src=\"the/unicorn.jpg\" /&gt;&lt;/page&gt;&lt;/doc&gt;"} \\
     -X POST \\
     -u [YourApiKey]:
@@ -292,7 +292,7 @@
         <p>
             <h3>Create a document from a template</h3>
             <p>A POST to /v1/documents will return the document's metadata</p>
-            <pre><code class="language-bash">$ curl https://pdfunicorn.com/v1/documents \\
+            <pre><code class="language-bash">$ curl https://pdf.ezyapp.com/v1/documents \\
     -d '{"data": {"some_text": "Hello World", "image_path": "the/unicorn.jpg" }, "template_id": "52cb32bfb9efb70c36070000" }' \\
     -X POST \\
     -u [YourApiKey]:
@@ -319,12 +319,12 @@
     <div class="panel-body">
         <p>If you have created a document for background generation you can fetch
         the metadata for the document or the generated PDF file. Once the PDF file
-        has been fetched the file and it's source will be deleted from PDFUnicorn.
+        has been fetched the file and it's source will be deleted from EzyPDF.
         <h3>Fetch a document as a PDF</h3>
         <h4>Request</h4>        
-        <p>GET https://pdfunicorn.com/v1/documents/{{document_id}}.pdf</p>        
+        <p>GET https://pdf.ezyapp.com/v1/documents/{{document_id}}.pdf</p>        
         <p>
-            <pre><code class="language-bash">$ curl https://pdfunicorn.com/v1/documents/52cb32bfb9efb70c36070000 \\
+            <pre><code class="language-bash">$ curl https://pdf.ezyapp.com/v1/documents/52cb32bfb9efb70c36070000 \\
     -u [YourApiKey]:
 </code></pre>
         </p>
@@ -336,9 +336,9 @@
         
         <h3>Fetch a document's metadata</h3>
         <h4>Request</h4>
-        <p>GET https://pdfunicorn.com/v1/documents/{{document_id}}</p>        
+        <p>GET https://pdf.ezyapp.com/v1/documents/{{document_id}}</p>        
         <p>
-            <pre><code class="language-bash">$ curl https://pdfunicorn.com/v1/documents/52cb32bfb9efb70c36070000 \\
+            <pre><code class="language-bash">$ curl https://pdf.ezyapp.com/v1/documents/52cb32bfb9efb70c36070000 \\
     -u [YourApiKey]:
 </code></pre>
         </p>
@@ -365,9 +365,9 @@
     <div class="panel-body">
         <h4>Request</h4>
         
-        <p>DELETE https://pdfunicorn.com/v1/documents/{{document_id}}</p>        
+        <p>DELETE https://pdf.ezyapp.com/v1/documents/{{document_id}}</p>        
         <p>
-            <pre><code class="language-bash">$ curl https://pdfunicorn.com/v1/documents/52cb32bfb9efb70c36070000 \\
+            <pre><code class="language-bash">$ curl https://pdf.ezyapp.com/v1/documents/52cb32bfb9efb70c36070000 \\
     -X DELETE \\
     -u [YourApiKey]:
 </code></pre>

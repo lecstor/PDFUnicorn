@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>PDFUnicorn - online PDF generator</title>
+    <title>EzyPDF - online PDF generator</title>
 	%= include 'site/head'
 	%= include 'mixpanel'
   
@@ -23,7 +23,7 @@
 	    	
 				% my $user = session 'user';
 				% my $name = $user->{firstname} ? ' '.$user->{firstname} : '';
-	    		<p>Hi<%= $name %>, thanks for using PDFUnicorn!</p>
+	    		<p>Hi<%= $name %>, thanks for using EzyPDF!</p>
 	    		<p></p>
 	    		<p>
 	    			<form method="post" action="/admin/get-pdf">
