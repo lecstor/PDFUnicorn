@@ -67,7 +67,6 @@ sub find{
     
     $self->db_apikeys->find_all($query, sub{
         my ($cursor, $err, $docs) = @_;
-        my $json = Mojo::JSON->new;
         if (@$docs){
             $self->render( json => { status => 'ok', data => $docs } );
         } else {
