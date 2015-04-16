@@ -41,7 +41,7 @@ $t->post_ok('/log-in', => form => { username => '', password => 'something' })
     ->content_like(qr/enter the email/);
 
 $t->post_ok('/sign-up', => form => {
-    name => 'Jason',
+    firstname => 'Jason',
     email => 'jason+1@lecstor.com',
     time_zone => 'America/Chicago',
     selected_plan => 'pro-1'

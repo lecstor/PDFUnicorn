@@ -49,7 +49,7 @@ $t->post_ok('/sign-up', => form => { firstname => 'Jason', email => '', time_zon
     ->element_exists('input[name="email"]')
     ->content_like(qr/enter an email/);
 
-$t->post_ok('/sign-up', => form => { name => 'Jason', email => 'cont@ai.ns space', time_zone => 'America/Chicago', selected_plan => 'small-1' })
+$t->post_ok('/sign-up', => form => { firstname => 'Jason', email => 'cont@ai.ns space', time_zone => 'America/Chicago', selected_plan => 'small-1' })
     ->status_is(200)
     ->element_exists('input[name="firstname"]')
     ->element_exists('input[name="email"]')

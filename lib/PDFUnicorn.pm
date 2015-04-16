@@ -136,7 +136,7 @@ sub startup {
                         From    => '"PDFUnicorn" <server@pdfunicorn.com>',
                         Subject => "Set your password on PDFUnicorn",
                     ],
-                    body => $ctrl->render('email/password_key', partial => 1, format => 'text')
+                    body => $ctrl->render_to_string('email/password_key', format => 'text')
                 );
                 sendmail($email);
                 $ctrl->stash->{format} = $original_format;
@@ -170,7 +170,7 @@ sub startup {
                     From    => '"PDFUnicorn" <server@pdfunicorn.com>',
                     Subject => "Thanks for you interest in PDFUnicorn",
                 ],
-                body => $ctrl->render('email/thanks_notifications_signup', partial => 1, format => 'text')
+                body => $ctrl->render_to_string('email/thanks_notifications_signup', format => 'text')
             );
             sendmail($email);
             $ctrl->stash->{format} = $original_format;
@@ -192,7 +192,7 @@ sub startup {
                     From    => '"PDFUnicorn" <server@pdfunicorn.com>',
                     Subject => "Notifications Signup",
                 ],
-                body => $ctrl->render('email/alert_notifications_signup', partial => 1, format => 'text')
+                body => $ctrl->render_to_string('email/alert_notifications_signup', format => 'text')
             );
             sendmail($email);
             $ctrl->stash->{format} = $original_format;
@@ -291,11 +291,13 @@ sub startup {
         
         $self->app->db_users->find_one({ _id => bson_oid($user_id)}, sub{
             my ($err, $doc) = @_;
-            
+            $self->app->log->error($err) if $err;
+
             if ($doc && $doc->{active}){
                 $self->stash->{app_user} = $doc;
                 $self->continue;
             } else {
+                $self->app->log->error('Session user id is invalid.');
                 # Not authenticated
                 $self->render(
                     template => "root/log_in",
