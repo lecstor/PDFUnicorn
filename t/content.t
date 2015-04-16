@@ -18,9 +18,9 @@ my $t = Test::Mojo->new('PDFUnicorn');
 
 
 $t->get_ok('/')->status_is(200)->content_like(qr/PDFUnicorn/i);
-$t->get_ok('/features')->status_is(200)->content_like(qr/features/i);
+#$t->get_ok('/features')->status_is(200)->content_like(qr/features/i);
 $t->get_ok('/pricing')->status_is(200)->content_like(qr/pricing/i);
-$t->get_ok('/about')->status_is(200)->content_like(qr/about/i);
+#$t->get_ok('/about')->status_is(200)->content_like(qr/about/i);
 
 
 done_testing();

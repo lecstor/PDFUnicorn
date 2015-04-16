@@ -14,7 +14,7 @@ use Data::Dumper::Perltidy;
 
 BEGIN { $ENV{EMAIL_SENDER_TRANSPORT} = 'Test' }
 
-my $mango = Mango->new('mongodb://127.0.0.1/pdfunicorn_test');
+my $mango = Mango->new('mongodb://127.0.0.1/pdf_ezyapp_test');
 my $documents = $mango->db->collection('documents');
 my $apikeys = $mango->db->collection('apikeys');
 my $users = $mango->db->collection('users');
