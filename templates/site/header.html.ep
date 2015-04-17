@@ -8,7 +8,7 @@
                 <span class="icon-bar"></span>
             </button>
             <ul class="nav navbar-nav">
-                <li><a class="navbar-brand" href="/" style="padding: 0 30px 0 0">EzyPDF</a></li>
+                <li><a class="navbar-brand" href="/">EzyPDF</a></li>
             </ul>
         </div>
         <div class="navbar-collapse collapse">
